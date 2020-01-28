@@ -45,7 +45,7 @@ following commands:
 
 ``` sh
 for prj in simplecsv percentile taskrun sssweep ssplot; do
-    git clone git://github.com/nicmcd/${prj} ~/ssdev/${prj}
+    git clone git://github.com/ssnetsim/${prj} ~/ssdev/${prj}
     cd ~/ssdev/${prj}
     python3 setup.py install --user --record files.txt
 done
@@ -68,7 +68,7 @@ The C++ projects are built as stand-alone executables. No system installation ta
 
 ``` sh
 for prj in supersim ssparse; do
-    git clone git://github.com/nicmcd/${prj} ~/ssdev/${prj}
+    git clone git://github.com/ssnetsim/${prj} ~/ssdev/${prj}
     cd ~/ssdev/${prj}
     bazel build -c opt :${prj} :${prj}_test :lint
 done
