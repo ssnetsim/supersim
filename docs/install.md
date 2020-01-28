@@ -20,14 +20,15 @@ These installation instructions require the following software:
 - wget
 - column
 
-These can be installed on a modern Debian based system with the following
-commands:
-
+The following command installs the package dependencies:
 ``` sh
-sudo apt-get util-linux wget
-sudo apt-get install g++ git python3 python3-dev
-pip3 install setuptools --user
-pip3 install numpy matplotlib psutil --user
+[apt-get]
+sudo apt-get install g++ git python3 python3-dev util-linux wget
+
+[yum]
+sudo yum install gcc-c++ git python3 python3-devel util-linux wget
+
+pip3 install setuptools numpy matplotlib psutil --user
 ```
 
 ## Create a development directory
@@ -44,8 +45,13 @@ they won't effect the system installation. These can be installed with
 following commands:
 
 ``` sh
-for prj in nicmcd/simplecsv nicmcd/percentile nicmcd/taskrun ssnetsim/sssweep ssnetsim/ssplot; do
-    git clone git://github.com/${prj} ~/ssdev/${prj}
+for prj in simplecsv percentile taskrun; do
+    git clone git://github.com/nicmcd/${prj} ~/ssdev/${prj}
+    cd ~/ssdev/${prj}
+    python3 setup.py install --user --record files.txt
+done
+for prj in sssweep ssplot; do
+    git clone git://github.com/ssnetsim/${prj} ~/ssdev/${prj}
     cd ~/ssdev/${prj}
     python3 setup.py install --user --record files.txt
 done
@@ -67,8 +73,8 @@ The C++ projects use [Bazel][bazel] for building binaries. To install Bazel, fol
 The C++ projects are built as stand-alone executables. No system installation takes place. Use the following commands to build the C++ programs:
 
 ``` sh
-for prj in ssnetsim/supersim ssnetsim/ssparse; do
-    git clone git://github.com/${prj} ~/ssdev/${prj}
+for prj in supersim ssparse; do
+    git clone git://github.com/ssnetsim/${prj} ~/ssdev/${prj}
     cd ~/ssdev/${prj}
     bazel build -c opt :${prj} :${prj}_test :lint
 done
