@@ -20,14 +20,22 @@ These installation instructions require the following software:
 - wget
 - column
 
-These can be installed on a modern Debian based system with the following
-commands:
+Package dependencies can be installed on a modern Debian based system with:
 
 ``` sh
-sudo apt-get util-linux wget
-sudo apt-get install g++ git python3 python3-dev
-pip3 install setuptools --user
-pip3 install numpy matplotlib psutil --user
+sudo apt-get install g++ git python3 python3-dev util-linux wget
+```
+
+Or on Fedora or CentOS with:
+
+```sh
+sudo yum install gcc-c++ git python3 python3-devel util-linux wget
+```
+
+Python dependencies can be installed with:
+
+```sh
+pip3 install setuptools numpy matplotlib psutil --user
 ```
 
 ## Create a development directory
