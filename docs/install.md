@@ -44,8 +44,8 @@ they won't effect the system installation. These can be installed with
 following commands:
 
 ``` sh
-for prj in simplecsv percentile taskrun sssweep ssplot; do
-    git clone git://github.com/nicmcd/${prj} ~/ssdev/${prj}
+for prj in nicmcd/simplecsv nicmcd/percentile nicmcd/taskrun ssnetsim/sssweep ssnetsim/ssplot; do
+    git clone git://github.com/${prj} ~/ssdev/${prj}
     cd ~/ssdev/${prj}
     python3 setup.py install --user --record files.txt
 done
@@ -67,8 +67,8 @@ The C++ projects use [Bazel][bazel] for building binaries. To install Bazel, fol
 The C++ projects are built as stand-alone executables. No system installation takes place. Use the following commands to build the C++ programs:
 
 ``` sh
-for prj in supersim ssparse; do
-    git clone git://github.com/nicmcd/${prj} ~/ssdev/${prj}
+for prj in ssnetsim/supersim ssnetsim/ssparse; do
+    git clone git://github.com/${prj} ~/ssdev/${prj}
     cd ~/ssdev/${prj}
     bazel build -c opt :${prj} :${prj}_test :lint
 done
