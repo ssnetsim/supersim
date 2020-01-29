@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "network/hyperx/util.h"
+#include "network/hyperx/util.h"  // NOLINT (build/include)
 
 #include <colhash/tuplehash.h>
 
