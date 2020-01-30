@@ -44,7 +44,7 @@ cc_library(
     includes = [
         "src",
     ],
-    visibility = ["//visibility:private"],
+    visibility = ["//visibility:public"],
     deps = LIBS,
     alwayslink = 1,
 )
