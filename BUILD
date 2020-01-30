@@ -85,7 +85,7 @@ cc_library(
         "src/**/*_TEST*.tcc",
     ]),
     copts = COPTS,
-    visibility = ["//visibility:private"],
+    visibility = ["//visibility:public"],
     deps = [
         ":lib",
         "@googletest//:gtest_main",
