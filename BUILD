@@ -78,16 +78,44 @@ cc_library(
     name = "test_lib",
     testonly = 1,
     srcs = glob([
-        "src/**/*_TEST*.cc",
+        "src/test/*_TEST*.cc",
     ]),
     hdrs = glob([
-        "src/**/*_TEST*.h",
-        "src/**/*_TEST*.tcc",
+        "src/test/*_TEST*.h",
+        "src/test/*_TEST*.tcc",
     ]),
     copts = COPTS,
     visibility = ["//visibility:public"],
     deps = [
         ":lib",
+        "@googletest//:gtest_main",
+    ] + LIBS,
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "unittest_lib",
+    testonly = 1,
+    srcs = glob(
+        ["src/**/*_TEST*.cc"],
+        exclude = [
+            "src/test/*_TEST*.cc",
+        ],
+    ),
+    hdrs = glob(
+        [
+            "src/**/*_TEST*.h",
+            "src/**/*_TEST*.tcc",
+        ], exclude = [
+            "src/test/*_TEST*.h",
+            "src/test/*_TEST*.tcc",
+        ],
+    ),
+    copts = COPTS,
+    visibility = ["//visibility:public"],
+    deps = [
+        ":lib",
+        ":test_lib",
         "@googletest//:gtest_main",
     ] + LIBS,
     alwayslink = 1,
@@ -102,6 +130,7 @@ cc_test(
     visibility = ["//visibility:public"],
     deps = [
         ":test_lib",
+        ":unittest_lib",
     ] + LIBS,
 )
 
