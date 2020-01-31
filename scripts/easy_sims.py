@@ -35,7 +35,7 @@ mem = taskrun.MemoryResource.current_available_memory_gib();
 rm = taskrun.ResourceManager(taskrun.CounterResource('cpus', 9999, cpus),
                              taskrun.MemoryResource('mem', 9999, mem))
 cob = taskrun.FileCleanupObserver()
-vob = taskrun.VerboseObserver(description=False, summary=True)
+vob = taskrun.VerboseObserver()
 tm = taskrun.TaskManager(
   resource_manager=rm,
   observers=[cob, vob],
