@@ -38,7 +38,7 @@ class Network : public ::Network {
 
   // this is the routing algorithm factory for this network
   ::RoutingAlgorithm* createRoutingAlgorithm(
-       u32 _inputPort, u32 _intputVc, const std::string& _name,
+       u32 _inputPort, u32 _inputVc, const std::string& _name,
        const Component* _parent, Router* _router) override;
 
   // Network
