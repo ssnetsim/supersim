@@ -45,7 +45,7 @@ class Network : public Component {
 
   // this is a routing algorithm factory definition
   virtual RoutingAlgorithm* createRoutingAlgorithm(
-      u32 _inputPort, u32 _intputVc, const std::string& _name,
+      u32 _inputPort, u32 _inputVc, const std::string& _name,
       const Component* _parent, Router* _router) = 0;
 
   virtual u32 numRouters() const = 0;
