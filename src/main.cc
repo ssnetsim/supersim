@@ -62,7 +62,7 @@ s32 main(s32 _argc, char** _argv) {
   u32 numRouters = network->numRouters();
   std::map<u32, u32> routerRadices;
   for (u32 routerId = 0; routerId < numRouters; routerId++) {
-    routerRadices[network->getRouter(0)->numPorts()] += 1;
+    routerRadices[network->getRouter(routerId)->numPorts()] += 1;
   }
   u32 numVcs = network->numVcs();
   u64 numComponents = Component::numComponents();
