@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef NETWORK_UNO_DIRECTROUTINGALGORITHM_H_
-#define NETWORK_UNO_DIRECTROUTINGALGORITHM_H_
+#ifndef NETWORK_SINGLEROUTER_DIRECTROUTINGALGORITHM_H_
+#define NETWORK_SINGLEROUTER_DIRECTROUTINGALGORITHM_H_
 
 #include <json/json.h>
 #include <prim/prim.h>
@@ -21,12 +21,12 @@
 #include <string>
 
 #include "event/Component.h"
-#include "network/uno/RoutingAlgorithm.h"
+#include "network/singlerouter/RoutingAlgorithm.h"
 #include "router/Router.h"
 
-namespace Uno {
+namespace SingleRouter {
 
-class DirectRoutingAlgorithm : public Uno::RoutingAlgorithm {
+class DirectRoutingAlgorithm : public SingleRouter::RoutingAlgorithm {
  public:
   DirectRoutingAlgorithm(
       const std::string& _name, const Component* _parent, Router* _router,
@@ -42,6 +42,6 @@ class DirectRoutingAlgorithm : public Uno::RoutingAlgorithm {
   const bool adaptive_;
 };
 
-}  // namespace Uno
+}  // namespace SingleRouter
 
-#endif  // NETWORK_UNO_DIRECTROUTINGALGORITHM_H_
+#endif  // NETWORK_SINGLEROUTER_DIRECTROUTINGALGORITHM_H_

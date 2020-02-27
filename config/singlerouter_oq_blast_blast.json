@@ -11,7 +11,7 @@
     }
   },
   "network": {
-    "topology": "uno",
+    "topology": "singlerouter",
     "concentration": 16,
     "protocol_classes": [
       {

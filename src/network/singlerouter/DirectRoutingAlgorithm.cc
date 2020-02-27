@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "network/uno/DirectRoutingAlgorithm.h"
+#include "network/singlerouter/DirectRoutingAlgorithm.h"
 
 #include <factory/ObjectFactory.h>
 
@@ -23,7 +23,7 @@
 #include "types/Packet.h"
 #include "types/Message.h"
 
-namespace Uno {
+namespace SingleRouter {
 
 DirectRoutingAlgorithm::DirectRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
@@ -71,8 +71,8 @@ void DirectRoutingAlgorithm::processRequest(
   }
 }
 
-}  // namespace Uno
+}  // namespace SingleRouter
 
 registerWithObjectFactory(
-    "direct", Uno::RoutingAlgorithm,
-    Uno::DirectRoutingAlgorithm, UNO_ROUTINGALGORITHM_ARGS);
+    "direct", SingleRouter::RoutingAlgorithm,
+    SingleRouter::DirectRoutingAlgorithm, SINGLEROUTER_ROUTINGALGORITHM_ARGS);
