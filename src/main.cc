@@ -60,13 +60,19 @@ s32 main(s32 _argc, char** _argv) {
   gSim->setNetwork(network);
   u32 numInterfaces = network->numInterfaces();
   u32 numRouters = network->numRouters();
-  u32 routerRadix = network->getRouter(0)->numPorts();
+  std::map<u32, u32> routerRadices;
+  for (u32 routerId = 0; routerId < numRouters; routerId++) {
+    routerRadices[network->getRouter(0)->numPorts()] += 1;
+  }
   u32 numVcs = network->numVcs();
   u64 numComponents = Component::numComponents();
 
   gSim->infoLog.logInfo("Endpoints", std::to_string(numInterfaces));
   gSim->infoLog.logInfo("Routers", std::to_string(numRouters));
-  gSim->infoLog.logInfo("Router0 Radix", std::to_string(routerRadix));
+  for (auto& p : routerRadices) {
+    gSim->infoLog.logInfo("Router radix " + std::to_string(p.first),
+                          std::to_string(p.second));
+  }
   gSim->infoLog.logInfo("VCs", std::to_string(numVcs));
   gSim->infoLog.logInfo("Components", std::to_string(numComponents));
 
