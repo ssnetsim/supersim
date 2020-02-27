@@ -11,7 +11,7 @@
     }
   },
   "network": {
-    "topology": "interfaceonly",
+    "topology": "interface_only",
     "num_interfaces": 1,
     "protocol_classes": [
       {
@@ -32,68 +32,6 @@
     "traffic_log": {
       "file": null  // "traffic.csv"
     },
-    "router": {
-      "architecture": "input_output_queued",
-      "congestion_sensor": {
-        "algorithm": "buffer_occupancy",
-        "latency": 1,
-        "granularity": 0,
-        "minimum": 0.0,
-        "offset": 0.0,
-        "mode": "normalized_vc"  // {normalized,absolute}_{port,vc}
-      },
-      "congestion_mode": "output_and_downstream",
-      "input_queue_mode": "fixed",  // fixed or tailored
-      "input_queue_depth": 8,
-      "vca_swa_wait": false,
-      "output_queue_depth": 20,
-      "crossbar": {
-        "latency": 1  // cycles
-      },
-      "vc_scheduler": {
-        "allocator": {
-          "type": "rc_separable",
-          "slip_latch": true,
-          "iterations": 1,
-          "resource_arbiter": {
-            "type": "comparing",
-            "greater": false
-          },
-          "client_arbiter": {
-            "type": "lslp"
-          }
-        }
-      },
-      "crossbar_scheduler": {
-        "allocator": {
-          "type": "r_separable",
-          "slip_latch": true,
-          "resource_arbiter": {
-            "type": "comparing",
-            "greater": false
-          }
-        },
-        "full_packet": false,
-        "packet_lock": true,
-        "idle_unlock": true
-      },
-      "output_crossbar": {
-        "latency": 1  // cycles
-      },
-      "output_crossbar_scheduler": {
-        "allocator": {
-          "type": "r_separable",
-          "slip_latch": true,
-          "resource_arbiter": {
-            "type": "comparing",
-            "greater": false
-          }
-        },
-        "full_packet": false,
-        "packet_lock": true,
-        "idle_unlock": true
-      }
-    },
     "interface": {
       "type": "standard",
       "adaptive": true,
@@ -111,8 +49,8 @@
         "packet_lock": true,
         "idle_unlock": true
       },
-      "init_credits_mode": "$&(network.router.input_queue_mode)&$",
-      "init_credits": "$&(network.router.input_queue_depth)&$",
+      "init_credits_mode": "fixed",
+      "init_credits": 8,
       "crossbar": {
         "latency": 1  // cycles
       }

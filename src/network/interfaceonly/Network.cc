@@ -148,5 +148,5 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
 
 }  // namespace InterfaceOnly
 
-registerWithObjectFactory("interfaceonly", ::Network,
+registerWithObjectFactory("interface_only", ::Network,
                           InterfaceOnly::Network, NETWORK_ARGS);
