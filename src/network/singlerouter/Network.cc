@@ -155,5 +155,5 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
 
 }  // namespace SingleRouter
 
-registerWithObjectFactory("singlerouter", ::Network,
+registerWithObjectFactory("single_router", ::Network,
                           SingleRouter::Network, NETWORK_ARGS);
