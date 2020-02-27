@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "network/uno/Network.h"
+#include "network/singlerouter/Network.h"
 
 #include <factory/ObjectFactory.h>
 
@@ -21,9 +21,9 @@
 
 #include <tuple>
 
-#include "network/uno/RoutingAlgorithm.h"
+#include "network/singlerouter/RoutingAlgorithm.h"
 
-namespace Uno {
+namespace SingleRouter {
 
 Network::Network(const std::string& _name, const Component* _parent,
                  MetadataHandler* _metadataHandler, Json::Value _settings)
@@ -153,7 +153,7 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
   }
 }
 
-}  // namespace Uno
+}  // namespace SingleRouter
 
-registerWithObjectFactory("uno", ::Network,
-                          Uno::Network, NETWORK_ARGS);
+registerWithObjectFactory("single_router", ::Network,
+                          SingleRouter::Network, NETWORK_ARGS);

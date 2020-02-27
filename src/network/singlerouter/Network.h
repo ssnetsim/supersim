@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef NETWORK_UNO_NETWORK_H_
-#define NETWORK_UNO_NETWORK_H_
+#ifndef NETWORK_SINGLEROUTER_NETWORK_H_
+#define NETWORK_SINGLEROUTER_NETWORK_H_
 
 #include <json/json.h>
 #include <prim/prim.h>
@@ -27,7 +27,7 @@
 #include "network/Network.h"
 #include "router/Router.h"
 
-namespace Uno {
+namespace SingleRouter {
 
 class Network : public ::Network {
  public:
@@ -67,6 +67,6 @@ class Network : public ::Network {
   std::vector<Interface*> interfaces_;
 };
 
-}  // namespace Uno
+}  // namespace SingleRouter
 
-#endif  // NETWORK_UNO_NETWORK_H_
+#endif  // NETWORK_SINGLEROUTER_NETWORK_H_

@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef NETWORK_UNO_ROUTINGALGORITHM_H_
-#define NETWORK_UNO_ROUTINGALGORITHM_H_
+#ifndef NETWORK_SINGLEROUTER_ROUTINGALGORITHM_H_
+#define NETWORK_SINGLEROUTER_ROUTINGALGORITHM_H_
 
 #include <json/json.h>
 #include <prim/prim.h>
@@ -24,10 +24,10 @@
 #include "routing/RoutingAlgorithm.h"
 #include "router/Router.h"
 
-#define UNO_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
-    Router*, u32, u32, u32, u32, u32, Json::Value
+#define SINGLEROUTER_ROUTINGALGORITHM_ARGS const std::string&, \
+    const Component*, Router*, u32, u32, u32, u32, u32, Json::Value
 
-namespace Uno {
+namespace SingleRouter {
 
 class RoutingAlgorithm : public ::RoutingAlgorithm {
  public:
@@ -37,13 +37,13 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
                    Json::Value _settings);
   virtual ~RoutingAlgorithm();
 
-  // this is a routing algorithm factory for the uno topology
-  static RoutingAlgorithm* create(UNO_ROUTINGALGORITHM_ARGS);
+  // this is a routing algorithm factory for the SingleRouter topology
+  static RoutingAlgorithm* create(SINGLEROUTER_ROUTINGALGORITHM_ARGS);
 
  protected:
   u32 concentration_;
 };
 
-}  // namespace Uno
+}  // namespace SingleRouter
 
-#endif  // NETWORK_UNO_ROUTINGALGORITHM_H_
+#endif  // NETWORK_SINGLEROUTER_ROUTINGALGORITHM_H_

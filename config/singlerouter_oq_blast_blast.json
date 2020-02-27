@@ -11,7 +11,7 @@
     }
   },
   "network": {
-    "topology": "uno",
+    "topology": "single_router",
     "concentration": 16,
     "protocol_classes": [
       {

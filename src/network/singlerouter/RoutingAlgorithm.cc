@@ -12,11 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "network/uno/RoutingAlgorithm.h"
+#include "network/singlerouter/RoutingAlgorithm.h"
 
 #include <factory/ObjectFactory.h>
 
-namespace Uno {
+namespace SingleRouter {
 
 RoutingAlgorithm::RoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
@@ -37,16 +37,17 @@ RoutingAlgorithm* RoutingAlgorithm::create(
 
   // attempt to create the routing algorithm
   RoutingAlgorithm* ra = factory::ObjectFactory<
-    RoutingAlgorithm, UNO_ROUTINGALGORITHM_ARGS>::create(
+    RoutingAlgorithm, SINGLEROUTER_ROUTINGALGORITHM_ARGS>::create(
         algorithm, _name, _parent, _router, _baseVc, _numVcs, _inputPort,
         _inputVc, _concentration, _settings);
 
   // check that the factory had this type
   if (ra == nullptr) {
-    fprintf(stderr, "invalid Uno routing algorithm: %s\n", algorithm.c_str());
+    fprintf(stderr, "invalid SingleRouter routing algorithm: %s\n",
+            algorithm.c_str());
     assert(false);
   }
   return ra;
 }
 
-}  // namespace Uno
+}  // namespace SingleRouter
