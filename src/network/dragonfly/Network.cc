@@ -310,8 +310,8 @@ u32 Network::numInterfaces() const {
 Router* Network::getRouter(u32 _id) const {
   std::vector<u32> routerAddress;
   translateRouterIdToAddress(_id, &routerAddress);
-  u32 g = routerAddress.at(0);
-  u32 r = routerAddress.at(1);
+  u32 g = routerAddress.at(1);
+  u32 r = routerAddress.at(0);
   return routers_.at(g).at(r);
 }
 
