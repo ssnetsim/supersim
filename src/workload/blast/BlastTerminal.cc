@@ -317,6 +317,7 @@ void BlastTerminal::warmDetector(Message* _message) {
   }
 
   // count flits received
+  assert(warmupInterval_ >= (2 * _message->numFlits()));
   warmupFlitsReceived_ += _message->numFlits();
   if (warmupFlitsReceived_ >= warmupInterval_) {
     warmupFlitsReceived_ %= warmupInterval_;
