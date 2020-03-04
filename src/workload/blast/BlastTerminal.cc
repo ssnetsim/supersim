@@ -131,6 +131,9 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
   fsm_ = BlastTerminal::Fsm::WARMING;
   warmupInterval_ = _settings["warmup_interval"].asUInt();
   assert(!_settings["warmup_interval"].isNull());  // 0 turns off warmup
+  if (warmupInterval_ > 0) {
+    assert(warmupInterval_ >= 100);  // minimum when on
+  }
   warmupFlitsReceived_ = 0;
   warmupWindow_ = _settings["warmup_window"].asUInt();
   assert(warmupWindow_ >= 5);
