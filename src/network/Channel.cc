@@ -28,10 +28,13 @@
 
 Channel::Channel(const std::string& _name, const Component* _parent,
                  u32 _numVcs, Json::Value _settings)
+    : Channel(_name, _parent, _numVcs, _settings["latency"].asUInt()) {}
+
+Channel::Channel(const std::string& _name, const Component* _parent,
+                 u32 _numVcs, u32 _latency)
     : Component(_name, _parent),
-      latency_(_settings["latency"].asUInt()),
+      latency_(_latency),
       numVcs_(_numVcs) {
-  assert(!_settings["latency"].isNull());
   assert(latency_ > 0);
   assert(numVcs_ > 0);
 
@@ -43,7 +46,7 @@ Channel::Channel(const std::string& _name, const Component* _parent,
   monitoring_ = false;
   monitorTime_ = U64_MAX;
   monitorCounts_.resize(_numVcs + 1);
-      }
+}
 
 Channel::~Channel() {}
 
