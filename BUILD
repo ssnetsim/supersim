@@ -97,46 +97,21 @@ cc_library(
     alwayslink = 1,
 )
 
-cc_library(
-    name = "unittest_lib",
-    testonly = 1,
-    srcs = glob(
-        ["src/**/*_TEST*.cc"],
-        exclude = [
-            "src/**/*_TESTLIB.cc",
+[
+    cc_test(
+        name = test_file.replace(".cc", ""),
+        srcs = [test_file],
+        args = [
+            "--gtest_color=yes",
         ],
-    ),
-    hdrs = glob(
-        [
-            "src/**/*_TEST.h",
-            "src/**/*_TEST.tcc",
-        ], exclude = [
-            "src/**/*_TESTLIB.h",
-            "src/**/*_TESTLIB.tcc",
-        ],
-    ),
-    copts = COPTS,
-    visibility = ["//visibility:public"],
-    deps = [
-        ":lib",
-        ":test_lib",
-        "@googletest//:gtest_main",
-    ] + LIBS,
-    alwayslink = 1,
-)
-
-cc_test(
-    name = "supersim_test",
-    args = [
-        "--gtest_color=yes",
-    ],
-    copts = COPTS,
-    visibility = ["//visibility:public"],
-    deps = [
-        ":test_lib",
-        ":unittest_lib",
-    ] + LIBS,
-)
+        copts = COPTS,
+        visibility = ["//visibility:public"],
+        deps = [
+            ":test_lib",
+        ] + LIBS,
+    )
+    for test_file in glob(["src/**/*_TEST.cc"])
+]
 
 genrule(
     name = "lint",
