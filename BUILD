@@ -113,6 +113,12 @@ cc_library(
     for test_file in glob(["src/**/*_TEST.cc"])
 ]
 
+test_suite(
+    name = "unit_tests",
+    tests = [test_file.replace(".cc", "")
+             for test_file in glob(["src/**/*_TEST.cc"])],
+)
+
 genrule(
     name = "lint",
     srcs = glob([
@@ -158,3 +164,8 @@ filegroup(
     )
     for config_file in glob(["config/*.json"])
 ]
+
+test_suite(
+    name = "config_tests",
+    tests = [config_file + "_check" for config_file in glob(["config/*.json"])],
+)
