@@ -147,6 +147,8 @@ filegroup(
         main = "scripts/run_example.py",
         args = [
             config_file,
+            "-s",
+            "./supersim",
         ],
         python_version = "PY3",
         data = [

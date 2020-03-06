@@ -1,30 +1,25 @@
 #!/usr/bin/env python3
 
 import argparse
-import math
 import os
-import psutil
 import subprocess
 import sys
+import tempfile
 
 try:
   import termcolor
-  canColor = True
+  can_color = True
 except ImportError:
-  canColor = False
-
-def logFile(jsonFile):
-  base = os.path.splitext(os.path.basename(jsonFile))[0]
-  return '/tmp/supersimtest_{0}'.format(base)
+  can_color = False
 
 def good(s):
-  if canColor:
+  if can_color:
     print('  ' + termcolor.colored(s, 'green'))
   else:
     print('  ' + s)
 
 def bad(s):
-  if canColor:
+  if can_color:
     print('  ' + termcolor.colored(s, 'red'))
   else:
     print('  ' + s)
@@ -35,41 +30,43 @@ def main(args):
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
   # check if binary exists
-  assert os.path.exists('supersim')
+  assert os.path.exists(args.supersim)
+  assert os.path.exists(args.config_file)
 
   # generate command
-  cmd = './supersim {0}'.format(args.config_file)
+  cmd = '{0} {1}'.format(args.supersim, args.config_file)
   if args.check:
     cmd = ('valgrind --log-fd=1 --leak-check=full --show-reachable=yes '
            '--track-origins=yes --track-fds=yes {0}'.format(cmd))
-  log = logFile(args.config_file)
-  try:
-    os.remove(log)
-  except OSError:
-    pass
+
+  # add a log file to the command
+  log = tempfile.mkstemp()[1]
   cmd = '{0} 2>&1 | tee {1}'.format(cmd, log)
 
   # run tasks
   print('running simulation')
-  subprocess.run(cmd, shell=True)
+  proc = subprocess.run(cmd, shell=True)
   print('done')
 
+  # check return code
+  assert proc.returncode == 0, ('Return code was non-zero: {}'
+                                .format(proc.returncode))
+
   # check output for failures
-  anyError = False
   error = False
   print('analyzing {0} output'.format(args.config_file))
 
   # read in text
-  log = logFile(args.config_file)
   with open(log, 'r') as fd:
     lines = fd.readlines();
+  os.remove(log)
 
   # analyze output
-  simComplete = False
+  sim_complete = False
   for idx, line in enumerate(lines):
 
     if line.find('Simulation complete') >= 0:
-      simComplete = True
+      sim_complete = True
     if args.check:
       if (line.find('Open file descriptor') >= 0 and
           lines[idx+1].find('inherited from parent') < 0):
@@ -90,28 +87,24 @@ def main(args):
         error = True
         bad('depends on uninitialised value')
 
-  if not simComplete:
+  if not sim_complete:
     error = True;
     bad('no "Simulation complete" message')
 
   # show status
-  if error:
-    anyError = True
-  else:
+  if not error:
     good('passed all tests')
 
-  return 0 if not anyError else -1
+  return -1 if error else 0
 
 if __name__ == '__main__':
   ap = argparse.ArgumentParser()
   ap.add_argument('config_file', type=str,
                   help='config file to run and check')
-  ap.add_argument('-c', '--cpus', type=int,
-                  help='number of CPUs to utilize')
-  ap.add_argument('-r', '--mem', type=float,
-                  help='amount of memory to utilize (in GiB)')
   ap.add_argument('-m', '--check', action='store_true',
                   help='Use valgrind to check the memory validity')
+  ap.add_argument('-s', '--supersim', type=str, default='./bazel-bin/supersim',
+                  help='supersim binary to use')
   args = ap.parse_args()
   print(args)
   sys.exit(main(args))
