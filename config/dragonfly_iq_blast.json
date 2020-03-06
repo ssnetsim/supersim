@@ -134,7 +134,7 @@
           // responses
           "enable_responses": false,
           // warmup
-          "warmup_interval": 50,  // delivered flits
+          "warmup_interval": 100,  // delivered flits
           "warmup_window": 15,
           "warmup_attempts": 12,
           // traffic generation
