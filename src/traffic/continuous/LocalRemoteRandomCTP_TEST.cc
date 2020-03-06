@@ -23,7 +23,7 @@
 #include <tuple>
 #include <vector>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(LocalRemoteRandomCTP, full) {
   const u32 TESTS = 10000000;

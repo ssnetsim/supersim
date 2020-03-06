@@ -17,8 +17,8 @@
 #include <json/json.h>
 #include <gtest/gtest.h>
 
-#include "architecture/PortedDevice_TEST.h"
-#include "test/TestSetup_TEST.h"
+#include "architecture/PortedDevice_TESTLIB.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(WeightedReduction, vc) {
   for (u32 i = 0; i < 2; i++) {

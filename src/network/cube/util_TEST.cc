@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "event/Simulator.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(CubeUtil, computeNumRoutersAndTerminals) {
   TestSetup ts(1, 1, 1, 0xDEAFBEEF);

@@ -28,7 +28,7 @@
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 
 const bool DEBUG = false;

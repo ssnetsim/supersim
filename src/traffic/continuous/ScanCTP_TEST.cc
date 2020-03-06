@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(ScanCTP, ascend_self_random) {
   TestSetup test(123, 123, 123, 456789);

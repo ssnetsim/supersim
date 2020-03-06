@@ -21,7 +21,7 @@
 
 #include <cassert>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(DimRotateCTP, right) {
   TestSetup test(1, 1, 1, 0xBAADF00D);

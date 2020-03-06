@@ -16,8 +16,8 @@
 
 #include <gtest/gtest.h>
 
-#include "congestion/Congestion_TEST.h"
-#include "test/TestSetup_TEST.h"
+#include "congestion/Congestion_TESTLIB.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(RoutingMode, portAveMinMax) {
   TestSetup ts(1, 1, 1, 123);

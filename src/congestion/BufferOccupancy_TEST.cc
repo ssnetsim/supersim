@@ -18,8 +18,8 @@
 #include <prim/prim.h>
 
 #include "congestion/CongestionSensor.h"
-#include "congestion/Congestion_TEST.h"
-#include "test/TestSetup_TEST.h"
+#include "congestion/Congestion_TESTLIB.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(BufferOccupancy, normVc) {
   TestSetup test(1, 1, 1, 1234);

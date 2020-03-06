@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(RandomDTP, evenSpread) {
   /*

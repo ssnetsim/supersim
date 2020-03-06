@@ -12,16 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ARBITER_ARBITER_TEST_H_
-#define ARBITER_ARBITER_TEST_H_
+#ifndef TEST_TESTSETUP_TESTLIB_H_
+#define TEST_TESTSETUP_TESTLIB_H_
 
 #include <prim/prim.h>
 
-#include <vector>
+class TestSetup {
+ public:
+  TestSetup(u64 _channelCycleTime, u64 _routerCycleTime,
+            u64 _interfaceCycleTime, u64 _randomSeed);
+  ~TestSetup();
+};
 
-#include "arbiter/Arbiter.h"
-
-u32 hotCount(bool* _bools, u32 _len);
-u32 winnerId(bool* _bools, u32 _len);
-
-#endif  // ARBITER_ARBITER_TEST_H_
+#endif  // TEST_TESTSETUP_TESTLIB_H_

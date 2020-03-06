@@ -31,6 +31,7 @@ cc_library(
         exclude = [
             "src/main.cc",
             "src/**/*_TEST*",
+            "src/**/*_TESTLIB*",
         ],
     ),
     hdrs = glob(
@@ -38,7 +39,10 @@ cc_library(
             "src/**/*.h",
             "src/**/*.tcc",
         ],
-        exclude = ["src/**/*_TEST*"],
+        exclude = [
+            "src/**/*_TEST*",
+            "src/**/*_TESTLIB*",
+        ],
     ),
     copts = COPTS,
     includes = [
@@ -78,11 +82,11 @@ cc_library(
     name = "test_lib",
     testonly = 1,
     srcs = glob([
-        "src/test/*_TEST*.cc",
+        "src/**/*_TESTLIB.cc",
     ]),
     hdrs = glob([
-        "src/test/*_TEST*.h",
-        "src/test/*_TEST*.tcc",
+        "src/**/*_TESTLIB.h",
+        "src/**/*_TESTLIB.tcc",
     ]),
     copts = COPTS,
     visibility = ["//visibility:public"],
@@ -93,52 +97,32 @@ cc_library(
     alwayslink = 1,
 )
 
-cc_library(
-    name = "unittest_lib",
-    testonly = 1,
-    srcs = glob(
-        ["src/**/*_TEST*.cc"],
-        exclude = [
-            "src/test/*_TEST*.cc",
+[
+    cc_test(
+        name = test_file.replace(".cc", ""),
+        srcs = [test_file],
+        args = [
+            "--gtest_color=yes",
         ],
-    ),
-    hdrs = glob(
-        [
-            "src/**/*_TEST*.h",
-            "src/**/*_TEST*.tcc",
-        ], exclude = [
-            "src/test/*_TEST*.h",
-            "src/test/*_TEST*.tcc",
-        ],
-    ),
-    copts = COPTS,
-    visibility = ["//visibility:public"],
-    deps = [
-        ":lib",
-        ":test_lib",
-        "@googletest//:gtest_main",
-    ] + LIBS,
-    alwayslink = 1,
-)
+        copts = COPTS,
+        visibility = ["//visibility:public"],
+        deps = [
+            ":test_lib",
+        ] + LIBS,
+    )
+    for test_file in glob(["src/**/*_TEST.cc"])
+]
 
-cc_test(
-    name = "supersim_test",
-    args = [
-        "--gtest_color=yes",
-    ],
-    copts = COPTS,
-    visibility = ["//visibility:public"],
-    deps = [
-        ":test_lib",
-        ":unittest_lib",
-    ] + LIBS,
+test_suite(
+    name = "unit_tests",
+    tests = [test_file.replace(".cc", "")
+             for test_file in glob(["src/**/*_TEST.cc"])],
 )
 
 genrule(
     name = "lint",
     srcs = glob([
         "src/**/*.cc",
-    ]) + glob([
         "src/**/*.h",
         "src/**/*.tcc",
     ]),
@@ -155,4 +139,33 @@ genrule(
         "@cpplint",
     ],
     visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "config_files",
+    srcs = glob(["config/*"]),
+)
+
+[
+    py_test(
+        name = config_file + "_check",
+        srcs = ["scripts/run_example.py"],
+        main = "scripts/run_example.py",
+        args = [
+            config_file,
+            "-s",
+            "./supersim",
+        ],
+        python_version = "PY3",
+        data = [
+            ":supersim",
+            ":config_files",
+        ],
+    )
+    for config_file in glob(["config/*.json"])
+]
+
+test_suite(
+    name = "config_tests",
+    tests = [config_file + "_check" for config_file in glob(["config/*.json"])],
 )

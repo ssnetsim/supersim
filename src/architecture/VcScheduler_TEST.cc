@@ -24,7 +24,7 @@
 #include "event/Component.h"
 #include "architecture/VcScheduler.h"
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 class VcSchedulerTestClient : public VcScheduler::Client, public Component {
  public:

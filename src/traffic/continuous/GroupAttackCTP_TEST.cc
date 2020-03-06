@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(GroupAttackCTP, half_permutation) {
   for (u32 net = 0; net < 100; net++) {

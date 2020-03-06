@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ROUTING_ROUTINGALGORITHM_TEST_H_
-#define ROUTING_ROUTINGALGORITHM_TEST_H_
+#ifndef ROUTING_ROUTINGALGORITHM_TESTLIB_H_
+#define ROUTING_ROUTINGALGORITHM_TESTLIB_H_
 
 #include <prim/prim.h>
 
@@ -47,4 +47,4 @@ class RoutingAlgorithmTestRouter : public Router {
                        u32 _outputVc) const override;
 };
 
-#endif  // ROUTING_ROUTINGALGORITHM_TEST_H_
+#endif  // ROUTING_ROUTINGALGORITHM_TESTLIB_H_

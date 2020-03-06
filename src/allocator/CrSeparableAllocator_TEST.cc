@@ -20,7 +20,7 @@
 
 #include "settings/settings.h"
 
-#include "allocator/Allocator_TEST.h"
+#include "allocator/Allocator_TESTLIB.h"
 
 TEST(CrSeparableAllocator, lslp) {
   // create the allocator settings

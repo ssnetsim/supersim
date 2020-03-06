@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef CONGESTION_CONGESTION_TEST_H_
-#define CONGESTION_CONGESTION_TEST_H_
+#ifndef CONGESTION_CONGESTION_TESTLIB_H_
+#define CONGESTION_CONGESTION_TESTLIB_H_
 
 #include <json/json.h>
 #include <prim/prim.h>
@@ -131,4 +131,4 @@ class CongestionTestSensor : public CongestionSensor {
   const std::vector<f64>* congestion_;
 };
 
-#endif  // CONGESTION_CONGESTION_TEST_H_
+#endif  // CONGESTION_CONGESTION_TESTLIB_H_

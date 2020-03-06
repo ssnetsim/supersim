@@ -20,7 +20,7 @@
 #include <cassert>
 
 #include "traffic/continuous/DimBisectionStressCTP.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(DimBisectionStressCTP, parity) {
   TestSetup test(1, 1, 1, 0xBAADF00D);

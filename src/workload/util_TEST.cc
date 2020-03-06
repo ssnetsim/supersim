@@ -18,7 +18,7 @@
 #include <prim/prim.h>
 
 #include "event/Simulator.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(WorkloadUtil, transactionId) {
   u32 appId, termId, msgId;

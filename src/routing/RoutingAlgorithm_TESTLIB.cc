@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "routing/RoutingAlgorithm_TEST.h"
+#include "routing/RoutingAlgorithm_TESTLIB.h"
 
 #include <cassert>
 

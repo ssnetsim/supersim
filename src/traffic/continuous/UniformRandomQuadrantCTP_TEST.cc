@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "network/cube/util.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(UniformRandomQuadrantCTP, evenSpread) {
   TestSetup test(1, 1, 1, 0xBAADF00D);

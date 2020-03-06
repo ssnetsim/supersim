@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ARCHITECTURE_PORTEDDEVICE_TEST_H_
-#define ARCHITECTURE_PORTEDDEVICE_TEST_H_
+#ifndef ARCHITECTURE_PORTEDDEVICE_TESTLIB_H_
+#define ARCHITECTURE_PORTEDDEVICE_TESTLIB_H_
 
 #include "architecture/PortedDevice.h"
 
@@ -31,4 +31,4 @@ class TestPortedDevice : public PortedDevice {
   Channel* getOutputChannel(u32 _port) const override;
 };
 
-#endif  // ARCHITECTURE_PORTEDDEVICE_TEST_H_
+#endif  // ARCHITECTURE_PORTEDDEVICE_TESTLIB_H_

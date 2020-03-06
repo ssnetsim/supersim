@@ -25,7 +25,7 @@
 #include "types/Flit.h"
 #include "types/Packet.h"
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 class CrossbarSchedulerTestClient : public CrossbarScheduler::Client,
                                     public Component {

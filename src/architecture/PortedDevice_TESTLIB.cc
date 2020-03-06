@@ -12,20 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ALLOCATOR_ALLOCATOR_TEST_H_
-#define ALLOCATOR_ALLOCATOR_TEST_H_
+#include "architecture/PortedDevice_TESTLIB.h"
 
-#include <json/json.h>
-#include <prim/prim.h>
+#include <cassert>
 
-typedef void(*AllocatorVerifier)(u32 _numClients, u32 _numResources,
-                                 const bool* _request, const u64* _metadata,
-                                 const bool* _grant);
+TestPortedDevice::TestPortedDevice(u32 _numPorts, u32 _numVcs)
+    : PortedDevice(0, {0}, _numPorts, _numVcs) {}
 
-u64 AllocatorIndex(u64 _numClients, u64 _client, u64 _resource);
+TestPortedDevice::~TestPortedDevice() {}
 
-void AllocatorTest(Json::Value _settings, AllocatorVerifier _verifier,
-                   bool _singleRequest);
-void AllocatorLoadBalanceTest(Json::Value _settings);
+void TestPortedDevice::setInputChannel(u32 _port, Channel* _channel) {
+  assert(false);
+}
 
-#endif  // ALLOCATOR_ALLOCATOR_TEST_H_
+Channel* TestPortedDevice::getInputChannel(u32 _port) const {
+  assert(false);
+}
+
+void TestPortedDevice::setOutputChannel(u32 port, Channel* _channel) {
+  assert(false);
+}
+
+Channel* TestPortedDevice::getOutputChannel(u32 _port) const {
+  assert(false);
+}
