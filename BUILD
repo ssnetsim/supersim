@@ -135,3 +135,25 @@ genrule(
     ],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "config_files",
+    srcs = glob(["config/*"]),
+)
+
+[
+    py_test(
+        name = config_file + "_check",
+        srcs = ["scripts/run_example.py"],
+        main = "scripts/run_example.py",
+        args = [
+            config_file,
+        ],
+        python_version = "PY3",
+        data = [
+            ":supersim",
+            ":config_files",
+        ],
+    )
+    for config_file in glob(["config/*.json"])
+]
