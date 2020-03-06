@@ -32,6 +32,8 @@ class Channel : public Component {
  public:
   Channel(const std::string& _name, const Component* _parent,
           u32 _numVcs, Json::Value _settings);
+  Channel(const std::string& _name, const Component* _parent,
+          u32 _numVcs, u32 _latency);
   ~Channel();
   u32 latency() const;
   void setSource(CreditReceiver* _source, u32 _port);
