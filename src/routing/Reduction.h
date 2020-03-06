@@ -35,7 +35,7 @@ class Reduction : public Component {
   Reduction(const std::string& _name, const Component* _parent,
             const PortedDevice* _device, RoutingMode _mode,
             bool _ignoreDuplicates, Json::Value _settings);
-  ~Reduction();
+  virtual ~Reduction();
 
   // this is a reduction factory
   static Reduction* create(REDUCTION_ARGS);
