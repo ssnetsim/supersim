@@ -117,7 +117,6 @@ genrule(
     name = "lint",
     srcs = glob([
         "src/**/*.cc",
-    ]) + glob([
         "src/**/*.h",
         "src/**/*.tcc",
     ]),
