@@ -58,7 +58,7 @@ def main(args):
 
   # read in text
   with open(log, 'r') as fd:
-    lines = fd.readlines();
+    lines = fd.readlines()
   os.remove(log)
 
   # analyze output
@@ -88,7 +88,7 @@ def main(args):
         bad('depends on uninitialised value')
 
   if not sim_complete:
-    error = True;
+    error = True
     bad('no "Simulation complete" message')
 
   # show status
