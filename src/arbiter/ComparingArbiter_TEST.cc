@@ -22,8 +22,8 @@
 #include "arbiter/Arbiter.h"
 #include "arbiter/ComparingArbiter.h"
 
-#include "arbiter/Arbiter_TEST.h"
-#include "test/TestSetup_TEST.h"
+#include "arbiter/Arbiter_TESTLIB.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(ComparingArbiter, full) {
   TestSetup testSetup(1, 1, 1, 123);

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "allocator/Allocator_TEST.h"
+#include "allocator/Allocator_TESTLIB.h"
 
 #include <gtest/gtest.h>
 
@@ -21,7 +21,7 @@
 
 #include "allocator/Allocator.h"
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 u64 AllocatorIndex(u64 _numClients, u64 _client, u64 _resource) {
   return _numClients * _resource + _client;

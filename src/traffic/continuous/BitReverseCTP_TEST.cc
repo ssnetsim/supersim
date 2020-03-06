@@ -19,7 +19,7 @@
 #include <json/json.h>
 #include <prim/prim.h>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(BitReverseCTP, simple) {
   TestSetup test(123, 123, 123, 456789);

@@ -22,8 +22,8 @@
 #include "arbiter/Arbiter.h"
 #include "arbiter/DualStageClassArbiter.h"
 
-#include "arbiter/Arbiter_TEST.h"
-#include "test/TestSetup_TEST.h"
+#include "arbiter/Arbiter_TESTLIB.h"
+#include "test/TestSetup_TESTLIB.h"
 
 
 TEST(DualStageClassArbiter, full) {

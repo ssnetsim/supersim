@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "event/Component.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 namespace {
 class StatusCheck : public Component {

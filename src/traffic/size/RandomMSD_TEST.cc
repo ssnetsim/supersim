@@ -17,7 +17,7 @@
 #include <gtest/gtest.h>
 #include <json/json.h>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 #include "traffic/size/MessageSizeDistribution.h"
 
 TEST(RandomMSD, simple) {

@@ -21,7 +21,7 @@
 
 #include <cassert>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(DimComplementReverseCTP, simple) {
   TestSetup test(1, 1, 1, 0xBAADF00D);

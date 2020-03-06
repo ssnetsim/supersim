@@ -31,6 +31,7 @@ cc_library(
         exclude = [
             "src/main.cc",
             "src/**/*_TEST*",
+            "src/**/*_TESTLIB*",
         ],
     ),
     hdrs = glob(
@@ -38,7 +39,10 @@ cc_library(
             "src/**/*.h",
             "src/**/*.tcc",
         ],
-        exclude = ["src/**/*_TEST*"],
+        exclude = [
+            "src/**/*_TEST*",
+            "src/**/*_TESTLIB*",
+        ],
     ),
     copts = COPTS,
     includes = [
@@ -78,11 +82,11 @@ cc_library(
     name = "test_lib",
     testonly = 1,
     srcs = glob([
-        "src/test/*_TEST*.cc",
+        "src/**/*_TESTLIB.cc",
     ]),
     hdrs = glob([
-        "src/test/*_TEST*.h",
-        "src/test/*_TEST*.tcc",
+        "src/**/*_TESTLIB.h",
+        "src/**/*_TESTLIB.tcc",
     ]),
     copts = COPTS,
     visibility = ["//visibility:public"],
@@ -99,16 +103,16 @@ cc_library(
     srcs = glob(
         ["src/**/*_TEST*.cc"],
         exclude = [
-            "src/test/*_TEST*.cc",
+            "src/**/*_TESTLIB.cc",
         ],
     ),
     hdrs = glob(
         [
-            "src/**/*_TEST*.h",
-            "src/**/*_TEST*.tcc",
+            "src/**/*_TEST.h",
+            "src/**/*_TEST.tcc",
         ], exclude = [
-            "src/test/*_TEST*.h",
-            "src/test/*_TEST*.tcc",
+            "src/**/*_TESTLIB.h",
+            "src/**/*_TESTLIB.tcc",
         ],
     ),
     copts = COPTS,

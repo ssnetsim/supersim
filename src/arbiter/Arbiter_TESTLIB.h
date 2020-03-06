@@ -12,23 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "arbiter/Arbiter_TEST.h"
+#ifndef ARBITER_ARBITER_TESTLIB_H_
+#define ARBITER_ARBITER_TESTLIB_H_
 
-u32 hotCount(bool* _bools, u32 _len) {
-  u32 cnt = 0;
-  for (u32 idx = 0; idx < _len; idx++) {
-    if (_bools[idx]) {
-      cnt++;
-    }
-  }
-  return cnt;
-}
+#include <prim/prim.h>
 
-u32 winnerId(bool* _bools, u32 _len) {
-  for (u32 idx = 0; idx < _len; idx++) {
-    if (_bools[idx]) {
-      return idx;
-    }
-  }
-  return U32_MAX;
-}
+#include <vector>
+
+#include "arbiter/Arbiter.h"
+
+u32 hotCount(bool* _bools, u32 _len);
+u32 winnerId(bool* _bools, u32 _len);
+
+#endif  // ARBITER_ARBITER_TESTLIB_H_

@@ -25,7 +25,7 @@
 #include <tuple>
 #include <vector>
 
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 const u32 SIZE4 = 4;
 const f64 DIST4[] = {

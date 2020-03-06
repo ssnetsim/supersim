@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "network/cube/util.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(UniformRandomBisectionCTP, PLEASE_LOVE_ME) {
   printf("\n*****\n"

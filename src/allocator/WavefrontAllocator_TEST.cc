@@ -20,8 +20,8 @@
 
 #include "settings/settings.h"
 
-#include "allocator/Allocator_TEST.h"
-#include "test/TestSetup_TEST.h"
+#include "allocator/Allocator_TESTLIB.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TEST(WavefrontAllocator, sequential) {
   // create the allocator settings

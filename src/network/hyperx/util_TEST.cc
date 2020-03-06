@@ -27,7 +27,7 @@
 #include "event/Component.h"
 #include "network/cube/util.h"
 #include "router/Router.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 namespace {
 

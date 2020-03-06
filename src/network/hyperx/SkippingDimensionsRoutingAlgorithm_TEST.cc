@@ -21,7 +21,7 @@
 #include <vector>
 
 #include "network/hyperx/RoutingAlgorithm.h"
-#include "routing/RoutingAlgorithm_TEST.h"
+#include "routing/RoutingAlgorithm_TESTLIB.h"
 
 TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {
   std::vector<u32> latencies({1, 2, 3, 4});

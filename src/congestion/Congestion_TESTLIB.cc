@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "congestion/Congestion_TEST.h"
+#include "congestion/Congestion_TESTLIB.h"
 
 #include <gtest/gtest.h>
 
@@ -20,7 +20,7 @@
 #include <tuple>
 
 #include "event/Component.h"
-#include "test/TestSetup_TEST.h"
+#include "test/TestSetup_TESTLIB.h"
 
 /*********************** CongestionTestRouter class ***************************/
 
