@@ -89,6 +89,9 @@ cc_library(
         "src/**/*_TESTLIB.tcc",
     ]),
     copts = COPTS,
+    includes = [
+        "src",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         ":lib",
