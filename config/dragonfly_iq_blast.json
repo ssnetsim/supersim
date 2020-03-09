@@ -12,8 +12,8 @@
   },
   "network": {
     "topology": "dragonfly",
-    "global_width": 8,
-    "global_weight": 1,
+    "global_width": 4,
+    "global_weight": 2,
     "local_width": 4,
     "local_weight": 2,
     "concentration": 2,
@@ -139,7 +139,7 @@
           "warmup_attempts": 12,
           // traffic generation
           "num_transactions": 1,
-          "max_packet_size": 16,
+          "max_packet_size": 4,
           "traffic_pattern": {
             "type": "group_attack",
             "group_size": "$&(network.local_width)&$",
