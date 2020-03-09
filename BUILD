@@ -117,6 +117,7 @@ test_suite(
     name = "unit_tests",
     tests = [test_file.replace(".cc", "")
              for test_file in glob(["src/**/*_TEST.cc"])],
+    visibility = ["//visibility:public"],
 )
 
 genrule(
@@ -141,26 +142,32 @@ genrule(
     visibility = ["//visibility:public"],
 )
 
+py_binary(
+    name = "run_example",
+    srcs = ["scripts/run_example.py"],
+    main = "scripts/run_example.py",
+    python_version = "PY3",
+    visibility = ["//visibility:public"],
+)
+
 filegroup(
     name = "config_files",
     srcs = glob(["config/*"]),
 )
 
 [
-    py_test(
+    sh_test(
         name = config_file + "_check",
-        srcs = ["scripts/run_example.py"],
-        main = "scripts/run_example.py",
+        srcs = ["scripts/run_example.sh"],
         args = [
             config_file,
-            "-s",
-            "./supersim",
         ],
-        python_version = "PY3",
         data = [
-            ":supersim",
             ":config_files",
+            ":run_example",
+            ":supersim",
         ],
+        visibility = ["//visibility:public"],
     )
     for config_file in glob(["config/*.json"])
 ]
@@ -168,4 +175,5 @@ filegroup(
 test_suite(
     name = "config_tests",
     tests = [config_file + "_check" for config_file in glob(["config/*.json"])],
+    visibility = ["//visibility:public"],
 )
