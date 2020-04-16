@@ -56,6 +56,7 @@
       "congestion_mode": "output_and_downstream",
       "input_queue_mode": "fixed",  // fixed or tailored
       "input_queue_depth": 32,  // 2x max packet
+      "store_and_forward": true,
       "transfer_latency": 1,
       "output_queue_depth": 100,
       "output_crossbar": {

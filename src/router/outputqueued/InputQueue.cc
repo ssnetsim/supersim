@@ -30,10 +30,11 @@ namespace OutputQueued {
 
 InputQueue::InputQueue(
     const std::string& _name, const Component* _parent, Router* _router,
-    u32 _depth, u32 _port, u32 _numVcs, u32 _vc,
+    u32 _depth, u32 _port, u32 _numVcs, u32 _vc, bool _storeAndForward,
     RoutingAlgorithm* _routingAlgorithm)
     : Component(_name, _parent), depth_(0), port_(_port), numVcs_(_numVcs),
-      vc_(_vc), router_(_router), routingAlgorithm_(_routingAlgorithm) {
+      vc_(_vc), storeAndForward_(_storeAndForward), router_(_router),
+      routingAlgorithm_(_routingAlgorithm) {
   // ensure the buffer is empty
   assert(buffer_.size() == 0);
 
@@ -159,19 +160,26 @@ void InputQueue::processPipeline() {
     // ensure RFE is empty
     assert(rfe_.flit == nullptr);
 
-    // pull out the front flit
+    // get the front flit
     Flit* flit = buffer_.front();
-    buffer_.pop();
 
-    // send a credit back
-    router_->sendCredit(port_, vc_);
+    // when store and forward is enabled, wait for the whole packet
+    assert(!storeAndForward_ || depth_ >= flit->packet()->numFlits());
+    if (!storeAndForward_ || !flit->isHead() ||
+        buffer_.size() >= flit->packet()->numFlits()) {
+      // pull out the front flit
+      buffer_.pop();
 
-    // put it in the routing pipeline stage
-    assert(rfe_.flit == nullptr);
-    rfe_.flit = flit;
+      // send a credit back
+      router_->sendCredit(port_, vc_);
 
-    // set state as ready to request routing algorithm
-    rfe_.fsm = ePipelineFsm::kWaitingToRequest;
+      // put it in the routing pipeline stage
+      assert(rfe_.flit == nullptr);
+      rfe_.flit = flit;
+
+      // set state as ready to request routing algorithm
+      rfe_.fsm = ePipelineFsm::kWaitingToRequest;
+    }
   }
 
   /*
