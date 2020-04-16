@@ -69,19 +69,14 @@ f64 CongestionSensor::status(
 
   // check bounds
   assert(value >= 0.0);
-  assert((style() != CongestionSensor::Style::kNormalized) ||
-         (value <= 1.0));
 
   // apply granularization
   if (granularity_ > 0) {
-    value = round(value * granularity_) / granularity_;
+    value = std::round(value * granularity_) / granularity_;
   }
 
-  // apply minimum constraint
+  // apply offset and minimum constraints
   value = offset_ + std::max(minimum_, value);
-  if (style() == CongestionSensor::Style::kNormalized) {
-    value = std::min(1.0, value);
-  }
 
   return value;
 }

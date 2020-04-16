@@ -35,15 +35,14 @@ CongestionSensor::Style NullSensor::style() const {
   return CongestionSensor::Style::kNull;
 }
 
-CongestionSensor::Mode NullSensor::mode() const {
-  return CongestionSensor::Mode::kNull;
+CongestionSensor::Resolution NullSensor::resolution() const {
+  return CongestionSensor::Resolution::kNull;
 }
 
 f64 NullSensor::computeStatus(
     u32 _inputPort, u32 _inputVc, u32 _outputPort, u32 _outputVc) const {
   // asserting false caused problems with least-congested minimal and weighted
   //  reductions, returning 0.0 instead
-  // assert(false);  // you can't ask me this!
   return 0.0;
 }
 

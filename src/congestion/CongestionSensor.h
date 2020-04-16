@@ -30,15 +30,19 @@
 
 class CongestionSensor : public Component, public CreditWatcher {
  public:
-  // null - won't be used
-  // absolute - values range from 0.0 to positive infinity
-  // normalized - values range from 0.0 to 1.0
-  enum class Style {kNull, kAbsolute, kNormalized};
+  // Defines the style of measurements
+  enum class Style {
+    kNull,       // no measurements taken
+    kAbsolute,   // positive values of outstanding flits
+    kNormalized  // positive values of normalized outstanding flits
+  };
 
-  // null - won't be used
-  // vc - values specified per VC
-  // port - values specified per port (_outputVc is meaningless)
-  enum class Mode {kNull, kVc, kPort};
+  // Defines the resolution of measurement
+  enum class Resolution {
+    kNull,  // no measurements taken
+    kVc,    // values specified per VC
+    kPort   // values specified per port (_outputVc is meaningless)
+  };
 
   CongestionSensor(const std::string& _name, const Component* _parent,
                    PortedDevice* _device, Json::Value _settings);
@@ -53,11 +57,10 @@ class CongestionSensor : public Component, public CreditWatcher {
 
   // must tell your style and mode
   virtual Style style() const = 0;
-  virtual Mode mode() const = 0;
+  virtual Resolution resolution() const = 0;
 
  protected:
   // this must be implemented by subclasses to yield the congestion status
-  //   this MUST return a value >= 0.0 and <= 1.0
   virtual f64 computeStatus(u32 _inputPort, u32 _inputVc,
                             u32 _outputPort, u32 _outputVc) const = 0;
 
