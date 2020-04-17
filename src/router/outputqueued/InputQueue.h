@@ -61,6 +61,8 @@ class InputQueue : public Component, public FlitReceiver,
   const u32 port_;
   const u32 numVcs_;  // in system, not this module
   const u32 vc_;
+
+  // settings
   const bool storeAndForward_;
 
   // external devices
