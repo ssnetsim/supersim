@@ -71,8 +71,9 @@
       },
       "congestion_mode": "downstream",
       "input_queue_mode": "fixed",  // fixed or tailored
-      "input_queue_depth": 6,
+      "input_queue_depth": 24,
       "vca_swa_wait": true,
+      "store_and_forward": true,
       "output_queue_depth": 8,
       "crossbar": {
         "latency": 1  // cycles

@@ -31,14 +31,14 @@ namespace InputQueued {
 InputQueue::InputQueue(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _depth, u32 _port, u32 _numVcs, u32 _vc, bool _vcaSwaWait,
-    RoutingAlgorithm* _routingAlgorithm, VcScheduler* _vcScheduler,
-    u32 _vcSchedulerIndex, CrossbarScheduler* _crossbarScheduler,
-    u32 _crossbarSchedulerIndex, Crossbar* _crossbar, u32 _crossbarIndex,
-    CreditWatcher* _creditWatcher)
+    bool _storeAndForward, RoutingAlgorithm* _routingAlgorithm,
+    VcScheduler* _vcScheduler, u32 _vcSchedulerIndex,
+    CrossbarScheduler* _crossbarScheduler, u32 _crossbarSchedulerIndex,
+    Crossbar* _crossbar, u32 _crossbarIndex, CreditWatcher* _creditWatcher)
     : Component(_name, _parent), depth_(0), port_(_port), numVcs_(_numVcs),
-      vc_(_vc), vcaSwaWait_(_vcaSwaWait), router_(_router),
-      routingAlgorithm_(_routingAlgorithm), vcScheduler_(_vcScheduler),
-      vcSchedulerIndex_(_vcSchedulerIndex),
+      vc_(_vc), vcaSwaWait_(_vcaSwaWait), storeAndForward_(_storeAndForward),
+      router_(_router), routingAlgorithm_(_routingAlgorithm),
+      vcScheduler_(_vcScheduler), vcSchedulerIndex_(_vcSchedulerIndex),
       crossbarScheduler_(_crossbarScheduler),
       crossbarSchedulerIndex_(_crossbarSchedulerIndex),
       crossbar_(_crossbar), crossbarIndex_(_crossbarIndex),
@@ -316,19 +316,45 @@ void InputQueue::processPipeline() {
     // ensure RFE is empty
     assert(rfe_.flit == nullptr);
 
-    // pull out the front flit
+    // get the front flit
     Flit* flit = buffer_.front();
-    buffer_.pop();
 
-    // put it in the routing pipeline stage
-    assert(rfe_.flit == nullptr);
-    rfe_.flit = flit;
+    // if store and forward is enabled, make sure the packet could actually fit
+    // fully in the queue
+    if (storeAndForward_) {
+      assert(depth_ >= flit->packet()->numFlits());
+    }
 
-    // send a credit back
-    router_->sendCredit(port_, vc_);
+    // when store and forward is enabled, wait for the whole packet
+    bool loadRfe;
+    if (storeAndForward_) {
+      if (flit->isHead()) {
+        // make sure the full packet is received
+        loadRfe = buffer_.size() >= flit->packet()->numFlits();
+      } else {
+        // body and tail flit are always loaded, only the head is delayed
+        loadRfe = true;
+      }
+    } else {
+      // something is already in RFE
+      loadRfe = true;
+    }
 
-    // set state as ready to request routing algorithm
-    rfe_.fsm = ePipelineFsm::kWaitingToRequest;
+    // perform RFE loading
+    if (loadRfe) {
+      // pull out the front flit
+      buffer_.pop();
+
+      // put it in the routing pipeline stage
+      assert(rfe_.flit == nullptr);
+      rfe_.flit = flit;
+
+      // send a credit back
+      router_->sendCredit(port_, vc_);
+
+      // set state as ready to request routing algorithm
+      rfe_.fsm = ePipelineFsm::kWaitingToRequest;
+    }
   }
 
   /*

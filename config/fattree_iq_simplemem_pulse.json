@@ -77,6 +77,7 @@
       "input_queue_mode": "fixed",  // fixed or tailored
       "input_queue_depth": 16,
       "vca_swa_wait": false,
+      "store_and_forward": false,
       "output_queue_depth": 64,
       "crossbar": {
         "latency": 1  // cycles

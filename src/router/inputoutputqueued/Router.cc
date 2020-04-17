@@ -97,6 +97,10 @@ Router::Router(
       ((congestionMode_ == Router::CongestionMode::kOutput) ||
        (congestionMode_ == Router::CongestionMode::kOutputAndDownstream));
 
+  // determine if the router will use store and forward
+  assert(_settings.isMember("store_and_forward"));
+  bool storeAndForward = _settings["store_and_forward"].asBool();
+
   // create routing algorithms, input queues, link to routing algorithm,
   //  crossbar, and schedulers
   routingAlgorithms_.resize(numPorts_ * numVcs_);
@@ -122,8 +126,9 @@ Router::Router(
       std::string iqName = "InputQueue" + nameSuffix;
       InputQueue* iq = new InputQueue(
           iqName, this, this, inputQueueDepth_, port, numVcs_, vc, vcaSwaWait,
-          rf, vcScheduler_, clientIndex, crossbarScheduler_, clientIndex,
-          crossbar_, clientIndex, congestionSensor_, iqDecrWatcher);
+          storeAndForward, rf, vcScheduler_, clientIndex, crossbarScheduler_,
+          clientIndex, crossbar_, clientIndex, congestionSensor_,
+          iqDecrWatcher);
       inputQueues_.at(vcIdx) = iq;
 
       // register the input queue with VC and crossbar schedulers
