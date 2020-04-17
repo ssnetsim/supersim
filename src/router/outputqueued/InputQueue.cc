@@ -30,10 +30,11 @@ namespace OutputQueued {
 
 InputQueue::InputQueue(
     const std::string& _name, const Component* _parent, Router* _router,
-    u32 _depth, u32 _port, u32 _numVcs, u32 _vc,
+    u32 _depth, u32 _port, u32 _numVcs, u32 _vc, bool _storeAndForward,
     RoutingAlgorithm* _routingAlgorithm)
     : Component(_name, _parent), depth_(0), port_(_port), numVcs_(_numVcs),
-      vc_(_vc), router_(_router), routingAlgorithm_(_routingAlgorithm) {
+      vc_(_vc), storeAndForward_(_storeAndForward), router_(_router),
+      routingAlgorithm_(_routingAlgorithm) {
   // ensure the buffer is empty
   assert(buffer_.size() == 0);
 
@@ -159,19 +160,45 @@ void InputQueue::processPipeline() {
     // ensure RFE is empty
     assert(rfe_.flit == nullptr);
 
-    // pull out the front flit
+    // get the front flit
     Flit* flit = buffer_.front();
-    buffer_.pop();
 
-    // send a credit back
-    router_->sendCredit(port_, vc_);
+    // if store and forward is enabled, make sure the packet could actually fit
+    // fully in the queue
+    if (storeAndForward_) {
+      assert(depth_ >= flit->packet()->numFlits());
+    }
 
-    // put it in the routing pipeline stage
-    assert(rfe_.flit == nullptr);
-    rfe_.flit = flit;
+    // when store and forward is enabled, wait for the whole packet
+    bool loadRfe;
+    if (storeAndForward_) {
+      if (flit->isHead()) {
+        // make sure the full packet is received
+        loadRfe = buffer_.size() >= flit->packet()->numFlits();
+      } else {
+        // body and tail flit are always loaded, only the head is delayed
+        loadRfe = true;
+      }
+    } else {
+      // something is already in RFE
+      loadRfe = true;
+    }
 
-    // set state as ready to request routing algorithm
-    rfe_.fsm = ePipelineFsm::kWaitingToRequest;
+    // perform RFE loading
+    if (loadRfe) {
+      // pull out the front flit
+      buffer_.pop();
+
+      // send a credit back
+      router_->sendCredit(port_, vc_);
+
+      // put it in the routing pipeline stage
+      assert(rfe_.flit == nullptr);
+      rfe_.flit = flit;
+
+      // set state as ready to request routing algorithm
+      rfe_.fsm = ePipelineFsm::kWaitingToRequest;
+    }
   }
 
   /*

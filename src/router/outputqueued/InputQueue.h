@@ -35,7 +35,7 @@ class InputQueue : public Component, public FlitReceiver,
  public:
   InputQueue(const std::string& _name, const Component* _parent,
              Router* _router, u32 _depth, u32 _port, u32 _numVcs, u32 _vc,
-             RoutingAlgorithm* _routingAlgorithm);
+             bool _storeAndForward, RoutingAlgorithm* _routingAlgorithm);
   ~InputQueue();
   // set input queue depth (tailor mode)
   void setDepth(u32 _depth);
@@ -61,6 +61,7 @@ class InputQueue : public Component, public FlitReceiver,
   const u32 port_;
   const u32 numVcs_;  // in system, not this module
   const u32 vc_;
+  const bool storeAndForward_;
 
   // external devices
   Router* router_;
