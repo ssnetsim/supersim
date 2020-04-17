@@ -163,10 +163,29 @@ void InputQueue::processPipeline() {
     // get the front flit
     Flit* flit = buffer_.front();
 
+    // if store and forward is enabled, make sure the packet could actually fit
+    // fully in the queue
+    if (storeAndForward_) {
+      assert(depth_ >= flit->packet()->numFlits());
+    }
+
     // when store and forward is enabled, wait for the whole packet
-    assert(!storeAndForward_ || depth_ >= flit->packet()->numFlits());
-    if (!storeAndForward_ || !flit->isHead() ||
-        buffer_.size() >= flit->packet()->numFlits()) {
+    bool loadRfe;
+    if (storeAndForward_) {
+      if (flit->isHead()) {
+        // make sure the full packet is received
+        loadRfe = buffer_.size() >= flit->packet()->numFlits();
+      } else {
+        // body and tail flit are always loaded, only the head is delayed
+        loadRfe = true;
+      }
+    } else {
+      // something is already in RFE
+      loadRfe = true;
+    }
+
+    // perform RFE loading
+    if (loadRfe) {
       // pull out the front flit
       buffer_.pop();
 
