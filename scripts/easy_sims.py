@@ -20,7 +20,7 @@ ap.add_argument('transient', type=str,
                 help='transient script')
 ap.add_argument('settings', type=str,
                 help='settings file to use (fattree_iq_blast.json)')
-ap.add_argument('-g', '--granularity', type=int, default=6,
+ap.add_argument('-g', '--granularity', type=float, default=6.0,
                 help='the granularity of the injection rate sweeps')
 args = ap.parse_args()
 
@@ -59,7 +59,7 @@ def create_task(tm, name, cmd, console_out, task_type, config):
 sw = sssweep.Sweeper(
   args.supersim, args.settings, args.ssparse, args.transient,
   create_task, args.directory, sim=True,
-  parse_scalar=0.001, latency_units='ns')
+  latency_scalar=0.001, latency_units='ns')
 
 ###############################################################################
 # SIMULATION VARIABLES
@@ -82,14 +82,15 @@ sw.add_variable('Routing Algorithm', 'RA', routing_algorithms,
                 set_routing_algorithm, compare=True)
 
 # loads
-start = 0
-stop = 100
+start = 0.0
+stop = 100.0
 step = args.granularity
 def set_load(ld, config):
+  ld /= 100.0
   cmd = ('workload.applications[0].blast_terminal.request_injection_rate='
          'float={0} '
          'workload.applications[0].blast_terminal.enable_responses=bool=false '
-         .format(0.001 if ld == '0.00' else ld))
+         .format(0.001 if ld == 0.0 else ld))
   return cmd
 sw.add_loads('Load', 'LD', start, stop, step, set_load)
 
