@@ -96,13 +96,13 @@ Router::Router(
   congestionSensor_ = CongestionSensor::create(
       "CongestionSensor", this, this, _settings["congestion_sensor"]);
 
-  // when running in one type of output mode with infinite output queues, ensure
-  //  the congestion status module is operating in absolute mode because
-  //  normalized occupancy will always be zero
-  if ((outputQueueDepth_ == U32_MAX) &&
-      ((congestionMode_ == Router::CongestionMode::kOutput) ||
-       (congestionMode_ == Router::CongestionMode::kOutputAndDownstream))) {
-    assert(congestionSensor_->style() != CongestionSensor::Style::kNormalized);
+  // when running in one type of output mode, ensure the congestion status
+  //  module is operating in absolute mode because the output queues are
+  //  infinite and relative occupancy will always be zero
+  if ((congestionMode_ == Router::CongestionMode::kOutput) ||
+      (congestionMode_ == Router::CongestionMode::kOutputAndDownstream)) {
+    assert((congestionSensor_->style() == CongestionSensor::Style::kNull) ||
+           (congestionSensor_->style() == CongestionSensor::Style::kAbsolute));
   }
 
   // determine if the router will use store and forward
@@ -269,22 +269,20 @@ void Router::initialize() {
 
     for (u32 vc = 0; vc < numVcs_; vc++) {
       u32 vcIdx = vcIndex(port, vc);
-
-      // tell the congestion sensor module of the number of credits
-      if (congestionMode_ == Router::CongestionMode::kDownstream) {
+      // tell the congestion sensor module of the number of credits in IQ
+      if ((congestionMode_ == Router::CongestionMode::kDownstream) ||
+          (congestionMode_ == Router::CongestionMode::kOutputAndDownstream)) {
         congestionSensor_->initCredits(vcIdx, credits);
-      } else if (congestionMode_ == Router::CongestionMode::kOutput) {
-        congestionSensor_->initCredits(vcIdx, outputQueueDepth_);
-      } else if (congestionMode_ ==
-                 Router::CongestionMode::kOutputAndDownstream) {
-        congestionSensor_->initCredits(
-            vcIdx,
-            (credits == U32_MAX || outputQueueDepth_ == U32_MAX) ?
-            U32_MAX : credits + outputQueueDepth_);
       }
 
       // initialize the credit count in the OutputCrossbarScheduler
       outputCrossbarSchedulers_.at(port)->initCredits(vc, credits);
+
+      // tell the congestion status module of the number of credits (infinite)
+      if ((congestionMode_ == Router::CongestionMode::kOutput) ||
+          (congestionMode_ == Router::CongestionMode::kOutputAndDownstream)) {
+        congestionSensor_->initCredits(vcIdx, U32_MAX);
+      }
     }
   }
 }

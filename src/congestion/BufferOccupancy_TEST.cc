@@ -231,11 +231,14 @@ TEST(BufferOccupancy, normPort) {
   for (u32 port = 0; port < numPorts; port++) {
     for (u32 vc = 0; vc < numVcs; vc++) {
       // check credits
-      f64 sum = 0.0;
+      u32 curSum = 0;
+      u32 maxSum = 0;
       for (u32 vc2 = 0; vc2 < numVcs; vc2++) {
-        sum += 2.0 / (port * 10 + vc2 + 2);
+        u32 max = port * 10 + vc2 + 2;
+        curSum += 2;
+        maxSum += max;
       }
-      f64 exp = sum / numVcs;
+      f64 exp = (f64)curSum / (f64)maxSum;
       check.setEvent(time, 0, 0, 0, port, vc, exp);
     }
   }
@@ -316,7 +319,7 @@ TEST(BufferOccupancy, absPort) {
       for (u32 vc2 = 0; vc2 < numVcs; vc2++) {
         curSum += 2;
       }
-      f64 exp = (f64)curSum / numVcs;
+      f64 exp = (f64)curSum;
       check.setEvent(time, 0, 0, 0, port, vc, exp);
     }
   }

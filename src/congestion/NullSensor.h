@@ -34,9 +34,9 @@ class NullSensor : public CongestionSensor {
   void incrementCredit(u32 _vcIdx);
   void decrementCredit(u32 _vcIdx);
 
-  // style and resolution reporting
+  // style and mode reporting
   CongestionSensor::Style style() const override;
-  CongestionSensor::Resolution resolution() const override;
+  CongestionSensor::Mode mode() const override;
 
  protected:
   // see CongestionSensor::computeStatus

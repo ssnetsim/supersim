@@ -279,21 +279,27 @@ void Router::initialize() {
       // initialize the credit count in the CrossbarScheduler
       crossbarScheduler_->initCredits(vcIdx, outputQueueDepth_);
 
-      // tell the congestion sensor module of the number of credits
-      if (congestionMode_ == Router::CongestionMode::kDownstream) {
+      // initialize the credit count in the CongestionSensor for downstream
+      //  queues
+      if ((congestionMode_ == Router::CongestionMode::kDownstream) ||
+          (congestionMode_ == Router::CongestionMode::kOutputAndDownstream)) {
         congestionSensor_->initCredits(vcIdx, credits);
-      } else if (congestionMode_ == Router::CongestionMode::kOutput) {
-        congestionSensor_->initCredits(vcIdx, outputQueueDepth_);
-      } else if (congestionMode_ ==
-                 Router::CongestionMode::kOutputAndDownstream) {
-        congestionSensor_->initCredits(
-            vcIdx,
-            (credits == U32_MAX || outputQueueDepth_ == U32_MAX) ?
-            U32_MAX : credits + outputQueueDepth_ + 1);
       }
 
       // initialize the credit count in the OutputCrossbarScheduler
       outputCrossbarSchedulers_.at(port)->initCredits(vc, credits);
+
+      // initialize the credit count in the CongestionSensor for output queues
+      if ((congestionMode_ == Router::CongestionMode::kOutput) ||
+          (congestionMode_ == Router::CongestionMode::kOutputAndDownstream)) {
+        congestionSensor_->initCredits(vcIdx, outputQueueDepth_);
+      }
+
+      // if congestion mode sees output and downstream queues, account for the
+      //  one extra buffer slot in the output queue switch allocation pipeline
+      if (congestionMode_ == Router::CongestionMode::kOutputAndDownstream) {
+        congestionSensor_->initCredits(vcIdx, 1);
+      }
     }
   }
 }

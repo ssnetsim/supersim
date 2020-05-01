@@ -30,7 +30,7 @@ class BufferOccupancy : public CongestionSensor {
   ~BufferOccupancy();
 
   // CreditWatcher interface
-  void initCredits(u32 _vcIdx, u32 _credits) override;
+  void initCredits(u32 _vcIdx, u32 _credits) override;  // called per source
   void incrementCredit(u32 _vcIdx) override;  // a credit came from downstream
   void decrementCredit(u32 _vcIdx) override;  // a credit was consumed locally
 
@@ -38,9 +38,9 @@ class BufferOccupancy : public CongestionSensor {
   //  input and output ports (IOW, input port and VC are ignored in the calc).
   void processEvent(void* _event, s32 _type) override;
 
-  // style and resolution reporting
+  // style and mode reporting
   CongestionSensor::Style style() const override;
-  CongestionSensor::Resolution resolution() const override;
+  CongestionSensor::Mode mode() const override;
 
  protected:
   // see CongestionSensor::computeStatus
@@ -48,8 +48,8 @@ class BufferOccupancy : public CongestionSensor {
                     u32 _outputVc) const override;
 
  private:
-  enum class Mode {kVcNorm, kPortNorm, kMinNorm, kMaxNorm, kVcAbs, kPortAbs,
-                   kMinAbs, kMaxAbs};
+  enum class Mode {kVcNorm, kPortNorm, kBimodalNorm,
+      kVcAbs, kPortAbs, kBimodalAbs};
 
   static Mode parseMode(const std::string& _mode);
 
@@ -58,15 +58,17 @@ class BufferOccupancy : public CongestionSensor {
   void performDecrementCredit(u32 _vcIdx);
   void performDecrementWindow(u32 _vcIdx);
 
-  f64 vcStatus(u32 _outputPort, u32 _outputVc, bool _normalize) const;
-  f64 portAverageStatus(u32 _outputPort, bool _normalize) const;
+  f64 vcStatusNorm(u32 _outputPort, u32 _outputVc) const;
+  f64 vcStatusAbs(u32 _outputPort, u32 _outputVc) const;
+  f64 portAverageStatusNorm(u32 _outputPort) const;
+  f64 portAverageStatusAbs(u32 _outputPort) const;
 
   const u32 latency_;
   const Mode mode_;
 
-  // 64-bit to hold U32_MAX
-  std::vector<s64> normalizationDivisors_;
-  std::vector<s64> outstandingFlits_;
+  std::vector<u32> creditMaximums_;
+  std::vector<u32> creditCounts_;
+  std::vector<u32> flitsOutstanding_;
 
   // phantom congestion awareness
   bool phantom_;

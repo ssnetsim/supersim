@@ -121,7 +121,7 @@ class CongestionTestSensor : public CongestionSensor {
   void decrementCredit(u32 _vcIdx) override;
 
   Style style() const override;
-  Resolution resolution() const override;
+  Mode mode() const override;
 
  protected:
   f64 computeStatus(u32 _inputPort, u32 _inputVc,
