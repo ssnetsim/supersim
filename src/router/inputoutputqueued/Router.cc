@@ -280,7 +280,6 @@ void Router::initialize() {
       crossbarScheduler_->initCredits(vcIdx, outputQueueDepth_);
 
       // tell the congestion sensor module of the number of credits
-      // tell the congestion sensor module of the number of credits
       if (congestionMode_ == Router::CongestionMode::kDownstream) {
         congestionSensor_->initCredits(vcIdx, credits);
       } else if (congestionMode_ == Router::CongestionMode::kOutput) {

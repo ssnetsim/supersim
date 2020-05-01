@@ -69,7 +69,9 @@ void BufferOccupancy::initCredits(u32 _vcIdx, u32 _credits) {
 
   assert(port < numPorts_);
   assert(vc < numVcs_);
-  assert(_credits > 0 || style() == CongestionSensor::Style::kAbsolute);
+  if (style() == CongestionSensor::Style::kNormalize) {
+    assert(_credits > 0);
+  }
 
   normalizationDivisors_.at(_vcIdx) = _credits;
 }
@@ -249,6 +251,7 @@ f64 BufferOccupancy::vcStatus(
     status = std::max(0.0, status - (windows_.at(vcIdx) * valueCoeff_));
   }
   if (_normalize) {
+    assert(normalizationDivisors_.at(vcIdx) > 0);
     status /= normalizationDivisors_.at(vcIdx);
   }
   return status;
