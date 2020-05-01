@@ -82,10 +82,9 @@ Router::Router(
   //  operating in normalized mode on a per-VC basis because the output queues
   //  aren't divised per-VC
   if (congestionMode_ == Router::CongestionMode::kOutput) {
-    assert(
-        (congestionSensor_->style() == CongestionSensor::Style::kNull) ||
-        (congestionSensor_->style() != CongestionSensor::Style::kNormalized) ||
-        (congestionSensor_->mode() != CongestionSensor::Mode::kVc));
+    assert(!(
+        congestionSensor_->style() == CongestionSensor::Style::kNormalized &&
+        congestionSensor_->resolution() != CongestionSensor::Resolution::kVc));
   }
 
   // create the crossbar and schedulers

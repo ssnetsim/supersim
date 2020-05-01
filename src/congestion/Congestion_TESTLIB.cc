@@ -168,8 +168,8 @@ CongestionSensor::Style CongestionTestSensor::style() const {
   return CongestionSensor::Style::kAbsolute;
 }
 
-CongestionSensor::Mode CongestionTestSensor::mode() const {
-  return CongestionSensor::Mode::kVc;
+CongestionSensor::Resolution CongestionTestSensor::resolution() const {
+  return CongestionSensor::Resolution::kVc;
 }
 
 f64 CongestionTestSensor::computeStatus(
