@@ -108,8 +108,12 @@ void CommonAncestorRoutingAlgorithm::processRequest(
       // hash the source and destination to find the one path up
       u32 sourceId = _flit->packet()->message()->getSourceId();
       u32 destinationId = _flit->packet()->message()->getDestinationId();
-      u32 hash = hasher_(std::make_tuple(sourceId, destinationId, random_));
-      u32 port = downPorts + (hash % upPorts);
+      u64 srcDst = (static_cast<u64>(sourceId) << 32) | destinationId;
+      if (flowCache_.find(srcDst) == flowCache_.end()) {
+        u64 rand = gSim->rnd.nextU64();
+        flowCache_[srcDst] = downPorts + (rand % upPorts);
+      }
+      u32 port = flowCache_.at(srcDst);
       addPort(port, hops);
     } else {
       // choose all upward ports

@@ -52,7 +52,7 @@ class CommonAncestorRoutingAlgorithm : public RoutingAlgorithm {
   const bool deterministic_;
   const u64 random_;
   Reduction* reduction_;
-  std::hash<std::tuple<u32, u32, u32> > hasher_;
+  std::unordered_map<u64, u32> flowCache_;
 };
 
 }  // namespace FatTree
