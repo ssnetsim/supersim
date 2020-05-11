@@ -18,7 +18,7 @@
         "num_vcs": 1,
         "routing": {
           "algorithm": "common_ancestor",
-          "deterministic": true,
+          "selection": "flow_cache",
           "latency": 1,  // cycles
           "least_common_ancestor": true,
           "mode": "vc", // port_ave, port_min, port_max

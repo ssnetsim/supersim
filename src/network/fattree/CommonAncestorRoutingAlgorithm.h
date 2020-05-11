@@ -45,11 +45,14 @@ class CommonAncestorRoutingAlgorithm : public RoutingAlgorithm {
       Flit* _flit, RoutingAlgorithm::Response* _response) override;
 
  private:
+  enum class Selection { kAll, kFlowCache, kFlowHash };
+
   void addPort(u32 _port, u32 _hops);
+  Selection parseSelection(const std::string& _selection) const;
 
   const RoutingMode mode_;
   const bool leastCommonAncestor_;
-  const bool deterministic_;
+  const Selection selection_;
   const u64 random_;
   Reduction* reduction_;
   std::unordered_map<u64, u32> flowCache_;

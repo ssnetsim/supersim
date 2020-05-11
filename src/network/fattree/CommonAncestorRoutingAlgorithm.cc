@@ -37,11 +37,11 @@ CommonAncestorRoutingAlgorithm::CommonAncestorRoutingAlgorithm(
                        _inputVc, _radices, _settings),
       mode_(parseRoutingMode(_settings["mode"].asString())),
       leastCommonAncestor_(_settings["least_common_ancestor"].asBool()),
-      deterministic_(_settings["deterministic"].asBool()),
-      random_(gSim->rnd.nextU64(0, 0xdeadbeef)) {
+      selection_(parseSelection(_settings["selection"].asString())),
+      random_(gSim->rnd.nextU64()) {
   assert(!_settings["least_common_ancestor"].isNull());
   assert(!_settings["mode"].isNull());
-  assert(!_settings["deterministic"].isNull());
+  assert(!_settings["selection"].isNull());
 
   // create the reduction
   reduction_ = Reduction::create("Reduction", this, _router, mode_,
@@ -104,8 +104,15 @@ void CommonAncestorRoutingAlgorithm::processRequest(
     addPort(port, hops);
   } else {
     // moving upward
-    if (deterministic_) {
-      // hash the source and destination to find the one path up
+    if (selection_ == CommonAncestorRoutingAlgorithm::Selection::kAll) {
+      // choose all upward ports
+      for (u32 up = 0; up < upPorts; up++) {
+        u32 port = downPorts + up;
+        addPort(port, hops);
+      }
+    } else if (selection_ ==
+               CommonAncestorRoutingAlgorithm::Selection::kFlowCache) {
+      // choose a random path for each flow, cache the result
       u32 sourceId = _flit->packet()->message()->getSourceId();
       u32 destinationId = _flit->packet()->message()->getDestinationId();
       u64 srcDst = (static_cast<u64>(sourceId) << 32) | destinationId;
@@ -115,12 +122,17 @@ void CommonAncestorRoutingAlgorithm::processRequest(
       }
       u32 port = flowCache_.at(srcDst);
       addPort(port, hops);
+    } else if (selection_ ==
+               CommonAncestorRoutingAlgorithm::Selection::kFlowHash) {
+      // hash the flow information to choose a deterministic upward path
+      u32 sourceId = _flit->packet()->message()->getSourceId();
+      u32 destinationId = _flit->packet()->message()->getDestinationId();
+      u64 srcDst = (static_cast<u64>(sourceId) << 32) | destinationId;
+      u64 hash = std::hash<u64>()(srcDst ^ random_);
+      u32 port = downPorts + (hash % upPorts);
+      addPort(port, hops);
     } else {
-      // choose all upward ports
-      for (u32 up = 0; up < upPorts; up++) {
-        u32 port = downPorts + up;
-        addPort(port, hops);
-      }
+      assert(false);
     }
   }
 
@@ -153,6 +165,22 @@ void CommonAncestorRoutingAlgorithm::addPort(u32 _port, u32 _hops) {
     }
   }
 }
+
+CommonAncestorRoutingAlgorithm::Selection
+CommonAncestorRoutingAlgorithm::parseSelection(
+    const std::string& _selection) const {
+  if (_selection == "all") {
+    return CommonAncestorRoutingAlgorithm::Selection::kAll;
+  } else if (_selection == "flow_cache") {
+    return CommonAncestorRoutingAlgorithm::Selection::kFlowCache;
+  } else if (_selection == "flow_hash") {
+    return CommonAncestorRoutingAlgorithm::Selection::kFlowHash;
+  } else {
+    fprintf(stderr, "Unknown fat-tree selecion: %s\n", _selection.c_str());
+    assert(false);
+  }
+}
+
 
 }  // namespace FatTree
 

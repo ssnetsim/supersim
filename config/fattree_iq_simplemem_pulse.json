@@ -21,7 +21,7 @@
           "latency": 1,  // cycles
           "least_common_ancestor": false,
           "mode": "port_ave",
-          "deterministic": true,
+          "selection": "flow_hash",
           "reduction": {
             "algorithm": "all_minimal",
             "max_outputs": 0
@@ -35,7 +35,7 @@
           "latency": 1,  // cycles
           "least_common_ancestor": true,
           "mode": "port_max",
-          "deterministic": false,
+          "selection": "all",
           "reduction": {
             "algorithm": "least_congested_minimal",
             "max_outputs": 2
