@@ -38,10 +38,13 @@ CommonAncestorRoutingAlgorithm::CommonAncestorRoutingAlgorithm(
       mode_(parseRoutingMode(_settings["mode"].asString())),
       leastCommonAncestor_(_settings["least_common_ancestor"].asBool()),
       selection_(parseSelection(_settings["selection"].asString())),
-      random_(gSim->rnd.nextU64()) {
+      randomId_(gSim->rnd.nextU64()) {
   assert(!_settings["least_common_ancestor"].isNull());
   assert(!_settings["mode"].isNull());
   assert(!_settings["selection"].isNull());
+
+  // create the random number generator
+  random_.seed(randomId_);
 
   // create the reduction
   reduction_ = Reduction::create("Reduction", this, _router, mode_,
@@ -172,7 +175,7 @@ u64 CommonAncestorRoutingAlgorithm::flowCache(const Flit* _flit) {
   u32 destinationId = _flit->packet()->message()->getDestinationId();
   u64 srcDst = (static_cast<u64>(sourceId) << 32) | destinationId;
   if (flowCache_.find(srcDst) == flowCache_.end()) {
-    u64 rand = gSim->rnd.nextU64();
+    u64 rand = random_.nextU64();
     flowCache_[srcDst] = rand;
   }
   return flowCache_.at(srcDst);
@@ -197,7 +200,7 @@ u64 CommonAncestorRoutingAlgorithm::flowHash(const Flit* _flit) {
   // using elements from hashword() http://burtleburtle.net/bob/c/lookup3.c
   // customed to hash exactly 2 u32s.
   u32 a, b, c;
-  a = b = c = 0xdeadbeef + (2 << 2) + static_cast<u32>(random_);
+  a = b = c = 0xdeadbeef + (2 << 2) + static_cast<u32>(randomId_);
   b += sourceId;
   a += destinationId;
   final(a, b, c);

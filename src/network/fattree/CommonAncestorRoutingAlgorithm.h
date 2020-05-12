@@ -18,6 +18,7 @@
 #include <colhash/tuplehash.h>
 #include <json/json.h>
 #include <prim/prim.h>
+#include <rnd/Random.h>
 
 #include <string>
 #include <tuple>
@@ -55,7 +56,8 @@ class CommonAncestorRoutingAlgorithm : public RoutingAlgorithm {
   const RoutingMode mode_;
   const bool leastCommonAncestor_;
   const Selection selection_;
-  const u64 random_;
+  const u64 randomId_;
+  rnd::Random random_;
   Reduction* reduction_;
   std::unordered_map<u64, u32> flowCache_;
 };
