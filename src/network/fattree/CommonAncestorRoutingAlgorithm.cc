@@ -71,9 +71,6 @@ void CommonAncestorRoutingAlgorithm::processRequest(
   bool atTopLevel = (level == (numLevels - 1));
   bool movingUpward = (!atTopLevel) && (inputPort_ < downPorts);
   u32 lca = leastCommonAncestor(sourceAddress, destinationAddress);
-  // u64 uniqueId = _flit->packet()->message()->getTransaction();
-  // std::vector<u32> thisRouter = router_->address();
-  // std::vector<u32> wanted = {1, 3};
 
   // determine if an early turn around will occur
   if (movingUpward && leastCommonAncestor_) {
@@ -113,23 +110,12 @@ void CommonAncestorRoutingAlgorithm::processRequest(
     } else if (selection_ ==
                CommonAncestorRoutingAlgorithm::Selection::kFlowCache) {
       // choose a random path for each flow, cache the result
-      u32 sourceId = _flit->packet()->message()->getSourceId();
-      u32 destinationId = _flit->packet()->message()->getDestinationId();
-      u64 srcDst = (static_cast<u64>(sourceId) << 32) | destinationId;
-      if (flowCache_.find(srcDst) == flowCache_.end()) {
-        u64 rand = gSim->rnd.nextU64();
-        flowCache_[srcDst] = downPorts + (rand % upPorts);
-      }
-      u32 port = flowCache_.at(srcDst);
+      u32 port = downPorts + (flowCache(_flit) % upPorts);
       addPort(port, hops);
     } else if (selection_ ==
                CommonAncestorRoutingAlgorithm::Selection::kFlowHash) {
       // hash the flow information to choose a deterministic upward path
-      u32 sourceId = _flit->packet()->message()->getSourceId();
-      u32 destinationId = _flit->packet()->message()->getDestinationId();
-      u64 srcDst = (static_cast<u64>(sourceId) << 32) | destinationId;
-      u64 hash = std::hash<u64>()(srcDst ^ random_);
-      u32 port = downPorts + (hash % upPorts);
+      u32 port = downPorts + (flowHash(_flit) % upPorts);
       addPort(port, hops);
     } else {
       assert(false);
@@ -181,6 +167,42 @@ CommonAncestorRoutingAlgorithm::parseSelection(
   }
 }
 
+u64 CommonAncestorRoutingAlgorithm::flowCache(const Flit* _flit) {
+  u32 sourceId = _flit->packet()->message()->getSourceId();
+  u32 destinationId = _flit->packet()->message()->getDestinationId();
+  u64 srcDst = (static_cast<u64>(sourceId) << 32) | destinationId;
+  if (flowCache_.find(srcDst) == flowCache_.end()) {
+    u64 rand = gSim->rnd.nextU64();
+    flowCache_[srcDst] = rand;
+  }
+  return flowCache_.at(srcDst);
+}
+
+// from http://burtleburtle.net/bob/c/lookup3.c
+#define rot(x, k) (((x) << (k)) | ((x) >> (32 - (k))))
+#define final(a, b, c) {                        \
+    c ^= b; c -= rot(b, 14);                    \
+    a ^= c; a -= rot(c, 11);                    \
+    b ^= a; b -= rot(a, 25);                    \
+    c ^= b; c -= rot(b, 16);                    \
+    a ^= c; a -= rot(c, 4);                     \
+    b ^= a; b -= rot(a, 14);                    \
+    c ^= b; c -= rot(b, 24);                    \
+  }
+
+u64 CommonAncestorRoutingAlgorithm::flowHash(const Flit* _flit) {
+  u32 sourceId = _flit->packet()->message()->getSourceId();
+  u32 destinationId = _flit->packet()->message()->getDestinationId();
+
+  // using elements from hashword() http://burtleburtle.net/bob/c/lookup3.c
+  // customed to hash exactly 2 u32s.
+  u32 a, b, c;
+  a = b = c = 0xdeadbeef + (2 << 2) + static_cast<u32>(random_);
+  b += sourceId;
+  a += destinationId;
+  final(a, b, c);
+  return c;
+}
 
 }  // namespace FatTree
 

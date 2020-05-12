@@ -49,6 +49,8 @@ class CommonAncestorRoutingAlgorithm : public RoutingAlgorithm {
 
   void addPort(u32 _port, u32 _hops);
   Selection parseSelection(const std::string& _selection) const;
+  u64 flowCache(const Flit* _flit);
+  u64 flowHash(const Flit* _flit);
 
   const RoutingMode mode_;
   const bool leastCommonAncestor_;
