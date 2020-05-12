@@ -81,10 +81,6 @@ AllToAllTerminal::AllToAllTerminal(
   assert(_settings.isMember("request_protocol_class"));
   requestProtocolClass_ = _settings["request_protocol_class"].asUInt();
 
-  // limited tracker entries might delay new requests from being generated,
-  //  this is the flag if the send operation has been stalled
-  sendStalled_ = false;
-
   // enablement of request/response flows
   assert(_settings.isMember("enable_responses") &&
          _settings["enable_responses"].isBool());
@@ -94,12 +90,6 @@ AllToAllTerminal::AllToAllTerminal(
   assert(!enableResponses_ ||
          _settings.isMember("request_processing_latency"));
   requestProcessingLatency_ = _settings["request_processing_latency"].asUInt();
-
-  // limitation of outstanding transactions
-  assert(!enableResponses_ ||
-         _settings.isMember("max_outstanding_transactions"));
-  maxOutstandingTransactions_ =
-      _settings["max_outstanding_transactions"].asUInt();
 
   // protocol class of injection of responses
   assert(!enableResponses_ || _settings.isMember("response_protocol_class"));
@@ -117,13 +107,9 @@ AllToAllTerminal::AllToAllTerminal(
   sendIteration_ = 0;
   recvIteration_ = 0;
   sendWaitingForRecv_ = false;
-
-  // always debug
-  debug_ = true;
 }
 
 AllToAllTerminal::~AllToAllTerminal() {
-  assert(sendStalled_ == false);
   assert(sendWaitingForRecv_ == false);
   assert(outstandingTransactions_.size() == 0);
 
@@ -239,7 +225,7 @@ void AllToAllTerminal::handleReceivedMessage(Message* _message) {
   u32 msgType = _message->getOpCode();
   u64 transId = _message->getTransaction();
 
-  assert(!(sendWaitingForRecv_ && sendStalled_));
+  assert(!sendWaitingForRecv_);
 
   // handle requests (sends)
   if (msgType == kRequestMsg) {
@@ -335,14 +321,6 @@ void AllToAllTerminal::handleReceivedMessage(Message* _message) {
     }
   }
 
-  if (msgType == kResponseMsg && sendStalled_) {
-    // if responses are enabled and requests have been stalled due to limited
-    //  tracker entries, signal a send operation to resume
-    sendStalled_ = false;
-    u64 reqTime = gSim->futureCycle(Simulator::Clock::CHANNEL, 1);
-    addEvent(reqTime, 0, nullptr, kRequestEvt);
-  }
-
   // delete the message if no longer needed
   if ((!enableResponses_ && msgType == kRequestMsg) ||
       (msgType == kResponseMsg)) {
@@ -390,20 +368,8 @@ void AllToAllTerminal::sendNextRequest() {
     // the send operation has completed before the recv operation
     dbgprintf("waiting");
     assert(!performBarriers_);
-    assert(!sendStalled_);
     sendWaitingForRecv_ = true;
-  } else if ((enableResponses_) &&
-             (maxOutstandingTransactions_ != 0) &&
-             (outstandingTransactions_.size() == maxOutstandingTransactions_)) {
-    // can't generate a new request because the tracker is full
-    // dbgprintf("stalled");
-    assert(!sendWaitingForRecv_);
-    sendStalled_ = true;
   } else {
-    assert((!enableResponses_) ||
-           (maxOutstandingTransactions_ == 0) ||
-           (outstandingTransactions_.size() < maxOutstandingTransactions_));
-    assert(!sendStalled_);
     assert(!sendWaitingForRecv_);
 
     // generate a new request

@@ -133,8 +133,6 @@
           "request_injection_rate": 0.20,
           // responses
           "enable_responses": false,
-          "request_processing_latency": 10,
-          "max_outstanding_transactions": 0,
           // warmup
           "warmup_interval": 100,  // delivered flits
           "warmup_window": 15,
