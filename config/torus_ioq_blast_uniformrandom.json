@@ -166,7 +166,6 @@
           // responses
           "enable_responses": true,
           "request_processing_latency": 1,
-          "max_outstanding_transactions": 0,
           "response_protocol_class": 0,
           // warmup
           "warmup_interval": 200,  // delivered flits

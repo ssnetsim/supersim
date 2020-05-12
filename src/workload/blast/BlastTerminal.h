@@ -71,7 +71,6 @@ class BlastTerminal : public Terminal {
 
   // state machine
   Fsm fsm_;
-  bool sendStalled_;
   bool notifiedDone_;
 
   // traffic generation
@@ -86,7 +85,6 @@ class BlastTerminal : public Terminal {
 
   // responses
   bool enableResponses_;
-  u32 maxOutstandingTransactions_;  // 0=inf, >0=limit
   std::unordered_set<u64> outstandingTransactions_;
   u32 responseProtocolClass_;
   u64 requestProcessingLatency_;  // cycles

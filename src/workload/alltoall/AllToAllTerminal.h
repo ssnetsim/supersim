@@ -62,15 +62,11 @@ class AllToAllTerminal : public Terminal {
   DistributionTrafficPattern* trafficPattern_;
   MessageSizeDistribution* messageSizeDistribution_;
 
-  // state machine
-  bool sendStalled_;
-
   // requests
   u32 requestProtocolClass_;
 
   // responses
   bool enableResponses_;
-  u32 maxOutstandingTransactions_;  // 0=inf, >0=limit
   std::unordered_set<u64> outstandingTransactions_;
   u32 responseProtocolClass_;
   u64 requestProcessingLatency_;  // cycles

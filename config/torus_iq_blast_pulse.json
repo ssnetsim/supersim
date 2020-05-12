@@ -160,7 +160,9 @@
           "request_injection_rate": 0.50,
           "relative_injection": "config/4_of_54_inj.csv",
           // responses
-          "enable_responses": false,
+          "enable_responses": true,
+          "request_processing_latency": 50,
+          "response_protocol_class": 0,
           // traffic generation
           "delay": 1000,
           "num_transactions": 2000,
@@ -171,7 +173,8 @@
           },
           "message_size_distribution": {
             "type": "single",
-            "message_size": 16
+            "message_size": 16,
+            "dependent_message_size": 1
           }
         },
         "rate_log": {

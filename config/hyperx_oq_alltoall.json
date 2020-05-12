@@ -127,7 +127,6 @@
           // responses
           "enable_responses": true,
           "request_processing_latency": 1000,
-          "max_outstanding_transactions": 0,
           "response_protocol_class": 1,
           // traffic generation
           "delay": 1,

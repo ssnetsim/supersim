@@ -100,10 +100,6 @@ PulseTerminal::PulseTerminal(const std::string& _name, const Component* _parent,
   assert(_settings.isMember("request_protocol_class"));
   requestProtocolClass_ = _settings["request_protocol_class"].asUInt();
 
-  // limited tracker entries might delay new requests from being generated,
-  //  this is the flag if the send operation has been stalled
-  sendStalled_ = false;
-
   // enablement of request/response flows
   assert(_settings.isMember("enable_responses") &&
          _settings["enable_responses"].isBool());
@@ -113,12 +109,6 @@ PulseTerminal::PulseTerminal(const std::string& _name, const Component* _parent,
   assert(!enableResponses_ ||
          _settings.isMember("request_processing_latency"));
   requestProcessingLatency_ = _settings["request_processing_latency"].asUInt();
-
-  // limitation of outstanding transactions
-  assert(!enableResponses_ ||
-         _settings.isMember("max_outstanding_transactions"));
-  maxOutstandingTransactions_ =
-      _settings["max_outstanding_transactions"].asUInt();
 
   // protocol class of injection of responses
   assert(!enableResponses_ || _settings.isMember("response_protocol_class"));
@@ -134,7 +124,6 @@ PulseTerminal::PulseTerminal(const std::string& _name, const Component* _parent,
 }
 
 PulseTerminal::~PulseTerminal() {
-  assert(sendStalled_ == false);
   assert(outstandingTransactions_.size() == 0);
 
   delete trafficPattern_;
@@ -252,14 +241,6 @@ void PulseTerminal::handleReceivedMessage(Message* _message) {
     }
   }
 
-  if (msgType == kResponseMsg && sendStalled_) {
-    // if responses are enabled and requests have been stalled due to limited
-    //  tracker entries, signal a send operation to resume
-    sendStalled_ = false;
-    u64 reqTime = gSim->futureCycle(Simulator::Clock::CHANNEL, 1);
-    addEvent(reqTime, 0, nullptr, kRequestEvt);
-  }
-
   // delete the message if no longer needed
   if ((!enableResponses_ && msgType == kRequestMsg) ||
       (msgType == kResponseMsg)) {
@@ -297,79 +278,68 @@ void PulseTerminal::completeLoggable(Message* _message) {
 void PulseTerminal::sendNextRequest() {
   Application* app = reinterpret_cast<Application*>(application());
 
-  // determine if another request can be generated
-  if ((!enableResponses_) ||
-      (maxOutstandingTransactions_ == 0) ||
-      (outstandingTransactions_.size() < maxOutstandingTransactions_)) {
-    assert(!sendStalled_);
+  // generate a new request
+  u32 destination = trafficPattern_->nextDestination();
+  u32 messageSize = messageSizeDistribution_->nextMessageSize();
+  u32 protocolClass = requestProtocolClass_;
+  u64 transaction = createTransaction();
+  u32 msgType = kRequestMsg;
 
-    // generate a new request
-    u32 destination = trafficPattern_->nextDestination();
-    u32 messageSize = messageSizeDistribution_->nextMessageSize();
-    u32 protocolClass = requestProtocolClass_;
-    u64 transaction = createTransaction();
-    u32 msgType = kRequestMsg;
+  // start tracking the transaction
+  // dbgprintf("insert trans = %lu", transaction);
+  bool res = outstandingTransactions_.insert(transaction).second;
+  assert(res);
 
-    // start tracking the transaction
-    // dbgprintf("insert trans = %lu", transaction);
-    bool res = outstandingTransactions_.insert(transaction).second;
-    assert(res);
+  // register the transaction for logging
+  bool res2 = transactionsToLog_.insert(transaction).second;
+  assert(res2);
+  app->workload()->messageLog()->startTransaction(transaction);
 
-    // register the transaction for logging
-    bool res2 = transactionsToLog_.insert(transaction).second;
-    assert(res2);
-    app->workload()->messageLog()->startTransaction(transaction);
+  // determine the number of packets
+  u32 numPackets = messageSize / maxPacketSize_;
+  if ((messageSize % maxPacketSize_) > 0) {
+    numPackets++;
+  }
 
-    // determine the number of packets
-    u32 numPackets = messageSize / maxPacketSize_;
-    if ((messageSize % maxPacketSize_) > 0) {
-      numPackets++;
+  // create the message object
+  Message* message = new Message(numPackets, nullptr);
+  message->setProtocolClass(protocolClass);
+  message->setTransaction(transaction);
+  message->setOpCode(msgType);
+
+  // create the packets
+  u32 flitsLeft = messageSize;
+  for (u32 p = 0; p < numPackets; p++) {
+    u32 packetLength = flitsLeft > maxPacketSize_ ?
+                       maxPacketSize_ : flitsLeft;
+
+    Packet* packet = new Packet(p, packetLength, message);
+    message->setPacket(p, packet);
+
+    // create flits
+    for (u32 f = 0; f < packetLength; f++) {
+      bool headFlit = f == 0;
+      bool tailFlit = f == (packetLength - 1);
+      Flit* flit = new Flit(f, headFlit, tailFlit, packet);
+      packet->setFlit(f, flit);
     }
+    flitsLeft -= packetLength;
+  }
 
-    // create the message object
-    Message* message = new Message(numPackets, nullptr);
-    message->setProtocolClass(protocolClass);
-    message->setTransaction(transaction);
-    message->setOpCode(msgType);
+  // send the message
+  u32 msgId = sendMessage(message, destination);
+  (void)msgId;  // unused
 
-    // create the packets
-    u32 flitsLeft = messageSize;
-    for (u32 p = 0; p < numPackets; p++) {
-      u32 packetLength = flitsLeft > maxPacketSize_ ?
-                         maxPacketSize_ : flitsLeft;
-
-      Packet* packet = new Packet(p, packetLength, message);
-      message->setPacket(p, packet);
-
-      // create flits
-      for (u32 f = 0; f < packetLength; f++) {
-        bool headFlit = f == 0;
-        bool tailFlit = f == (packetLength - 1);
-        Flit* flit = new Flit(f, headFlit, tailFlit, packet);
-        packet->setFlit(f, flit);
-      }
-      flitsLeft -= packetLength;
+  // determine when to send the next request
+  requestsSent_++;
+  if (requestsSent_ < numTransactions_) {
+    u64 cycles = cyclesToSend(requestInjectionRate_, messageSize);
+    u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, cycles);
+    if (time == gSim->time()) {
+      sendNextRequest();
+    } else {
+      addEvent(time, 0, nullptr, kRequestEvt);
     }
-
-    // send the message
-    u32 msgId = sendMessage(message, destination);
-    (void)msgId;  // unused
-
-    // determine when to send the next request
-    requestsSent_++;
-    if (requestsSent_ < numTransactions_) {
-      u64 cycles = cyclesToSend(requestInjectionRate_, messageSize);
-      u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, cycles);
-      if (time == gSim->time()) {
-        sendNextRequest();
-      } else {
-        addEvent(time, 0, nullptr, kRequestEvt);
-      }
-    }
-  } else {
-    // can't generate a new request because the tracker is full
-    // dbgprintf("tracker is full, new requests are stalled");
-    sendStalled_ = true;
   }
 }
 
