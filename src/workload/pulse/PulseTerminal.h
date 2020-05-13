@@ -60,6 +60,7 @@ class PulseTerminal : public Terminal {
   u32 numTransactions_;
   u32 maxPacketSize_;  // flits
   u32 transactionSize_;  // requests
+  bool multiDestinationTransactions_;
   ContinuousTrafficPattern* trafficPattern_;
   MessageSizeDistribution* messageSizeDistribution_;
 

@@ -143,6 +143,7 @@
           "num_transactions": 50,
           "max_packet_size": 16,
           "transaction_size": 1,  // requests
+          "multi_destination_transactions": true,  // doesn't do anything here
           "traffic_pattern": {
             "type": "uniform_random",
             "send_to_self": true

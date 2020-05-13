@@ -136,6 +136,7 @@
           "num_transactions": 300,
           "max_packet_size": 16,
           "transaction_size": 2,  // requests
+          "multi_destination_transactions": false,
           "traffic_pattern": {
             "type": "uniform_random",
             "send_to_self": true
@@ -162,6 +163,7 @@
           "num_transactions": 50,
           "max_packet_size": 16,
           "transaction_size": 3,  // requests
+          "multi_destination_transactions": true,
           "traffic_pattern": {
             "type": "bit_complement"
           },

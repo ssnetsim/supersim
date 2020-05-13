@@ -92,6 +92,15 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
   transactionSize_ = _settings["transaction_size"].asUInt();
   assert(transactionSize_ > 0);
 
+  // multiple destinations within transactions
+  multiDestinationTransactions_ = false;
+  if (transactionSize_ > 1) {
+    assert(_settings.isMember("multi_destination_transactions"));
+    assert(_settings["multi_destination_transactions"].isBool());
+    multiDestinationTransactions_ =
+        _settings["multi_destination_transactions"].asBool();
+  }
+
   // create a traffic pattern
   trafficPattern_ = ContinuousTrafficPattern::create(
       "TrafficPattern", this, application()->numTerminals(), id_,
@@ -443,8 +452,6 @@ void BlastTerminal::startTransaction() {
   assert(fsm_ != BlastTerminal::Fsm::DRAINING);
 
   // generate a new request
-  u32 destination = trafficPattern_->nextDestination();
-  u32 messageSize = messageSizeDistribution_->nextMessageSize();
   u32 protocolClass = requestProtocolClass_;
   u64 transaction = createTransaction();
   u32 msgType = kRequestMsg;
@@ -461,14 +468,24 @@ void BlastTerminal::startTransaction() {
     app->workload()->messageLog()->startTransaction(transaction);
   }
 
-  // determine the number of packets
-  u32 numPackets = messageSize / maxPacketSize_;
-  if ((messageSize % maxPacketSize_) > 0) {
-    numPackets++;
-  }
-
   // create N requests for this transaction
+  u32 destination = U32_MAX;
+  u32 messageSize = U32_MAX;
   for (u32 req = 0; req < transactionSize_; req++) {
+    // the destination and message size either stay the same or are varied with
+    // each request of the transaction based on multiDestinationTransactions_.
+    if (destination == U32_MAX || multiDestinationTransactions_) {
+      destination = trafficPattern_->nextDestination();
+      assert(destination != U32_MAX);
+      messageSize = messageSizeDistribution_->nextMessageSize();
+    }
+
+    // determine the number of packets
+    u32 numPackets = messageSize / maxPacketSize_;
+    if ((messageSize % maxPacketSize_) > 0) {
+      numPackets++;
+    }
+
     // create the message object
     Message* message = new Message(numPackets, nullptr);
     message->setProtocolClass(protocolClass);
