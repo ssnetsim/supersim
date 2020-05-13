@@ -18,8 +18,8 @@
 #include <json/json.h>
 #include <prim/prim.h>
 
-#include <queue>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -64,10 +64,10 @@ class BlastTerminal : public Terminal {
   void warm(bool _saturated);
   void complete();
   void done();
-  void completeTracking(Message* _message);
-  void completeLoggable(Message* _message);
-  void sendNextRequest();
-  void sendNextResponse(Message* _request);
+  bool completeTracking(u64 _transId);
+  void completeLoggable(u64 _transId);
+  void startTransaction();
+  void sendResponse(Message* _request);
 
   // state machine
   Fsm fsm_;
@@ -77,6 +77,7 @@ class BlastTerminal : public Terminal {
   f64 requestInjectionRate_;
   u32 numTransactions_;
   u32 maxPacketSize_;  // flits
+  u32 transactionSize_;  // requests
   ContinuousTrafficPattern* trafficPattern_;
   MessageSizeDistribution* messageSizeDistribution_;
 
@@ -85,7 +86,7 @@ class BlastTerminal : public Terminal {
 
   // responses
   bool enableResponses_;
-  std::unordered_set<u64> outstandingTransactions_;
+  std::unordered_map<u64, u32> outstandingTransactions_;
   u32 responseProtocolClass_;
   u64 requestProcessingLatency_;  // cycles
 

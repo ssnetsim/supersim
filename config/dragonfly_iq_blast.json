@@ -141,6 +141,7 @@
           // traffic generation
           "num_transactions": 1,
           "max_packet_size": 4,
+          "transaction_size": 1,  // requests
           "traffic_pattern": {
             "type": "group_attack",
             "group_size": "$&(network.local_width)&$",

@@ -139,6 +139,7 @@
           // traffic generation
           "num_transactions": 10000,
           "max_packet_size": 16,
+          "transaction_size": 1,  // requests
           "traffic_pattern": {
             "type": "uniform_random",
             "send_to_self": true
@@ -165,8 +166,9 @@
           "response_protocol_class": 0,
           // traffic generation
           "delay": 1000,
-          "num_transactions": 2000,
+          "num_transactions": 800,
           "max_packet_size": 16,
+          "transaction_size": 4,  // requests
           "traffic_pattern": {
             "type": "uniform_random",
             "send_to_self": true

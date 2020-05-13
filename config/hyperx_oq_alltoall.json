@@ -130,9 +130,10 @@
           "response_protocol_class": 1,
           // traffic generation
           "delay": 1,
-          "num_iterations": 100,
+          "num_iterations": 50,
           "perform_barriers": true,
           "max_packet_size": 16,
+          "transaction_size": 2,  // requests
           "traffic_pattern": {
             "type": "random",
             "send_to_self": true

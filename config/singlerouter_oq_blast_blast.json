@@ -101,8 +101,9 @@
           "warmup_window": 15,
           "warmup_attempts": 20,
           // traffic generation
-          "num_transactions": 2000,
+          "num_transactions": 200,
           "max_packet_size": 16,
+          "transaction_size": 10,  // requests
           "traffic_pattern": {
             "type": "uniform_random",
             "send_to_self": true
@@ -136,6 +137,7 @@
           // traffic generation
           "num_transactions": 0,
           "max_packet_size": 16,
+          "transaction_size": 1,  // requests
           "traffic_pattern": {
             "type": "matrix",
             "file": "config/trafficmatrix.csv.gz"

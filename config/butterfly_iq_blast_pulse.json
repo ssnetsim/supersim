@@ -133,8 +133,9 @@
           "warmup_window": 15,
           "warmup_attempts": 20,
           // traffic generation
-          "num_transactions": 600,
+          "num_transactions": 300,
           "max_packet_size": 16,
+          "transaction_size": 2,  // requests
           "traffic_pattern": {
             "type": "uniform_random",
             "send_to_self": true
@@ -160,6 +161,7 @@
           "delay": 10000,
           "num_transactions": 50,
           "max_packet_size": 16,
+          "transaction_size": 3,  // requests
           "traffic_pattern": {
             "type": "bit_complement"
           },

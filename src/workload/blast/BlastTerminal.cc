@@ -22,6 +22,7 @@
 #include <cmath>
 
 #include <algorithm>
+#include <utility>
 
 #include "network/Network.h"
 #include "stats/MessageLog.h"
@@ -87,6 +88,10 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
   maxPacketSize_  = _settings["max_packet_size"].asUInt();
   assert(maxPacketSize_ > 0);
 
+  // transaction size
+  transactionSize_ = _settings["transaction_size"].asUInt();
+  assert(transactionSize_ > 0);
+
   // create a traffic pattern
   trafficPattern_ = ContinuousTrafficPattern::create(
       "TrafficPattern", this, application()->numTerminals(), id_,
@@ -137,7 +142,8 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
   // make an event to start the BlastTerminal in the future
   if (requestInjectionRate_ > 0.0) {
     u32 maxMsg = messageSizeDistribution_->maxMessageSize();
-    u64 cycles = cyclesToSend(requestInjectionRate_, maxMsg);
+    u32 maxTrans = maxMsg * transactionSize_;
+    u64 cycles = cyclesToSend(requestInjectionRate_, maxTrans);
     cycles = gSim->rnd.nextU64(1, 1 + cycles * 3);
     u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, 1) +
                ((cycles - 1) * gSim->cycleTime(Simulator::Clock::CHANNEL));
@@ -163,12 +169,12 @@ void BlastTerminal::processEvent(void* _event, s32 _type) {
     case kRequestEvt:
       assert(_event == nullptr);
       if (fsm_ != BlastTerminal::Fsm::DRAINING) {
-        sendNextRequest();
+        startTransaction();
       }
       break;
 
     case kResponseEvt:
-      sendNextResponse(reinterpret_cast<Message*>(_event));
+      sendResponse(reinterpret_cast<Message*>(_event));
       break;
 
     default:
@@ -231,9 +237,10 @@ void BlastTerminal::handleDeliveredMessage(Message* _message) {
   u32 msgType = _message->getOpCode();
   u64 transId = _message->getTransaction();
   if (msgType == kRequestMsg) {
+    // complete transaction, determine if last
+    bool lastOfTrans = false;
     if (!enableResponses_) {
-      // dbgprintf("R erase trans = %lu", transId);
-      completeTracking(_message);
+      lastOfTrans = completeTracking(transId);
     }
 
     // log message if tagged
@@ -242,8 +249,8 @@ void BlastTerminal::handleDeliveredMessage(Message* _message) {
       app->workload()->messageLog()->logMessage(_message);
 
       // end this transaction in the log if appropriate
-      if (!enableResponses_) {
-        completeLoggable(_message);
+      if (!enableResponses_ && lastOfTrans) {
+        completeLoggable(transId);
       }
     }
   }
@@ -259,16 +266,17 @@ void BlastTerminal::handleReceivedMessage(Message* _message) {
     assert(enableResponses_);
 
     // complete the tracking of this transaction
-    // dbgprintf("R/R erase trans = %lu", transId);
-    completeTracking(_message);
+    bool lastOfTrans = completeTracking(transId);
 
     // log message if tagged
     if (transactionsToLog_.count(transId) == 1) {
       // log the message
       app->workload()->messageLog()->logMessage(_message);
 
-      // end this transaction in the log
-      completeLoggable(_message);
+      // end this transaction in the log if this is the last message
+      if (lastOfTrans) {
+        completeLoggable(transId);
+      }
     }
   }
 
@@ -276,7 +284,7 @@ void BlastTerminal::handleReceivedMessage(Message* _message) {
     // signal for requests to generate responses when responses are enabled
     // register an event to process the request
     if (requestProcessingLatency_ == 0) {
-      sendNextResponse(_message);
+      sendResponse(_message);
     } else {
       u64 respTime = gSim->futureCycle(Simulator::Clock::CHANNEL,
                                        requestProcessingLatency_);
@@ -385,23 +393,34 @@ void BlastTerminal::done() {
   }
 }
 
-void BlastTerminal::completeTracking(Message* _message) {
-  // remove this transaction from the tracker
-  u32 res = outstandingTransactions_.erase(_message->getTransaction());
-  assert(res == 1);
+bool BlastTerminal::completeTracking(u64 _transId) {
+  // decrement the counter for this transaction
+  assert(outstandingTransactions_.at(_transId) > 0);
+  outstandingTransactions_.at(_transId)--;
 
-  // end the transaction
-  endTransaction(_message->getTransaction());
+  // if this is the last expected message, end tracking of this transaction,
+  // and end the transaction
+  if (outstandingTransactions_.at(_transId) == 0) {
+    u32 res = outstandingTransactions_.erase(_transId);
+    assert(res == 1);
+
+    // end the transaction
+    endTransaction(_transId);
+    return true;
+  }
+  return false;
 }
 
-void BlastTerminal::completeLoggable(Message* _message) {
+void BlastTerminal::completeLoggable(u64 _transId) {
   // clear the logging entry
-  u64 res = transactionsToLog_.erase(_message->getTransaction());
+  assert(outstandingTransactions_.find(_transId) ==
+         outstandingTransactions_.end());
+  u64 res = transactionsToLog_.erase(_transId);
   assert(res == 1);
 
   // log the message/transaction
   Application* app = reinterpret_cast<Application*>(application());
-  app->workload()->messageLog()->endTransaction(_message->getTransaction());
+  app->workload()->messageLog()->endTransaction(_transId);
   loggableCompleteCount_++;
 
   // detect when logging complete
@@ -418,7 +437,7 @@ void BlastTerminal::completeLoggable(Message* _message) {
   }
 }
 
-void BlastTerminal::sendNextRequest() {
+void BlastTerminal::startTransaction() {
   Application* app = reinterpret_cast<Application*>(application());
 
   assert(fsm_ != BlastTerminal::Fsm::DRAINING);
@@ -431,8 +450,8 @@ void BlastTerminal::sendNextRequest() {
   u32 msgType = kRequestMsg;
 
   // start tracking the transaction
-  // dbgprintf("insert trans = %lu", transaction);
-  bool res = outstandingTransactions_.insert(transaction).second;
+  bool res = outstandingTransactions_.insert(
+      std::make_pair(transaction, transactionSize_)).second;
   assert(res);
 
   // if in logging phase, register the transaction for logging
@@ -448,46 +467,50 @@ void BlastTerminal::sendNextRequest() {
     numPackets++;
   }
 
-  // create the message object
-  Message* message = new Message(numPackets, nullptr);
-  message->setProtocolClass(protocolClass);
-  message->setTransaction(transaction);
-  message->setOpCode(msgType);
+  // create N requests for this transaction
+  for (u32 req = 0; req < transactionSize_; req++) {
+    // create the message object
+    Message* message = new Message(numPackets, nullptr);
+    message->setProtocolClass(protocolClass);
+    message->setTransaction(transaction);
+    message->setOpCode(msgType);
 
-  // create the packets
-  u32 flitsLeft = messageSize;
-  for (u32 p = 0; p < numPackets; p++) {
-    u32 packetLength = flitsLeft > maxPacketSize_ ?
-                       maxPacketSize_ : flitsLeft;
+    // create the packets
+    u32 flitsLeft = messageSize;
+    for (u32 p = 0; p < numPackets; p++) {
+      u32 packetLength = flitsLeft > maxPacketSize_ ?
+                         maxPacketSize_ : flitsLeft;
 
-    Packet* packet = new Packet(p, packetLength, message);
-    message->setPacket(p, packet);
+      Packet* packet = new Packet(p, packetLength, message);
+      message->setPacket(p, packet);
 
-    // create flits
-    for (u32 f = 0; f < packetLength; f++) {
-      bool headFlit = f == 0;
-      bool tailFlit = f == (packetLength - 1);
-      Flit* flit = new Flit(f, headFlit, tailFlit, packet);
-      packet->setFlit(f, flit);
+      // create flits
+      for (u32 f = 0; f < packetLength; f++) {
+        bool headFlit = f == 0;
+        bool tailFlit = f == (packetLength - 1);
+        Flit* flit = new Flit(f, headFlit, tailFlit, packet);
+        packet->setFlit(f, flit);
+      }
+      flitsLeft -= packetLength;
     }
-    flitsLeft -= packetLength;
+
+    // send the message
+    u32 msgId = sendMessage(message, destination);
+    (void)msgId;  // unused
   }
 
-  // send the message
-  u32 msgId = sendMessage(message, destination);
-  (void)msgId;  // unused
-
   // determine when to send the next request
-  u64 cycles = cyclesToSend(requestInjectionRate_, messageSize);
+  u64 transSize = messageSize * transactionSize_;
+  u64 cycles = cyclesToSend(requestInjectionRate_, transSize);
   u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, cycles);
   if (time == gSim->time()) {
-    sendNextRequest();
+    startTransaction();
   } else {
     addEvent(time, 0, nullptr, kRequestEvt);
   }
 }
 
-void BlastTerminal::sendNextResponse(Message* _request) {
+void BlastTerminal::sendResponse(Message* _request) {
   assert(enableResponses_);
 
   // process the request received to make a response
