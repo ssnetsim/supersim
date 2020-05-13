@@ -97,7 +97,7 @@
           // responses
           "enable_responses": false,
           // warmup
-          "warmup_interval": 200,  // no warmup
+          "warmup_interval": 200,
           "warmup_window": 15,
           "warmup_attempts": 20,
           // traffic generation
