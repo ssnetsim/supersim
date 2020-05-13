@@ -19,6 +19,8 @@
 #include <prim/prim.h>
 
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "event/Component.h"
@@ -48,15 +50,16 @@ class PulseTerminal : public Terminal {
   void handleReceivedMessage(Message* _message) override;
 
  private:
-  void completeTracking(Message* _message);
-  void completeLoggable(Message* _message);
-  void sendNextRequest();
-  void sendNextResponse(Message* _request);
+  bool completeTracking(u64 _transId);
+  void completeLoggable(u64 _transId);
+  void startTransaction();
+  void sendResponse(Message* _request);
 
   // traffic generation
   f64 requestInjectionRate_;
   u32 numTransactions_;
   u32 maxPacketSize_;  // flits
+  u32 transactionSize_;  // requests
   ContinuousTrafficPattern* trafficPattern_;
   MessageSizeDistribution* messageSizeDistribution_;
 
@@ -65,7 +68,7 @@ class PulseTerminal : public Terminal {
 
   // responses
   bool enableResponses_;
-  std::unordered_set<u64> outstandingTransactions_;
+  std::unordered_map<u64, u32> outstandingTransactions_;  // recv count
   u32 responseProtocolClass_;
   u64 requestProcessingLatency_;  // cycles
 
@@ -74,7 +77,7 @@ class PulseTerminal : public Terminal {
 
   // logging and message generation
   std::unordered_set<u32> transactionsToLog_;
-  u32 requestsSent_;
+  u32 transactionsSent_;
   u32 loggableCompleteCount_;
 };
 

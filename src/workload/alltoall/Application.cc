@@ -102,7 +102,6 @@ void Application::terminalAtBarrier(u32 _id) {
 
 void Application::terminalComplete(u32 _id) {
   completedTerminals_++;
-  printf("id=%u c=%u a=%u\n", _id, completedTerminals_, activeTerminals_);
   assert(completedTerminals_ <= activeTerminals_);
   if (completedTerminals_ == activeTerminals_) {
     dbgprintf("all terminals are done");

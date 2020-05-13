@@ -19,6 +19,8 @@
 #include <prim/prim.h>
 
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "event/Component.h"
@@ -49,16 +51,17 @@ class AllToAllTerminal : public Terminal {
   void handleReceivedMessage(Message* _message) override;
 
  private:
-  void completeTracking(Message* _message);
-  void completeLoggable(Message* _message);
+  bool completeTracking(u64 _transId);
+  void completeLoggable(u64 _transId);
   void checkCompletion();
-  void sendNextRequest();
-  void sendNextResponse(Message* _request);
+  void startTransaction();
+  void sendResponse(Message* _request);
 
   // traffic generation
   f64 requestInjectionRate_;
   u32 numIterations_;
   u32 maxPacketSize_;  // flits
+  u32 transactionSize_;  // requests
   DistributionTrafficPattern* trafficPattern_;
   MessageSizeDistribution* messageSizeDistribution_;
 
@@ -67,7 +70,7 @@ class AllToAllTerminal : public Terminal {
 
   // responses
   bool enableResponses_;
-  std::unordered_set<u64> outstandingTransactions_;
+  std::unordered_map<u64, u32> outstandingTransactions_;  // recv count
   u32 responseProtocolClass_;
   u64 requestProcessingLatency_;  // cycles
 
@@ -76,13 +79,12 @@ class AllToAllTerminal : public Terminal {
 
   // logging and message generation
   std::unordered_set<u32> transactionsToLog_;
-  u32 requestsSent_;
   u32 loggableCompleteCount_;
 
   // these track the state of the iterations
   u32 sendIteration_;
   u32 recvIteration_;
-  std::unordered_map<u32, std::unordered_set<u32> > iterationReceived_;
+  std::unordered_map<u32, std::unordered_map<u32, u32> > iterationReceived_;
   bool sendWaitingForRecv_;
   bool performBarriers_;
   bool inBarrier_;

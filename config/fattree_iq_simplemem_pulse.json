@@ -185,6 +185,7 @@
           "delay": 1000,
           "num_transactions": 500,
           "max_packet_size": 16,
+          "transaction_size": 1,  // requests
           "traffic_pattern": {
             "type": "random_exchange"
           },
