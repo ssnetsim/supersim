@@ -177,7 +177,7 @@ void Application::terminalSaturated(u32 _id) {
       workload_->applicationReady(id_);
 
       // set the maximum number of cycles to stay within the logging phase
-      u64 timeout = gSim->futureCycle(Simulator::Clock::CHANNEL,
+      u64 timeout = gSim->futureCycle(Simulator::Clock::TERMINAL,
                                       maxSaturationCycles_);
       dbgprintf("setting timeout from %lu to %lu", gSim->time(), timeout);
       addEvent(timeout, 0, nullptr, kMaxSaturation);

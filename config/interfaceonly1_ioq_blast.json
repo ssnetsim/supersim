@@ -1,8 +1,9 @@
 {
   "simulator": {
-    "channel_cycle_time": 3,
-    "router_cycle_time": 2,
-    "interface_cycle_time": 2,
+    "channel_cycle_time": 12,
+    "router_cycle_time": 8,
+    "interface_cycle_time": 8,
+    "terminal_cycle_time": 3,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
     "random_seed": 12345678,
@@ -13,13 +14,15 @@
   "network": {
     "topology": "interface_only",
     "num_interfaces": 1,
+    "interface_ports": 4,
     "protocol_classes": [
       {
         "num_vcs": 2,
-        "routing": {
-          "algorithm": "direct",
-          "latency": 1,
-          "adaptive": true
+        "routing": {},
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
         }
       }
     ],
@@ -34,8 +37,6 @@
     },
     "interface": {
       "type": "standard",
-      "adaptive": true,
-      "fixed_msg_vc": false,
       "crossbar_scheduler": {
         "allocator": {
           "type": "r_separable",

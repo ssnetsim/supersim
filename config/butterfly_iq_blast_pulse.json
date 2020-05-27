@@ -1,8 +1,9 @@
 {
   "simulator": {
-    "channel_cycle_time": 1,
-    "router_cycle_time": 1,
-    "interface_cycle_time": 1,
+    "channel_cycle_time": 2,
+    "router_cycle_time": 2,
+    "interface_cycle_time": 2,
+    "terminal_cycle_time": 1,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
     "random_seed": 12345678,
@@ -14,12 +15,18 @@
     "topology": "butterfly",
     "radix": 4,
     "stages": 3,
+    "interface_ports": 2,
     "protocol_classes": [
       {
         "num_vcs": 1,
         "routing": {
           "algorithm": "dest_tag",
           "latency": 1
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
         }
       },
       {
@@ -27,6 +34,11 @@
         "routing": {
           "algorithm": "dest_tag",
           "latency": 1
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
         }
       }
     ],
@@ -88,8 +100,6 @@
     },
     "interface": {
       "type": "standard",
-      "adaptive": false,
-      "fixed_msg_vc": false,
       "crossbar_scheduler": {
         "allocator": {
           "type": "r_separable",
@@ -133,7 +143,7 @@
           "warmup_window": 15,
           "warmup_attempts": 20,
           // traffic generation
-          "num_transactions": 300,
+          "num_transactions": 400,
           "max_packet_size": 16,
           "transaction_size": 2,  // requests
           "multi_destination_transactions": false,
@@ -160,7 +170,7 @@
           "enable_responses": false,
           // traffic generation
           "delay": 10000,
-          "num_transactions": 50,
+          "num_transactions": 100,
           "max_packet_size": 16,
           "transaction_size": 3,  // requests
           "multi_destination_transactions": true,
@@ -179,6 +189,8 @@
     ]
   },
   "debug": [
-    "Workload"
+    "Workload",
+    "Workload.Application_0",
+    "Workload.Application_1"
   ]
 }

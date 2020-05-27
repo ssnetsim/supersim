@@ -27,18 +27,20 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(RandomExchangeQuadrantCTP, evenSpread) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   Json::Value settings;
 
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(4);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
 
   u32 dimensions = 2;
   std::vector<u32> widths = {4, 4};
   u32 concentration = 4;
+  u32 interfacePorts = 1;
 
-  const u32 numTerminals = 4 * 4 * 4;
+  const u32 numTerminals = 4 * 4 * 4 * 1;
   const u32 kRounds = 10000;
   const bool DEBUG = false;
 
@@ -65,7 +67,8 @@ TEST(RandomExchangeQuadrantCTP, evenSpread) {
 
     u32 idxQuadrant = 0;
     std::vector<u32> idxAddr;
-    Cube::translateInterfaceIdToAddress(idx, widths, concentration, &idxAddr);
+    Cube::translateInterfaceIdToAddress(idx, widths, concentration,
+                                        interfacePorts, &idxAddr);
     for (u32 i = 0; i < dimensions; ++i) {
       if (idxAddr.at(i + 1) >= widths.at(i) / 2) {
         idxQuadrant += (1 << i);
@@ -77,7 +80,8 @@ TEST(RandomExchangeQuadrantCTP, evenSpread) {
     for (u32 bkt = 0; bkt < numTerminals; bkt++) {
       u32 bktQuadrant = 0;
       std::vector<u32> bktAddr;
-      Cube::translateInterfaceIdToAddress(bkt, widths, concentration, &bktAddr);
+      Cube::translateInterfaceIdToAddress(bkt, widths, concentration,
+                                          interfacePorts, &bktAddr);
       for (u32 i = 0; i < dimensions; ++i) {
         if (bktAddr.at(i + 1) >= (widths.at(i) / 2)) {
           bktQuadrant += (1 << i);

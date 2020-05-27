@@ -26,6 +26,7 @@
 #include "interface/Interface.h"
 #include "metadata/MetadataHandler.h"
 #include "network/Channel.h"
+#include "routing/InjectionAlgorithm.h"
 #include "routing/RoutingAlgorithm.h"
 #include "router/Router.h"
 #include "stats/ChannelLog.h"
@@ -42,6 +43,11 @@ class Network : public Component {
 
   // this is a network factory
   static Network* create(NETWORK_ARGS);
+
+  // this is an injection algorithm factory definition
+  virtual InjectionAlgorithm* createInjectionAlgorithm(
+      u32 _inputPc, const std::string& _name, const Component* _parent,
+      Interface* _interface) = 0;
 
   // this is a routing algorithm factory definition
   virtual RoutingAlgorithm* createRoutingAlgorithm(
@@ -63,12 +69,21 @@ class Network : public Component {
   virtual u32 computeMinimalHops(
       const std::vector<u32>* _source,
       const std::vector<u32>* _destination) const = 0;
-  u32 numVcs() const;
   MetadataHandler* metadataHandler() const;
 
   void startMonitoring();
   void endMonitoring();
   bool monitoring() const;
+
+  struct PcVcInfo {
+    u32 baseVc;
+    u32 numVcs;
+  };
+
+  u32 numPcs() const;
+  u32 numVcs() const;
+  PcVcInfo pcVcs(u32 _pc) const;
+  u32 vcToPc(u32 _vc) const;
 
   // this function logs traffic
   void logTraffic(const Component* _device, u32 _inputPort, u32 _inputVc,
@@ -76,10 +91,11 @@ class Network : public Component {
 
  protected:
   // this is used by network implementations to create routing algorithms
-  struct RoutingAlgorithmInfo {
+  struct PcSettings {
     u32 baseVc;
     u32 numVcs;
-    Json::Value settings;
+    Json::Value injection;
+    Json::Value routing;
   };
 
   virtual void collectChannels(std::vector<Channel*>* _channels) = 0;
@@ -87,18 +103,23 @@ class Network : public Component {
   // this loads the routing algorithm info vector
   void loadProtocolClassInfo(Json::Value _settings);
 
+  // this only works between load and clear calls
+  const PcSettings& pcSettings(u32 _pc) const;
+
   // this clears the routingAlgorithmInfo_ vector
   void clearProtocolClassInfo();
 
-  u32 numVcs_;
-  std::vector<std::tuple<u32, u32> > protocolClassVcs_;
-  std::vector<RoutingAlgorithmInfo> routingAlgorithmInfo_;
+  const u32 numVcs_;
 
  private:
   ChannelLog* channelLog_;
   TrafficLog* trafficLog_;
   MetadataHandler* metadataHandler_;
   bool monitoring_;
+
+  std::vector<PcVcInfo> pcVcs_;
+  std::unordered_map<u32, u32> vcToPc_;
+  std::vector<PcSettings> pcSettings_;  // only valid during construction
 };
 
 #endif  // NETWORK_NETWORK_H_

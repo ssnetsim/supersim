@@ -46,7 +46,7 @@ class Simulator {
   u64 time() const;
   u8 epsilon() const;
 
-  enum class Clock : u8 {CHANNEL = 0, ROUTER = 1, INTERFACE = 2};
+  enum class Clock : u8 {CHANNEL = 0, ROUTER = 1, INTERFACE = 2, TERMINAL = 3};
 
   u64 cycleTime(Clock _clock) const;
   u64 cycle(Clock _clock) const;
@@ -76,6 +76,7 @@ class Simulator {
   const u64 channelCycleTime_;
   const u64 routerCycleTime_;
   const u64 interfaceCycleTime_;
+  const u64 terminalCycleTime_;
 
   bool initial_;
   bool initialized_;

@@ -166,7 +166,7 @@ TEST(CrossbarScheduler, basic) {
           u32 V = P * Vd;
 
           // setup
-          TestSetup testSetup(12, 12, 12, 0x1234567890abcdf);
+          TestSetup testSetup(12, 12, 12, 12, 0x1234567890abcdf);
           Json::Value arbSettings;
           arbSettings["type"] = "random";
           Json::Value allocSettings;

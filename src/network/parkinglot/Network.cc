@@ -22,6 +22,7 @@
 
 #include <tuple>
 
+#include "network/parkinglot/InjectionAlgorithm.h"
 #include "network/parkinglot/RoutingAlgorithm.h"
 
 namespace ParkingLot {
@@ -32,6 +33,8 @@ Network::Network(const std::string& _name, const Component* _parent,
   // attributes
   concentration_ = _settings["concentration"].asUInt();
   assert(concentration_ > 0);
+  u32 interfacePorts = _settings["interface_ports"].asUInt();
+  assert(interfacePorts == 1);
   u32 routerRadix = concentration_ + 2;
   inputPort_ = _settings["input_port"].asUInt();
   assert(inputPort_ < routerRadix);
@@ -54,7 +57,7 @@ Network::Network(const std::string& _name, const Component* _parent,
     // use the router factory to create a router
     routers_.at(router) = Router::create(
         routerName, this, this, router, {router}, routerRadix, numVcs_,
-        protocolClassVcs_, _metadataHandler, _settings["router"]);
+        _metadataHandler, _settings["router"]);
   }
 
   // link routers via channels
@@ -85,13 +88,13 @@ Network::Network(const std::string& _name, const Component* _parent,
   interfaces_.resize(interfaces, nullptr);
   u32 interfaceId = 0;
   for (u32 routerId = 0; routerId < routers; routerId++) {
-    for (u32 term = 0; term < concentration_; term++) {
+    for (u32 iface = 0; iface < concentration_; iface++) {
       // find right router port
-      u32 routerPort = term;
-      if (inputPort_ <= term) {
+      u32 routerPort = iface;
+      if (inputPort_ <= iface) {
         routerPort++;
       }
-      if (outputPort_ <= term) {
+      if (outputPort_ <= iface) {
         routerPort++;
       }
 
@@ -101,8 +104,8 @@ Network::Network(const std::string& _name, const Component* _parent,
 
       // create the interface
       Interface* interface = Interface::create(
-          interfaceName, this, interfaceId, {routerId, term}, numVcs_,
-          protocolClassVcs_, _metadataHandler, _settings["interface"]);
+          interfaceName, this, this, interfaceId, {routerId, iface}, 1, numVcs_,
+          _metadataHandler, _settings["interface"]);
       interfaces_.at(interfaceId) = interface;
 
       std::string channelName = "InjChannel_" + std::to_string(interfaceId) +
@@ -135,10 +138,10 @@ Network::Network(const std::string& _name, const Component* _parent,
 
     // create the interface
     u32 routerId = routers - 1;
-    u32 term = interfaces - 1;
+    u32 iface = interfaces - 1;
     Interface* interface = Interface::create(
-        interfaceName, this, interfaceId, {routerId, term}, numVcs_,
-        protocolClassVcs_, _metadataHandler, _settings["interface"]);
+        interfaceName, this, this, interfaceId, {routerId, iface}, 1, numVcs_,
+        _metadataHandler, _settings["interface"]);
     interfaces_.at(interfaceId) = interface;
 
     std::string channelName = "EjChannel_" + std::to_string(routerId) +
@@ -184,17 +187,29 @@ Network::~Network() {
   }
 }
 
+::InjectionAlgorithm* Network::createInjectionAlgorithm(
+     u32 _inputPc, const std::string& _name,
+     const Component* _parent, Interface* _interface) {
+  // get the info
+  const ::Network::PcSettings& settings = pcSettings(_inputPc);
+
+  // call the routing algorithm factory
+  return InjectionAlgorithm::create(
+      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
+      settings.injection);
+}
+
 ::RoutingAlgorithm* Network::createRoutingAlgorithm(
      u32 _inputPort, u32 _inputVc, const std::string& _name,
      const Component* _parent, Router* _router) {
   // get the info
-  const Network::RoutingAlgorithmInfo& info =
-      routingAlgorithmInfo_.at(_inputVc);
+  u32 pc = vcToPc(_inputVc);
+  const ::Network::PcSettings& settings = pcSettings(pc);
 
   // call the routing algorithm factory
   return RoutingAlgorithm::create(
-      _name, _parent, _router, info.baseVc, info.numVcs, _inputPort, _inputVc,
-      outputPort_, info.settings);
+      _name, _parent, _router, settings.baseVc, settings.numVcs, _inputPort,
+      _inputVc, outputPort_, settings.routing);
 }
 
 u32 Network::numRouters() const {

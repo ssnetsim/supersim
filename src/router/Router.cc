@@ -25,19 +25,16 @@
 Router::Router(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
     MetadataHandler* _metadataHandler, Json::Value _settings)
     : Component(_name, _parent),
       PortedDevice(_id, _address, _numPorts, _numVcs),
-      network_(_network), protocolClassVcs_(_protocolClassVcs),
-      metadataHandler_(_metadataHandler) {}
+      network_(_network), metadataHandler_(_metadataHandler) {}
 
 Router::~Router() {}
 
 Router* Router::create(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
     MetadataHandler* _metadataHandler, Json::Value _settings) {
   // retrieve the architecture
   const std::string& architecture = _settings["architecture"].asString();
@@ -45,7 +42,7 @@ Router* Router::create(
   // attempt to build the router
   Router* router = factory::ObjectFactory<Router, ROUTER_ARGS>::create(
       architecture, _name, _parent, _network, _id, _address, _numPorts, _numVcs,
-      _protocolClassVcs, _metadataHandler, _settings);
+      _metadataHandler, _settings);
 
   // check that the factory had this architecture
   if (router == nullptr) {

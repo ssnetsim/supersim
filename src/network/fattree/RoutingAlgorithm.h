@@ -28,7 +28,7 @@
 
 #define FATTREE_ROUTINGALGORITHM_ARGS                                 \
   const std::string&, const Component*, Router*, u32, u32, u32, u32,  \
-    const std::vector<std::tuple<u32, u32, u32> >*, Json::Value
+    const std::vector<std::tuple<u32, u32, u32> >*, u32, Json::Value
 
 namespace FatTree {
 
@@ -38,7 +38,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
       const std::string& _name, const Component* _parent,
       Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<std::tuple<u32, u32, u32> >* _radices,
-      Json::Value _settings);
+      u32 _interfacePorts, Json::Value _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the fat tree topology
@@ -46,6 +46,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
 
  protected:
   const std::vector<std::tuple<u32, u32, u32> >* radices_;
+  const u32 interfacePorts_;
 };
 
 }  // namespace FatTree

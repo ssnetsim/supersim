@@ -35,6 +35,11 @@ class Network : public ::Network {
           MetadataHandler* _metadataHandler, Json::Value _settings);
   ~Network();
 
+  // this is the injection algorithm factory for this network
+  ::InjectionAlgorithm* createInjectionAlgorithm(
+       u32 _inputPc, const std::string& _name,
+       const Component* _parent, Interface* _interface) override;
+
   // this is the routing algorithm factory for this network
   ::RoutingAlgorithm* createRoutingAlgorithm(
        u32 _inputPort, u32 _inputVc, const std::string& _name,
@@ -63,13 +68,13 @@ class Network : public ::Network {
   u32 routerRadix_;
   u32 numStages_;
   u32 stageWidth_;
+  u32 interfacePorts_;
   u32 tmpStage_;
 
   std::vector<Router*> routers_;
-
+  std::vector<Interface*> interfaces_;
   std::vector<Channel*> externalChannels_;
   std::vector<Channel*> internalChannels_;
-  std::vector<Interface*> interfaces_;
 };
 
 }  // namespace Butterfly

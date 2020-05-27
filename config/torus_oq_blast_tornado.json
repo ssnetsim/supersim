@@ -1,8 +1,9 @@
 {
   "simulator": {
-    "channel_cycle_time": 3,
-    "router_cycle_time": 1,
-    "interface_cycle_time": 1,
+    "channel_cycle_time": 6,
+    "router_cycle_time": 2,
+    "interface_cycle_time": 2,
+    "terminal_cycle_time": 3,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
     "random_seed": 12345678,
@@ -12,9 +13,10 @@
   },
   "network": {
     "topology": "torus",
-    "dimension_widths": [4, 3, 2],
-    "dimension_weights": [1, 1, 1],
+    "dimension_widths": [5, 5],
+    "dimension_weights": [1, 1],
     "concentration": 2,
+    "interface_ports": 2,
     "protocol_classes": [
       {
         "num_vcs": 4,
@@ -29,6 +31,11 @@
             "independent_bias": 0.0,
             "non_minimal_weight_func": "regular" // regular, always_nonmin
           }
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
         }
       }
     ],
@@ -77,8 +84,6 @@
     },
     "interface": {
       "type": "standard",
-      "adaptive": false,
-      "fixed_msg_vc": true,
       "crossbar_scheduler": "$&(network.router.output_crossbar_scheduler)&$",
       "init_credits_mode": "$&(network.router.input_queue_mode)&$",
       "init_credits": "$&(network.router.input_queue_depth)&$",
@@ -118,12 +123,13 @@
           "traffic_pattern": {
             "type": "tornado",
             "dimensions": "$&(network.dimension_widths)&$",
-            "concentration": "$&(network.concentration)&$"
+            "concentration": "$&(network.concentration)&$",
+            "interface_ports": "$&(network.interface_ports)&$"
           },
           "message_size_distribution": {
             "type": "random",
             "min_message_size": 1,
-            "max_message_size": 16
+            "max_message_size": 32
           }
         },
         "rate_log": {

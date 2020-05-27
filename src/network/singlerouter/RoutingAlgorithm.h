@@ -25,7 +25,7 @@
 #include "router/Router.h"
 
 #define SINGLEROUTER_ROUTINGALGORITHM_ARGS const std::string&, \
-    const Component*, Router*, u32, u32, u32, u32, u32, Json::Value
+    const Component*, Router*, u32, u32, u32, u32, u32, u32, Json::Value
 
 namespace SingleRouter {
 
@@ -34,7 +34,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
   RoutingAlgorithm(const std::string& _name, const Component* _parent,
                    Router* _router, u32 _baseVc, u32 _numVcs,
                    u32 _inputPort, u32 _inputVc, u32 _concentration,
-                   Json::Value _settings);
+                   u32 _interfacePorts, Json::Value _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the SingleRouter topology
@@ -42,6 +42,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
 
  protected:
   u32 concentration_;
+  u32 interfacePorts_;
 };
 
 }  // namespace SingleRouter

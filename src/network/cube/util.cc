@@ -18,8 +18,9 @@
 
 namespace Cube {
 
-u32 computeNumTerminals(const std::vector<u32>& _widths, u32 _concentration) {
-  u32 num = _concentration;
+u32 computeNumInterfaces(const std::vector<u32>& _widths, u32 _concentration,
+                         u32 _interfacePorts) {
+  u32 num = _concentration / _interfacePorts;
   for (u32 width : _widths) {
     num *= width;
   }
@@ -36,16 +37,17 @@ u32 computeNumRouters(const std::vector<u32>& _widths) {
 
 void translateInterfaceIdToAddress(
     u32 _id, const std::vector<u32>& _widths, u32 _concentration,
-    std::vector<u32>* _address) {
-  assert(_id < computeNumTerminals(_widths, _concentration));
+    u32 _interfacePorts, std::vector<u32>* _address) {
+  assert(_id < computeNumInterfaces(_widths, _concentration, _interfacePorts));
 
   u32 dimensions = _widths.size();
   _address->resize(dimensions + 1);
 
   // addresses are in little endian format
+  u32 interfacesPerRouter = _concentration / _interfacePorts;
   u32 mod, div;
-  mod = _id % _concentration;
-  div = _id / _concentration;
+  mod = _id % interfacesPerRouter;
+  div = _id / interfacesPerRouter;
   _address->at(0) = mod;
   for (u32 dim = 0; dim < dimensions; dim++) {
     u32 dimWidth = _widths.at(dim);
@@ -57,17 +59,18 @@ void translateInterfaceIdToAddress(
 
 u32 translateInterfaceAddressToId(
     const std::vector<u32>* _address, const std::vector<u32>& _widths,
-    u32 _concentration) {
+    u32 _concentration, u32 _interfacePorts) {
   u32 dimensions = _widths.size();
   std::vector<u32> coeff(dimensions + 1);
 
   // compute coefficients
+  u32 interfacesPerRouter = _concentration / _interfacePorts;
   u32 prod = 1;
   for (u32 idx = 0; idx < dimensions + 1; idx++) {
     coeff.at(idx) = prod;
     if (idx == 0) {
-      assert(_address->at(idx) < _concentration);
-      prod *= _concentration;
+      assert(_address->at(idx) < interfacesPerRouter);
+      prod *= interfacesPerRouter;
     } else {
       assert(_address->at(idx) < _widths.at(idx - 1));
       prod *= _widths.at(idx - 1);

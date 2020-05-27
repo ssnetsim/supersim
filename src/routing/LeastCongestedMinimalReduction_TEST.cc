@@ -22,7 +22,7 @@
 
 TEST(LeastCongestedMinimalReduction, vc) {
   for (u32 i = 0; i < 2; i++) {
-    TestSetup ts(1, 1, 1, 12345+i);
+    TestSetup ts(1, 1, 1, 1, 12345+i);
 
     const u32 ROUNDS = 100000;
 

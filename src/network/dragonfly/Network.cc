@@ -24,6 +24,7 @@
 
 #include "network/cube/util.h"
 #include "network/dragonfly/util.h"
+#include "network/dragonfly/InjectionAlgorithm.h"
 #include "network/dragonfly/RoutingAlgorithm.h"
 #include "util/DimensionIterator.h"
 
@@ -36,6 +37,11 @@ Network::Network(const std::string& _name, const Component* _parent,
   assert(_settings.isMember("concentration"));
   concentration_ = _settings["concentration"].asUInt();
   assert(concentration_ > 0);
+
+  // interface ports
+  interfacePorts_ = _settings["interface_ports"].asUInt();
+  assert(interfacePorts_ > 0);
+  assert(concentration_ % interfacePorts_ == 0);
 
   // local
   assert(_settings.isMember("local_width"));
@@ -87,14 +93,12 @@ Network::Network(const std::string& _name, const Component* _parent,
       // router info
       std::vector<u32> routerAddress = {r, group};
       u32 routerId = translateRouterAddressToId(&routerAddress);
-      std::vector<u32> tmpAdd;
-      translateRouterIdToAddress(routerId, &tmpAdd);
 
       std::string rname = "Router_" + strop::vecString<u32>(routerAddress, '-');
       // make router
       routers_.at(group).at(r) = Router::create(
           rname, this, this, routerId, routerAddress, routerRadix_,
-          numVcs_, protocolClassVcs_, _metadataHandler, _settings["router"]);
+          numVcs_, _metadataHandler, _settings["router"]);
     }
   }
 
@@ -185,9 +189,10 @@ Network::Network(const std::string& _name, const Component* _parent,
     }
   }
 
-  // create a vector of dimension widths that contains the concentration
-  std::vector<u32> fullDimensionWidths = {concentration_,
-                                          localWidth_, globalWidth_};
+  // create a vector of dimension widths that contains the interfaces
+  u32 interfacesPerRouter = concentration_ / interfacePorts_;
+  std::vector<u32> fullDimensionWidths =
+      {interfacesPerRouter, localWidth_, globalWidth_};
 
   // create interfaces and link them with the routers
   interfaces_.setSize(fullDimensionWidths);
@@ -197,10 +202,10 @@ Network::Network(const std::string& _name, const Component* _parent,
       Router* router = routers_.at(group).at(r);
       std::vector<u32> routerAddress({r, group});
 
-      // loop over concentration
-      for (u32 conc = 0; conc < concentration_; conc++) {
+      // loop over interfaces
+      for (u32 iface = 0; iface < interfacesPerRouter; iface++) {
         // create a vector for the Interface address
-        std::vector<u32> interfaceAddress({conc, r, group});
+        std::vector<u32> interfaceAddress({iface, r, group});
 
         // create an interface name
         std::string interfaceName =
@@ -208,42 +213,46 @@ Network::Network(const std::string& _name, const Component* _parent,
 
         // create the interface
         u32 interfaceId = translateInterfaceAddressToId(&interfaceAddress);
-        std::vector<u32> tmpAdd;
-        translateInterfaceIdToAddress(interfaceId, &tmpAdd);
         Interface* interface = Interface::create(
-            interfaceName, this, interfaceId, interfaceAddress, numVcs_,
-            protocolClassVcs_, _metadataHandler, _settings["interface"]);
+            interfaceName, this, this, interfaceId, interfaceAddress,
+            interfacePorts_, numVcs_, _metadataHandler, _settings["interface"]);
         interfaces_.at(interfaceAddress) = interface;
 
-        // create I/O channels
-        std::string inChannelName =
-            "Channel_" + strop::vecString<u32>(interfaceAddress, '-') + "-to-" +
-            strop::vecString<u32>(routerAddress, '-');
-        std::string outChannelName =
-            "Channel_" + strop::vecString<u32>(routerAddress, '-') + "-to-" +
-            strop::vecString<u32>(interfaceAddress, '-');
-        Channel* inChannel = new Channel(inChannelName, this, numVcs_,
-                                         _settings["external_channel"]);
-        Channel* outChannel = new Channel(outChannelName, this, numVcs_,
-                                          _settings["external_channel"]);
-        externalChannels_.push_back(inChannel);
-        externalChannels_.push_back(outChannel);
+        // create and link channels
+        for (u32 ch = 0; ch < interfacePorts_; ch++) {
+          // create I/O channels
+          std::string inChannelName =
+              "Channel_" + strop::vecString<u32>(interfaceAddress, '-') +
+              "-to-" + strop::vecString<u32>(routerAddress, '-') + "_" +
+              std::to_string(ch);
+          std::string outChannelName =
+              "Channel_" + strop::vecString<u32>(routerAddress, '-') + "-to-" +
+              strop::vecString<u32>(interfaceAddress, '-') + "_" +
+              std::to_string(ch);
+          Channel* inChannel = new Channel(inChannelName, this, numVcs_,
+                                           _settings["external_channel"]);
+          Channel* outChannel = new Channel(outChannelName, this, numVcs_,
+                                            _settings["external_channel"]);
+          externalChannels_.push_back(inChannel);
+          externalChannels_.push_back(outChannel);
 
-        // link with router
-        router->setInputChannel(conc, inChannel);
-        interface->setOutputChannel(0, inChannel);
-        router->setOutputChannel(conc, outChannel);
-        interface->setInputChannel(0, outChannel);
+          // link with router
+          u32 routerPort = iface * interfacePorts_ + ch;
+          router->setInputChannel(routerPort, inChannel);
+          interface->setOutputChannel(ch, inChannel);
+          router->setOutputChannel(routerPort, outChannel);
+          interface->setInputChannel(ch, outChannel);
+        }
       }
     }
   }
 
   // only works if all ports are populated
-  if ((((globalWidth_ -1) * globalWeight_) % localWidth_) == 0) {
+  if ((((globalWidth_ - 1) * globalWeight_) % localWidth_) == 0) {
     for (u32 g = 0; g < globalWidth_; g++) {
       for (u32 r = 0; r < localWidth_; r++) {
         Router* router = routers_.at(g).at(r);
-        for (u32 p = 0; p < router->numPorts()-1; p++) {
+        for (u32 p = 0; p < router->numPorts() - 1; p++) {
           Channel* in = router->getInputChannel(p);
           Channel* out = router->getOutputChannel(p);
           assert(in != nullptr);
@@ -252,6 +261,12 @@ Network::Network(const std::string& _name, const Component* _parent,
       }
     }
   }
+
+  // sanity checks
+  assert((routers_.size() * routers_.at(0).size()) == numRouters());
+  assert(interfaces_.size() == numInterfaces());
+  dbgprintf("numRouters = %u", numRouters());
+  dbgprintf("numInterfaces = %u", numInterfaces());
 
   // clear the protocol class info
   clearProtocolClassInfo();
@@ -285,18 +300,31 @@ Network::~Network() {
   }
 }
 
+::InjectionAlgorithm* Network::createInjectionAlgorithm(
+     u32 _inputPc, const std::string& _name,
+     const Component* _parent, Interface* _interface) {
+  // get the info
+  const ::Network::PcSettings& settings = pcSettings(_inputPc);
+
+  // call the routing algorithm factory
+  return InjectionAlgorithm::create(
+      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
+      settings.injection);
+}
+
 ::RoutingAlgorithm* Network::createRoutingAlgorithm(
      u32 _inputPort, u32 _inputVc, const std::string& _name,
      const Component* _parent, Router* _router) {
   // get the info
-  const Network::RoutingAlgorithmInfo& info =
-      routingAlgorithmInfo_.at(_inputVc);
+  u32 pc = vcToPc(_inputVc);
+  const ::Network::PcSettings& settings = pcSettings(pc);
 
   // call the routing algorithm factory
   return RoutingAlgorithm::create(
-      _name, _parent, _router, info.baseVc, info.numVcs, _inputPort, _inputVc,
-      localWidth_, localWeight_, globalWidth_, globalWeight_, concentration_,
-      routerRadix_, globalPortsPerRouter_, info.settings);
+      _name, _parent, _router, settings.baseVc, settings.numVcs, _inputPort,
+      _inputVc, localWidth_, localWeight_, globalWidth_, globalWeight_,
+      concentration_, interfacePorts_, routerRadix_, globalPortsPerRouter_,
+      settings.routing);
 }
 
 u32 Network::numRouters() const {
@@ -304,7 +332,7 @@ u32 Network::numRouters() const {
 }
 
 u32 Network::numInterfaces() const {
-  return localWidth_ * concentration_ * globalWidth_;
+  return localWidth_ * (concentration_ / interfacePorts_) * globalWidth_;
 }
 
 Router* Network::getRouter(u32 _id) const {
@@ -316,19 +344,20 @@ Router* Network::getRouter(u32 _id) const {
 }
 
 Interface* Network::getInterface(u32 _id) const {
+  assert(_id < interfaces_.size());
   return interfaces_.at(_id);
 }
 
 void Network::translateInterfaceIdToAddress(
     u32 _id, std::vector<u32>* _address) const {
   Dragonfly::translateInterfaceIdToAddress(
-      concentration_, localWidth_, _id, _address);
+      concentration_, interfacePorts_, localWidth_, _id, _address);
 }
 
 u32 Network::translateInterfaceAddressToId(
     const std::vector<u32>* _address) const {
   return Dragonfly::translateInterfaceAddressToId(
-      concentration_, localWidth_, _address);
+      concentration_, interfacePorts_, localWidth_, _address);
 }
 
 void Network::translateRouterIdToAddress(

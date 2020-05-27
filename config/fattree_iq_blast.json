@@ -3,6 +3,7 @@
     "channel_cycle_time": 1000,
     "router_cycle_time": 1000,
     "interface_cycle_time": 1000,
+    "terminal_cycle_time": 1000,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
     "random_seed": 12345678,
@@ -13,6 +14,7 @@
   "network": {
     "topology": "fat_tree",
     "down_up": [[4, 3], [3, 5], [5]],
+    "interface_ports": 1,
     "protocol_classes": [
       {
         "num_vcs": 1,
@@ -26,6 +28,11 @@
             "algorithm": "all_minimal",
             "max_outputs": 1
           }
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": false,
+          "fixed_msg_vc": false
         }
       }
     ],
@@ -93,8 +100,6 @@
     },
     "interface": {
       "type": "standard",
-      "adaptive": false,
-      "fixed_msg_vc": false,
       "crossbar_scheduler": {
         "allocator": {
           "type": "r_separable",

@@ -26,7 +26,7 @@
 
 TEST(GroupAttackCTP, half_permutation) {
   for (u32 net = 0; net < 100; net++) {
-    TestSetup ts(1, 1, 1, 0xDEAD * net + 0xBEEF);
+    TestSetup ts(1, 1, 1, 1, 0xDEAD * net + 0xBEEF);
 
     u32 groupCount = gSim->rnd.nextU64(1, 20);
     u32 groupSize = gSim->rnd.nextU64(1, 20);
@@ -70,7 +70,7 @@ TEST(GroupAttackCTP, half_permutation) {
 
 TEST(GroupAttackCTP, opposite_permutation) {
   for (u32 net = 0; net < 100; net++) {
-    TestSetup ts(1, 1, 1, 0xDEAD * net + 0xBEEF);
+    TestSetup ts(1, 1, 1, 1, 0xDEAD * net + 0xBEEF);
 
     u32 groupCount = gSim->rnd.nextU64(1, 20);
     u32 groupSize = gSim->rnd.nextU64(1, 20);
@@ -115,7 +115,7 @@ TEST(GroupAttackCTP, opposite_permutation) {
 
 TEST(GroupAttackCTP, offset_permutation) {
   for (u32 net = 0; net < 100; net++) {
-    TestSetup ts(1, 1, 1, 0xDEAD * net + 0xBEEF);
+    TestSetup ts(1, 1, 1, 1, 0xDEAD * net + 0xBEEF);
 
     u32 groupCount = gSim->rnd.nextU64(1, 10);
     u32 groupSize = gSim->rnd.nextU64(1, 10);
@@ -174,7 +174,7 @@ TEST(GroupAttackCTP, random) {
   const u32 ROUNDS = 10000;
 
   for (u32 net = 0; net < CONFIGS; net++) {
-    TestSetup ts(1, 1, 1, 0xDEAD * net + 0xBEEF);
+    TestSetup ts(1, 1, 1, 1, 0xDEAD * net + 0xBEEF);
 
     u32 groupCount;
     u32 groupSize;

@@ -90,7 +90,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                                   HyperX::RoutingAlgorithm* ra =
                                       HyperX::RoutingAlgorithm::create(
                                           "RoutingAlgorithm", &tr, &tr, 1, 12,
-                                          1, 1, {2, 3, 4}, {4, 3, 1}, 6,
+                                          1, 1, {2, 3, 4}, {4, 3, 1}, 6, 1,
                                           settings);
                                   delete ra;
                                 }
@@ -122,8 +122,8 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                                 HyperX::RoutingAlgorithm* ra =
                                     HyperX::RoutingAlgorithm::create(
                                         "RoutingAlgorithm", &tr, &tr, 1, 12,
-                                        1, 1,
-                                        {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                        1, 1, {2, 3, 4}, {4, 3, 1}, 6, 1,
+                                        settings);
                                 delete ra;
                               }
                             }
@@ -152,8 +152,8 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                                 HyperX::RoutingAlgorithm* ra =
                                     HyperX::RoutingAlgorithm::create(
                                         "RoutingAlgorithm", &tr, &tr, 1, 12,
-                                        1, 1,
-                                        {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                        1, 1, {2, 3, 4}, {4, 3, 1}, 6, 1,
+                                        settings);
                                 delete ra;
                               }
                             }
@@ -180,8 +180,8 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                               HyperX::RoutingAlgorithm* ra =
                                   HyperX::RoutingAlgorithm::create(
                                       "RoutingAlgorithm", &tr, &tr, 1, 12,
-                                      1, 1,
-                                      {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                      1, 1, {2, 3, 4}, {4, 3, 1}, 6, 1,
+                                      settings);
                               delete ra;
                             }
                           }
@@ -224,13 +224,13 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                                 settings["decision_scheme"] = decScheme;
                                 settings["congestion_bias"] = cbias;
                                 settings["bias_mode"] = biasMode;
-                                RoutingAlgorithmTestRouter tr("Router",
-                                                              16, 24);
+                                RoutingAlgorithmTestRouter tr(
+                                    "Router", 16, 24);
                                 HyperX::RoutingAlgorithm* ra =
                                     HyperX::RoutingAlgorithm::create(
                                         "RoutingAlgorithm", &tr, &tr, 1, 12,
                                         1, 1, {2, 3, 4}, {4, 3, 1},
-                                        6, settings);
+                                        6, 1, settings);
                                 delete ra;
                               }
                             }
@@ -260,8 +260,8 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                               HyperX::RoutingAlgorithm* ra =
                                   HyperX::RoutingAlgorithm::create(
                                       "RoutingAlgorithm", &tr, &tr, 1, 12,
-                                      1, 1,
-                                      {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                      1, 1, {2, 3, 4}, {4, 3, 1}, 6, 1,
+                                      settings);
                               delete ra;
                             }
                           }
@@ -289,8 +289,8 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                               HyperX::RoutingAlgorithm* ra =
                                   HyperX::RoutingAlgorithm::create(
                                       "RoutingAlgorithm", &tr, &tr, 1, 12,
-                                      1, 1,
-                                      {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                      1, 1, {2, 3, 4}, {4, 3, 1}, 6, 1,
+                                      settings);
                               delete ra;
                             }
                           }

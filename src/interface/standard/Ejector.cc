@@ -20,8 +20,8 @@
 
 namespace Standard {
 
-Ejector::Ejector(const std::string& _name, Interface* _interface)
-    : Component(_name, _interface), interface_(_interface) {
+Ejector::Ejector(const std::string& _name, Interface* _interface, u32 _portId)
+    : Component(_name, _interface), interface_(_interface), portId_(_portId) {
   lastSetTime_ = U32_MAX;
 }
 
@@ -31,7 +31,9 @@ void Ejector::receiveFlit(u32 _port, Flit* _flit) {
   // this is overkill checking!
   u64 nextTime = gSim->futureCycle(Simulator::Clock::CHANNEL, 1);
   assert((lastSetTime_ != nextTime) || (lastSetTime_ == U32_MAX));
-  interface_->sendFlit(0, _flit);
+  interface_->sendFlit(portId_, _flit);
+
+  // send flit using the interface
   lastSetTime_ = nextTime;
 }
 

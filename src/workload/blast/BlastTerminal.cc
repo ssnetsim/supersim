@@ -154,8 +154,8 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
     u32 maxTrans = maxMsg * transactionSize_;
     u64 cycles = cyclesToSend(requestInjectionRate_, maxTrans);
     cycles = gSim->rnd.nextU64(1, 1 + cycles * 3);
-    u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, 1) +
-               ((cycles - 1) * gSim->cycleTime(Simulator::Clock::CHANNEL));
+    u64 time = gSim->futureCycle(Simulator::Clock::TERMINAL, 1) +
+               ((cycles - 1) * gSim->cycleTime(Simulator::Clock::TERMINAL));
     dbgprintf("start time is %lu", time);
     addEvent(time, 0, nullptr, kRequestEvt);
   } else {
@@ -295,7 +295,7 @@ void BlastTerminal::handleReceivedMessage(Message* _message) {
     if (requestProcessingLatency_ == 0) {
       sendResponse(_message);
     } else {
-      u64 respTime = gSim->futureCycle(Simulator::Clock::CHANNEL,
+      u64 respTime = gSim->futureCycle(Simulator::Clock::TERMINAL,
                                        requestProcessingLatency_);
       addEvent(respTime, 0, _message, kResponseEvt);
     }
@@ -329,7 +329,7 @@ void BlastTerminal::warmDetector(Message* _message) {
 
     // push this sample into the cyclic buffers
     if (enrouteSampleTimes_.size() < warmupWindow_) {
-      enrouteSampleTimes_.push_back(gSim->cycle(Simulator::Clock::CHANNEL));
+      enrouteSampleTimes_.push_back(gSim->cycle(Simulator::Clock::TERMINAL));
       enrouteSampleValues_.push_back(flits);
     } else {
       enrouteSampleTimes_.at(enrouteSamplePos_) = gSim->time();
@@ -519,7 +519,7 @@ void BlastTerminal::startTransaction() {
   // determine when to send the next request
   u64 transSize = messageSize * transactionSize_;
   u64 cycles = cyclesToSend(requestInjectionRate_, transSize);
-  u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, cycles);
+  u64 time = gSim->futureCycle(Simulator::Clock::TERMINAL, cycles);
   if (time == gSim->time()) {
     startTransaction();
   } else {

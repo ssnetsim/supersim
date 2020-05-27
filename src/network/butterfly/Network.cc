@@ -22,6 +22,7 @@
 
 #include <tuple>
 
+#include "network/butterfly/InjectionAlgorithm.h"
 #include "network/butterfly/RoutingAlgorithm.h"
 #include "network/butterfly/util.h"
 
@@ -36,6 +37,9 @@ Network::Network(const std::string& _name, const Component* _parent,
   numStages_ = _settings["stages"].asUInt();
   assert(numStages_ >= 1);
   stageWidth_ = (u32)pow(routerRadix_, numStages_ - 1);
+  interfacePorts_ = _settings["interface_ports"].asUInt();
+  assert(interfacePorts_ > 0);
+  assert(routerRadix_ % interfacePorts_ == 0);
 
   // parse the protocol classes description
   loadProtocolClassInfo(_settings["protocol_classes"]);
@@ -53,7 +57,7 @@ Network::Network(const std::string& _name, const Component* _parent,
       u32 routerId = stage * stageWidth_ + column;
       routers_.at(routerId) = Router::create(
           rname, this, this, routerId, {stage, column}, routerRadix_, numVcs_,
-          protocolClassVcs_, _metadataHandler, _settings["router"]);
+          _metadataHandler, _settings["router"]);
     }
   }
 
@@ -82,7 +86,7 @@ Network::Network(const std::string& _name, const Component* _parent,
                                        _settings["internal_channel"]);
         internalChannels_.push_back(channel);
 
-        // need to connect
+        // connect routers
         sourceRouter->setOutputChannel(cOutputPort, channel);
         destinationRouter->setInputChannel(nInputPort, channel);
       }
@@ -90,41 +94,51 @@ Network::Network(const std::string& _name, const Component* _parent,
   }
 
   // create the interfaces and external channels
-  u32 ifaces = routerRadix_ * stageWidth_;
-  interfaces_.resize(ifaces, nullptr);
-  for (u32 id = 0; id < ifaces; id++) {
-    // create the interface
-    std::string interfaceName = "Interface_" + std::to_string(id);
-    std::vector<u32> interfaceAddress;
-    translateInterfaceIdToAddress(id, &interfaceAddress);
-    Interface* interface = Interface::create(
-        interfaceName, this, id, interfaceAddress, numVcs_, protocolClassVcs_,
-        _metadataHandler, _settings["interface"]);
-    interfaces_.at(id) = interface;
-
-    // get references to the routers
-    u32 routerIndex = id / routerRadix_;
-    u32 routerPort = id % routerRadix_;
-    u32 inputRouterId = 0 * stageWidth_ + routerIndex;
-    u32 outputRouterId = (numStages_ - 1) * stageWidth_ + routerIndex;
+  u32 interfacesPerRouter = routerRadix_ / interfacePorts_;
+  u32 totalInterfaces = (routerRadix_ * stageWidth_) / interfacePorts_;
+  interfaces_.resize(totalInterfaces, nullptr);
+  for (u32 r = 0, interfaceId = 0; r < stageWidth_; r++) {
+    // get the routers
+    u32 inputRouterId = 0 * stageWidth_ + r;
+    u32 outputRouterId = (numStages_ - 1) * stageWidth_ + r;
     Router* inputRouter = routers_.at(inputRouterId);
     Router* outputRouter = routers_.at(outputRouterId);
 
-    // create the channels
-    std::string inChannelName = "InChannel_" + std::to_string(id);
-    Channel* inChannel = new Channel(inChannelName, this, numVcs_,
-                                     _settings["external_channel"]);
-    externalChannels_.push_back(inChannel);
-    std::string outChannelName = "OutChannel_" + std::to_string(id);
-    Channel* outChannel = new Channel(outChannelName, this, numVcs_,
-                                      _settings["external_channel"]);
-    externalChannels_.push_back(outChannel);
+    // loop over interfaces
+    for (u32 iface = 0; iface < interfacesPerRouter; iface++, interfaceId++) {
+      // create the interface
+      std::string interfaceName = "Interface_" + std::to_string(interfaceId);
+      std::vector<u32> interfaceAddress;
+      translateInterfaceIdToAddress(interfaceId, &interfaceAddress);
+      Interface* interface = Interface::create(
+          interfaceName, this, this, interfaceId, interfaceAddress,
+          interfacePorts_, numVcs_, _metadataHandler, _settings["interface"]);
+      interfaces_.at(interfaceId) = interface;
 
-    // link interfaces to router via channels
-    interface->setOutputChannel(0, inChannel);
-    inputRouter->setInputChannel(routerPort, inChannel);
-    interface->setInputChannel(0, outChannel);
-    outputRouter->setOutputChannel(routerPort, outChannel);
+      // create and link channels
+      for (u32 ch = 0; ch < interfacePorts_; ch++) {
+        // create I/O channels
+        std::string inChannelName =
+            "InChannel_" + std::to_string(interfaceId) + "_" +
+            std::to_string(ch);
+        std::string outChannelName =
+            "OutChannel_" + std::to_string(interfaceId) + "_" +
+            std::to_string(ch);
+        Channel* inChannel = new Channel(
+            inChannelName, this, numVcs_, _settings["external_channel"]);
+        Channel* outChannel = new Channel(
+            outChannelName, this, numVcs_, _settings["external_channel"]);
+        externalChannels_.push_back(inChannel);
+        externalChannels_.push_back(outChannel);
+
+        // link interfaces to routers via channels
+        u32 routerPort = iface * interfacePorts_ + ch;
+        interface->setOutputChannel(ch, inChannel);
+        inputRouter->setInputChannel(routerPort, inChannel);
+        interface->setInputChannel(ch, outChannel);
+        outputRouter->setOutputChannel(routerPort, outChannel);
+      }
+    }
   }
 
   // clear the protocol class info
@@ -152,17 +166,30 @@ Network::~Network() {
   }
 }
 
+::InjectionAlgorithm* Network::createInjectionAlgorithm(
+     u32 _inputPc, const std::string& _name,
+     const Component* _parent, Interface* _interface) {
+  // get the info
+  const ::Network::PcSettings& settings = pcSettings(_inputPc);
+
+  // call the routing algorithm factory
+  return InjectionAlgorithm::create(
+      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
+      settings.injection);
+}
+
 ::RoutingAlgorithm* Network::createRoutingAlgorithm(
      u32 _inputPort, u32 _inputVc, const std::string& _name,
      const Component* _parent, Router* _router) {
   // get the info
-  const Network::RoutingAlgorithmInfo& info =
-      routingAlgorithmInfo_.at(_inputVc);
+  u32 pc = vcToPc(_inputVc);
+  const ::Network::PcSettings& settings = pcSettings(pc);
 
   // call the routing algorithm factory
   return RoutingAlgorithm::create(
-      _name, _parent, _router, info.baseVc, info.numVcs, _inputPort, _inputVc,
-      routerRadix_, numStages_, tmpStage_, info.settings);
+      _name, _parent, _router, settings.baseVc, settings.numVcs, _inputPort,
+      _inputVc, routerRadix_, numStages_, interfacePorts_, tmpStage_,
+      settings.routing);
 }
 
 u32 Network::numRouters() const {
@@ -170,7 +197,7 @@ u32 Network::numRouters() const {
 }
 
 u32 Network::numInterfaces() const {
-  return routerRadix_ * stageWidth_;
+  return (routerRadix_ * stageWidth_) / interfacePorts_;
 }
 
 Router* Network::getRouter(u32 _id) const {
@@ -184,13 +211,13 @@ Interface* Network::getInterface(u32 _id) const {
 void Network::translateInterfaceIdToAddress(
     u32 _id, std::vector<u32>* _address) const {
   Butterfly::translateInterfaceIdToAddress(
-      routerRadix_, numStages_, stageWidth_, _id, _address);
+      routerRadix_, numStages_, stageWidth_, interfacePorts_, _id, _address);
 }
 
 u32 Network::translateInterfaceAddressToId(
     const std::vector<u32>* _address) const {
   return Butterfly::translateInterfaceAddressToId(
-      routerRadix_, numStages_, stageWidth_, _address);
+      routerRadix_, numStages_, stageWidth_, interfacePorts_, _address);
 }
 
 void Network::translateRouterIdToAddress(

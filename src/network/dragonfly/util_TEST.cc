@@ -198,75 +198,78 @@ TEST(Dragonfly, computeGlobalToRouterMap) {
 }
 
 TEST(Dragonfly, translateInterfaceIdToAddress) {
-  /*
-    void translateInterfaceIdToAddress(
-    u32 _concentration, u32 _localWidth,
-    u32 _id, std::vector<u32>* _address);
-  */
   u32 localWidth = 3;
   u32 conc = 4;
+  u32 ifacePorts = 2;
   u32 id;
   std::vector<u32> address;
   std::vector<u32> exp;
 
-  id = 16;
-  exp = {0, 1, 1};
-  Dragonfly::translateInterfaceIdToAddress(conc, localWidth, id, &address);
-  ASSERT_EQ(address, exp);
-
   id = 0;
   exp = {0, 0, 0};
-  Dragonfly::translateInterfaceIdToAddress(conc, localWidth, id, &address);
+  Dragonfly::translateInterfaceIdToAddress(
+      conc, ifacePorts, localWidth, id, &address);
+  ASSERT_EQ(address, exp);
+
+  id = 1;
+  exp = {1, 0, 0};
+  Dragonfly::translateInterfaceIdToAddress(
+      conc, ifacePorts, localWidth, id, &address);
+  ASSERT_EQ(address, exp);
+
+  id = 5;
+  exp = {1, 2, 0};
+  Dragonfly::translateInterfaceIdToAddress(
+      conc, ifacePorts, localWidth, id, &address);
+  ASSERT_EQ(address, exp);
+
+  id = 16;
+  exp = {0, 2, 2};
+  Dragonfly::translateInterfaceIdToAddress(
+      conc, ifacePorts, localWidth, id, &address);
   ASSERT_EQ(address, exp);
 
   id = 47;
-  exp = {3, 2, 3};
-  Dragonfly::translateInterfaceIdToAddress(conc, localWidth, id, &address);
+  exp = {1, 2, 7};
+  Dragonfly::translateInterfaceIdToAddress(
+      conc, ifacePorts, localWidth, id, &address);
   ASSERT_EQ(address, exp);
 
-  id = 30;
-  exp = {2, 1, 2};
-  Dragonfly::translateInterfaceIdToAddress(conc, localWidth, id, &address);
+  id = 33;
+  exp = {1, 1, 5};
+  Dragonfly::translateInterfaceIdToAddress(
+      conc, ifacePorts, localWidth, id, &address);
   ASSERT_EQ(address, exp);
 }
 
 TEST(Dragonfly, translateInterfaceAddressToId) {
-  /*
-    u32 translateInterfaceAddressToId(
-    u32 _concentration, u32 _localWidth,
-    const std::vector<u32>* _address);
-  */
   u32 localWidth = 3;
   u32 conc = 4;
+  u32 ifacePorts = 2;
   std::vector<u32> address;
 
-  address = {0, 1, 3};
-  ASSERT_EQ(40u, Dragonfly::translateInterfaceAddressToId(conc, localWidth,
-                                                          &address));
+  address = {0, 2, 6};
+  ASSERT_EQ(40u, Dragonfly::translateInterfaceAddressToId(
+      conc, ifacePorts, localWidth, &address));
 
-  address = {1, 0, 2};
-  ASSERT_EQ(25u, Dragonfly::translateInterfaceAddressToId(conc, localWidth,
-                                                          &address));
+  address = {1, 0, 4};
+  ASSERT_EQ(25u, Dragonfly::translateInterfaceAddressToId(
+      conc, ifacePorts, localWidth, &address));
 
-  address = {2, 2, 1};
-  ASSERT_EQ(22u, Dragonfly::translateInterfaceAddressToId(conc, localWidth,
-                                                          &address));
+  address = {0, 2, 3};
+  ASSERT_EQ(22u, Dragonfly::translateInterfaceAddressToId(
+      conc, ifacePorts, localWidth, &address));
 
   address = {0, 0, 0};
-  ASSERT_EQ(0u, Dragonfly::translateInterfaceAddressToId(conc, localWidth,
-                                                         &address));
+  ASSERT_EQ(0u, Dragonfly::translateInterfaceAddressToId(
+      conc, ifacePorts, localWidth, &address));
 
-  address = {3, 2, 3};
-  ASSERT_EQ(47u, Dragonfly::translateInterfaceAddressToId(conc, localWidth,
-                                                          &address));
+  address = {1, 2, 7};
+  ASSERT_EQ(47u, Dragonfly::translateInterfaceAddressToId(
+      conc, ifacePorts, localWidth, &address));
 }
 
 TEST(Dragonfly, translateRouterIdToAddress) {
-  /*
-    void translateRouterIdToAddress(
-    u32 _localWidth,
-    u32 _id, std::vector<u32>* _address);
-  */
   u32 localWidth = 3;
   u32 id;
   std::vector<u32> address;
@@ -336,20 +339,21 @@ TEST(Dragonfly, computeMinimalHops) {
   u32 localWidth = 8;
   u32 routerPortBase = 11;
   u32 concentration = 4;
+  u32 interfacePorts = 2;
   u32 globalPortsPerRouter = 4;
 
-  Dragonfly::translateInterfaceIdToAddress(concentration, localWidth, 1038,
-                                           &src);
-  std::vector<u32> expSrc({2, 3, 32});
+  Dragonfly::translateInterfaceIdToAddress(
+      concentration, interfacePorts, localWidth, 519, &src);
+  std::vector<u32> expSrc({1, 3, 32});
   ASSERT_EQ(src, expSrc);
-  Dragonfly::translateInterfaceIdToAddress(concentration, localWidth, 15, &dst);
-  std::vector<u32> expDst({3, 3, 0});
+  Dragonfly::translateInterfaceIdToAddress(
+      concentration, interfacePorts, localWidth, 18, &dst);
+  std::vector<u32> expDst({0, 1, 1});
   ASSERT_EQ(dst, expDst);
-  ASSERT_EQ(4u, Dragonfly::computeMinimalHops(&src, &dst, globalWidth,
-                                              globalWeight,
-                                              routerPortBase,
-                                              globalPortsPerRouter,
-                                              localWidth));
+  ASSERT_EQ(4u, Dragonfly::computeMinimalHops(
+      &src, &dst, globalWidth, globalWeight, routerPortBase,
+      globalPortsPerRouter, localWidth));
+
   globalWidth = 4;
   globalWeight = 2;
   localWidth = 3;
@@ -365,6 +369,7 @@ TEST(Dragonfly, computeMinimalHops) {
                                               routerPortBase,
                                               globalPortsPerRouter,
                                               localWidth));
+  // same group
   // diff router
   src = {0, 2, 0};
   dst = {1, 0, 0};

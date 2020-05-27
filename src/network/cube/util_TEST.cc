@@ -22,8 +22,8 @@
 #include "event/Simulator.h"
 #include "test/TestSetup_TESTLIB.h"
 
-TEST(CubeUtil, computeNumRoutersAndTerminals) {
-  TestSetup ts(1, 1, 1, 0xDEAFBEEF);
+TEST(CubeUtil, computeNumRoutersAndInterfaces) {
+  TestSetup ts(1, 1, 1, 1, 0xDEAFBEEF);
 
   for (u32 test = 0; test < 1000; test++) {
     std::vector<u32> widths;
@@ -32,86 +32,109 @@ TEST(CubeUtil, computeNumRoutersAndTerminals) {
       widths.push_back(gSim->rnd.nextU64(2, 6));
     }
     u32 concentration = gSim->rnd.nextU64(1, 256);
+    u32 interfacePorts = U32_MAX;
+    for (u32 i = 0; i < 10; i++) {
+      u32 rnd = gSim->rnd.nextU64(2, 16);
+      if (concentration % rnd == 0) {
+        interfacePorts = rnd;
+        break;
+      }
+    }
+    if (interfacePorts == U32_MAX) {
+      interfacePorts = 1;
+    }
+    u32 interfacesPerRouter = concentration / interfacePorts;
 
     // determine expected results
     u32 expRouters = std::accumulate(
         std::begin(widths), std::end(widths), 1, std::multiplies<double>());
-    u32 expTerminals = expRouters * concentration;
+    u32 expInterfaces = expRouters * interfacesPerRouter;
 
     // compare against util functions
     ASSERT_EQ(Cube::computeNumRouters(widths), expRouters);
-    ASSERT_EQ(Cube::computeNumTerminals(widths, concentration), expTerminals);
+    ASSERT_EQ(Cube::computeNumInterfaces(widths, concentration, interfacePorts),
+              expInterfaces);
   }
 }
 
 TEST(CubeUtil, translateInterfaceIdToAddress) {
   const std::vector<u32> widths({3, 2, 3});
-  const u32 concentration = 2;
+  const u32 concentration = 4;
+  const u32 interfacePorts = 2;
 
   std::vector<u32> address;
 
-  Cube::translateInterfaceIdToAddress(0, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(0, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({0, 0, 0, 0}));
 
-  Cube::translateInterfaceIdToAddress(1, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(1, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({1, 0, 0, 0}));
 
-  Cube::translateInterfaceIdToAddress(8, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(8, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({0, 1, 1, 0}));
 
-  Cube::translateInterfaceIdToAddress(9, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(9, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({1, 1, 1, 0}));
 
-  Cube::translateInterfaceIdToAddress(16, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(16, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({0, 2, 0, 1}));
 
-  Cube::translateInterfaceIdToAddress(17, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(17, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({1, 2, 0, 1}));
 
-  Cube::translateInterfaceIdToAddress(20, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(20, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({0, 1, 1, 1}));
 
-  Cube::translateInterfaceIdToAddress(21, widths, concentration, &address);
+  Cube::translateInterfaceIdToAddress(21, widths, concentration, interfacePorts,
+                                      &address);
   ASSERT_EQ(address, std::vector<u32>({1, 1, 1, 1}));
 }
 
 TEST(CubeUtil, translateInterfaceAddressToId) {
   const std::vector<u32> widths({3, 2, 3});
-  const u32 concentration = 2;
+  const u32 concentration = 4;
+  const u32 interfacePorts = 2;
 
   std::vector<u32> address;
 
   address = {0, 0, 0, 0};
-  ASSERT_EQ(0u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                    concentration));
+  ASSERT_EQ(0u, Cube::translateInterfaceAddressToId(
+      &address, widths, concentration, interfacePorts));
 
   address = {1, 0, 0, 0};
-  ASSERT_EQ(1u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                    concentration));
+  ASSERT_EQ(1u, Cube::translateInterfaceAddressToId(
+      &address, widths, concentration, interfacePorts));
 
   address = {0, 1, 1, 0};
-  ASSERT_EQ(8u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                    concentration));
+  ASSERT_EQ(8u, Cube::translateInterfaceAddressToId(
+      &address, widths, concentration, interfacePorts));
 
   address = {1, 1, 1, 0};
-  ASSERT_EQ(9u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                    concentration));
+  ASSERT_EQ(9u, Cube::translateInterfaceAddressToId(
+      &address, widths, concentration, interfacePorts));
 
   address = {0, 2, 0, 1};
-  ASSERT_EQ(16u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                     concentration));
+  ASSERT_EQ(16u, Cube::translateInterfaceAddressToId(
+      &address, widths,  concentration, interfacePorts));
 
   address = {1, 2, 0, 1};
-  ASSERT_EQ(17u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                     concentration));
+  ASSERT_EQ(17u, Cube::translateInterfaceAddressToId(
+      &address, widths,  concentration, interfacePorts));
 
   address = {0, 1, 1, 1};
-  ASSERT_EQ(20u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                     concentration));
+  ASSERT_EQ(20u, Cube::translateInterfaceAddressToId(
+      &address, widths,  concentration, interfacePorts));
 
   address = {1, 1, 1, 1};
-  ASSERT_EQ(21u, Cube::translateInterfaceAddressToId(&address, widths,
-                                                     concentration));
+  ASSERT_EQ(21u, Cube::translateInterfaceAddressToId(
+      &address, widths,  concentration, interfacePorts));
 }
 
 TEST(CubeUtil, translateRouterIdToAddress) {

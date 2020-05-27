@@ -19,20 +19,18 @@
 #include <cassert>
 
 Interface::Interface(
-    const std::string& _name, const Component* _parent, u32 _id,
-    const std::vector<u32>& _address, u32 _numVcs,
-    const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
+    const std::string& _name, const Component* _parent, Network* _network,
+    u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
     MetadataHandler* _metadataHandler, Json::Value _settings)
-    : Component(_name, _parent), PortedDevice(_id, _address, 1, _numVcs),
-      protocolClassVcs_(_protocolClassVcs), messageReceiver_(nullptr),
-      metadataHandler_(_metadataHandler) {}
+    : Component(_name, _parent),
+      PortedDevice(_id, _address, _numPorts, _numVcs), network_(_network),
+      messageReceiver_(nullptr), metadataHandler_(_metadataHandler) {}
 
 Interface::~Interface() {}
 
 Interface* Interface::create(
-    const std::string& _name, const Component* _parent, u32 _id,
-    const std::vector<u32>& _address, u32 _numVcs,
-    const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
+    const std::string& _name, const Component* _parent, Network* _network,
+    u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
     MetadataHandler* _metadataHandler, Json::Value _settings) {
   // retrieve the type
   const std::string& type = _settings["type"].asString();
@@ -40,7 +38,7 @@ Interface* Interface::create(
   // attempt to build the interface
   Interface* interface = factory::ObjectFactory<
     Interface, INTERFACE_ARGS>::create(
-        type, _name, _parent, _id, _address, _numVcs, _protocolClassVcs,
+        type, _name, _parent, _network, _id, _address, _numPorts, _numVcs,
         _metadataHandler, _settings);
 
   // check that the factory had this type

@@ -27,11 +27,12 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
-    Json::Value _settings)
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _settings) {
+                       _dimensionWeights, _concentration, _interfacePorts,
+                       _settings) {
   // VC set mapping:
   //  0 = injection from terminal port, to intermediate destination
   //  1 = switching dimension increments VC count
@@ -178,8 +179,8 @@ void ValiantsRoutingAlgorithm::processRequest(
 
   valiantsRoutingOutput(
       router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-      concentration_, destinationAddress, vcSet, numVcSets, baseVc_ + numVcs_,
-      shortCut_, intNodeAlg_, routingAlg_, _flit, &vcPool_);
+      concentration_, interfacePorts_, destinationAddress, vcSet, numVcSets,
+      baseVc_ + numVcs_, shortCut_, intNodeAlg_, routingAlg_, _flit, &vcPool_);
 
   if ((routingAlg_ == BaseRoutingAlg::DORP) ||
       (routingAlg_ == BaseRoutingAlg::DORV)) {

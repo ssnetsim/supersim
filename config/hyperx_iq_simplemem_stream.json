@@ -3,6 +3,7 @@
     "channel_cycle_time": 1,
     "router_cycle_time": 1,
     "interface_cycle_time": 1,
+    "terminal_cycle_time": 1,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
     "random_seed": 12345678,
@@ -15,6 +16,7 @@
     "dimension_widths": [3, 4, 5],
     "dimension_weights": [2, 2, 1],
     "concentration": 3,
+    "interface_ports": 1,
     "protocol_classes": [
       {
         "num_vcs": 3,
@@ -24,6 +26,11 @@
           "output_algorithm": "random",
           "max_outputs": 0,
           "latency": 1
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
         }
       },
       {
@@ -34,6 +41,11 @@
           "output_algorithm": "random",
           "max_outputs": 0,
           "latency": 1
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
         }
       }
     ],
@@ -98,8 +110,6 @@
     },
     "interface": {
       "type": "standard",
-      "adaptive": false,
-      "fixed_msg_vc": false,
       "crossbar_scheduler": {
         "allocator": {
           "type": "r_separable",

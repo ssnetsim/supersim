@@ -30,10 +30,11 @@ MinRoutingAlgorithm::MinRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _settings) {
+                       _dimensionWeights, _concentration, _interfacePorts,
+                       _settings) {
   // VC set mapping:
   //  0 = injection from terminal port
   //  1 = switching dimension increments VC count
@@ -115,16 +116,16 @@ void MinRoutingAlgorithm::processRequest(
     case MinRoutingAlg::RMINV: {
       randMinVcRoutingOutput(
           router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, destinationAddress, {vcSet}, numVcSets,
-          baseVc_ + numVcs_, &vcPool_);
+          concentration_, interfacePorts_, destinationAddress, {vcSet},
+          numVcSets, baseVc_ + numVcs_, &vcPool_);
       makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
       break;
     }
     case MinRoutingAlg::RMINP: {
       randMinPortRoutingOutput(
           router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, destinationAddress, {vcSet}, numVcSets,
-          baseVc_ + numVcs_, &vcPool_);
+          concentration_, interfacePorts_, destinationAddress, {vcSet},
+          numVcSets, baseVc_ + numVcs_, &vcPool_);
       makeOutputPortSet(&vcPool_, {vcSet}, numVcSets, baseVc_ + numVcs_,
                         maxOutputs_, outputAlg_, &outputPorts_);
       break;
@@ -132,16 +133,16 @@ void MinRoutingAlgorithm::processRequest(
     case MinRoutingAlg::AMINV: {
       adaptiveMinVcRoutingOutput(
           router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, destinationAddress, {vcSet}, numVcSets,
-          baseVc_ + numVcs_, &vcPool_);
+          concentration_, interfacePorts_, destinationAddress, {vcSet},
+          numVcSets, baseVc_ + numVcs_, &vcPool_);
       makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
       break;
     }
     case MinRoutingAlg::AMINP: {
       adaptiveMinPortRoutingOutput(
           router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, destinationAddress, {vcSet}, numVcSets,
-          baseVc_ + numVcs_, &vcPool_);
+          concentration_, interfacePorts_, destinationAddress, {vcSet},
+          numVcSets, baseVc_ + numVcs_, &vcPool_);
       makeOutputPortSet(&vcPool_, {vcSet}, numVcSets, baseVc_ + numVcs_,
                         maxOutputs_, outputAlg_, &outputPorts_);
       break;

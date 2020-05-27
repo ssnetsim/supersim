@@ -36,6 +36,11 @@ class Network : public ::Network {
           MetadataHandler* _metadataHandler, Json::Value _settings);
   ~Network();
 
+  // this is the injection algorithm factory for this network
+  ::InjectionAlgorithm* createInjectionAlgorithm(
+       u32 _inputPc, const std::string& _name,
+       const Component* _parent, Interface* _interface) override;
+
   // this is the routing algorithm factory for this network
   ::RoutingAlgorithm* createRoutingAlgorithm(
        u32 _inputPort, u32 _inputVc, const std::string& _name,
@@ -63,6 +68,7 @@ class Network : public ::Network {
  private:
   u32 dimensions_;
   u32 concentration_;
+  u32 interfacePorts_;
   std::vector<u32> dimensionWidths_;
   std::vector<u32> dimensionWeights_;
   DimensionalArray<Router*> routers_;

@@ -32,12 +32,15 @@ DimComplementReverseCTP::DimComplementReverseCTP(
          _settings["dimensions"].isArray());
   assert(_settings.isMember("concentration") &&
          _settings["concentration"].isUInt());
+  assert(_settings.isMember("interface_ports") &&
+         _settings["interface_ports"].isUInt());
   const u32 dimensions = _settings["dimensions"].size();
   std::vector<u32> widths(dimensions);
   for (u32 i = 0; i < dimensions; i++) {
     widths.at(i) = _settings["dimensions"][i].asUInt();
   }
   const u32 concentration = _settings["concentration"].asUInt();
+  const u32 interfacePorts = _settings["interface_ports"].asUInt();
 
   for (u32 i = 1; i < dimensions/2; i++) {
     assert(widths.at(i) == widths.at(dimensions - i - 1));
@@ -45,7 +48,8 @@ DimComplementReverseCTP::DimComplementReverseCTP(
 
   // get self as a vector address
   std::vector<u32> addr;
-  Cube::translateInterfaceIdToAddress(self_, widths, concentration, &addr);
+  Cube::translateInterfaceIdToAddress(self_, widths, concentration,
+                                      interfacePorts, &addr);
 
   for (u32 dim = 0; dim < dimensions/2; dim++) {
     u32 tmp = widths.at(dim) - 1 - addr.at(dim + 1);
@@ -59,7 +63,8 @@ DimComplementReverseCTP::DimComplementReverseCTP(
   }
 
   // compute the tornado destination id
-  dest_ = Cube::translateInterfaceAddressToId(&addr, widths, concentration);
+  dest_ = Cube::translateInterfaceAddressToId(&addr, widths, concentration,
+                                              interfacePorts);
 }
 
 DimComplementReverseCTP::~DimComplementReverseCTP() {}

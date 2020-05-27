@@ -27,7 +27,7 @@
 
 
 TEST(DualStageClassArbiter, full) {
-  TestSetup testSetup(1, 1, 1, 123);
+  TestSetup testSetup(1, 1, 1, 1, 123);
 
   for (u32 size = 3; size < 100; size += 3) {
     bool* request = new bool[size];

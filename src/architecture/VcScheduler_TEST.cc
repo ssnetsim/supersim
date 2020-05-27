@@ -182,7 +182,7 @@ TEST(VcScheduler, basic) {
     for (u32 V = 1; V < 16; V += 2) {
       for (u32 R = 1; R < V; R += 2) {
         // setup
-        TestSetup testSetup(12, 12, 12, 0x1234567890abcdf);
+        TestSetup testSetup(12, 12, 12, 12, 0x1234567890abcdf);
 
         std::unordered_set<u32> requests;
 
@@ -235,7 +235,7 @@ TEST(VcScheduler, dist) {
 
   for (const std::string& arb : {"random", "comparing", "lslp"}) {
     for (u32 N : {1, 4, 12}) {
-      TestSetup testSetup(12, 12, 12, 0x1234567890abcdf * N);
+      TestSetup testSetup(12, 12, 12, 12, 0x1234567890abcdf * N);
 
       std::unordered_set<u32> requests;
 

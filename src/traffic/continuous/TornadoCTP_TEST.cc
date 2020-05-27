@@ -24,7 +24,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(TornadoCTP, no_dimMask) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   TornadoCTP* tp;
@@ -33,8 +33,9 @@ TEST(TornadoCTP, no_dimMask) {
   settings["dimensions"][0] = Json::Value(5);
   settings["dimensions"][1] = Json::Value(4);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
 
-  numTerminals = 4 * 4 * 5;
+  numTerminals = 4 * 4 * 5 * 1;
   pairs = {
     {0, 8},
     {4, 12},
@@ -44,10 +45,10 @@ TEST(TornadoCTP, no_dimMask) {
   };
 
   for (u32 off = 0; off < 4; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * 5 * off + conc;
-        dst = p.second + 4 * 5 * off + conc;
+        src = p.first + 4 * 5 * off + iface;
+        dst = p.second + 4 * 5 * off + iface;
         tp = new TornadoCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -62,7 +63,7 @@ TEST(TornadoCTP, no_dimMask) {
 }
 
 TEST(TornadoCTP, dimension_0) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   TornadoCTP* tp;
@@ -71,9 +72,10 @@ TEST(TornadoCTP, dimension_0) {
   settings["dimensions"][0] = Json::Value(5);
   settings["dimensions"][1] = Json::Value(4);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
 
-  numTerminals = 4 * 4 * 5;
+  numTerminals = 4 * 4 * 5 * 1;
   pairs = {
     {0, 8},
     {4, 12},
@@ -83,10 +85,10 @@ TEST(TornadoCTP, dimension_0) {
   };
 
   for (u32 off = 0; off < 4; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * 5 * off + conc;
-        dst = p.second + 4 * 5 * off + conc;
+        src = p.first + 4 * 5 * off + iface;
+        dst = p.second + 4 * 5 * off + iface;
         tp = new TornadoCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -101,7 +103,7 @@ TEST(TornadoCTP, dimension_0) {
 }
 
 TEST(TornadoCTP, dimension_1) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   TornadoCTP* tp;
@@ -110,9 +112,10 @@ TEST(TornadoCTP, dimension_1) {
   settings["dimensions"][0] = Json::Value(5);
   settings["dimensions"][1] = Json::Value(4);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][1] = true;
 
-  numTerminals = 4 * 4 * 5;
+  numTerminals = 4 * 4 * 5 * 1;
   pairs = {
     {0, 20},
     {20, 40},
@@ -121,10 +124,10 @@ TEST(TornadoCTP, dimension_1) {
   };
 
   for (u32 off = 0; off < 5; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * off + conc;
-        dst = p.second + 4 * off + conc;
+        src = p.first + 4 * off + iface;
+        dst = p.second + 4 * off + iface;
         tp = new TornadoCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -139,7 +142,7 @@ TEST(TornadoCTP, dimension_1) {
 }
 
 TEST(TornadoCTP, dimension_1_3d) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   TornadoCTP* tp;
@@ -149,9 +152,10 @@ TEST(TornadoCTP, dimension_1_3d) {
   settings["dimensions"][1] = Json::Value(4);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][1] = true;
 
-  numTerminals = 3 * 4 * 4 * 5;
+  numTerminals = 3 * 4 * 4 * 5 * 1;
   pairs = {
     {0, 20},
     {20, 40},
@@ -160,10 +164,10 @@ TEST(TornadoCTP, dimension_1_3d) {
   };
 
   for (u32 off = 0; off < 5; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * off + conc;
-        dst = p.second + 4 * off + conc;
+        src = p.first + 4 * off + iface;
+        dst = p.second + 4 * off + iface;
         tp = new TornadoCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -178,7 +182,7 @@ TEST(TornadoCTP, dimension_1_3d) {
 }
 
 TEST(TornadoCTP, dimension_1_3d_1) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   TornadoCTP* tp;
@@ -188,9 +192,10 @@ TEST(TornadoCTP, dimension_1_3d_1) {
   settings["dimensions"][1] = Json::Value(4);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][1] = true;
 
-  numTerminals = 3 * 4 * 4 * 5;
+  numTerminals = 3 * 4 * 4 * 5 * 1;
   pairs = {
     {0, 20},
     {20, 40},
@@ -199,10 +204,10 @@ TEST(TornadoCTP, dimension_1_3d_1) {
   };
 
   for (u32 off = 0; off < 5; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * off + conc + 4 * 4 * 5;
-        dst = p.second + 4 * off + conc + 4 * 4 * 5;
+        src = p.first + 4 * off + iface + 4 * 4 * 5;
+        dst = p.second + 4 * off + iface + 4 * 4 * 5;
         tp = new TornadoCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -217,7 +222,7 @@ TEST(TornadoCTP, dimension_1_3d_1) {
 }
 
 TEST(TornadoCTP, 2d) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   TornadoCTP* tp;
@@ -226,10 +231,11 @@ TEST(TornadoCTP, 2d) {
   settings["dimensions"][0] = Json::Value(5);
   settings["dimensions"][1] = Json::Value(4);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
 
-  numTerminals = 4 * 4 * 5;
+  numTerminals = 4 * 4 * 5 * 1;
   pairs = {
     {0, 28},
     {4, 32},
@@ -253,10 +259,10 @@ TEST(TornadoCTP, 2d) {
     {76, 4}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first + conc;
-      dst = p.second + conc;
+      src = p.first + iface;
+      dst = p.second + iface;
       tp = new TornadoCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
@@ -270,7 +276,7 @@ TEST(TornadoCTP, 2d) {
 }
 
 TEST(TornadoCTP, 3d) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   TornadoCTP* tp;
@@ -280,11 +286,12 @@ TEST(TornadoCTP, 3d) {
   settings["dimensions"][1] = Json::Value(4);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["enabled_dimensions"][2] = true;
 
-  numTerminals = 3 * 4 * 4 * 5;
+  numTerminals = 3 * 4 * 4 * 5 * 1;
   pairs = {
     {0, 28},
     {4, 32},
@@ -308,10 +315,10 @@ TEST(TornadoCTP, 3d) {
     {76, 4}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first + conc + 4 * 4 * 5;
-      dst = p.second + conc + 2 * 4 * 4 * 5;
+      src = p.first + iface + 4 * 4 * 5;
+      dst = p.second + iface + 2 * 4 * 4 * 5;
       tp = new TornadoCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {

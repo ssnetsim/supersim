@@ -75,7 +75,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                             HyperX::RoutingAlgorithm* ra =
                                 HyperX::RoutingAlgorithm::create(
                                     "RoutingAlgorithm", &tr, &tr, 1, 12, 1, 1,
-                                    {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                    {2, 3, 4}, {4, 3, 1}, 6, 1, settings);
                             delete ra;
                           }
                         }
@@ -95,7 +95,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                         HyperX::RoutingAlgorithm* ra =
                             HyperX::RoutingAlgorithm::create(
                                 "RoutingAlgorithm", &tr, &tr, 1, 12, 1, 1,
-                                {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                {2, 3, 4}, {4, 3, 1}, 6, 1, settings);
                         delete ra;
                       }
                     }
@@ -126,7 +126,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                             HyperX::RoutingAlgorithm* ra =
                                 HyperX::RoutingAlgorithm::create(
                                     "RoutingAlgorithm", &tr, &tr, 1, 12, 1, 1,
-                                  {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                    {2, 3, 4}, {4, 3, 1}, 6, 1, settings);
                             delete ra;
                           }
                         }
@@ -148,7 +148,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                             HyperX::RoutingAlgorithm* ra =
                                 HyperX::RoutingAlgorithm::create(
                                     "RoutingAlgorithm", &tr, &tr, 1, 12, 1, 1,
-                                  {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                    {2, 3, 4}, {4, 3, 1}, 6, 1, settings);
                             delete ra;
                           }
                         }
@@ -181,7 +181,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                             HyperX::RoutingAlgorithm* ra =
                                 HyperX::RoutingAlgorithm::create(
                                     "RoutingAlgorithm", &tr, &tr, 1, 12, 1, 1,
-                                    {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                    {2, 3, 4}, {4, 3, 1}, 6, 1, settings);
                             delete ra;
                           }
                         }
@@ -201,7 +201,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                         HyperX::RoutingAlgorithm* ra =
                             HyperX::RoutingAlgorithm::create(
                                 "RoutingAlgorithm", &tr, &tr, 1, 12, 1, 1,
-                                {2, 3, 4}, {4, 3, 1}, 6, settings);
+                                {2, 3, 4}, {4, 3, 1}, 6, 1, settings);
                         delete ra;
                       }
                     }

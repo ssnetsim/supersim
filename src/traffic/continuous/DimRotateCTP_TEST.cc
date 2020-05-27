@@ -24,7 +24,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(DimRotateCTP, right) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   DimRotateCTP* tp;
@@ -34,9 +34,10 @@ TEST(DimRotateCTP, right) {
   settings["dimensions"][1] = Json::Value(3);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "right";
 
-  numTerminals = 4 * 3 * 3 * 3;
+  numTerminals = 4 * 3 * 3 * 3 * 1;
   pairs = {
     {0, 0},
     {1, 3},
@@ -67,10 +68,10 @@ TEST(DimRotateCTP, right) {
     {26, 26}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first * 4 + conc;
-      dst = p.second * 4 + conc;
+      src = p.first * 4 + iface;
+      dst = p.second * 4 + iface;
       tp = new DimRotateCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
@@ -84,7 +85,7 @@ TEST(DimRotateCTP, right) {
 }
 
 TEST(DimRotateCTP, left) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   DimRotateCTP* tp;
@@ -94,9 +95,10 @@ TEST(DimRotateCTP, left) {
   settings["dimensions"][1] = Json::Value(3);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "left";
 
-  numTerminals = 4 * 3 * 3 * 3;
+  numTerminals = 4 * 3 * 3 * 3 * 1;
   pairs = {
     {0, 0},
     {1, 9},
@@ -127,10 +129,10 @@ TEST(DimRotateCTP, left) {
     {26, 26}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first * 4 + conc;
-      dst = p.second * 4 + conc;
+      src = p.first * 4 + iface;
+      dst = p.second * 4 + iface;
       tp = new DimRotateCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {

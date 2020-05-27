@@ -24,6 +24,7 @@
 #include "interface/standard/MessageReassembler.h"
 #include "interface/standard/OutputQueue.h"
 #include "interface/standard/PacketReassembler.h"
+#include "network/Network.h"
 #include "types/MessageOwner.h"
 
 // event types
@@ -32,11 +33,10 @@
 namespace Standard {
 
 Interface::Interface(
-    const std::string& _name, const Component* _parent, u32 _id,
-    const std::vector<u32>& _address, u32 _numVcs,
-    const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
+    const std::string& _name, const Component* _parent, Network* _network,
+    u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
     MetadataHandler* _metadataHandler, Json::Value _settings)
-    : ::Interface(_name, _parent, _id, _address, _numVcs, _protocolClassVcs,
+    : ::Interface(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
                   _metadataHandler, _settings) {
   // init credits
   initCredits_ = 0;
@@ -65,77 +65,127 @@ Interface::Interface(
     assert(false);
   }
 
-  assert(_settings.isMember("adaptive"));
-  adaptive_ = _settings["adaptive"].asBool();
-
-  assert(_settings.isMember("fixed_msg_vc"));
-  fixedMsgVc_ = _settings["fixed_msg_vc"].asBool();
-
-  // create the crossbar and scheduler
-  crossbar_ = new Crossbar("Crossbar", this, numVcs_, 1,
-                           Simulator::Clock::CHANNEL, _settings["crossbar"]);
-  crossbarScheduler_ = new CrossbarScheduler(
-      "CrossbarScheduler", this, numVcs_, numVcs_, 1, 0,
-      Simulator::Clock::CHANNEL, _settings["crossbar_scheduler"]);
-
-  // create the output queues
-  outputQueues_.resize(numVcs_, nullptr);
-  queueOccupancy_.resize(numVcs_, 0);
-  for (u32 vc = 0; vc < numVcs_; vc++) {
-    // create the output queue
-    outputQueues_.at(vc) = new OutputQueue(
-        "OutputQueue_" + std::to_string(vc), this, crossbarScheduler_, vc,
-        crossbar_, vc, vc);
-
-    // link queue to scheduler
-    crossbarScheduler_->setClient(vc, outputQueues_.at(vc));
+  // create the injection algorithm
+  u32 numPcs = network_->numPcs();
+  injectionAlgorithms_.resize(numPcs, nullptr);
+  for (u32 pc = 0; pc < numPcs; pc++) {
+    std::string injName = "InjectionAlgorithm_" + std::to_string(pc);
+    injectionAlgorithms_.at(pc) = network_->createInjectionAlgorithm(
+        pc, injName, this, this);
   }
 
-  ejector_ = new Ejector("Ejector", this);
-  crossbar_->setReceiver(0, ejector_, 0);
+  // create the queues, crossbars, schedulers, ejectors, and packet reassemblers
+  crossbars_.resize(numPorts_, nullptr);
+  crossbarSchedulers_.resize(numPorts_, nullptr);
+  outputQueues_.resize(numPorts_ * numVcs_, nullptr);
+  queueOccupancy_.resize(numPorts_ * numVcs_, 0);
+  ejectors_.resize(numPorts_, nullptr);
+  packetReassemblers_.resize(numPorts_ * numVcs_, nullptr);
+  for (u32 port = 0; port < numPorts_; port++) {
+    // scheduler
+    std::string crossbarSchedulerName =
+        "CrossbarScheduler_" + std::to_string(port);
+    crossbarSchedulers_.at(port) = new CrossbarScheduler(
+        crossbarSchedulerName, this, numVcs_, numVcs_, 1, port * numVcs_,
+        Simulator::Clock::CHANNEL, _settings["crossbar_scheduler"]);
 
-  // create packet reassemblers
-  packetReassemblers_.resize(numVcs_);
-  for (u32 vc = 0; vc < numVcs_; vc++) {
-    std::string tname = "PacketReassembler_" + std::to_string(vc);
-    packetReassemblers_.at(vc) = new PacketReassembler(tname, this);
+    // crossbar
+    std::string crossbarName = "Crossbar_" + std::to_string(port);
+    crossbars_.at(port) = new Crossbar(
+        crossbarName, this, numVcs_, 1, Simulator::Clock::CHANNEL,
+        _settings["crossbar"]);
+
+    // ejector
+    std::string ejectorName = "Ejector_" + std::to_string(port);
+    ejectors_.at(port) = new Ejector(ejectorName, this, port);
+    crossbars_.at(port)->setReceiver(0, ejectors_.at(port), 0);
+
+    // per VC output queues
+    for (u32 vc = 0; vc < numVcs_; vc++) {
+      u32 vcIdx = vcIndex(port, vc);
+
+      // queue
+      std::string queueName = "OutputQueue_" + std::to_string(port) + "_" +
+                              std::to_string(vc);
+      outputQueues_.at(vcIdx) = new OutputQueue(
+          queueName, this, crossbarSchedulers_.at(port), vc,
+          crossbars_.at(port), vc, port, vc);
+
+      // link queue to scheduler
+      crossbarSchedulers_.at(port)->setClient(vc, outputQueues_.at(vcIdx));
+
+      // packet reassembler
+      std::string packetReassemblerName =
+          "PacketReassembler_" + std::to_string(port) + "_" +
+          std::to_string(vc);
+      packetReassemblers_.at(vcIdx) = new PacketReassembler(
+          packetReassemblerName, this);
+    }
   }
 
   // create message reassembler
   messageReassembler_ = new MessageReassembler("MessageReassembler", this);
+
+  // allocate slots for I/O channels
+  inputChannels_.resize(numPorts_, nullptr);
+  outputChannels_.resize(numPorts_, nullptr);
 }
 
 Interface::~Interface() {
-  delete ejector_;
-  delete crossbarScheduler_;
-  delete crossbar_;
-  for (u32 i = 0; i < numVcs_; i++) {
-    delete outputQueues_.at(i);
-    delete packetReassemblers_.at(i);
+  for (u32 pc = 0; pc < network_->numPcs(); pc++) {
+    delete injectionAlgorithms_.at(pc);
+  }
+  for (u32 port = 0; port < numPorts_; port++) {
+    delete ejectors_.at(port);
+    delete crossbarSchedulers_.at(port);
+    delete crossbars_.at(port);
+    for (u32 vc = 0; vc < numVcs_; vc++) {
+      u32 vcIdx = vcIndex(port, vc);
+      delete outputQueues_.at(vcIdx);
+      delete packetReassemblers_.at(vcIdx);
+    }
   }
   delete messageReassembler_;
 }
 
 void Interface::setInputChannel(u32 _port, Channel* _channel) {
-  assert(_port == 0);
-  inputChannel_ = _channel;
-  _channel->setSink(this, 0);
+  assert(inputChannels_.at(_port) == nullptr);
+  inputChannels_.at(_port) = _channel;
+  _channel->setSink(this, _port);
 }
 
 Channel* Interface::getInputChannel(u32 _port) const {
-  assert(_port == 0);
-  return inputChannel_;
+  assert(_port < numPorts_);
+  return inputChannels_.at(_port);
 }
 
 void Interface::setOutputChannel(u32 _port, Channel* _channel) {
-  assert(_port == 0);
-  outputChannel_ = _channel;
-  _channel->setSource(this, 0);
+  assert(outputChannels_.at(_port) == nullptr);
+  outputChannels_.at(_port) = _channel;
+  _channel->setSource(this, _port);
 }
 
 Channel* Interface::getOutputChannel(u32 _port) const {
-  assert(_port == 0);
-  return outputChannel_;
+  assert(_port < numPorts_);
+  return outputChannels_.at(_port);
+}
+
+void Interface::initialize() {
+  // init credits
+  for (u32 ch = 0; ch < outputChannels_.size(); ch++) {
+    assert(outputChannels_.at(ch)->latency());
+    // compute tailored queue depth for donwstream channel
+    u32 credits = initCredits_;
+    u32 channelLatency = outputChannels_.at(ch)->latency();
+    if (inputQueueTailored_) {
+      credits = computeTailoredBufferLength(
+          inputQueueMult_, inputQueueMin_, inputQueueMax_, channelLatency);
+    }
+    for (u32 vc = 0; vc < numVcs_; vc++) {
+      // initialize the credit count in the CrossbarScheduler
+      crossbarSchedulers_.at(ch)->initCredits(vc, credits);
+    }
+  }
 }
 
 void Interface::receiveMessage(Message* _message) {
@@ -155,84 +205,41 @@ void Interface::receiveMessage(Message* _message) {
   }
 
   // retrieve the protocol class of the message
-  u32 protocolClass = _message->getProtocolClass();
-  assert(protocolClass < protocolClassVcs_.size());
+  u32 pc = _message->getProtocolClass();
+  assert(pc < network_->numPcs());
 
-  // use the protocol class to set the injection VC(s)
-  u32 pktVc = U32_MAX;
-  for (u32 p = 0; p < _message->numPackets(); p++) {
-    Packet* packet = _message->packet(p);
-
-    // get the packet's VC
-    if (!fixedMsgVc_ || pktVc == U32_MAX) {
-      // retrieve the VC range based on protocol class specification
-      u32 baseVc = std::get<0>(protocolClassVcs_.at(protocolClass));
-      u32 numVcs = std::get<1>(protocolClassVcs_.at(protocolClass));
-
-      // choose VC
-      if (adaptive_) {
-        // find all minimally congested VCs within the protocol class
-        std::vector<u32> minOccupancyVcs;
-        u32 minOccupancy = U32_MAX;
-        for (u32 vc = baseVc; vc < baseVc + numVcs; vc++) {
-          u32 occupancy = queueOccupancy_.at(vc);
-          if (occupancy < minOccupancy) {
-            minOccupancy = occupancy;
-            minOccupancyVcs.clear();
-          }
-          if (occupancy <= minOccupancy) {
-            minOccupancyVcs.push_back(vc);
-          }
-        }
-
-        // choose randomly among the minimally congested VCs
-        assert(minOccupancyVcs.size() > 0);
-        u32 rnd = gSim->rnd.nextU64(0, minOccupancyVcs.size() - 1);
-        pktVc = minOccupancyVcs.at(rnd);
-      } else {
-        // choose a random VC within the protocol class
-        pktVc = gSim->rnd.nextU64(baseVc, baseVc + numVcs - 1);
-      }
-    }
-
-    // apply VC and inject
-    for (u32 f = 0; f < packet->numFlits(); f++) {
-      Flit* flit = packet->getFlit(f);
-      flit->setVc(pktVc);
-    }
-
-    // update credit counts
-    assert(queueOccupancy_.at(pktVc) < U32_MAX - packet->numFlits());
-    queueOccupancy_.at(pktVc) += packet->numFlits();
-  }
+  // process the message
+  InjectionAlgorithm* inj = injectionAlgorithms_.at(pc);
+  inj->processMessage(_message);
 
   // create an event to inject the message into the queues
   assert(gSim->epsilon() == 0);
   addEvent(gSim->time(), 1, _message, INJECT_MESSAGE);
 }
 
-void Interface::initialize() {
-  // init credits
-  assert(outputChannel_->latency());
-  // compute tailored queue depth for donwstream channel
-  u32 credits = initCredits_;
-  u32 channelLatency = outputChannel_->latency();
-  if (inputQueueTailored_) {
-    credits = computeTailoredBufferLength(
-            inputQueueMult_, inputQueueMin_, inputQueueMax_, channelLatency);
-  }
-  dbgprintf("INTF out_chan: %u x %.2f = credits %u",
-            channelLatency, inputQueueMult_, credits);
-  for (u32 vc = 0; vc < numVcs_; vc++) {
-    // initialize the credit count in the CrossbarScheduler
-    crossbarScheduler_->initCredits(vc, credits);
-  }
+void Interface::injectingPacket(Packet* _packet, u32 _port, u32 _vc) {
+  // update credit counts
+  u32 vcIdx = vcIndex(_port, _vc);
+  assert(queueOccupancy_.at(vcIdx) < U32_MAX - _packet->numFlits());
+  dbgprintf("INJ (%u,%u) %u+%u=%u", _port, _vc, queueOccupancy_.at(vcIdx),
+            _packet->numFlits(),
+            queueOccupancy_.at(vcIdx) + _packet->numFlits());
+  queueOccupancy_.at(vcIdx) += _packet->numFlits();
+
+  // store the information about the injection decision
+  assert(injectionInfo_.find(_packet) == injectionInfo_.end());
+  injectionInfo_.insert(std::make_pair(_packet, std::make_tuple(_port, _vc)));
+}
+
+u32 Interface::occupancy(u32 _port, u32 _vc) const {
+  u32 vcIdx = vcIndex(_port, _vc);
+  return queueOccupancy_.at(vcIdx);
 }
 
 void Interface::sendFlit(u32 _port, Flit* _flit) {
-  assert(_port == 0);
-  assert(outputChannel_->getNextFlit() == nullptr);
-  outputChannel_->setNextFlit(_flit);
+  assert(_port < numPorts_);
+  assert(outputChannels_.at(_port)->getNextFlit() == nullptr);
+  outputChannels_.at(_port)->setNextFlit(_flit);
 
   // inform the base class of departure
   if (_flit->isHead()) {
@@ -245,7 +252,7 @@ void Interface::sendFlit(u32 _port, Flit* _flit) {
 }
 
 void Interface::receiveFlit(u32 _port, Flit* _flit) {
-  assert(_port == 0);
+  assert(_port < numPorts_);
   assert(_flit != nullptr);
 
   // send a credit back
@@ -259,7 +266,8 @@ void Interface::receiveFlit(u32 _port, Flit* _flit) {
   _flit->setReceiveTime(gSim->time());
 
   // process flit, attempt to create packet
-  Packet* packet = packetReassemblers_.at(_flit->getVc())->receiveFlit(_flit);
+  u32 vcIdx = vcIndex(_port, _flit->getVc());
+  Packet* packet = packetReassemblers_.at(vcIdx)->receiveFlit(_flit);
   // if a packet was completed, process it
   if (packet) {
     // process packet, attempt to create message
@@ -271,32 +279,35 @@ void Interface::receiveFlit(u32 _port, Flit* _flit) {
 }
 
 void Interface::sendCredit(u32 _port, u32 _vc) {
-  assert(_port == 0);
+  assert(_port < numPorts_);
   assert(_vc < numVcs_);
 
   // send credit
-  Credit* credit = inputChannel_->getNextCredit();
+  Credit* credit = inputChannels_.at(_port)->getNextCredit();
   if (credit == nullptr) {
     credit = new Credit(numVcs_);
-    inputChannel_->setNextCredit(credit);
+    inputChannels_.at(_port)->setNextCredit(credit);
   }
   credit->putNum(_vc);
 }
 
 void Interface::receiveCredit(u32 _port, Credit* _credit) {
-  assert(_port == 0);
+  assert(_port < numPorts_);
   while (_credit->more()) {
     u32 vc = _credit->getNum();
-    // dbgprintf("port = %u, vc = %u", _port, vc);
-    crossbarScheduler_->incrementCredit(vc);
+    crossbarSchedulers_.at(_port)->incrementCredit(vc);
   }
   delete _credit;
 }
 
-void Interface::incrementCredit(u32 _vc) {
+void Interface::incrementCredit(u32 _port, u32 _vc) {
+  assert(_port < numPorts_);
   assert(_vc < numVcs_);
-  assert(queueOccupancy_.at(_vc) > 0);
-  queueOccupancy_.at(_vc)--;
+  u32 vcIdx = vcIndex(_port, _vc);
+  dbgprintf("DEC (%u,%u) %u-1=%u", _port, _vc, queueOccupancy_.at(vcIdx), 1,
+            queueOccupancy_.at(vcIdx) - 1);
+  assert(queueOccupancy_.at(vcIdx) > 0);
+  queueOccupancy_.at(vcIdx)--;
 }
 
 void Interface::processEvent(void* _event, s32 _type) {
@@ -314,9 +325,25 @@ void Interface::processEvent(void* _event, s32 _type) {
 void Interface::injectMessage(Message* _message) {
   for (u32 p = 0; p < _message->numPackets(); p++) {
     Packet* packet = _message->packet(p);
-    for (u32 f = 0; f < packet->numFlits(); f++) {
+
+    // lookup the port and VC information for this packet
+    u32 port = std::get<0>(injectionInfo_.at(packet));
+    u32 vc = std::get<1>(injectionInfo_.at(packet));
+    u32 vcIdx = vcIndex(port, vc);
+    injectionInfo_.erase(packet);
+
+    // apply VC to each flit in the packet
+    u32 flits = packet->numFlits();
+    for (u32 f = 0; f < flits; f++) {
       Flit* flit = packet->getFlit(f);
-      outputQueues_.at(flit->getVc())->receiveFlit(0, flit);
+      flit->setVc(vc);
+    }
+
+    // inject the flits of the packet
+    dbgprintf("injecting into %u,%u", port, vc);
+    for (u32 f = 0; f < flits; f++) {
+      Flit* flit = packet->getFlit(f);
+      outputQueues_.at(vcIdx)->receiveFlit(0, flit);  // single port queues
     }
   }
 }

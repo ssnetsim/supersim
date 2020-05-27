@@ -53,20 +53,23 @@ class StatusCheck : public Component {
 
 TEST(Simulator, futureCycle) {
   for (u8 eps = 0; eps < 3; eps++) {
-    TestSetup ts(1000, 333, 500, 6493389);
+    TestSetup ts(1000, 333, 500, 1500, 6493389);
 
     StatusCheck checker("checker", nullptr);
     checker.setEvent(0, eps, Simulator::Clock::CHANNEL, 1, 1000);
     checker.setEvent(0, eps, Simulator::Clock::ROUTER, 1, 333);
     checker.setEvent(0, eps, Simulator::Clock::INTERFACE, 1, 500);
+    checker.setEvent(0, eps, Simulator::Clock::TERMINAL, 1, 1500);
 
     checker.setEvent(0, eps, Simulator::Clock::CHANNEL, 3, 3000);
     checker.setEvent(0, eps, Simulator::Clock::ROUTER, 3, 999);
     checker.setEvent(0, eps, Simulator::Clock::INTERFACE, 3, 1500);
+    checker.setEvent(0, eps, Simulator::Clock::TERMINAL, 3, 4500);
 
     checker.setEvent(2567, eps, Simulator::Clock::CHANNEL, 1, 3000);
     checker.setEvent(823, eps, Simulator::Clock::ROUTER, 1, 999);
     checker.setEvent(1456, eps, Simulator::Clock::INTERFACE, 1, 1500);
+    checker.setEvent(4444, eps, Simulator::Clock::TERMINAL, 1, 4500);
 
     checker.setEvent(4294976391, eps, Simulator::Clock::ROUTER, 1, 4294976724);
 

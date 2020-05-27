@@ -28,10 +28,11 @@ SkippingDimensionsRoutingAlgorithm::SkippingDimensionsRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _settings) {
+                       _dimensionWeights, _concentration, _interfacePorts,
+                       _settings) {
   assert(_settings.isMember("output_type") &&
          _settings["output_type"].isString());
   assert(_settings.isMember("decision_scheme") &&
@@ -260,8 +261,8 @@ void SkippingDimensionsRoutingAlgorithm::processRequest(
         vcSet = baseVc;
         skippingDimOrderRoutingOutput(
             router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-            concentration_, destinationAddress, inDim, baseVc, vcSet,
-            numVcSets_, baseVc_ + numVcs_, _flit, iBias_, cBias_, step_,
+            concentration_, interfacePorts_, destinationAddress, inDim, baseVc,
+            vcSet, numVcSets_, baseVc_ + numVcs_, _flit, iBias_, cBias_, step_,
             threshold_, thresholdMin_, thresholdNonMin_,
             skippingType_, decisionScheme_, hopCountMode_,
             &outputVcs1_, &outputVcs2_, &outputVcs3_, &vcPool_);
@@ -278,15 +279,15 @@ void SkippingDimensionsRoutingAlgorithm::processRequest(
         if (skippingType_ == SkippingRoutingAlg::DOALV) {
           doalVcRoutingOutput(
               router_, inputPort_, inputVc_, dimensionWidths_,
-              dimensionWeights_, concentration_, &fakeDestinationAddress,
-              baseVc, vcSet, numVcSets_, baseVc_ + numVcs_, _flit, &outputVcs1_,
-              &outputVcs2_);
+              dimensionWeights_, concentration_, interfacePorts_,
+              &fakeDestinationAddress, baseVc, vcSet, numVcSets_,
+              baseVc_ + numVcs_, _flit, &outputVcs1_, &outputVcs2_);
         } else if (skippingType_ == SkippingRoutingAlg::DOALP) {
           doalPortRoutingOutput(
               router_, inputPort_, inputVc_, dimensionWidths_,
-              dimensionWeights_, concentration_, destinationAddress, baseVc,
-              vcSet, numVcSets_, baseVc_ + numVcs_, _flit, &outputVcs1_,
-              &outputVcs2_);
+              dimensionWeights_, concentration_, interfacePorts_,
+              destinationAddress, baseVc, vcSet, numVcSets_, baseVc_ + numVcs_,
+              _flit, &outputVcs1_, &outputVcs2_);
         } else {
           fprintf(stderr, "Invalid skipping routing algorithm\n");
           assert(false);
@@ -317,8 +318,8 @@ void SkippingDimensionsRoutingAlgorithm::processRequest(
       vcSet = baseVc;
       skippingDimOrderRoutingOutput(
           router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, destinationAddress, inDim, baseVc, vcSet, numVcSets_,
-          baseVc_ + numVcs_, _flit, iBias_, cBias_, step_,
+          concentration_, interfacePorts_, destinationAddress, inDim, baseVc,
+          vcSet, numVcSets_, baseVc_ + numVcs_, _flit, iBias_, cBias_, step_,
           threshold_, thresholdMin_, thresholdNonMin_,
           skippingType_, decisionScheme_, hopCountMode_,
           &outputVcs1_, &outputVcs2_, &outputVcs3_, &vcPool_);
@@ -342,8 +343,8 @@ void SkippingDimensionsRoutingAlgorithm::processRequest(
       if (numRound < (numRounds_ - 1)) {
         skippingDimOrderRoutingOutput(
             router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-            concentration_, destinationAddress, 0, baseVc, vcSet, numVcSets_,
-            baseVc_ + numVcs_, _flit, iBias_, cBias_, step_,
+            concentration_, interfacePorts_, destinationAddress, 0, baseVc,
+            vcSet, numVcSets_, baseVc_ + numVcs_, _flit, iBias_, cBias_, step_,
             threshold_, thresholdMin_, thresholdNonMin_,
             skippingType_, decisionScheme_, hopCountMode_, &outputVcs1_,
             &outputVcs2_, &outputVcs3_, &vcPool_);
@@ -380,8 +381,8 @@ void SkippingDimensionsRoutingAlgorithm::processRequest(
         vcSet = baseVc;
         finishingDimOrderRoutingOutput(
             router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-            concentration_, destinationAddress, baseVc, vcSet, numVcSets_,
-            baseVc_ + numVcs_, _flit, iBias_, cBias_,
+            concentration_, interfacePorts_, destinationAddress, baseVc, vcSet,
+            numVcSets_, baseVc_ + numVcs_, _flit, iBias_, cBias_,
             threshold_, thresholdMin_, thresholdNonMin_,
             finishingType_, decisionScheme_, hopCountMode_, &outputVcs1_,
             &outputVcs2_, &vcPool_);
@@ -422,8 +423,8 @@ void SkippingDimensionsRoutingAlgorithm::processRequest(
 
     finishingDimOrderRoutingOutput(
         router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-        concentration_, destinationAddress, baseVc, vcSet, numVcSets_,
-        baseVc_ + numVcs_, _flit, iBias_, cBias_,
+        concentration_, interfacePorts_, destinationAddress, baseVc, vcSet,
+        numVcSets_, baseVc_ + numVcs_, _flit, iBias_, cBias_,
         threshold_, thresholdMin_, thresholdNonMin_,
         finishingType_, decisionScheme_, hopCountMode_,
         &outputVcs1_, &outputVcs2_, &vcPool_);

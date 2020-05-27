@@ -57,19 +57,15 @@ std::vector<u32> AdaptiveRoutingAlgorithm::createRoutingClasses(
 
 AdaptiveRoutingAlgorithm::AdaptiveRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
-    u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-    u32 _localWidth, u32 _localWeight,
-    u32 _globalWidth, u32 _globalWeight,
-    u32 _concentration, u32 _routerRadix,
-    u32 _globalPortsPerRouter,
+    u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
+    u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
+    u32 _interfacePorts,  u32 _routerRadix, u32 _globalPortsPerRouter,
     Json::Value _settings)
-    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
-                       _inputVc,
-                       _localWidth, _localWeight,
-                       _globalWidth, _globalWeight,
-                       _concentration, _routerRadix,
-                       _globalPortsPerRouter,
-                       _settings),
+    : RoutingAlgorithm(
+          _name, _parent, _router, _baseVc, _numVcs, _inputPort, _inputVc,
+          _localWidth, _localWeight, _globalWidth, _globalWeight,
+          _concentration, _interfacePorts, _routerRadix, _globalPortsPerRouter,
+          _settings),
       progressiveAdaptive_(_settings["progressive_adaptive"].asBool()),
       valiantNode_(_settings["valiant_node"].asBool()),
       routingClasses_(createRoutingClasses(_settings)),
@@ -116,6 +112,8 @@ void AdaptiveRoutingAlgorithm::processRequest(
   u32 destinationGlobalOffset = computeOffset(thisGroup, destinationGroup,
                                               globalWidth_);
 
+  u32 rc = vcToRc(baseVc_, numVcs_, inputVc_, rcs_);
+
   if (inputPort_ < localPortBase_) {
     // in TERMINAL
     assert(thisGroup == sourceGroup);
@@ -136,7 +134,10 @@ void AdaptiveRoutingAlgorithm::processRequest(
       // in at dst group, srcgroup == dst group
       if (thisRouter == destinationRouter) {
         // exit
-        addPort(destinationTerminal, 1, U32_MAX);
+        u32 basePort = destinationTerminal * interfacePorts_;
+        for (u32 offset = 0; offset < interfacePorts_; offset++) {
+          addPort(basePort + offset, 1, U32_MAX);
+        }
       } else {
         // add all local ports aimed to destination router (min/nonmin)
         addPortsToLocalRouter(thisRouter, destinationRouter,
@@ -146,13 +147,12 @@ void AdaptiveRoutingAlgorithm::processRequest(
       // can't come in through terminal at intermediate group
       assert(false);
     }
-
   } else if (inputPort_ < globalPortBase_ && inputPort_ >= localPortBase_) {
     // in LOCAL
     if (thisGroup == sourceGroup && thisGroup != destinationGroup) {
       // GLOBAL hop
       // at source group but not destination group
-      if (vcToRc(inputVc_, rcs_) == routingClasses_.at(kSrc1)) {
+      if (rc == routingClasses_.at(kSrc1)) {
         // in with S1
         // first hop of PAR done - taking global hop but can chose diff global
         assert(progressiveAdaptive_);
@@ -170,14 +170,14 @@ void AdaptiveRoutingAlgorithm::processRequest(
       }
     } else if (thisGroup != sourceGroup && thisGroup != destinationGroup) {
       // at intermediate group
-      if (vcToRc(inputVc_, rcs_) == routingClasses_.at(kInter1)) {
+      if (rc == routingClasses_.at(kInter1)) {
         assert(valiantNode_);
         // in with I1
         // (int direct) add all local ports aimed to all minimal globals
         addGlobalPorts(thisRouter, true, false, true, false,
                        destinationGlobalOffset,
                        kGlobalMin, U32_MAX, kInter2, U32_MAX);
-      } else if (vcToRc(inputVc_, rcs_) == routingClasses_.at(kInter2)) {
+      } else if (rc == routingClasses_.at(kInter2)) {
         // in with I2
         // add all connected minimal globals as min - use global minimal
         addGlobalPorts(thisRouter, true, false, false, false,
@@ -193,14 +193,17 @@ void AdaptiveRoutingAlgorithm::processRequest(
       addPort(destinationTerminal, 1, U32_MAX);
     } else if (thisGroup == sourceGroup && thisGroup == destinationGroup) {
       // src group == dst group
-      if (vcToRc(inputVc_, rcs_) == routingClasses_.at(kSrc2)) {
+      if (rc == routingClasses_.at(kSrc2)) {
         // in with S2 route to dst with dst 1
         addPortsToLocalRouter(thisRouter, destinationRouter,
                               true, kDst1, U32_MAX);
-      } else if (vcToRc(inputVc_, rcs_) == routingClasses_.at(kDst1)) {
+      } else if (rc == routingClasses_.at(kDst1)) {
         // in Dst1 exit
         assert(thisRouter == destinationRouter);
-        addPort(destinationTerminal, 1, U32_MAX);
+        u32 basePort = destinationTerminal * interfacePorts_;
+        for (u32 offset = 0; offset < interfacePorts_; offset++) {
+          addPort(basePort + offset, 1, U32_MAX);
+        }
       } else {
         // coming in with the wrong VC!
         assert(false);
@@ -211,7 +214,7 @@ void AdaptiveRoutingAlgorithm::processRequest(
   } else if (inputPort_ >= globalPortBase_ && inputPort_ < routerRadix_) {
     // IN GLOBAL
     if (thisGroup != destinationGroup) {
-      assert(vcToRc(inputVc_, rcs_) == routingClasses_.at(kGlobalNonMin));
+      assert(rc == routingClasses_.at(kGlobalNonMin));
       // at intermediate group - in global non-minimal
       if (valiantNode_) {
         // WE AREN'T HANDLING SHORT CUT
@@ -228,10 +231,13 @@ void AdaptiveRoutingAlgorithm::processRequest(
       }
     } else if (thisGroup == destinationGroup) {
       // at destination group - in global minimal
-      assert(vcToRc(inputVc_, rcs_) == routingClasses_.at(kGlobalMin));
+      assert(rc == routingClasses_.at(kGlobalMin));
       if (thisRouter == destinationRouter) {
         // exit
-        addPort(destinationTerminal, 1, U32_MAX);
+        u32 basePort = destinationTerminal * interfacePorts_;
+        for (u32 offset = 0; offset < interfacePorts_; offset++) {
+          addPort(basePort + offset, 1, U32_MAX);
+        }
       } else {
         // add all local ports aimed to dst router
         addPortsToLocalRouter(thisRouter, destinationRouter,

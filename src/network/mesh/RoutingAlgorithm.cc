@@ -24,12 +24,12 @@ RoutingAlgorithm::RoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
-    Json::Value _settings)
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
     : ::RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                          _inputVc, _settings),
       dimensionWidths_(_dimensionWidths), dimensionWeights_(_dimensionWeights),
-      concentration_(_concentration),
+  concentration_(_concentration), interfacePorts_(_interfacePorts),
       inputPortDim_(computeInputPortDim(dimensionWidths_, dimensionWeights_,
                                         concentration_, inputPort_)) {}
 
@@ -39,8 +39,8 @@ RoutingAlgorithm* RoutingAlgorithm::create(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
-    Json::Value _settings) {
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings) {
   // retrieve the algorithm
   const std::string& algorithm = _settings["algorithm"].asString();
 
@@ -49,7 +49,7 @@ RoutingAlgorithm* RoutingAlgorithm::create(
     RoutingAlgorithm, MESH_ROUTINGALGORITHM_ARGS>::create(
         algorithm, _name, _parent, _router, _baseVc, _numVcs, _inputPort,
         _inputVc, _dimensionWidths, _dimensionWeights,
-        _concentration, _settings);
+        _concentration, _interfacePorts, _settings);
 
   // check that the factory had this type
   if (ra == nullptr) {

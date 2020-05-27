@@ -37,7 +37,7 @@ class OutputQueue : public Component, public FlitReceiver,
   OutputQueue(const std::string& _name, Interface* _interface,
               CrossbarScheduler* _crossbarScheduler,
               u32 _crossbarSchedulerIndex, Crossbar* _crossbar,
-              u32 _crossbarIndex, u32 _vc);
+              u32 _crossbarIndex, u32 _port, u32 _vc);
   ~OutputQueue();
 
   // called by Interface injection logic
@@ -54,6 +54,7 @@ class OutputQueue : public Component, public FlitReceiver,
   void processPipeline();
 
   // attributes
+  const u32 port_;
   const u32 vc_;
 
   // external devices

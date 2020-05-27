@@ -1,0 +1,213 @@
+{
+  "simulator": {
+    "channel_cycle_time": 1000,
+    "router_cycle_time": 500,
+    "interface_cycle_time": 500,
+    "terminal_cycle_time": 250,
+    "print_progress": true,
+    "print_interval": 1.0,  // seconds
+    "random_seed": 1234567,
+    "info_log": {
+      "file": null  // "info.csv"
+    }
+  },
+  "network": {
+    "topology": "dragonfly",
+    "global_width": 33,
+    "global_weight": 1,
+    "local_width": 8,
+    "local_weight": 1,
+    "concentration": 4,
+    "interface_ports": 4,
+    "protocol_classes": [
+      {
+        "num_vcs": 2,
+        "routing": {
+          "algorithm": "minimal",
+          "latency": 1,
+          "mode": "vc", // port_ave, port_min, port_max
+          "randomized_global": true,
+          "reduction": {
+            "algorithm": "all_minimal",
+            "max_outputs": 1
+          }
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
+        }
+      },
+      {
+        "num_vcs": 4,
+        "routing": {
+          "algorithm": "valiants",
+          "latency": 1,
+          "mode": "vc", // port_ave, port_min, port_max
+          "smart_intermediate_node": true,
+          "reduction": {
+            "algorithm": "all_minimal",
+            "max_outputs": 1
+          }
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
+        }
+      },
+      {
+        "num_vcs": 5,
+        "routing": {
+          "algorithm": "adaptive",
+          "latency": 1,
+          "mode": "vc", // port_ave, port_min, port_max
+          "progressive_adaptive": true,
+          "valiant_node": true,
+          "reduction": {
+            "algorithm": "weighted",
+            "max_outputs": 1,
+            "congestion_bias": 0.1,
+            "independent_bias": 0.0,
+            "non_minimal_weight_func": "regular"
+          }
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": true,
+          "fixed_msg_vc": false
+        }
+      }
+    ],
+    "channel_mode": "fixed",  // "fixed" | "scalar"
+    "global_channel": {
+      "latency": 10  // cycles
+    },
+    "local_channel": {
+      "latency": 5  // cycles
+    },
+    "external_channel": {
+      "latency": 2  // cycles
+    },
+    "channel_log": {
+      "file": null  // "channels.csv"
+    },
+    "traffic_log": {
+      "file": null  // "traffic.csv"
+    },
+    "router": {
+      "architecture": "output_queued",
+      "congestion_sensor": {
+        "algorithm": "buffer_occupancy",
+        "latency": 1,
+        "granularity": 0,
+        "minimum": 0.0,
+        "offset": 0.1,
+        "mode": "absolute_vc"  // {normalized,absolute}_{port,vc}
+      },
+      "congestion_mode": "output",
+      "input_queue_mode": "fixed",  // fixed or tailored
+      "input_queue_depth": 64,
+      "store_and_forward": false,
+      "transfer_latency": 25,
+      "output_queue_depth": "infinite",
+      "crossbar": {
+        "latency": 1  // cycles
+      },
+      "output_crossbar": {
+        "latency": 1  // cycles
+      },
+      "output_crossbar_scheduler": {
+        "allocator": {
+          "type": "r_separable",
+          "slip_latch": true,
+          "resource_arbiter": {
+            "type": "lslp"
+          }
+        },
+        "full_packet": true,
+        "packet_lock": true,
+        "idle_unlock": true
+      }
+    },
+    "interface": {
+      "type": "standard",
+      "crossbar_scheduler": "$&(network.router.output_crossbar_scheduler)&$",
+      "init_credits_mode": "$&(network.router.input_queue_mode)&$",
+      "init_credits": "$&(network.router.input_queue_depth)&$",
+      "crossbar": {
+        "latency": 1  // cycles
+      }
+    }
+  },
+  "metadata_handler": {
+    "type": "zero"
+  },
+  "workload": {
+    "message_log": {
+      "file": null  // "data.mpf.gz"
+    },
+    "applications": [
+      {
+        "type": "stream",
+        "stream_terminal": {
+          "injection_rate": 0.5,
+          "protocol_class": 0,
+          "num_messages": 1500,
+          "max_packet_size": 64,
+          "message_size_distribution": {
+            "type": "single",
+            "message_size": 64
+          }
+        },
+        "rate_log": {
+          "file": null  // "rates.csv"
+        },
+        "source_terminal": -1,  // < 0 is random
+        "destination_terminal": -1  // < 0 is random
+      },
+      {
+        "type": "stream",
+        "stream_terminal": {
+          "injection_rate": 0.5,
+          "protocol_class": 1,
+          "num_messages": 2500,
+          "max_packet_size": 64,
+          "message_size_distribution": {
+            "type": "single",
+            "message_size": 64
+          }
+        },
+        "rate_log": {
+          "file": null  // "rates.csv"
+        },
+        "source_terminal": -1,  // < 0 is random
+        "destination_terminal": -1  // < 0 is random
+      },
+      {
+        "type": "stream",
+        "stream_terminal": {
+          "injection_rate": 0.5,
+          "protocol_class": 2,
+          "num_messages": 2500,
+          "max_packet_size": 64,
+          "message_size_distribution": {
+            "type": "single",
+            "message_size": 64
+          }
+        },
+        "rate_log": {
+          "file": null  // "rates.csv"
+        },
+        "source_terminal": -1,  // < 0 is random
+        "destination_terminal": -1  // < 0 is random
+      }
+    ]
+  },
+  "debug": [
+    "Network",
+    "Workload.Application_0",
+    "Workload.Application_1",
+    "Workload.Application_2"
+  ]
+}

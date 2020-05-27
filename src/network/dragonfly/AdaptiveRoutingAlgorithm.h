@@ -33,11 +33,9 @@ class AdaptiveRoutingAlgorithm : public RoutingAlgorithm {
  public:
   AdaptiveRoutingAlgorithm(
       const std::string& _name, const Component* _parent, Router* _router,
-      u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-      u32 _localWidth, u32 _localWeight,
-      u32 _globalWidth, u32 _globalWeight,
-      u32 _concentration, u32 _routerRadix,
-      u32 _globalPortsPerRouter,
+      u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
+      u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
+      u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
       Json::Value _settings);
   ~AdaptiveRoutingAlgorithm();
 

@@ -18,14 +18,13 @@
 
 #include <cassert>
 
-static u32 computeNumVcs(const Json::Value& _protocolClasses) {
+static u32 computeNumVcs(const Json::Value& _pcs) {
   u32 sum = 0;
-  for (u32 idx = 0; idx < _protocolClasses.size(); idx++) {
-    const Json::Value& protocolClass = _protocolClasses[idx];
-    assert(protocolClass.isMember("num_vcs") &&
-           protocolClass["num_vcs"].isUInt() &&
-           protocolClass["num_vcs"].asUInt() > 0);
-    sum += protocolClass["num_vcs"].asUInt();
+  for (u32 pc = 0; pc < _pcs.size(); pc++) {
+    assert(_pcs[pc].isMember("num_vcs") &&
+           _pcs[pc]["num_vcs"].isUInt() &&
+           _pcs[pc]["num_vcs"].asUInt() > 0);
+    sum += _pcs[pc]["num_vcs"].asUInt();
   }
   return sum;
 }
@@ -69,10 +68,6 @@ Network* Network::create(
   return network;
 }
 
-u32 Network::numVcs() const {
-  return numVcs_;
-}
-
 MetadataHandler* Network::metadataHandler() const {
   return metadataHandler_;
 }
@@ -102,6 +97,24 @@ bool Network::monitoring() const {
   return monitoring_;
 }
 
+u32 Network::numPcs() const {
+  return pcVcs_.size();
+}
+
+u32 Network::numVcs() const {
+  return numVcs_;
+}
+
+Network::PcVcInfo Network::pcVcs(u32 _pc) const {
+  assert(_pc < pcVcs_.size());
+  return pcVcs_.at(_pc);
+}
+
+u32 Network::vcToPc(u32 _vc) const {
+  assert(_vc < numVcs_);
+  return vcToPc_.at(_vc);
+}
+
 void Network::logTraffic(const Component* _device, u32 _inputPort, u32 _inputVc,
                          u32 _outputPort, u32 _outputVc, u32 _flits) {
   if (monitoring_) {
@@ -110,26 +123,37 @@ void Network::logTraffic(const Component* _device, u32 _inputPort, u32 _inputVc,
   }
 }
 
-
 void Network::loadProtocolClassInfo(Json::Value _settings) {
   // parse the protocol classes description
-  std::vector<std::tuple<u32, u32> > protocolClassVcs;
-  for (u32 idx = 0, vcs = 0; idx < _settings.size(); idx++) {
-    u32 numVcs = _settings[idx]["num_vcs"].asUInt();
-    u32 baseVc = vcs;
-    protocolClassVcs_.push_back(std::make_tuple(baseVc, numVcs));
-    for (u32 vc = 0; vc < numVcs; vc++, vcs++) {
-      RoutingAlgorithmInfo info;
-      info.baseVc = baseVc;
-      info.numVcs = numVcs;
-      info.settings = _settings[idx]["routing"];
-      routingAlgorithmInfo_.push_back(info);
+  for (u32 pc = 0, vcs = 0; pc < _settings.size(); pc++) {
+    Network::PcVcInfo pcVcInfo;
+    pcVcInfo.numVcs = _settings[pc]["num_vcs"].asUInt();
+    pcVcInfo.baseVc = vcs;
+    pcVcs_.push_back(pcVcInfo);
+    Network::PcSettings pcCfg;
+    pcCfg.numVcs = pcVcInfo.numVcs;
+    pcCfg.baseVc = pcVcInfo.baseVc;
+    pcCfg.injection = _settings[pc]["injection"];
+    assert(!pcCfg.injection.isNull());
+    pcCfg.routing = _settings[pc]["routing"];
+    assert(!pcCfg.routing.isNull());
+    pcSettings_.push_back(pcCfg);
+    for (u32 vc = 0; vc < pcVcInfo.numVcs; vc++, vcs++) {
+      bool ins = vcToPc_.insert(std::make_pair(vcs, pc)).second;
+      (void)ins;  // UNUSED
+      assert(ins);
     }
   }
-  assert(routingAlgorithmInfo_.size() == numVcs_);
+  assert(pcVcs_.size() == _settings.size());
+  assert(vcToPc_.size() == numVcs_);
+  assert(pcSettings_.size() == _settings.size());
+}
+
+const Network::PcSettings& Network::pcSettings(u32 _pc) const {
+  assert(_pc < pcVcs_.size());
+  return pcSettings_.at(_pc);
 }
 
 void Network::clearProtocolClassInfo() {
-  protocolClassVcs_.clear();
-  routingAlgorithmInfo_.clear();
+  pcSettings_.clear();
 }

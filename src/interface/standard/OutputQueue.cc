@@ -28,8 +28,8 @@ namespace Standard {
 OutputQueue::OutputQueue(
     const std::string& _name, Interface* _interface,
     CrossbarScheduler* _crossbarScheduler, u32 _crossbarSchedulerIndex,
-    Crossbar* _crossbar, u32 _crossbarIndex, u32 _vc)
-    : Component(_name, _interface), vc_(_vc),
+    Crossbar* _crossbar, u32 _crossbarIndex, u32 _port, u32 _vc)
+    : Component(_name, _interface), port_(_port), vc_(_vc),
       crossbarScheduler_(_crossbarScheduler),
       crossbarSchedulerIndex_(_crossbarSchedulerIndex),
       crossbar_(_crossbar),
@@ -52,10 +52,8 @@ OutputQueue::~OutputQueue() {}
 void OutputQueue::receiveFlit(u32 _port, Flit* _flit) {
   assert(gSim->epsilon() == 1);
 
-  // 'port' is unused
-  assert(_port == 0);
-
-  // make sure this is the right VC
+  // make sure this is the right port and VC
+  assert(_port == 0);  // the queue is single ported
   assert(_flit->getVc() == vc_);
 
   // push flit into corresponding buffer
@@ -94,7 +92,7 @@ void OutputQueue::crossbarSchedulerResponse(u32 _port, u32 _vc) {
 
   if (_port != U32_MAX) {
     // granted
-    assert(_port == 0);  // only one port here
+    assert(_port == 0);  // xbar has single port
     assert(_vc == vc_);  // same VC as this
     swa_.fsm = ePipelineFsm::kReadyToAdvance;
   } else {
@@ -133,7 +131,7 @@ void OutputQueue::processPipeline() {
     swa_.flit = nullptr;
 
     // update interface
-    interface_->incrementCredit(vc_);
+    interface_->incrementCredit(port_, vc_);
   }
 
   /*

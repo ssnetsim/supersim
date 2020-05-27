@@ -27,17 +27,18 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(RandomExchangeNeighborCTP, evenSpread_1d) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   Json::Value settings;
 
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
+  settings["concentration"] = Json::Value(8);
+  settings["interface_ports"] = Json::Value(2);
   settings["enabled_dimensions"][0] = true;
 
   std::vector<u32> widths = {4, 4};
 
-  const u32 numTerminals = 4 * 4 * 4;
+  const u32 numTerminals = 4 * 4 * (8 / 2);
   const u32 kRounds = 10000;
   const bool DEBUG = false;
 
@@ -104,14 +105,15 @@ TEST(RandomExchangeNeighborCTP, evenSpread_1d) {
 }
 
 TEST(RandomExchangeNeighborCTP, evenSpread_1d_all_terminals) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   Json::Value settings;
 
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
+  settings["concentration"] = Json::Value(8);
+  settings["interface_ports"] = Json::Value(2);
   settings["enabled_dimensions"][0] = true;
-  settings["all_terminals"] = true;
+  settings["all_interfaces"] = true;
 
   std::vector<u32> widths = {4, 4};
 
@@ -182,15 +184,16 @@ TEST(RandomExchangeNeighborCTP, evenSpread_1d_all_terminals) {
 }
 
 TEST(RandomExchangeNeighborCTP, evenSpread_2d_all_terminals) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   Json::Value settings;
 
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
+  settings["concentration"] = Json::Value(8);
+  settings["interface_ports"] = Json::Value(2);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
-  settings["all_terminals"] = true;
+  settings["all_interfaces"] = true;
 
   std::vector<u32> widths = {4, 4};
 

@@ -28,10 +28,11 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _settings) {
+                       _dimensionWeights, _concentration, _interfacePorts,
+                       _settings) {
   assert(_settings.isMember("adaptivity_type") &&
          _settings["adaptivity_type"].isString());
   assert(_settings.isMember("output_type") &&
@@ -226,35 +227,37 @@ void DalRoutingAlgorithm::processRequest(
   }
 
   if (adaptivityType_ == AdaptiveRoutingAlg::DOALP) {
-    doalPortRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
-                          dimensionWeights_, concentration_, destinationAddress,
-                          baseVc_, vcSet, numVcSets_, baseVc_ + numVcs_, _flit,
-                          &outputVcsMin_, &outputVcsDer_);
+    doalPortRoutingOutput(
+        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
+        concentration_, interfacePorts_, destinationAddress, baseVc_, vcSet,
+        numVcSets_, baseVc_ + numVcs_, _flit, &outputVcsMin_, &outputVcsDer_);
   } else if (adaptivityType_ == AdaptiveRoutingAlg::DOALV) {
-    doalVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
-                        dimensionWeights_, concentration_, destinationAddress,
-                        baseVc_, vcSet, numVcSets_, baseVc_ + numVcs_, _flit,
-                        &outputVcsMin_, &outputVcsDer_);
+    doalVcRoutingOutput(
+        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
+        concentration_, interfacePorts_, destinationAddress, baseVc_, vcSet,
+        numVcSets_, baseVc_ + numVcs_, _flit, &outputVcsMin_, &outputVcsDer_);
   } else if (adaptivityType_ == AdaptiveRoutingAlg::DDALP) {
-    ddalPortRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
-                          dimensionWeights_, concentration_, destinationAddress,
-                          vcSet, numVcSets_, baseVc_ + numVcs_, _flit,
-                          &outputVcsMin_, &outputVcsDer_);
+    ddalPortRoutingOutput(
+        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
+        concentration_, interfacePorts_, destinationAddress, vcSet, numVcSets_,
+        baseVc_ + numVcs_, _flit, &outputVcsMin_, &outputVcsDer_);
   } else if (adaptivityType_ == AdaptiveRoutingAlg::DDALV) {
-    ddalVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
-                        dimensionWeights_, concentration_, destinationAddress,
-                        vcSet, numVcSets_, baseVc_ + numVcs_, _flit,
-                        &outputVcsMin_, &outputVcsDer_);
+    ddalVcRoutingOutput(
+        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
+        concentration_, interfacePorts_, destinationAddress, vcSet, numVcSets_,
+        baseVc_ + numVcs_, _flit, &outputVcsMin_, &outputVcsDer_);
   } else if (adaptivityType_ == AdaptiveRoutingAlg::VDALP) {
-    vdalPortRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
-                          dimensionWeights_, concentration_, destinationAddress,
-                          baseVc_, vcSet, numVcSets_, baseVc_ + numVcs_, _flit,
-                          multiDeroute_, &outputVcsMin_, &outputVcsDer_);
+    vdalPortRoutingOutput(
+        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
+        concentration_, interfacePorts_, destinationAddress, baseVc_, vcSet,
+        numVcSets_, baseVc_ + numVcs_, _flit, multiDeroute_, &outputVcsMin_,
+        &outputVcsDer_);
   } else if (adaptivityType_ == AdaptiveRoutingAlg::VDALV) {
-    vdalVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
-                        dimensionWeights_, concentration_, destinationAddress,
-                        baseVc_, vcSet, numVcSets_, baseVc_ + numVcs_, _flit,
-                        multiDeroute_, &outputVcsMin_, &outputVcsDer_);
+    vdalVcRoutingOutput(
+        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
+        concentration_, interfacePorts_, destinationAddress, baseVc_, vcSet,
+        numVcSets_, baseVc_ + numVcs_, _flit, multiDeroute_, &outputVcsMin_,
+        &outputVcsDer_);
   } else {
     fprintf(stderr, "Unknown adaptive algorithm\n");
     assert(false);

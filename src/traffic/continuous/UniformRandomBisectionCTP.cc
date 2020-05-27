@@ -32,6 +32,8 @@ UniformRandomBisectionCTP::UniformRandomBisectionCTP(
          _settings["dimensions"].isArray());
   assert(_settings.isMember("concentration") &&
          _settings["concentration"].isUInt());
+  assert(_settings.isMember("interface_ports") &&
+         _settings["interface_ports"].isUInt());
   const u32 dimensions = _settings["dimensions"].size();
   std::vector<u32> widths;
   widths.resize(dimensions);
@@ -39,6 +41,7 @@ UniformRandomBisectionCTP::UniformRandomBisectionCTP(
     widths.at(i) = _settings["dimensions"][i].asUInt();
   }
   u32 concentration = _settings["concentration"].asUInt();
+  u32 interfacePorts = _settings["interface_ports"].asUInt();
 
   std::vector<bool> dimMask(dimensions, false);
   if (_settings.isMember("enabled_dimensions") &&
@@ -57,15 +60,17 @@ UniformRandomBisectionCTP::UniformRandomBisectionCTP(
 
   std::vector<u32> addr;
   // get self as a vector address
-  Cube::translateInterfaceIdToAddress(self_, widths, concentration, &addr);
+  Cube::translateInterfaceIdToAddress(self_, widths, concentration,
+                                      interfacePorts, &addr);
 
+  u32 interfacesPerRouter = concentration / interfacePorts;
   for (u32 dstIdx = 0; dstIdx < numTerminals_; ++dstIdx) {
     std::vector<u32> dstAddr;
     Cube::translateInterfaceIdToAddress(dstIdx, widths, concentration,
-                                        &dstAddr);
+                                        interfacePorts, &dstAddr);
 
     bool validDest = true;
-    if (dstAddr.at(0) != (concentration - 1 - addr.at(0))) {
+    if (dstAddr.at(0) != (interfacesPerRouter - 1 - addr.at(0))) {
       validDest = false;
     }
 

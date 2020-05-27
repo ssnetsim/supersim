@@ -17,6 +17,6 @@
 #ifndef ROUTING_UTIL_H_
 #define ROUTING_UTIL_H_
 
-u32 vcToRc(u32 _vc, u32 _rcs);
+u32 vcToRc(u32 _baseVc, u32 _numVcs, u32 _vc, u32 _rcs);
 
 #endif  // ROUTING_UTIL_H_

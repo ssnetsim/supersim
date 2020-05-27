@@ -23,9 +23,9 @@ namespace Butterfly {
 
 void translateInterfaceIdToAddress(
     u32 _routerRadix, u32 _numStages, u32 _stageWidth,
-    u32 _id, std::vector<u32>* _address);
+    u32 _interfacePorts, u32 _id, std::vector<u32>* _address);
 u32 translateInterfaceAddressToId(
-    u32 _routerRadix, u32 _numStages, u32 _stageWidth,
+    u32 _routerRadix, u32 _numStages, u32 _stageWidth, u32 _interfacePorts,
     const std::vector<u32>* _address);
 void translateRouterIdToAddress(
     u32 _routerRadix, u32 _numStages, u32 _stageWidth,

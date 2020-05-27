@@ -22,7 +22,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(BufferOccupancy, normVc) {
-  TestSetup test(1, 1, 1, 1234);
+  TestSetup test(1, 1, 1, 1, 1234);
 
   const bool debug = false;
   const u32 numPorts = 5;
@@ -33,7 +33,7 @@ TEST(BufferOccupancy, normVc) {
   Json::Value routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      std::vector<std::tuple<u32, u32> >(), nullptr, routerSettings);
+      nullptr, routerSettings);
   router.setDebug(debug);
 
   Json::Value sensorSettings;
@@ -100,7 +100,7 @@ TEST(BufferOccupancy, normVc) {
 }
 
 TEST(BufferOccupancy, absVc) {
-  TestSetup test(1, 1, 1, 1234);
+  TestSetup test(1, 1, 1, 1, 1234);
 
   const bool debug = false;
   const u32 numPorts = 5;
@@ -111,7 +111,7 @@ TEST(BufferOccupancy, absVc) {
   Json::Value routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      std::vector<std::tuple<u32, u32> >(), nullptr, routerSettings);
+      nullptr, routerSettings);
   router.setDebug(debug);
 
   Json::Value sensorSettings;
@@ -177,7 +177,7 @@ TEST(BufferOccupancy, absVc) {
 }
 
 TEST(BufferOccupancy, normPort) {
-  TestSetup test(1, 1, 1, 1234);
+  TestSetup test(1, 1, 1, 1, 1234);
 
   const bool debug = false;
   const u32 numPorts = 5;
@@ -188,7 +188,7 @@ TEST(BufferOccupancy, normPort) {
   Json::Value routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      std::vector<std::tuple<u32, u32> >(), nullptr, routerSettings);
+      nullptr, routerSettings);
   router.setDebug(debug);
 
   Json::Value sensorSettings;
@@ -258,7 +258,7 @@ TEST(BufferOccupancy, normPort) {
 }
 
 TEST(BufferOccupancy, absPort) {
-  TestSetup test(1, 1, 1, 1234);
+  TestSetup test(1, 1, 1, 1, 1234);
 
   const bool debug = false;
   const u32 numPorts = 5;
@@ -269,7 +269,7 @@ TEST(BufferOccupancy, absPort) {
   Json::Value routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      std::vector<std::tuple<u32, u32> >(), nullptr, routerSettings);
+      nullptr, routerSettings);
   router.setDebug(debug);
 
   Json::Value sensorSettings;
@@ -350,12 +350,12 @@ TEST(BufferOccupancy, phantomNormVc) {
   for (f64 valueCoeff = 0.5; valueCoeff < 3.0; valueCoeff += 0.34) {
     for (f64 lengthCoeff = 0.5; lengthCoeff < 3.0; lengthCoeff += 0.34) {
       for (u32 channelLatency = 3; channelLatency <= 40; channelLatency += 3) {
-        TestSetup test(1, 1, 1, 1234);
+        TestSetup test(1, 1, 1, 1, 1234);
 
         Json::Value routerSettings;
         CongestionTestRouter router(
             "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-            std::vector<std::tuple<u32, u32> >(), nullptr, routerSettings);
+            nullptr, routerSettings);
         router.setDebug(debug);
 
         Json::Value channelSettings;
@@ -425,12 +425,12 @@ TEST(BufferOccupancy, phantomAbsVc) {
   for (f64 valueCoeff = 0.5; valueCoeff < 3.0; valueCoeff += 0.34) {
     for (f64 lengthCoeff = 0.5; lengthCoeff < 3.0; lengthCoeff += 0.34) {
       for (u32 channelLatency = 3; channelLatency <= 40; channelLatency += 3) {
-        TestSetup test(1, 1, 1, 1234);
+        TestSetup test(1, 1, 1, 1, 1234);
 
         Json::Value routerSettings;
         CongestionTestRouter router(
             "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-            std::vector<std::tuple<u32, u32> >(), nullptr, routerSettings);
+            nullptr, routerSettings);
         router.setDebug(debug);
 
         Json::Value channelSettings;
