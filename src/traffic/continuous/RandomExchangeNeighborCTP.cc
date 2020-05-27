@@ -33,14 +33,17 @@ RandomExchangeNeighborCTP(
          _settings["dimensions"].isArray());
   assert(_settings.isMember("concentration") &&
          _settings["concentration"].isUInt());
+  assert(_settings.isMember("interface_ports") &&
+         _settings["interface_ports"].isUInt());
   const u32 dimensions = _settings["dimensions"].size();
   std::vector<u32> widths;
   widths.resize(dimensions);
   for (u32 i = 0; i < dimensions; i++) {
     widths.at(i) = _settings["dimensions"][i].asUInt();
   }
-  u32 concentration = _settings["concentration"].asUInt();
-  bool allTerminals = _settings["all_terminals"].asBool();
+  const u32 concentration = _settings["concentration"].asUInt();
+  const u32 interfacePorts = _settings["interface_ports"].asUInt();
+  bool allInterfaces = _settings["all_interfaces"].asBool();
 
   std::vector<bool> dimMask(dimensions, false);
   if (_settings.isMember("enabled_dimensions") &&
@@ -57,36 +60,38 @@ RandomExchangeNeighborCTP(
     assert(widths.at(i) % 2 == 0);
   }
 
+  const u32 interfacesPerRouter = concentration / interfacePorts;
   for (u32 dim = 0; dim < dimensions; ++dim) {
     if (dimMask.at(dim)) {
       std::vector<u32> addr;
       // get self as a vector address
-      Cube::translateInterfaceIdToAddress(self_, widths, concentration, &addr);
+      Cube::translateInterfaceIdToAddress(self_, widths, concentration,
+                                          interfacePorts, &addr);
       addr.at(dim + 1) = (addr.at(dim + 1) + widths.at(dim) - 1)
                          % widths.at(dim);
-      if (allTerminals) {
-        for (u32 conc = 0; conc < concentration; ++conc) {
-          addr.at(0) = conc;
-          u32 dstId = Cube::translateInterfaceAddressToId(&addr, widths,
-                                                          concentration);
+      if (allInterfaces) {
+        for (u32 iface = 0; iface < interfacesPerRouter; ++iface) {
+          addr.at(0) = iface;
+          u32 dstId = Cube::translateInterfaceAddressToId(
+              &addr, widths, concentration, interfacePorts);
           dstVect_.emplace_back(dstId);
         }
       } else {
-        u32 dstId = Cube::translateInterfaceAddressToId(&addr, widths,
-                                                        concentration);
+        u32 dstId = Cube::translateInterfaceAddressToId(
+            &addr, widths, concentration, interfacePorts);
         dstVect_.emplace_back(dstId);
       }
       addr.at(dim + 1) = (addr.at(dim + 1) + 2) % widths.at(dim);
-      if (allTerminals) {
-        for (u32 conc = 0; conc < concentration; ++conc) {
-          addr.at(0) = conc;
-          u32 dstId = Cube::translateInterfaceAddressToId(&addr, widths,
-                                                          concentration);
+      if (allInterfaces) {
+        for (u32 iface = 0; iface < interfacesPerRouter; ++iface) {
+          addr.at(0) = iface;
+          u32 dstId = Cube::translateInterfaceAddressToId(
+              &addr, widths, concentration, interfacePorts);
           dstVect_.emplace_back(dstId);
         }
       } else {
-        u32 dstId = Cube::translateInterfaceAddressToId(&addr, widths,
-                                                        concentration);
+        u32 dstId = Cube::translateInterfaceAddressToId(
+            &addr, widths, concentration, interfacePorts);
         dstVect_.emplace_back(dstId);
       }
     }

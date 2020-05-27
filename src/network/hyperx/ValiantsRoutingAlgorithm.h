@@ -38,7 +38,7 @@ class ValiantsRoutingAlgorithm : public RoutingAlgorithm {
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<u32>& _dimensionWidths,
       const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, Json::Value _settings);
+      u32 _concentration, u32 _interfacePorts, Json::Value _settings);
   ~ValiantsRoutingAlgorithm();
 
  protected:

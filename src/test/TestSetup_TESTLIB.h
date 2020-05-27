@@ -20,7 +20,8 @@
 class TestSetup {
  public:
   TestSetup(u64 _channelCycleTime, u64 _routerCycleTime,
-            u64 _interfaceCycleTime, u64 _randomSeed);
+            u64 _interfaceCycleTime, u64 _terminalCycleTime,
+            u64 _randomSeed);
   ~TestSetup();
 };
 

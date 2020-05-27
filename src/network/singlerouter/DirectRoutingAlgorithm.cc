@@ -18,6 +18,7 @@
 
 #include <cassert>
 
+#include <tuple>
 #include <vector>
 
 #include "types/Packet.h"
@@ -28,9 +29,9 @@ namespace SingleRouter {
 DirectRoutingAlgorithm::DirectRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _concentration,
-    Json::Value _settings)
+    u32 _interfacePorts, Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
-                       _inputVc, _concentration, _settings),
+                       _inputVc, _concentration, _interfacePorts, _settings),
       adaptive_(_settings["adaptive"].asBool()) {
   assert(!_settings["adaptive"].isNull());
 }
@@ -42,30 +43,38 @@ void DirectRoutingAlgorithm::processRequest(
   // direct route to destination
   const std::vector<u32>* destinationAddress =
       _flit->packet()->message()->getDestinationAddress();
-  u32 outputPort = destinationAddress->at(0);
-  assert(outputPort < concentration_);
+  std::vector<u32> outputPorts;
+  u32 basePort = destinationAddress->at(0) * interfacePorts_;
+  for (u32 offset = 0; offset < interfacePorts_; offset++) {
+    u32 outputPort = basePort + offset;
+    assert(outputPort < concentration_);
+    outputPorts.push_back(outputPort);
+  }
 
   if (!adaptive_) {
     // select all VCs in the output port
-    for (u32 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
-      _response->add(outputPort, vc);
+    for (u32 port : outputPorts) {
+      for (u32 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
+        _response->add(port, vc);
+      }
     }
   } else {
     // select all minimally congested VCs
-    std::vector<u32> minCongVcs;
+    std::vector<std::tuple<u32, u32> > minCongVcs;
     f64 minCong = F64_POS_INF;
-    for (u32 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
-      f64 cong = router_->congestionStatus(inputPort_, inputVc_, outputPort,
-                                           vc);
-      if (cong < minCong) {
-        minCong = cong;
-        minCongVcs.clear();
-      }
-      if (cong <= minCong) {
-        minCongVcs.push_back(vc);
-      }
-      for (u32 vc : minCongVcs) {
-        _response->add(outputPort, vc);
+    for (u32 port : outputPorts) {
+      for (u32 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
+        f64 cong = router_->congestionStatus(inputPort_, inputVc_, port, vc);
+        if (cong < minCong) {
+          minCong = cong;
+          minCongVcs.clear();
+        }
+        if (cong <= minCong) {
+          minCongVcs.push_back(std::make_tuple(port, vc));
+        }
+        for (const std::tuple<u32, u32> portVc : minCongVcs) {
+          _response->add(std::get<0>(portVc), std::get<1>(portVc));
+        }
       }
     }
   }

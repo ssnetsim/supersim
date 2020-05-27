@@ -34,6 +34,7 @@ Simulator::Simulator(Json::Value _settings)
       channelCycleTime_(_settings["channel_cycle_time"].asUInt64()),
       routerCycleTime_(_settings["router_cycle_time"].asUInt64()),
       interfaceCycleTime_(_settings["interface_cycle_time"].asUInt64()),
+      terminalCycleTime_(_settings["terminal_cycle_time"].asUInt64()),
       initial_(true), initialized_(false), running_(false), net_(nullptr),
       workload_(nullptr) {
   assert(!_settings["print_progress"].isNull());
@@ -41,10 +42,12 @@ Simulator::Simulator(Json::Value _settings)
   assert(!_settings["channel_cycle_time"].isNull());
   assert(!_settings["router_cycle_time"].isNull());
   assert(!_settings["interface_cycle_time"].isNull());
+  assert(!_settings["terminal_cycle_time"].isNull());
   assert(!_settings["random_seed"].isNull());
   assert(channelCycleTime_ > 0);
   assert(routerCycleTime_ > 0);
   assert(interfaceCycleTime_ > 0);
+  assert(terminalCycleTime_ > 0);
   assert(printInterval_ > 0);
 
   rnd.seed(_settings["random_seed"].asUInt64());
@@ -211,6 +214,8 @@ u64 Simulator::cycleTime(Simulator::Clock _clock) const {
       return routerCycleTime_;
     case Simulator::Clock::INTERFACE:
       return interfaceCycleTime_;
+    case Simulator::Clock::TERMINAL:
+      return terminalCycleTime_;
     default:
       assert(false);
   }

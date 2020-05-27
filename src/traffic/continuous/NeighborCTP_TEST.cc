@@ -24,7 +24,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(NeighborCTP, no_dimMask) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -33,9 +33,10 @@ TEST(NeighborCTP, no_dimMask) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "right";
 
-  numTerminals = 4 * 3 * 4;
+  numTerminals = 4 * 3 * 4 * 1;
   pairs = {
     {0, 4},
     {4, 8},
@@ -44,10 +45,10 @@ TEST(NeighborCTP, no_dimMask) {
   };
 
   for (u32 off = 0; off < 3; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * 4 * off + conc;
-        dst = p.second + 4 * 4 * off + conc;
+        src = p.first + 4 * 4 * off + iface;
+        dst = p.second + 4 * 4 * off + iface;
         tp = new NeighborCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -62,7 +63,7 @@ TEST(NeighborCTP, no_dimMask) {
 }
 
 TEST(NeighborCTP, dimension_0_right) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -71,10 +72,11 @@ TEST(NeighborCTP, dimension_0_right) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "right";
   settings["enabled_dimensions"][0] = true;
 
-  numTerminals = 4 * 3 * 4;
+  numTerminals = 4 * 3 * 4 * 1;
   pairs = {
     {0, 4},
     {4, 8},
@@ -83,10 +85,10 @@ TEST(NeighborCTP, dimension_0_right) {
   };
 
   for (u32 off = 0; off < 3; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * 4 * off + conc;
-        dst = p.second + 4 * 4 * off + conc;
+        src = p.first + 4 * 4 * off + iface;
+        dst = p.second + 4 * 4 * off + iface;
         tp = new NeighborCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -101,7 +103,7 @@ TEST(NeighborCTP, dimension_0_right) {
 }
 
 TEST(NeighborCTP, dimension_0_left) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -110,6 +112,7 @@ TEST(NeighborCTP, dimension_0_left) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "left";
   settings["enabled_dimensions"][0] = true;
 
@@ -122,10 +125,10 @@ TEST(NeighborCTP, dimension_0_left) {
   };
 
   for (u32 off = 0; off < 3; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * 4 * off + conc;
-        dst = p.second + 4 * 4 * off + conc;
+        src = p.first + 4 * 4 * off + iface;
+        dst = p.second + 4 * 4 * off + iface;
         tp = new NeighborCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -140,7 +143,7 @@ TEST(NeighborCTP, dimension_0_left) {
 }
 
 TEST(NeighborCTP, dimension_1_left) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -149,6 +152,7 @@ TEST(NeighborCTP, dimension_1_left) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "left";
   settings["enabled_dimensions"][1] = true;
 
@@ -160,10 +164,10 @@ TEST(NeighborCTP, dimension_1_left) {
   };
 
   for (u32 off = 0; off < 4; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * off + conc;
-        dst = p.second + 4 * off + conc;
+        src = p.first + 4 * off + iface;
+        dst = p.second + 4 * off + iface;
         tp = new NeighborCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -178,7 +182,7 @@ TEST(NeighborCTP, dimension_1_left) {
 }
 
 TEST(NeighborCTP, dimension_1_left_3d) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -188,6 +192,7 @@ TEST(NeighborCTP, dimension_1_left_3d) {
   settings["dimensions"][1] = Json::Value(3);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "left";
   settings["enabled_dimensions"][1] = true;
 
@@ -199,10 +204,10 @@ TEST(NeighborCTP, dimension_1_left_3d) {
   };
 
   for (u32 off = 0; off < 4; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * off + conc;
-        dst = p.second + 4 * off + conc;
+        src = p.first + 4 * off + iface;
+        dst = p.second + 4 * off + iface;
         tp = new NeighborCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -217,7 +222,7 @@ TEST(NeighborCTP, dimension_1_left_3d) {
 }
 
 TEST(NeighborCTP, dimension_1_left_3d_1) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -227,6 +232,7 @@ TEST(NeighborCTP, dimension_1_left_3d_1) {
   settings["dimensions"][1] = Json::Value(3);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["direction"] = "left";
   settings["enabled_dimensions"][1] = true;
 
@@ -238,10 +244,10 @@ TEST(NeighborCTP, dimension_1_left_3d_1) {
   };
 
   for (u32 off = 0; off < 4; ++off) {
-    for (u32 conc = 0; conc < 4; ++conc) {
+    for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
-        src = p.first + 4 * off + conc + 3 * 4 * 4;
-        dst = p.second + 4 * off + conc + 3 * 4 * 4;
+        src = p.first + 4 * off + iface + 3 * 4 * 4;
+        dst = p.second + 4 * off + iface + 3 * 4 * 4;
         tp = new NeighborCTP(
             "TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
@@ -256,7 +262,7 @@ TEST(NeighborCTP, dimension_1_left_3d_1) {
 }
 
 TEST(NeighborCTP, 2d_left) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -265,6 +271,7 @@ TEST(NeighborCTP, 2d_left) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["direction"] = "left";
@@ -285,10 +292,10 @@ TEST(NeighborCTP, 2d_left) {
     {44, 24}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first + conc;
-      dst = p.second + conc;
+      src = p.first + iface;
+      dst = p.second + iface;
       tp = new NeighborCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
@@ -302,7 +309,7 @@ TEST(NeighborCTP, 2d_left) {
 }
 
 TEST(NeighborCTP, 2d_right) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -311,6 +318,7 @@ TEST(NeighborCTP, 2d_right) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["direction"] = "right";
@@ -331,10 +339,10 @@ TEST(NeighborCTP, 2d_right) {
     {44, 0}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first + conc;
-      dst = p.second + conc;
+      src = p.first + iface;
+      dst = p.second + iface;
       tp = new NeighborCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
@@ -348,7 +356,7 @@ TEST(NeighborCTP, 2d_right) {
 }
 
 TEST(NeighborCTP, 3d_right) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   NeighborCTP* tp;
@@ -358,6 +366,7 @@ TEST(NeighborCTP, 3d_right) {
   settings["dimensions"][1] = Json::Value(3);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["enabled_dimensions"][2] = true;
@@ -379,10 +388,10 @@ TEST(NeighborCTP, 3d_right) {
     {44, 0}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first + conc + 4 * 3 * 4;
-      dst = p.second + conc + 2 * 4 * 3 * 4;
+      src = p.first + iface + 4 * 3 * 4;
+      dst = p.second + iface + 2 * 4 * 3 * 4;
       tp = new NeighborCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {

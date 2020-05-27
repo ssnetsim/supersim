@@ -35,10 +35,10 @@ void computeGlobalToRouterMap(u32 _routerGlobalPortBase,
                               u32* _globalPort, u32* _localRouter,
                               u32* _localPort);
 void translateInterfaceIdToAddress(
-    u32 _concentration, u32 _localWidth,
+    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
     u32 _id, std::vector<u32>* _address);
 u32 translateInterfaceAddressToId(
-    u32 _concentration, u32 _localWidth,
+    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
     const std::vector<u32>* _address);
 
 void translateRouterIdToAddress(

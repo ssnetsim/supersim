@@ -66,14 +66,16 @@ void computeGlobalToRouterMap(u32 _routerGlobalPortBase,
 }
 
 void translateInterfaceIdToAddress(
-    u32 _concentration, u32 _localWidth,
+    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
     u32 _id, std::vector<u32>* _address) {
   _address->resize(3);
-  u32 group = _id / (_localWidth * _concentration);
-  _id %= _localWidth * _concentration;
+  u32 interfacesPerRouter = _concentration / _interfacePorts;
+  u32 interfacesPerGroup = _localWidth * interfacesPerRouter;
+  u32 group = _id / interfacesPerGroup;
+  _id %= _localWidth * interfacesPerRouter;
 
-  u32 router = _id / _concentration;
-  _id %= _concentration;
+  u32 router = _id / interfacesPerRouter;
+  _id %= interfacesPerRouter;
 
   _address->at(0) = _id;
   _address->at(1) = router;
@@ -81,15 +83,16 @@ void translateInterfaceIdToAddress(
 }
 
 u32 translateInterfaceAddressToId(
-    u32 _concentration, u32 _localWidth,
+    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
     const std::vector<u32>* _address) {
-  u32 c = _address->at(0);
+  u32 interfacesPerRouter = _concentration / _interfacePorts;
+  u32 interfacesPerGroup = _localWidth * interfacesPerRouter;
+
+  u32 t = _address->at(0);
   u32 r = _address->at(1);
   u32 g = _address->at(2);
 
-  u32 gBase = g * (_localWidth * _concentration);
-  u32 rBase = r * _concentration;
-  return gBase + rBase + c;
+  return g * interfacesPerGroup + r * interfacesPerRouter + t;
 }
 
 void translateRouterIdToAddress(

@@ -30,17 +30,15 @@ namespace Dragonfly {
 
 ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
-    u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-    u32 _localWidth, u32 _localWeight,
-    u32 _globalWidth, u32 _globalWeight,
-    u32 _concentration, u32 _routerRadix, u32 _globalPortsPerRouter,
+    u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
+    u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
+    u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
     Json::Value _settings)
-    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
-                       _inputVc,
-                       _localWidth, _localWeight,
-                       _globalWidth, _globalWeight,
-                       _concentration, _routerRadix, _globalPortsPerRouter,
-                       _settings),
+    : RoutingAlgorithm(
+          _name, _parent, _router, _baseVc, _numVcs, _inputPort, _inputVc,
+          _localWidth, _localWeight, _globalWidth, _globalWeight,
+          _concentration, _interfacePorts, _routerRadix, _globalPortsPerRouter,
+          _settings),
       mode_(parseRoutingMode(_settings["mode"].asString())) {
   assert(_settings.isMember("smart_intermediate_node"));
   smartIntermediateNode_ = _settings["smart_intermediate_node"].asBool();
@@ -116,7 +114,8 @@ void ValiantsRoutingAlgorithm::processRequest(
     assert(packet->getHopCount() == 0);
     stage = 0;
   } else {
-    stage = (vcToRc(inputVc_, rcs_) < 2) ? 0 : 1;
+    u32 rc = vcToRc(baseVc_, numVcs_, inputVc_, rcs_);
+    stage = (rc < 2) ? 0 : 1;
   }
 
   u32 routingToGroup;
@@ -140,11 +139,10 @@ void ValiantsRoutingAlgorithm::processRequest(
   // check if at routingTo destination
   // Exit stage or network
   bool atDestination = ((thisGroup == destinationGroup) &&
-                        (thisRouter == destinationRouter))? true : false;
+                        (thisRouter == destinationRouter));
 
   bool atIntermediate  = ((thisGroup == intermediateAddress->at(1)) &&
-                          (thisRouter ==
-                           intermediateAddress->at(0)))? true : false;
+                          (thisRouter == intermediateAddress->at(0)));
 
   // set stage
   if (stage == 0 && (atDestination || atIntermediate)) {
@@ -156,12 +154,17 @@ void ValiantsRoutingAlgorithm::processRequest(
     routingToTerminal = destinationAddress->at(0);
     // if chose int = dst, at dst again
     atDestination = ((thisGroup == destinationGroup) &&
-                     (thisRouter == destinationRouter))? true : false;
+                     (thisRouter == destinationRouter));
   }
 
   if (atDestination) {
     // exit network
-    addPort(routingToTerminal, 1, U32_MAX);
+    assert(stage == 1);
+    assert(routingToTerminal != U32_MAX);
+    u32 basePort = routingToTerminal * interfacePorts_;
+    for (u32 offset = 0; offset < interfacePorts_; offset++) {
+      addPort(basePort + offset, 1, U32_MAX);
+    }
     // delete the routing extension
     delete intermediateAddress;
     packet->setRoutingExtension(nullptr);
@@ -171,8 +174,8 @@ void ValiantsRoutingAlgorithm::processRequest(
     u32 globalOffset = computeOffset(thisGroup, routingToGroup,
                                      globalWidth_);
 
-    // in Terminal
     if (inputPort_ < localPortBase_) {
+      // in Terminal
       if (thisGroup == routingToGroup) {
         // Local - at destination group route locally
         assert(thisRouter != routingToRouter);  // exit detected above
@@ -183,8 +186,8 @@ void ValiantsRoutingAlgorithm::processRequest(
         // global - dst in remote group route globally
         routeToRemoteGroup(globalOffset, stage, newStage, thisRouter, 0, 2);
       }
-      // in Local
     } else if (inputPort_ >= localPortBase_ && inputPort_ < globalPortBase_) {
+      // in Local
       // exit detected above
       assert(thisRouter != routingToRouter || thisGroup != routingToGroup);
       if (thisGroup == routingToGroup) {
@@ -196,8 +199,8 @@ void ValiantsRoutingAlgorithm::processRequest(
         // global - dst in remote group route globally
         routeToRemoteGroup(globalOffset, stage, newStage, thisRouter, 0, 2);
       }
-      // in Global
     } else if (inputPort_ >= globalPortBase_ && inputPort_ < routerRadix_) {
+      // in Global
       assert(newStage || thisGroup == routingToGroup);
       if (thisGroup == routingToGroup) {
         // local - at destination group route locally
@@ -225,7 +228,7 @@ void ValiantsRoutingAlgorithm::processRequest(
       // add all VCs in the specified routing class
       u32 rc = std::get<1>(t);
       if (rc != U32_MAX) {
-        for (u32 vc = baseVc_ + rc; vc < baseVc_ + numVcs_; vc+= rcs_) {
+        for (u32 vc = baseVc_ + rc; vc < baseVc_ + numVcs_; vc += rcs_) {
           _response->add(port, vc);
         }
       } else {
@@ -257,9 +260,9 @@ void ValiantsRoutingAlgorithm::addPort(u32 _port, u32 _hops,
         reduction_->add(_port, vc, _hops, cong);
       }
     } else {
-      // all all VCs in the specified routing class
+      // add all VCs in the specified routing class
       for (u32 vc = baseVc_ + _routingClass; vc < baseVc_ + numVcs_;
-           vc+= rcs_) {
+           vc += rcs_) {
         f64 cong = router_->congestionStatus(inputPort_, inputVc_, _port, vc);
         reduction_->add(_port, vc, _hops, cong);
       }
@@ -310,6 +313,7 @@ void ValiantsRoutingAlgorithm::addPortsToLocalRouter(u32 _src, u32 _dst,
     addPort(port, 1, _routingClass);
   }
 }
+
 }  // namespace Dragonfly
 
 registerWithObjectFactory("valiants", Dragonfly::RoutingAlgorithm,

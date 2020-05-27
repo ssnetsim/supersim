@@ -33,13 +33,16 @@ RandomExchangeQuadrantCTP(
          _settings["dimensions"].isArray());
   assert(_settings.isMember("concentration") &&
          _settings["concentration"].isUInt());
+  assert(_settings.isMember("interface_ports") &&
+         _settings["interface_ports"].isUInt());
   const u32 dimensions = _settings["dimensions"].size();
   std::vector<u32> widths;
   widths.resize(dimensions);
   for (u32 i = 0; i < dimensions; i++) {
     widths.at(i) = _settings["dimensions"][i].asUInt();
   }
-  u32 concentration = _settings["concentration"].asUInt();
+  const u32 concentration = _settings["concentration"].asUInt();
+  const u32 interfacePorts = _settings["interface_ports"].asUInt();
 
   assert(dimensions > 1);
   for (u32 i = 0; i < dimensions; i++) {
@@ -48,7 +51,8 @@ RandomExchangeQuadrantCTP(
 
   std::vector<u32> addr;
   // get self as a vector address
-  Cube::translateInterfaceIdToAddress(self_, widths, concentration, &addr);
+  Cube::translateInterfaceIdToAddress(self_, widths, concentration,
+                                      interfacePorts, &addr);
 
   u32 selfQuadrant = 0;
   for (u32 i = 0; i < dimensions; ++i) {
@@ -60,7 +64,7 @@ RandomExchangeQuadrantCTP(
   for (u32 dstIdx = 0; dstIdx < numTerminals_; ++dstIdx) {
     std::vector<u32> dstAddr;
     Cube::translateInterfaceIdToAddress(dstIdx, widths, concentration,
-                                        &dstAddr);
+                                        interfacePorts, &dstAddr);
     u32 dstQuadrant = 0;
     for (u32 i = 0; i < dimensions; ++i) {
       if (dstAddr.at(i + 1) >= widths.at(i) / 2) {

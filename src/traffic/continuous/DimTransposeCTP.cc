@@ -32,6 +32,8 @@ DimTransposeCTP::DimTransposeCTP(
          _settings["dimensions"].isArray());
   assert(_settings.isMember("concentration") &&
          _settings["concentration"].isUInt());
+  assert(_settings.isMember("interface_ports") &&
+         _settings["interface_ports"].isUInt());
   const u32 dimensions = _settings["dimensions"].size();
   assert(dimensions > 1);
   std::vector<u32> widths(dimensions);
@@ -39,6 +41,7 @@ DimTransposeCTP::DimTransposeCTP(
     widths.at(i) = _settings["dimensions"][i].asUInt();
   }
   const u32 concentration = _settings["concentration"].asUInt();
+  const u32 interfacePorts = _settings["interface_ports"].asUInt();
 
   std::vector<u32> workingDims(2);
   std::vector<bool> dimMask(dimensions, false);
@@ -68,7 +71,8 @@ DimTransposeCTP::DimTransposeCTP(
 
   // get self as a vector address
   std::vector<u32> addr;
-  Cube::translateInterfaceIdToAddress(self_, widths, concentration, &addr);
+  Cube::translateInterfaceIdToAddress(self_, widths, concentration,
+                                      interfacePorts, &addr);
 
   u32 idx0 = workingDims.at(0) + 1;
   u32 idx1 = workingDims.at(1) + 1;
@@ -77,7 +81,8 @@ DimTransposeCTP::DimTransposeCTP(
   addr.at(idx1) = tmp;
 
   // compute the tornado destination id
-  dest_ = Cube::translateInterfaceAddressToId(&addr, widths, concentration);
+  dest_ = Cube::translateInterfaceAddressToId(&addr, widths, concentration,
+                                              interfacePorts);
 }
 
 DimTransposeCTP::~DimTransposeCTP() {}

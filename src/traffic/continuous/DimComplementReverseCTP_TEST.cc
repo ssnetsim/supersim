@@ -24,7 +24,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(DimComplementReverseCTP, simple) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   DimComplementReverseCTP* tp;
@@ -34,8 +34,9 @@ TEST(DimComplementReverseCTP, simple) {
   settings["dimensions"][1] = Json::Value(3);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(1);
 
-  numTerminals = 4 * 3 * 3 * 3;
+  numTerminals = 4 * 3 * 3 * 3 * 1;
 
   pairs = {
     {0, 26},
@@ -67,10 +68,10 @@ TEST(DimComplementReverseCTP, simple) {
     {26, 0}
   };
 
-  for (u32 conc = 0; conc < 4; ++conc) {
+  for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first * 4 + conc;
-      dst = p.second * 4 + conc;
+      src = p.first * 4 + iface;
+      dst = p.second * 4 + iface;
       tp = new DimComplementReverseCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {

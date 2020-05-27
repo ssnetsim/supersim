@@ -19,10 +19,11 @@
 
 #include <vector>
 
-TEST(Butterfly, translateInterfaceIdToAddress) {
+TEST(Butterfly, translateInterfaceIdToAddress1) {
   const u32 routerRadix = 2;
   const u32 numStages = 3;
   const u32 stageWidth = 4;
+  const u32 interfacePorts = 1;
 
   std::vector<u32> act;
   std::vector<u32> exp;
@@ -30,61 +31,212 @@ TEST(Butterfly, translateInterfaceIdToAddress) {
 
   id = 0;
   exp = {0, 0, 0};
-  Butterfly::translateInterfaceIdToAddress(routerRadix, numStages, stageWidth,
-                                           id, &act);
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 3;
   exp = {0, 1, 1};
-  Butterfly::translateInterfaceIdToAddress(routerRadix, numStages, stageWidth,
-                                           id, &act);
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 4;
   exp = {1, 0, 0};
-  Butterfly::translateInterfaceIdToAddress(routerRadix, numStages, stageWidth,
-                                           id, &act);
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 6;
   exp = {1, 1, 0};
-  Butterfly::translateInterfaceIdToAddress(routerRadix, numStages, stageWidth,
-                                           id, &act);
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 7;
   exp = {1, 1, 1};
-  Butterfly::translateInterfaceIdToAddress(routerRadix, numStages, stageWidth,
-                                           id, &act);
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
   ASSERT_EQ(act, exp);
 }
 
-TEST(Butterfly, translateInterfaceAddressToId) {
+TEST(Butterfly, translateInterfaceIdToAddress2) {
   const u32 routerRadix = 2;
   const u32 numStages = 3;
   const u32 stageWidth = 4;
+  const u32 interfacePorts = 2;
+
+  std::vector<u32> act;
+  std::vector<u32> exp;
+  u32 id;
+
+  id = 0;
+  exp = {0, 0, 0};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+
+  id = 1;
+  exp = {0, 1, 0};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+
+  id = 2;
+  exp = {1, 0, 0};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+
+  id = 3;
+  exp = {1, 1, 0};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+}
+
+TEST(Butterfly, translateInterfaceIdToAddress3) {
+  const u32 routerRadix = 4;
+  const u32 numStages = 3;
+  const u32 stageWidth = 16;
+  const u32 interfacePorts = 2;
+
+  std::vector<u32> act;
+  std::vector<u32> exp;
+  u32 id;
+
+  id = 0;
+  exp = {0, 0, 0};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+
+  id = 1;
+  exp = {0, 0, 1};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+
+  id = 7;
+  exp = {0, 3, 1};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+
+  id = 8;
+  exp = {1, 0, 0};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+
+  id = 31;
+  exp = {3, 3, 1};
+  Butterfly::translateInterfaceIdToAddress(
+      routerRadix, numStages, stageWidth, interfacePorts, id, &act);
+  ASSERT_EQ(act, exp);
+}
+
+TEST(Butterfly, translateInterfaceAddressToId1) {
+  const u32 routerRadix = 2;
+  const u32 numStages = 3;
+  const u32 stageWidth = 4;
+  const u32 interfacePorts = 1;
 
   std::vector<u32> addr;
 
   addr = {0, 0, 0};
   ASSERT_EQ(0u, Butterfly::translateInterfaceAddressToId(
-      routerRadix, numStages, stageWidth, &addr));
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
 
   addr = {0, 1, 1};
   ASSERT_EQ(3u, Butterfly::translateInterfaceAddressToId(
-      routerRadix, numStages, stageWidth, &addr));
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
 
   addr = {1, 0, 0};
   ASSERT_EQ(4u, Butterfly::translateInterfaceAddressToId(
-      routerRadix, numStages, stageWidth, &addr));
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
 
   addr = {1, 1, 0};
   ASSERT_EQ(6u, Butterfly::translateInterfaceAddressToId(
-      routerRadix, numStages, stageWidth, &addr));
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
 
   addr = {1, 1, 1};
   ASSERT_EQ(7u, Butterfly::translateInterfaceAddressToId(
-      routerRadix, numStages, stageWidth, &addr));
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+}
+
+TEST(Butterfly, translateInterfaceAddressToId2) {
+  const u32 routerRadix = 2;
+  const u32 numStages = 3;
+  const u32 stageWidth = 4;
+  const u32 interfacePorts = 2;
+
+  std::vector<u32> addr;
+
+  addr = {0, 0, 0};
+  ASSERT_EQ(0u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {0, 1, 0};
+  ASSERT_EQ(1u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {1, 0, 0};
+  ASSERT_EQ(2u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {1, 1, 0};
+  ASSERT_EQ(3u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+}
+
+TEST(Butterfly, translateInterfaceAddressToId3) {
+  const u32 routerRadix = 4;
+  const u32 numStages = 3;
+  const u32 stageWidth = 16;
+  const u32 interfacePorts = 2;
+
+  std::vector<u32> addr;
+
+  addr = {0, 0, 0};
+  ASSERT_EQ(0u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {0, 0, 1};
+  ASSERT_EQ(1u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {0, 1, 0};
+  ASSERT_EQ(2u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {0, 3, 1};
+  ASSERT_EQ(7u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {1, 0, 0};
+  ASSERT_EQ(8u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {1, 3, 1};
+  ASSERT_EQ(15u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {3, 0, 0};
+  ASSERT_EQ(24u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {3, 2, 1};
+  ASSERT_EQ(29u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {3, 3, 0};
+  ASSERT_EQ(30u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
+
+  addr = {3, 3, 1};
+  ASSERT_EQ(31u, Butterfly::translateInterfaceAddressToId(
+      routerRadix, numStages, stageWidth, interfacePorts, &addr));
 }
 
 TEST(Butterfly, translateRouterIdToAddress) {

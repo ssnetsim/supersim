@@ -27,7 +27,7 @@
 
 #define TORUS_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
     Router*, u32, u32, u32, u32, const std::vector<u32>&, \
-    const std::vector<u32>&, u32, Json::Value
+    const std::vector<u32>&, u32, u32, Json::Value
 
 namespace Torus {
 
@@ -37,7 +37,8 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
       const std::string& _name, const Component* _parent,
       Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<u32>& _dimensionWidths,
-      const std::vector<u32>& _dimensionWeights, u32 _concentration,
+      const std::vector<u32>& _dimensionWeights,
+      u32 _concentration, u32 _interface,
       Json::Value _settings);
   virtual ~RoutingAlgorithm();
 
@@ -48,6 +49,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
   const std::vector<u32> dimensionWidths_;
   const std::vector<u32> dimensionWeights_;
   const u32 concentration_;
+  const u32 interfacePorts_;
   const u32 inputPortDim_;
 };
 

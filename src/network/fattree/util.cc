@@ -33,13 +33,13 @@ u32 leastCommonAncestor(const std::vector<u32>* _source,
 }
 
 void translateInterfaceIdToAddress(
-    u32 _numLevels, const std::vector<u32>& _terminalsPerGroup,
-    u32 _id, std::vector<u32>* _address) {
+    u32 _numLevels, const std::vector<u32>& _interfacesPerGroup, u32 _id,
+    std::vector<u32>* _address) {
   _address->resize(_numLevels);
   // work in reverse for little endian format
   for (s32 level = _numLevels - 1; level >= 0; level--) {
     if (level > 0) {
-      u32 subGroupSize = _terminalsPerGroup.at(level-1);
+      u32 subGroupSize = _interfacesPerGroup.at(level-1);
       _address->at(level) = _id / subGroupSize;
       _id %= subGroupSize;
     } else {
@@ -49,12 +49,12 @@ void translateInterfaceIdToAddress(
 }
 
 u32 translateInterfaceAddressToId(
-    u32 _numLevels, const std::vector<u32>& _terminalsPerGroup,
+    u32 _numLevels, const std::vector<u32>& _interfacesPerGroup,
     const std::vector<u32>* _address) {
   u32 sum = 0;
   for (s32 level = _numLevels - 1; level >= 0; level--) {
     if (level > 0) {
-      u32 subGroupSize = _terminalsPerGroup.at(level-1);
+      u32 subGroupSize = _interfacesPerGroup.at(level-1);
       sum += _address->at(level) * subGroupSize;
     } else {
       sum += _address->at(level);

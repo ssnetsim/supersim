@@ -47,7 +47,7 @@ TEST(LocalRandomRemoteAttackCTP, full) {
     const u32 LBLOCK = ME / BSIZE;
     const u32 RBLOCK = (LBLOCK + 2) % (NSIZE / BSIZE);
 
-    TestSetup ts(1, 1, 1, 0xDEAD * 123 + 0xBEEF);
+    TestSetup ts(1, 1, 1, 1, 0xDEAD * 123 + 0xBEEF);
 
     Json::Value settings;
     settings["block_size"] = BSIZE;

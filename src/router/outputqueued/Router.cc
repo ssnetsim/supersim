@@ -35,10 +35,9 @@ namespace OutputQueued {
 Router::Router(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
     MetadataHandler* _metadataHandler, Json::Value _settings)
     : ::Router(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
-               _protocolClassVcs, _metadataHandler, _settings),
+               _metadataHandler, _settings),
       transferLatency_(_settings["transfer_latency"].asUInt()),
       congestionMode_(parseCongestionMode(
           _settings["congestion_mode"].asString())) {
@@ -217,6 +216,7 @@ void Router::setInputChannel(u32 _port, Channel* _channel) {
 }
 
 Channel* Router::getInputChannel(u32 _port) const {
+  assert(_port < numPorts_);
   return inputChannels_.at(_port);
 }
 
@@ -227,6 +227,7 @@ void Router::setOutputChannel(u32 _port, Channel* _channel) {
 }
 
 Channel* Router::getOutputChannel(u32 _port) const {
+  assert(_port < numPorts_);
   return outputChannels_.at(_port);
 }
 

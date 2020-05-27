@@ -215,7 +215,7 @@ class EndMonitoring : public Component {
 TEST(Channel, full) {
   u64 seed = 12345678;
   for (u32 cycleTime = 1; cycleTime <= 100; cycleTime += 26) {
-    TestSetup setup(cycleTime, cycleTime, cycleTime, seed++);
+    TestSetup setup(cycleTime, cycleTime, cycleTime, cycleTime, seed++);
 
     const u32 latency = gSim->rnd.nextU64(1, 5);
 

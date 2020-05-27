@@ -21,54 +21,65 @@
 
 #include <tuple>
 
+#include "network/interfaceonly/InjectionAlgorithm.h"
+
 namespace InterfaceOnly {
 
 Network::Network(const std::string& _name, const Component* _parent,
                  MetadataHandler* _metadataHandler, Json::Value _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // num_interfaces
-  num_interfaces_ = _settings["num_interfaces"].asUInt();
-  assert(num_interfaces_ > 0);
-  assert(num_interfaces_ <= 2);
-  dbgprintf("num_interfaces_ = %u", num_interfaces_);
+  numInterfaces_ = _settings["num_interfaces"].asUInt();
+  assert(numInterfaces_ > 0);
+  assert(numInterfaces_ <= 2);
+  interfacePorts_ = _settings["interface_ports"].asUInt();
+  assert(interfacePorts_ > 0);
+  dbgprintf("num_interfaces_ = %u", numInterfaces_);
 
   // parse the protocol classes description
   loadProtocolClassInfo(_settings["protocol_classes"]);
 
   // create the interfaces
-  interfaces_.resize(num_interfaces_, nullptr);
-  for (u32 id = 0; id < num_interfaces_; id++) {
+  interfaces_.resize(numInterfaces_, nullptr);
+  for (u32 id = 0; id < numInterfaces_; id++) {
     // create the interface
     std::string interfaceName = "Interface_" + std::to_string(id);
     Interface* interface = Interface::create(
-        interfaceName, this, id, {id}, numVcs_, protocolClassVcs_,
+        interfaceName, this, this, id, {id}, interfacePorts_, numVcs_,
         _metadataHandler, _settings["interface"]);
     interfaces_.at(id) = interface;
   }
 
   // create the channels
-  for (u32 id = 0; id < num_interfaces_; id++) {
-    // create the single channels
-    std::string channelName = "Channel_" + std::to_string(id);
-    Channel* channel = new Channel(channelName, this, numVcs_,
-                                   _settings["external_channel"]);
-    externalChannels_.push_back(channel);
+  for (u32 iface = 0; iface < numInterfaces_; iface++) {
+    for (u32 ch = 0; ch < interfacePorts_; ch++) {
+      // create the single channels
+      std::string channelName =
+          "Channel_" + std::to_string(iface) + "_" + std::to_string(ch);
+      Channel* channel = new Channel(
+          channelName, this, numVcs_, _settings["external_channel"]);
+      externalChannels_.push_back(channel);
+    }
   }
 
   // connect the interface(s) and channel(s)
-  if (num_interfaces_ == 1) {
+  if (numInterfaces_ == 1) {
     // a single interface is wired in loopback mode
-    Channel* channel = externalChannels_.at(0);
-    interfaces_.at(0)->setInputChannel(0, channel);
-    interfaces_.at(0)->setOutputChannel(0, channel);
-  } else {  // num_interfaces_ == 2
+    for (u32 ch = 0; ch < interfacePorts_; ch++) {
+      Channel* channel = externalChannels_.at(ch);
+      interfaces_.at(0)->setInputChannel(ch, channel);
+      interfaces_.at(0)->setOutputChannel(ch, channel);
+    }
+  } else {  // numInterfaces_ == 2
     // two interfaces are wired directly together
-    Channel* channel0 = externalChannels_.at(0);
-    Channel* channel1 = externalChannels_.at(1);
-    interfaces_.at(0)->setOutputChannel(0, channel0);
-    interfaces_.at(1)->setInputChannel(0, channel0);
-    interfaces_.at(1)->setOutputChannel(0, channel1);
-    interfaces_.at(0)->setInputChannel(0, channel1);
+    for (u32 ch = 0; ch < interfacePorts_; ch++) {
+      Channel* channel0 = externalChannels_.at(ch);
+      Channel* channel1 = externalChannels_.at(interfacePorts_ + ch);
+      interfaces_.at(0)->setOutputChannel(ch, channel0);
+      interfaces_.at(1)->setInputChannel(ch, channel0);
+      interfaces_.at(1)->setOutputChannel(ch, channel1);
+      interfaces_.at(0)->setInputChannel(ch, channel1);
+    }
   }
 
   // clear the protocol class info
@@ -87,6 +98,18 @@ Network::~Network() {
   }
 }
 
+::InjectionAlgorithm* Network::createInjectionAlgorithm(
+     u32 _inputPc, const std::string& _name,
+     const Component* _parent, Interface* _interface) {
+  // get the info
+  const ::Network::PcSettings& settings = pcSettings(_inputPc);
+
+  // call the routing algorithm factory
+  return InjectionAlgorithm::create(
+      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
+      settings.injection);
+}
+
 ::RoutingAlgorithm* Network::createRoutingAlgorithm(
      u32 _inputPort, u32 _inputVc, const std::string& _name,
      const Component* _parent, Router* _router) {
@@ -99,7 +122,7 @@ u32 Network::numRouters() const {
 }
 
 u32 Network::numInterfaces() const {
-  return num_interfaces_;
+  return numInterfaces_;
 }
 
 Router* Network::getRouter(u32 _id) const {

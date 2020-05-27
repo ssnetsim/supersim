@@ -52,7 +52,7 @@ void MemoryTerminal::processEvent(void* _event, s32 _type) {
 }
 
 void MemoryTerminal::startMemoryAccess() {
-  addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, latency_),
+  addEvent(gSim->futureCycle(Simulator::Clock::TERMINAL, latency_),
            0, nullptr, 0);
   fsm_ = eState::kAccessing;
 }

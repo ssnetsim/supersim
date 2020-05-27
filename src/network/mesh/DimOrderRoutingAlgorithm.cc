@@ -30,11 +30,11 @@ DimOrderRoutingAlgorithm::DimOrderRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
-    Json::Value _settings)
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
-                       _concentration, _settings),
+                       _concentration, _interfacePorts, _settings),
       mode_(parseRoutingMode(_settings["mode"].asString())) {
   // VC set mapping:
   //  0 = all routing
@@ -87,10 +87,10 @@ void DimOrderRoutingAlgorithm::processRequest(
 
   // test if already at destination router
   if (dim == routerAddress.size()) {
-    outputPort = destinationAddress->at(0);
-
-    // on ejection, all VCs in set are ok
-    addPort(outputPort, hops, 0);
+    u32 basePort = destinationAddress->at(0) * interfacePorts_;
+    for (u32 offset = 0; offset < interfacePorts_; offset++) {
+      addPort(basePort + offset, hops, 0);
+    }
   } else {
     // more router-to-router hops needed
     u32 src = routerAddress.at(dim);

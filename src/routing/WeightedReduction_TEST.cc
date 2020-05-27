@@ -22,7 +22,7 @@
 
 TEST(WeightedReduction, vc) {
   for (u32 i = 0; i < 2; i++) {
-    TestSetup ts(1, 1, 1, 12345+i);
+    TestSetup ts(1, 1, 1, 1, 12345+i);
 
     TestPortedDevice dev(4, 6);
     Json::Value settings;

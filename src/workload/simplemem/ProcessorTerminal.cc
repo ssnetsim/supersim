@@ -64,7 +64,7 @@ void ProcessorTerminal::start() {
 void ProcessorTerminal::continueProcessing() {
   if (remainingAccesses_ > 0) {
     dbgprintf("starting processing");
-    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, latency_),
+    addEvent(gSim->futureCycle(Simulator::Clock::TERMINAL, latency_),
              0, nullptr, 0);
     fsm_ = eState::kProcessing;
   } else {

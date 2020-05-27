@@ -30,7 +30,7 @@ class Interface;
 
 class Ejector : public Component, public FlitReceiver {
  public:
-  Ejector(const std::string& _name, Interface* _interface);
+  Ejector(const std::string& _name, Interface* _interface, u32 _portId);
   ~Ejector();
 
   // called by crossbar (FlitReceiver)

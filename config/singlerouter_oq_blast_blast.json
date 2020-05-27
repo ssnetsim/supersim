@@ -3,6 +3,7 @@
     "channel_cycle_time": 1,
     "router_cycle_time": 1,
     "interface_cycle_time": 1,
+    "terminal_cycle_time": 1,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
     "random_seed": 12345678,
@@ -13,6 +14,7 @@
   "network": {
     "topology": "single_router",
     "concentration": 16,
+    "interface_ports": 1,
     "protocol_classes": [
       {
         "num_vcs": 4,
@@ -20,6 +22,11 @@
           "algorithm": "direct",
           "latency": 1,
           "adaptive": false
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": false,
+          "fixed_msg_vc": false
         }
       }
     ],
@@ -67,8 +74,6 @@
     },
     "interface": {
       "type": "standard",
-      "adaptive": false,
-      "fixed_msg_vc": false,
       "crossbar_scheduler": "$&(network.router.output_crossbar_scheduler)&$",
       "init_credits_mode": "$&(network.router.input_queue_mode)&$",
       "init_credits": "$&(network.router.input_queue_depth)&$",

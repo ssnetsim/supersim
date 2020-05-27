@@ -21,25 +21,30 @@ namespace Butterfly {
 
 void translateInterfaceIdToAddress(
     u32 _routerRadix, u32 _numStages, u32 _stageWidth,
-    u32 _id, std::vector<u32>* _address) {
+    u32 _interfacePorts, u32 _id, std::vector<u32>* _address) {
   _address->resize(_numStages);
+  // scale the _id for _interfacePorts
+  _id *= _interfacePorts;
+
   // work in reverse for little endian format
-  for (u32 exp = 0, row = _numStages - 1; exp < _numStages; exp++, row--) {
-    u32 divisor = (u32)pow(_routerRadix, row);
+  for (u32 exp = 0, stage = _numStages - 1; exp < _numStages; exp++, stage--) {
+    u32 divisor = (u32)pow(_routerRadix, stage);
     _address->at(exp) = _id / divisor;
     _id %= divisor;
   }
+  _address->at(_numStages - 1) /= _interfacePorts;
 }
 
 u32 translateInterfaceAddressToId(
-    u32 _routerRadix, u32 _numStages, u32 _stageWidth,
+    u32 _routerRadix, u32 _numStages, u32 _stageWidth, u32 _interfacePorts,
     const std::vector<u32>* _address) {
   u32 sum = 0;
   u32 pow = 1;
   for (u32 stage = 0; stage < _numStages; stage++) {
     u32 index = _numStages - 1 - stage;
-    sum += _address->at(index) * pow;
-    pow *= _routerRadix;
+    u32 scalar = stage == 0 ? _interfacePorts : 1;
+    sum += (_address->at(index) * pow);
+    pow *= _routerRadix / scalar;
   }
   return sum;
 }

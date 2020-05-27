@@ -188,8 +188,8 @@ void PulseTerminal::start() {
       u32 maxTrans = maxMsg * transactionSize_;
       u64 cycles = cyclesToSend(requestInjectionRate_, maxTrans);
       cycles = gSim->rnd.nextU64(delay_, delay_ + cycles * 3);
-      u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, 1) +
-                 ((cycles - 1) * gSim->cycleTime(Simulator::Clock::CHANNEL));
+      u64 time = gSim->futureCycle(Simulator::Clock::TERMINAL, 1) +
+                 ((cycles - 1) * gSim->cycleTime(Simulator::Clock::TERMINAL));
       dbgprintf("start time is %lu", time);
       addEvent(time, 0, nullptr, kRequestEvt);
     } else {
@@ -252,7 +252,7 @@ void PulseTerminal::handleReceivedMessage(Message* _message) {
     if (requestProcessingLatency_ == 0) {
       sendResponse(_message);
     } else {
-      u64 respTime = gSim->futureCycle(Simulator::Clock::CHANNEL,
+      u64 respTime = gSim->futureCycle(Simulator::Clock::TERMINAL,
                                        requestProcessingLatency_);
       addEvent(respTime, 0, _message, kResponseEvt);
     }
@@ -374,7 +374,7 @@ void PulseTerminal::startTransaction() {
   if (transactionsSent_ < numTransactions_) {
     u64 transSize = messageSize * transactionSize_;
     u64 cycles = cyclesToSend(requestInjectionRate_, transSize);
-    u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, cycles);
+    u64 time = gSim->futureCycle(Simulator::Clock::TERMINAL, cycles);
     if (time == gSim->time()) {
       startTransaction();
     } else {

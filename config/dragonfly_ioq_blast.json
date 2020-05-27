@@ -3,6 +3,7 @@
     "channel_cycle_time": 1,
     "router_cycle_time": 1,
     "interface_cycle_time": 1,
+    "terminal_cycle_time": 1,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
     "random_seed": 1234567,
@@ -17,6 +18,7 @@
     "local_width": 4,
     "local_weight": 2,
     "concentration": 2,
+    "interface_ports": 1,
     "protocol_classes": [
       {
         "num_vcs": 5,
@@ -33,6 +35,11 @@
             "independent_bias": 0.0,
             "non_minimal_weight_func": "regular"
           }
+        },
+        "injection": {
+          "algorithm": "common",
+          "adaptive": false,
+          "fixed_msg_vc": false
         }
       }
     ],
@@ -105,8 +112,6 @@
     },
     "interface": {
       "type": "standard",
-      "adaptive": false,
-      "fixed_msg_vc": false,
       "crossbar_scheduler": "$&(network.router.crossbar_scheduler)&$",
       "init_credits_mode": "$&(network.router.input_queue_mode)&$",
       "init_credits": "$&(network.router.input_queue_depth)&$",

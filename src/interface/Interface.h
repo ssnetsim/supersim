@@ -36,18 +36,16 @@
 class PacketReassembler;
 class MessageReassembler;
 
-#define INTERFACE_ARGS const std::string&, const Component*, u32,       \
-    const std::vector<u32>&, u32, const std::vector<std::tuple<u32, u32> >&, \
-    MetadataHandler*, Json::Value
+#define INTERFACE_ARGS const std::string&, const Component*, Network*, u32,  \
+    const std::vector<u32>&, u32, u32, MetadataHandler*, Json::Value
 
 class Interface : public Component, public PortedDevice, public FlitSender,
                   public FlitReceiver, public CreditSender,
                   public CreditReceiver, public MessageReceiver {
  public:
-  Interface(const std::string& _name, const Component* _parent, u32 _id,
-            const std::vector<u32>& _address, u32 _numVcs,
-            const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
-            MetadataHandler* _metadataHandler,
+  Interface(const std::string& _name, const Component* _parent,
+            Network* _network, u32 _id, const std::vector<u32>& _address,
+            u32 _numPorts, u32 _numVcs, MetadataHandler* _metadataHandler,
             Json::Value _settings);
   virtual ~Interface();
 
@@ -65,8 +63,16 @@ class Interface : public Component, public PortedDevice, public FlitSender,
   //  on an output port.
   void packetDeparture(Packet* _packet) const;
 
+  // this is called by an InjectionAlgorithm after it decides to inject a packet
+  // on a particular port and VC.
+  virtual void injectingPacket(Packet* _packet, u32 _port, u32 _vc) = 0;
+
+  // this must be implemented so that an InjectionAlgorithm can ask about the
+  // occupancy level of particular output VCs.
+  virtual u32 occupancy(u32 _port, u32 _vc) const = 0;
+
  protected:
-  const std::vector<std::tuple<u32, u32> > protocolClassVcs_;
+  Network* network_;
 
  private:
   MessageReceiver* messageReceiver_;

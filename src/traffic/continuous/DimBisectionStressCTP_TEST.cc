@@ -23,7 +23,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(DimBisectionStressCTP, parity) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   DimBisectionStressCTP* tp;
@@ -31,7 +31,8 @@ TEST(DimBisectionStressCTP, parity) {
 
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(2);
+  settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(2);
   settings["mode"] = "parity";
 
   numTerminals = 2 * 4 * 4;
@@ -99,7 +100,7 @@ TEST(DimBisectionStressCTP, parity) {
 }
 
 TEST(DimBisectionStressCTP, half) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   DimBisectionStressCTP* tp;
@@ -107,7 +108,8 @@ TEST(DimBisectionStressCTP, half) {
 
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(2);
+  settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(2);
   settings["mode"] = "half";
 
   numTerminals = 2 * 4 * 4;
@@ -131,10 +133,10 @@ TEST(DimBisectionStressCTP, half) {
     {15, 5},
   };
 
-  for (u32 conc = 0; conc < 2; ++conc) {
+  for (u32 iface = 0; iface < 2; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first * 2 + conc;
-      dst = p.second * 2 + conc;
+      src = p.first * 2 + iface;
+      dst = p.second * 2 + iface;
       tp = new DimBisectionStressCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
@@ -148,7 +150,7 @@ TEST(DimBisectionStressCTP, half) {
 }
 
 TEST(DimBisectionStressCTP, quadrant) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   DimBisectionStressCTP* tp;
@@ -156,7 +158,8 @@ TEST(DimBisectionStressCTP, quadrant) {
 
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(2);
+  settings["concentration"] = Json::Value(4);
+  settings["interface_ports"] = Json::Value(2);
   settings["mode"] = "quadrant";
 
   numTerminals = 2 * 4 * 4;
@@ -180,10 +183,10 @@ TEST(DimBisectionStressCTP, quadrant) {
     {15, 0},
   };
 
-  for (u32 conc = 0; conc < 2; ++conc) {
+  for (u32 iface = 0; iface < 2; ++iface) {
     for (const auto& p : pairs) {
-      src = p.first * 2 + conc;
-      dst = p.second * 2 + conc;
+      src = p.first * 2 + iface;
+      dst = p.second * 2 + iface;
       tp = new DimBisectionStressCTP(
           "TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {

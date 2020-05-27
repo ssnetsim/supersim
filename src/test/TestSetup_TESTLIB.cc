@@ -24,7 +24,8 @@
 #include "event/VectorQueue.h"
 
 TestSetup::TestSetup(u64 _channelCycleTime, u64 _routerCycleTime,
-                     u64 _interfaceCycleTime, u64 _randomSeed) {
+                     u64 _interfaceCycleTime, u64 _terminalCycleTime,
+                     u64 _randomSeed) {
   std::string str =
       std::string("{\n") +
       "  \"simulator\": {\n" +
@@ -34,6 +35,8 @@ TestSetup::TestSetup(u64 _channelCycleTime, u64 _routerCycleTime,
       std::to_string(_routerCycleTime) + ",\n" +
       "     \"interface_cycle_time\": " +
       std::to_string(_interfaceCycleTime) + ",\n" +
+      "     \"terminal_cycle_time\": " +
+      std::to_string(_terminalCycleTime) + ",\n" +
       "     \"print_progress\": false,\n" +
       "     \"print_interval\": 1.0,\n" +
       "     \"random_seed\": " + std::to_string(_randomSeed) + "\n" +

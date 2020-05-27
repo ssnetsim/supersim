@@ -30,11 +30,11 @@ DimOrderRoutingAlgorithm::DimOrderRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
-    Json::Value _settings)
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
-                       _concentration, _settings) {
+                       _concentration, _interfacePorts, _settings) {
   assert(_settings.isMember("output_type") &&
          _settings["output_type"].isString());
   assert(_settings.isMember("max_outputs") &&
@@ -76,15 +76,15 @@ void DimOrderRoutingAlgorithm::processRequest(
   if (outputTypePort_) {
     dimOrderPortRoutingOutput(
         router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-        concentration_, destinationAddress, {baseVc_}, 1, baseVc_ + numVcs_,
-        &vcPool_);
+        concentration_, interfacePorts_, destinationAddress, {baseVc_}, 1,
+        baseVc_ + numVcs_, &vcPool_);
     makeOutputPortSet(&vcPool_, {baseVc_}, 1, baseVc_ + numVcs_, maxOutputs_,
                       outputAlg_, &outputPorts_);
   } else {
     dimOrderVcRoutingOutput(
         router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-        concentration_, destinationAddress, {baseVc_}, 1, baseVc_ + numVcs_,
-        &vcPool_);
+        concentration_, interfacePorts_, destinationAddress, {baseVc_}, 1,
+        baseVc_ + numVcs_, &vcPool_);
     makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
   }
 

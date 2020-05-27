@@ -24,7 +24,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(Swap2CTP, no_enabled_dims) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   Swap2CTP* tp;
@@ -33,6 +33,7 @@ TEST(Swap2CTP, no_enabled_dims) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(2);
+  settings["interface_ports"] = Json::Value(1);
 
   numTerminals = 2 * 3 * 4;
   swap1 = {
@@ -91,7 +92,7 @@ TEST(Swap2CTP, no_enabled_dims) {
 }
 
 TEST(Swap2CTP, enabled_dims_0_1) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   Swap2CTP* tp;
@@ -100,6 +101,7 @@ TEST(Swap2CTP, enabled_dims_0_1) {
   settings["dimensions"][0] = Json::Value(4);
   settings["dimensions"][1] = Json::Value(3);
   settings["concentration"] = Json::Value(2);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
 
@@ -160,7 +162,7 @@ TEST(Swap2CTP, enabled_dims_0_1) {
 }
 
 TEST(Swap2CTP, enabled_dims_1_0_3d) {
-  TestSetup test(1, 1, 1, 0xBAADF00D);
+  TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
   Json::Value settings;
   Swap2CTP* tp;
@@ -170,6 +172,7 @@ TEST(Swap2CTP, enabled_dims_1_0_3d) {
   settings["dimensions"][1] = Json::Value(3);
   settings["dimensions"][2] = Json::Value(3);
   settings["concentration"] = Json::Value(2);
+  settings["interface_ports"] = Json::Value(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
 

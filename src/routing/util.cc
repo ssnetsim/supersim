@@ -14,7 +14,10 @@
  */
 #include "routing/util.h"
 
+#include <cassert>
 
-u32 vcToRc(u32 _vc, u32 _rcs) {
-  return _vc % _rcs;
+u32 vcToRc(u32 _baseVc, u32 _numVcs, u32 _vc, u32 _rcs) {
+  assert(_vc >= _baseVc && _vc < _baseVc + _numVcs);
+  u32 relVc = _vc - _baseVc;
+  return relVc % _rcs;
 }

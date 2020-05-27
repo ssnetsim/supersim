@@ -21,6 +21,7 @@
 
 #include <tuple>
 
+#include "network/singlerouter/InjectionAlgorithm.h"
 #include "network/singlerouter/RoutingAlgorithm.h"
 
 namespace SingleRouter {
@@ -28,10 +29,16 @@ namespace SingleRouter {
 Network::Network(const std::string& _name, const Component* _parent,
                  MetadataHandler* _metadataHandler, Json::Value _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
-  // dimensions and concentration
+  // concentration
   concentration_ = _settings["concentration"].asUInt();
   assert(concentration_ > 0);
   dbgprintf("concentration_ = %u", concentration_);
+
+  // ports per interface
+  interfacePorts_ = _settings["interface_ports"].asUInt();
+  assert(interfacePorts_ > 0);
+  assert(concentration_ % interfacePorts_ == 0);
+  dbgprintf("interfacePorts_ = %u", interfacePorts_);
 
   // router radix
   u32 routerRadix = concentration_;
@@ -42,33 +49,39 @@ Network::Network(const std::string& _name, const Component* _parent,
   // create the router
   router_ = Router::create(
       "Router", this, this, 0, std::vector<u32>(), routerRadix, numVcs_,
-      protocolClassVcs_, _metadataHandler, _settings["router"]);
+      _metadataHandler, _settings["router"]);
 
   // create the interfaces and external channels
-  interfaces_.resize(concentration_, nullptr);
-  for (u32 id = 0; id < concentration_; id++) {
+  interfaces_.resize(numInterfaces(), nullptr);
+  for (u32 id = 0; id < numInterfaces(); id++) {
     // create the interface
     std::string interfaceName = "Interface_" + std::to_string(id);
     Interface* interface = Interface::create(
-        interfaceName, this, id, {id}, numVcs_, protocolClassVcs_,
+        interfaceName, this, this, id, {id}, interfacePorts_, numVcs_,
         _metadataHandler, _settings["interface"]);
     interfaces_.at(id) = interface;
 
-    // create the channels
-    std::string inChannelName = "InChannel_" + std::to_string(id);
-    Channel* inChannel = new Channel(inChannelName, this, numVcs_,
-                                     _settings["external_channel"]);
-    externalChannels_.push_back(inChannel);
-    std::string outChannelName = "OutChannel_" + std::to_string(id);
-    Channel* outChannel = new Channel(outChannelName, this, numVcs_,
-                                      _settings["external_channel"]);
-    externalChannels_.push_back(outChannel);
+    // create and link channels
+    for (u32 ch = 0; ch < interfacePorts_; ch++) {
+      // create the channels
+      std::string inChannelName = "InChannel_" + std::to_string(id) + "_" +
+                                  std::to_string(ch);
+      Channel* inChannel = new Channel(inChannelName, this, numVcs_,
+                                       _settings["external_channel"]);
+      externalChannels_.push_back(inChannel);
+      std::string outChannelName = "OutChannel_" + std::to_string(id) + "_" +
+                                   std::to_string(ch);
+      Channel* outChannel = new Channel(outChannelName, this, numVcs_,
+                                        _settings["external_channel"]);
+      externalChannels_.push_back(outChannel);
 
-    // link interfaces to router via channels
-    router_->setInputChannel(id, inChannel);
-    router_->setOutputChannel(id, outChannel);
-    interface->setInputChannel(0, outChannel);
-    interface->setOutputChannel(0, inChannel);
+      // link interfaces to router via channels
+      u32 routerPort = id * interfacePorts_ + ch;
+      router_->setInputChannel(routerPort, inChannel);
+      router_->setOutputChannel(routerPort, outChannel);
+      interface->setInputChannel(ch, outChannel);
+      interface->setOutputChannel(ch, inChannel);
+    }
   }
 
   // clear the protocol class info
@@ -88,17 +101,29 @@ Network::~Network() {
   }
 }
 
+::InjectionAlgorithm* Network::createInjectionAlgorithm(
+     u32 _inputPc, const std::string& _name,
+     const Component* _parent, Interface* _interface) {
+  // get the info
+  const ::Network::PcSettings& settings = pcSettings(_inputPc);
+
+  // call the routing algorithm factory
+  return InjectionAlgorithm::create(
+      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
+      settings.injection);
+}
+
 ::RoutingAlgorithm* Network::createRoutingAlgorithm(
      u32 _inputPort, u32 _inputVc, const std::string& _name,
      const Component* _parent, Router* _router) {
   // get the info
-  const Network::RoutingAlgorithmInfo& info =
-      routingAlgorithmInfo_.at(_inputVc);
+  u32 pc = vcToPc(_inputVc);
+  const ::Network::PcSettings& settings = pcSettings(pc);
 
   // call the routing algorithm factory
   return RoutingAlgorithm::create(
-      _name, _parent, _router, info.baseVc, info.numVcs, _inputPort, _inputVc,
-      concentration_, info.settings);
+      _name, _parent, _router, settings.baseVc, settings.numVcs, _inputPort,
+      _inputVc, concentration_, interfacePorts_, settings.routing);
 }
 
 u32 Network::numRouters() const {
@@ -106,7 +131,7 @@ u32 Network::numRouters() const {
 }
 
 u32 Network::numInterfaces() const {
-  return concentration_;
+  return concentration_ / interfacePorts_;
 }
 
 Router* Network::getRouter(u32 _id) const {

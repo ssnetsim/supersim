@@ -61,8 +61,8 @@ StreamTerminal::StreamTerminal(
     u32 maxMsg = messageSizeDistribution_->maxMessageSize();
     u64 cycles = cyclesToSend(injectionRate_, maxMsg);
     cycles = gSim->rnd.nextU64(1, 1 + cycles * 3);
-    u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, 1) +
-               ((cycles - 1) * gSim->cycleTime(Simulator::Clock::CHANNEL));
+    u64 time = gSim->futureCycle(Simulator::Clock::TERMINAL, 1) +
+               ((cycles - 1) * gSim->cycleTime(Simulator::Clock::TERMINAL));
     dbgprintf("start time is %lu", time);
     addEvent(time, 0, nullptr, 0);
   }
@@ -183,7 +183,7 @@ void StreamTerminal::sendNextMessage() {
 
   // compute when to send next time
   u64 cycles = cyclesToSend(injectionRate_, messageLength);
-  u64 time = gSim->futureCycle(Simulator::Clock::CHANNEL, cycles);
+  u64 time = gSim->futureCycle(Simulator::Clock::TERMINAL, cycles);
   if (time == now) {
     sendNextMessage();
   } else {

@@ -29,11 +29,12 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     Json::Value _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
-                       _concentration, _settings),
+                       _concentration, _interfacePorts, _settings),
       mode_(parseRoutingMode(_settings["mode"].asString())) {
   // VC set mapping:
   //  0 = stage 0 no dateline
@@ -173,16 +174,20 @@ void ValiantsRoutingAlgorithm::processRequest(
   // test if already at destination router
   if (dim == routerAddress.size()) {
     assert(stage == 1);
-    outputPort = routingTo->at(0);
+    u32 basePort = routingTo->at(0) * interfacePorts_;
 
     // on ejection, any dateline VcSet is ok within any stage VcSet
     if (routingModeIsPort(mode_)) {
       // if routing mode is port then all vcs in the port are already added
-      addPort(outputPort, hops, U32_MAX);
+      for (u32 offset = 0; offset < interfacePorts_; offset++) {
+        addPort(basePort + offset, hops, U32_MAX);
+      }
     } else {
       // adding each vcSet (4 for valiants) will allow for all vcs to be used
-      for (u32 vcSetInd = 0; vcSetInd < 4; vcSetInd++) {
-        addPort(outputPort, hops, vcSetInd);
+      for (u32 offset = 0; offset < interfacePorts_; offset++) {
+        for (u32 vcSetInd = 0; vcSetInd < 4; vcSetInd++) {
+          addPort(basePort + offset, hops, vcSetInd);
+        }
       }
     }
 

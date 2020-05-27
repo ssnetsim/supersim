@@ -49,19 +49,20 @@ enum class OutputAlg : u8 {Rand, Min};
 typedef void (*IntNodeAlgFunc)(
     Router*, u32, u32, const std::vector<u32>&, const std::vector<u32>*,
     const std::vector<u32>&, const std::vector<u32>&,
-    u32, u32, u32, u32, std::vector<u32>*);
+    u32, u32, u32, u32, u32, std::vector<u32>*);
 
 typedef void (*MinRoutingAlgFunc)(
     Router*, u32, u32,
     const std::vector<u32>&,
-    const std::vector<u32>&, u32,
+    const std::vector<u32>&,
+    u32, u32,
     const std::vector<u32>*,
     const std::vector<u32>&, u32, u32,
     std::unordered_set< std::tuple<u32, u32, f64> >*);
 
 typedef void (*FirstHopRoutingAlgFunc)(
     Router*, u32, u32, const std::vector<u32>&, const std::vector<u32>&,
-    u32, const std::vector<u32>*, u32, u32, u32, bool,
+    u32, u32, const std::vector<u32>*, u32, u32, u32, bool,
     std::unordered_set< std::tuple<u32, u32, f64> >*);
 
 bool isDestinationRouter(
@@ -78,7 +79,8 @@ void intNodeReg(
     const std::vector<u32>& _sourceRouter,
     const std::vector<u32>* _destinationTerminal,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     std::vector<u32>* _address);
 
@@ -87,7 +89,8 @@ void intNodeMoveUnaligned(
     const std::vector<u32>& _sourceRouter,
     const std::vector<u32>* _destinationTerminal,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     std::vector<u32>* _address);
 
@@ -96,7 +99,8 @@ void intNodeSrc(
     const std::vector<u32>& _sourceRouter,
     const std::vector<u32>* _destinationTerminal,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     std::vector<u32>* _address);
 
@@ -105,7 +109,8 @@ void intNodeDst(
     const std::vector<u32>& _sourceRouter,
     const std::vector<u32>* _destinationTerminal,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     std::vector<u32>* _address);
 
@@ -114,7 +119,8 @@ void intNodeSrcDst(
     const std::vector<u32>& _sourceRouter,
     const std::vector<u32>* _destinationTerminal,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     std::vector<u32>* _address);
 
@@ -123,7 +129,8 @@ void intNodeMinV(
     const std::vector<u32>& _sourceRouter,
     const std::vector<u32>* _destinationTerminal,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     std::vector<u32>* _address);
 
@@ -132,7 +139,8 @@ void intNodeMinP(
     const std::vector<u32>& _sourceRouter,
     const std::vector<u32>* _destinationTerminal,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     std::vector<u32>* _address);
 
@@ -155,7 +163,8 @@ f64 getAveragePortCongestion(
 void dimOrderVcRoutingOutput(
     Router* router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     const std::vector<u32>& _vcSets, u32 _numVcSets, u32 _numVcs,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -163,7 +172,8 @@ void dimOrderVcRoutingOutput(
 void dimOrderPortRoutingOutput(
     Router* router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     const std::vector<u32>& _vcSets, u32 _numVcSets, u32 _numVcs,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -171,7 +181,8 @@ void dimOrderPortRoutingOutput(
 void randMinVcRoutingOutput(
     Router* router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     const std::vector<u32>& _vcSets, u32 _numVcSets, u32 _numVcs,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -179,7 +190,8 @@ void randMinVcRoutingOutput(
 void randMinPortRoutingOutput(
     Router* router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     const std::vector<u32>& _vcSets, u32 _numVcSets, u32 _numVcs,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -187,7 +199,8 @@ void randMinPortRoutingOutput(
 void adaptiveMinVcRoutingOutput(
     Router* router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     const std::vector<u32>& _vcSet, u32 _numVcSets, u32 _numVcs,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -195,7 +208,8 @@ void adaptiveMinVcRoutingOutput(
 void adaptiveMinPortRoutingOutput(
     Router* router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     const std::vector<u32>& _vcSets, u32 _numVcSets, u32 _numVcs,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -203,7 +217,8 @@ void adaptiveMinPortRoutingOutput(
 void valiantsRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, bool _shortCut,
     IntNodeAlg _intNodeAlg, BaseRoutingAlg _routingAlg, Flit* _flit,
@@ -212,7 +227,8 @@ void valiantsRoutingOutput(
 void ugalRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, bool _shortCut, bool _minAllVcSets,
     IntNodeAlg _intNodeAlg, BaseRoutingAlg _routingAlg,
     NonMinRoutingAlg _nonMinimalAlg,
@@ -223,7 +239,8 @@ void ugalRoutingOutput(
 void lcqVcRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, bool _shortCut,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -231,7 +248,8 @@ void lcqVcRoutingOutput(
 void lcqPortRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, bool _shortCut,
     std::unordered_set< std::tuple<u32, u32, f64> >* _vcPool);
@@ -239,7 +257,8 @@ void lcqPortRoutingOutput(
 void doalPortRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _baseVc, u32 _vcSet, u32 _numVcSets, u32 _numVcs, Flit* _flit,
     std::unordered_set< std::tuple<u32, u32, f64> >* _outputVcsMin,
@@ -248,7 +267,8 @@ void doalPortRoutingOutput(
 void doalVcRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _baseVc, u32 _vcSet, u32 _numVcSets, u32 _numVcs, Flit* _flit,
     std::unordered_set< std::tuple<u32, u32, f64> >* _outputVcsMin,
@@ -257,7 +277,8 @@ void doalVcRoutingOutput(
 void ddalPortRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, Flit* _flit,
     std::unordered_set< std::tuple<u32, u32, f64> >* _outputVcsMin,
@@ -266,7 +287,8 @@ void ddalPortRoutingOutput(
 void ddalVcRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, Flit* _flit,
     std::unordered_set< std::tuple<u32, u32, f64> >* _outputVcsMin,
@@ -275,7 +297,8 @@ void ddalVcRoutingOutput(
 void vdalPortRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress, u32 _baseVc,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, Flit* _flit, bool _multiDeroute,
     std::unordered_set< std::tuple<u32, u32, f64> >* _outputVcsMin,
@@ -284,7 +307,8 @@ void vdalPortRoutingOutput(
 void vdalVcRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress, u32 _baseVc,
     u32 _vcSet, u32 _numVcSets, u32 _numVcs, Flit* _flit, bool _multiDeroute,
     std::unordered_set< std::tuple<u32, u32, f64> >* _outputVcsMin,
@@ -293,7 +317,8 @@ void vdalVcRoutingOutput(
 void skippingDimOrderRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _startingDim, u32 _baseVc, u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     Flit* _flit, f64 _iBias, f64 _cBias, f64 _step,
@@ -308,7 +333,8 @@ void skippingDimOrderRoutingOutput(
 void finishingDimOrderRoutingOutput(
     Router* _router, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    const std::vector<u32>& _dimensionWeights,
+    u32 _concentration, u32 _interfacePorts,
     const std::vector<u32>* _destinationAddress,
     u32 _baseVc, u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     Flit* _flit, f64 _iBias, f64 _cBias,

@@ -16,20 +16,27 @@
 #define INTERFACE_STANDARD_INTERFACE_H_
 
 #include <json/json.h>
+#include <prim/prim.h>
+
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 #include "architecture/Crossbar.h"
 #include "architecture/CrossbarScheduler.h"
 #include "interface/Interface.h"
 #include "network/Channel.h"
+#include "routing/InjectionAlgorithm.h"
 #include "types/Credit.h"
 #include "types/CreditReceiver.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
+#include "types/Packet.h"
 #include "types/Message.h"
 #include "types/MessageReceiver.h"
+
+// architectural drawing here: https://bit.ly/2LK3uF4
 
 namespace Standard {
 
@@ -40,10 +47,10 @@ class MessageReassembler;
 
 class Interface : public ::Interface {
  public:
-  Interface(const std::string& _name, const Component* _parent, u32 _id,
-            const std::vector<u32>& _address, u32 _numVcs,
-            const std::vector<std::tuple<u32, u32> >& _protocolClassVcs,
-            MetadataHandler* _metadataHandler, Json::Value _settings);
+  Interface(const std::string& _name, const Component* _parent,
+            Network* _network, u32 _id, const std::vector<u32>& _address,
+            u32 _numPorts, u32 _numVcs, MetadataHandler* _metadataHandler,
+            Json::Value _settings);
   ~Interface();
 
   void setInputChannel(u32 _port, Channel* _channel) override;
@@ -55,20 +62,23 @@ class Interface : public ::Interface {
 
   void receiveMessage(Message* _message) override;
 
+  void injectingPacket(Packet* _packet, u32 _port, u32 _vc) override;
+  u32 occupancy(u32 _port, u32 _vc) const override;
+
   void sendFlit(u32 _port, Flit* _flit) override;
   void receiveFlit(u32 _port, Flit* _flit) override;
   void sendCredit(u32 _port, u32 _vc) override;
   void receiveCredit(u32 _port, Credit* _credit) override;
 
-  void incrementCredit(u32 _vc);
+  void incrementCredit(u32 _port, u32 _vc);
 
   void processEvent(void* _event, s32 _type) override;
 
  private:
   void injectMessage(Message* _message);
 
-  Channel* inputChannel_;
-  Channel* outputChannel_;
+  std::vector<Channel*> inputChannels_;
+  std::vector<Channel*> outputChannels_;
 
   u32 initCredits_;
   // input queue tailoring
@@ -77,17 +87,18 @@ class Interface : public ::Interface {
   u32 inputQueueMax_;
   u32 inputQueueMin_;
 
-  bool adaptive_;  // choose injection VC adaptively
-  bool fixedMsgVc_;  // all pkts of a msg have same VC
-
+  std::vector<InjectionAlgorithm*> injectionAlgorithms_;
   std::vector<OutputQueue*> outputQueues_;
   std::vector<u32> queueOccupancy_;  // used for adaptive injection
-  Crossbar* crossbar_;
-  CrossbarScheduler* crossbarScheduler_;
-  Ejector* ejector_;
+  std::vector<Crossbar*> crossbars_;
+  std::vector<CrossbarScheduler*> crossbarSchedulers_;
+  std::vector<Ejector*> ejectors_;
 
   std::vector<PacketReassembler*> packetReassemblers_;
   MessageReassembler* messageReassembler_;
+
+  // this holds temporary injection information
+  std::unordered_map<Packet*, std::tuple<u32, u32> > injectionInfo_;
 };
 
 }  // namespace Standard

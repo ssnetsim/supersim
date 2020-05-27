@@ -21,7 +21,11 @@
 TEST(routing_util, vcToRc) {
   u32 rcs = 5;
   std::vector<u32> exp({0, 1, 2, 3, 4, 0, 1, 2});
-  for (u32 vc = 0; vc < exp.size(); vc++) {
-    ASSERT_EQ(vcToRc(vc, rcs), exp.at(vc));
+  u32 num = exp.size();
+  for (u32 base = 0; base < 16; base++) {
+    for (u32 vc = base; vc < base + num; vc++) {
+      u32 relVc = vc - base;
+      ASSERT_EQ(vcToRc(base, num, vc, rcs), exp.at(relVc));
+    }
   }
 }

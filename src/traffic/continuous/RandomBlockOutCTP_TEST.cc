@@ -25,7 +25,7 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(RandomBlockOutCTP, all) {
-  TestSetup ts(1, 1, 1, 0xDEADBEEF);
+  TestSetup ts(1, 1, 1, 1, 0xDEADBEEF);
 
   const u32 NUMTERMINALS = 1000;
   const u32 BLOCKSIZE = 100;
