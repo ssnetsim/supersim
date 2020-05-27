@@ -222,14 +222,17 @@ void LeastCongestedQueueRoutingAlgorithm::processRequest(
 
   if (outputPorts_.empty()) {
     // we can use any VC to eject packet
-    for (u64 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
-      _response->add(destinationAddress->at(0), vc);
+    u32 basePort = destinationAddress->at(0) * interfacePorts_;
+    for (u32 offset = 0; offset < interfacePorts_; offset++) {
+      u32 port = basePort + offset;
+      for (u64 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
+        _response->add(port, vc);
+      }
     }
-    return;
-  }
-
-  for (auto it : outputPorts_) {
-    _response->add(std::get<0>(it), std::get<1>(it));
+  } else {
+    for (auto it : outputPorts_) {
+      _response->add(std::get<0>(it), std::get<1>(it));
+    }
   }
 }
 

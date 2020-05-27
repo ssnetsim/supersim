@@ -318,8 +318,12 @@ void UgalRoutingAlgorithm::processRequest(
       assert(routerAddress.at(dim) == destAddress->at(dim + 1));
     }
     // we can use any VC to eject packet
-    for (u64 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
-      _response->add(destAddress->at(0), vc);
+    u32 basePort = destAddress->at(0) * interfacePorts_;
+    for (u32 offset = 0; offset < interfacePorts_; offset++) {
+      u32 port = basePort + offset;
+      for (u64 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
+        _response->add(port, vc);
+      }
     }
     return;
   }

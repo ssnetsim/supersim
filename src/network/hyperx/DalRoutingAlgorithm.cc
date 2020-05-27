@@ -308,14 +308,18 @@ void DalRoutingAlgorithm::processRequest(
   }
 
   if (outputPorts_.empty()) {
-    for (u64 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
-      _response->add(destinationAddress->at(0), vc);
-      if ((adaptivityType_ == AdaptiveRoutingAlg::DDALP) ||
-          (adaptivityType_ == AdaptiveRoutingAlg::DDALV)) {
-        delete reinterpret_cast<const std::vector<u32>*>(
-            packet->getRoutingExtension());
-        packet->setRoutingExtension(nullptr);
+    u32 basePort = destinationAddress->at(0) * interfacePorts_;
+    for (u32 offset = 0; offset < interfacePorts_; offset++) {
+      u32 port = basePort + offset;
+      for (u64 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
+        _response->add(port, vc);
       }
+    }
+    if ((adaptivityType_ == AdaptiveRoutingAlg::DDALP) ||
+        (adaptivityType_ == AdaptiveRoutingAlg::DDALV)) {
+      delete reinterpret_cast<const std::vector<u32>*>(
+          packet->getRoutingExtension());
+      packet->setRoutingExtension(nullptr);
     }
   } else {
     for (auto& it : outputPorts_) {
