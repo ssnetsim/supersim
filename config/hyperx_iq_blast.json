@@ -1,8 +1,8 @@
 {
   "simulator": {
-    "channel_cycle_time": 1,
-    "router_cycle_time": 1,
-    "interface_cycle_time": 1,
+    "channel_cycle_time": 2,
+    "router_cycle_time": 2,
+    "interface_cycle_time": 2,
     "terminal_cycle_time": 1,
     "print_progress": true,
     "print_interval": 1.0,  // seconds
@@ -15,8 +15,8 @@
     "topology": "hyperx",
     "dimension_widths": [2, 3, 4],
     "dimension_weights": [2, 1, 2],
-    "concentration": 1,
-    "interface_ports": 1,
+    "concentration": 2,
+    "interface_ports": 2,
     "protocol_classes": [
       {
         "num_vcs": 3,
@@ -173,9 +173,7 @@
     ]
   },
   "debug": [
-    // "Workload.Application_0",
-    // "Workload.Application_0.BlastTerminal_17",
-    "Network.Interface_[0-0-0-0]",
-    "Network.Router_[0-0-0]"
+    "Workload.Application_0",
+    "Workload.Application_0.BlastTerminal_17"
   ]
 }

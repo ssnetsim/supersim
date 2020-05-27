@@ -160,8 +160,5 @@
       }
     ]
   },
-  "debug": [
-    "Network.Router_[0-0-0]",
-    "Network.Interface_[0-0-0-0]"
-  ]
+  "debug": []
 }
