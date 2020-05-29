@@ -146,7 +146,7 @@
           "transaction_size": 1,  // requests
           "traffic_pattern": {
             "type": "matrix",
-            "file": "config/trafficmatrix.csv.gz"
+            "file": "config/trafficmatrix.csv"
           },
           "message_size_distribution": {
             "type": "random",

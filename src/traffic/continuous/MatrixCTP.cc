@@ -60,8 +60,19 @@ const std::vector<f64>& retrieveCummulativeDistribution(
 
           // create the cumulative distribution
           cdists.push_back({});
-          std::vector<f64>& cdist = cdists.at(lineNum);
-          mut::generateCumulativeDistribution(pdist, &cdist);
+
+          // fill in the cumulative distribution
+          bool allZeros = true;
+          for (f64 p : pdist) {
+            if (p != 0.0) {
+              allZeros = false;
+              break;
+            }
+          }
+          if (!allZeros) {
+            std::vector<f64>& cdist = cdists.at(lineNum);
+            mut::generateCumulativeDistribution(pdist, &cdist);
+          }
 
           // advance line counter
           lineNum++;
