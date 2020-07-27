@@ -70,13 +70,13 @@ ssplot --help
 ## Build C++ projects
 The C++ projects use [Bazel][bazel] for building binaries. To install Bazel, follow the directions at [here][bazelinstall].
 
-The C++ projects are built as stand-alone executables. No system installation takes place. Use the following commands to build the C++ programs:
+The C++ projects are built as stand-alone executables. No system installation takes place. Use the following commands to build and test the C++ programs:
 
 ``` sh
 for prj in supersim ssparse; do
     git clone git://github.com/ssnetsim/${prj} ~/ssdev/${prj}
     cd ~/ssdev/${prj}
-    bazel build -c opt :${prj} :${prj}_test :lint
+    bazel test -c opt :*
 done
 ```
 
