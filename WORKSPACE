@@ -54,7 +54,7 @@ http_archive(
   strip_prefix = "nicmcd-libprim-" + hash,
 )
 
-hash = "9d1d378"
+hash = "be21d81"
 http_archive(
   name = "libcolhash",
   urls = ["https://github.com/nicmcd/libcolhash/tarball/" + hash],
