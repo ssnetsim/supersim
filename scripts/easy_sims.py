@@ -47,9 +47,9 @@ def create_task(tm, name, cmd, console_out, task_type, config):
   if console_out:
     task.stdout_file = console_out
     task.stderr_file = console_out
-  if task_type is 'sim':
+  if task_type == 'sim':
     task.resources = {'cpus': 1, 'mem': 0.5}
-  elif task_type is 'parse':
+  elif task_type == 'parse':
     task.resources = {'cpus': 1, 'mem': 0.5}
   else:
     task.resources = {'cpus': 1, 'mem': 1.1}
