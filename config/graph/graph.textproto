@@ -1,0 +1,1147 @@
+name: "test_graph.151"
+processor_id: -1
+entry_subroutine {
+  name: "test_graph.151"
+  subroutine_root_id: 43
+  execution_probability: 1
+  execution_count: 1
+  instructions {
+    name: "arg_tuple.1"
+    opcode: "delay"
+    instruction_id: 1
+  }
+  instructions {
+    name: "get-tuple-element.3"
+    opcode: "delay"
+    instruction_id: 2
+    operand_ids: 1
+  }
+  instructions {
+    name: "reshape.9"
+    opcode: "delay"
+    instruction_id: 3
+    bytes_in: 4
+    bytes_out: 4
+    seconds: 1.0643686453037926e-11
+    operand_ids: 2
+  }
+  instructions {
+    name: "reshape.10"
+    opcode: "delay"
+    instruction_id: 4
+    bytes_in: 4
+    bytes_out: 4
+    seconds: 1.0643686453037926e-11
+    operand_ids: 3
+  }
+  instructions {
+    name: "constant.11"
+    opcode: "delay"
+    instruction_id: 5
+  }
+  instructions {
+    name: "constant.12"
+    opcode: "delay"
+    instruction_id: 6
+  }
+  instructions {
+    name: "constant.13"
+    opcode: "delay"
+    instruction_id: 7
+  }
+  instructions {
+    name: "constant.14"
+    opcode: "delay"
+    instruction_id: 8
+  }
+  instructions {
+    name: "get-tuple-element.2"
+    opcode: "delay"
+    instruction_id: 9
+    operand_ids: 1
+  }
+  instructions {
+    name: "reshape.8"
+    opcode: "delay"
+    instruction_id: 10
+    bytes_in: 4
+    bytes_out: 4
+    seconds: 1.0643686453037926e-11
+    operand_ids: 9
+  }
+  instructions {
+    name: "get-tuple-element.6"
+    opcode: "delay"
+    instruction_id: 11
+    operand_ids: 1
+  }
+  instructions {
+    name: "get-tuple-element.7"
+    opcode: "delay"
+    instruction_id: 12
+    operand_ids: 1
+  }
+  instructions {
+    name: "get-tuple-element.4"
+    opcode: "delay"
+    instruction_id: 13
+    operand_ids: 1
+  }
+  instructions {
+    name: "get-tuple-element.5"
+    opcode: "delay"
+    instruction_id: 14
+    operand_ids: 1
+  }
+  instructions {
+    name: "tuple.15"
+    opcode: "delay"
+    instruction_id: 15
+    seconds: 7.4505804303903744e-11
+    operand_ids: 7
+    operand_ids: 8
+    operand_ids: 10
+    operand_ids: 11
+    operand_ids: 12
+    operand_ids: 13
+    operand_ids: 14
+  }
+  instructions {
+    name: "while.123"
+    opcode: "while"
+    instruction_id: 16
+    ops: 1349386240
+    seconds: 0.00016113322635646909
+    operand_ids: 15
+    inner_subroutines {
+      name: "_functionalize_body_0__.32"
+      subroutine_root_id: 118
+      execution_probability: 1
+      execution_count: 2
+      instructions {
+        name: "arg_tuple.33"
+        opcode: "delay"
+        instruction_id: 44
+      }
+      instructions {
+        name: "get-tuple-element.35"
+        opcode: "delay"
+        instruction_id: 45
+        operand_ids: 44
+      }
+      instructions {
+        name: "after-all.41"
+        opcode: "delay"
+        instruction_id: 46
+      }
+      instructions {
+        name: "infeed.42"
+        opcode: "infeed"
+        instruction_id: 47
+        seconds: 2.1287372906075852e-11
+        operand_ids: 46
+      }
+      instructions {
+        name: "get-tuple-element.43"
+        opcode: "delay"
+        instruction_id: 48
+        operand_ids: 47
+      }
+      instructions {
+        name: "get-tuple-element.45"
+        opcode: "delay"
+        instruction_id: 49
+        operand_ids: 48
+      }
+      instructions {
+        name: "get-tuple-element.44"
+        opcode: "delay"
+        instruction_id: 50
+        operand_ids: 48
+      }
+      instructions {
+        name: "constant.48"
+        opcode: "delay"
+        instruction_id: 51
+      }
+      instructions {
+        name: "get-tuple-element.36"
+        opcode: "delay"
+        instruction_id: 52
+        operand_ids: 44
+      }
+      instructions {
+        name: "gather.49"
+        opcode: "delay"
+        instruction_id: 53
+        bytes_in: 12
+        bytes_out: 8
+        seconds: 2.6609216566275684e-11
+        operand_ids: 51
+        operand_ids: 52
+      }
+      instructions {
+        name: "slice.50"
+        opcode: "delay"
+        instruction_id: 54
+        bytes_in: 4
+        bytes_out: 4
+        seconds: 1.0643686453037926e-11
+        operand_ids: 53
+      }
+      instructions {
+        name: "reshape.51"
+        opcode: "delay"
+        instruction_id: 55
+        bytes_in: 4
+        bytes_out: 4
+        seconds: 1.0643686453037926e-11
+        operand_ids: 54
+      }
+      instructions {
+        name: "slice.52"
+        opcode: "delay"
+        instruction_id: 56
+        bytes_in: 4
+        bytes_out: 4
+        seconds: 1.0643686453037926e-11
+        operand_ids: 53
+      }
+      instructions {
+        name: "reshape.53"
+        opcode: "delay"
+        instruction_id: 57
+        bytes_in: 4
+        bytes_out: 4
+        seconds: 1.0643686453037926e-11
+        operand_ids: 56
+      }
+      instructions {
+        name: "dynamic-slice.54"
+        opcode: "delay"
+        instruction_id: 58
+        bytes_in: 524296
+        bytes_out: 524288
+        seconds: 1.39509461405396e-06
+        operand_ids: 50
+        operand_ids: 55
+        operand_ids: 57
+      }
+      instructions {
+        name: "get-tuple-element.39"
+        opcode: "delay"
+        instruction_id: 59
+        operand_ids: 44
+      }
+      instructions {
+        name: "dot.58"
+        opcode: "delay"
+        instruction_id: 60
+        ops: 268435456
+        bytes_in: 4718592
+        bytes_out: 524288
+        seconds: 6.9754464675497729e-06
+        operand_ids: 58
+        operand_ids: 59
+      }
+      instructions {
+        name: "transpose.59"
+        opcode: "delay"
+        instruction_id: 61
+        operand_ids: 60
+      }
+      instructions {
+        name: "get-tuple-element.40"
+        opcode: "delay"
+        instruction_id: 62
+        operand_ids: 44
+      }
+      instructions {
+        name: "dot.60"
+        opcode: "delay"
+        instruction_id: 63
+        ops: 268435456
+        bytes_in: 4718592
+        bytes_out: 524288
+        seconds: 6.9754464675497729e-06
+        operand_ids: 61
+        operand_ids: 62
+      }
+      instructions {
+        name: "transpose.61"
+        opcode: "delay"
+        instruction_id: 64
+        operand_ids: 63
+      }
+      instructions {
+        name: "negate.55"
+        opcode: "delay"
+        instruction_id: 65
+        ops: 131072
+        bytes_in: 524288
+        bytes_out: 524288
+        seconds: 1.395089270772587e-06
+        operand_ids: 58
+      }
+      instructions {
+        name: "add.62"
+        opcode: "delay"
+        instruction_id: 66
+        ops: 131072
+        bytes_in: 1048576
+        bytes_out: 524288
+        seconds: 2.0926338493154617e-06
+        operand_ids: 64
+        operand_ids: 65
+      }
+      instructions {
+        name: "multiply.63"
+        opcode: "delay"
+        instruction_id: 67
+        ops: 131072
+        bytes_in: 1048576
+        bytes_out: 524288
+        seconds: 2.0926338493154617e-06
+        operand_ids: 66
+        operand_ids: 66
+      }
+      instructions {
+        name: "convert.64"
+        opcode: "delay"
+        instruction_id: 68
+        ops: 131072
+        bytes_in: 524288
+        bytes_out: 524288
+        seconds: 1.395089270772587e-06
+        operand_ids: 67
+      }
+      instructions {
+        name: "constant.65"
+        opcode: "delay"
+        instruction_id: 69
+      }
+      instructions {
+        name: "convert.66"
+        opcode: "delay"
+        instruction_id: 70
+        ops: 1
+        bytes_in: 4
+        bytes_out: 4
+        seconds: 1.0643686453037926e-11
+        operand_ids: 69
+      }
+      instructions {
+        name: "reduce.67"
+        opcode: "call"
+        instruction_id: 71
+        ops: 131071
+        bytes_in: 524292
+        bytes_out: 4
+        seconds: 6.9755526510562049e-07
+        operand_ids: 68
+        operand_ids: 70
+        inner_subroutines {
+          name: "reduce_mean_reduce_Sum-reduction.16"
+          subroutine_root_id: 121
+          execution_probability: 1
+          execution_count: 1
+          instructions {
+            name: "x.17"
+            opcode: "delay"
+            instruction_id: 119
+          }
+          instructions {
+            name: "y.18"
+            opcode: "delay"
+            instruction_id: 120
+          }
+          instructions {
+            name: "add.19"
+            opcode: "delay"
+            instruction_id: 121
+            ops: 1
+            bytes_in: 8
+            bytes_out: 4
+            seconds: 1.596552924587602e-11
+            operand_ids: 119
+            operand_ids: 120
+          }
+        }
+      }
+      instructions {
+        name: "convert.68"
+        opcode: "delay"
+        instruction_id: 72
+        ops: 1
+        bytes_in: 4
+        bytes_out: 4
+        seconds: 1.0643686453037926e-11
+        operand_ids: 71
+      }
+      instructions {
+        name: "all-reduce.69"
+        opcode: "all-reduce"
+        instruction_id: 73
+        ops: 1
+        bytes_in: 8
+        bytes_out: 4
+        seconds: 1.596552924587602e-11
+        communication_groups {
+          group_ids: 0
+          group_ids: 1
+          group_ids: 2
+          group_ids: 3
+          group_ids: 4
+          group_ids: 5
+          group_ids: 6
+          group_ids: 7
+        }
+        operand_ids: 72
+        inner_subroutines {
+          name: "sum.20"
+          subroutine_root_id: 124
+          execution_probability: 1
+          execution_count: 1
+          instructions {
+            name: "x.21"
+            opcode: "delay"
+            instruction_id: 122
+          }
+          instructions {
+            name: "y.22"
+            opcode: "delay"
+            instruction_id: 123
+          }
+          instructions {
+            name: "add.23"
+            opcode: "delay"
+            instruction_id: 124
+            ops: 1
+            bytes_in: 8
+            bytes_out: 4
+            seconds: 1.596552924587602e-11
+            operand_ids: 122
+            operand_ids: 123
+          }
+        }
+      }
+      instructions {
+        name: "constant.70"
+        opcode: "delay"
+        instruction_id: 74
+      }
+      instructions {
+        name: "multiply.71"
+        opcode: "delay"
+        instruction_id: 75
+        ops: 1
+        bytes_in: 8
+        bytes_out: 4
+        seconds: 1.596552924587602e-11
+        operand_ids: 73
+        operand_ids: 74
+      }
+      instructions {
+        name: "reshape.94"
+        opcode: "delay"
+        instruction_id: 76
+        bytes_in: 4
+        bytes_out: 4
+        seconds: 1.0643686453037926e-11
+        operand_ids: 75
+      }
+      instructions {
+        name: "tuple.95"
+        opcode: "delay"
+        instruction_id: 77
+        seconds: 1.0643686453037926e-11
+        operand_ids: 76
+      }
+      instructions {
+        name: "after-all.96"
+        opcode: "delay"
+        instruction_id: 78
+      }
+      instructions {
+        name: "outfeed.97"
+        opcode: "outfeed"
+        instruction_id: 79
+        seconds: 1.0643686453037926e-11
+        operand_ids: 77
+        operand_ids: 78
+      }
+      instructions {
+        name: "tuple.98"
+        opcode: "delay"
+        instruction_id: 80
+      }
+      instructions {
+        name: "get-tuple-element.34"
+        opcode: "delay"
+        instruction_id: 81
+        operand_ids: 44
+      }
+      instructions {
+        name: "constant.46"
+        opcode: "delay"
+        instruction_id: 82
+      }
+      instructions {
+        name: "add.47"
+        opcode: "delay"
+        instruction_id: 83
+        ops: 1
+        bytes_in: 8
+        bytes_out: 4
+        seconds: 1.596552924587602e-11
+        operand_ids: 81
+        operand_ids: 82
+      }
+      instructions {
+        name: "get-tuple-element.37"
+        opcode: "delay"
+        instruction_id: 84
+        operand_ids: 44
+      }
+      instructions {
+        name: "constant.56"
+        opcode: "delay"
+        instruction_id: 85
+      }
+      instructions {
+        name: "add.57"
+        opcode: "delay"
+        instruction_id: 86
+        ops: 1
+        bytes_in: 16
+        bytes_out: 8
+        seconds: 3.193105849175204e-11
+        operand_ids: 84
+        operand_ids: 85
+      }
+      instructions {
+        name: "tuple.99"
+        opcode: "delay"
+        instruction_id: 87
+        seconds: 1.0643686453037926e-11
+        operand_ids: 86
+      }
+      instructions {
+        name: "get-tuple-element.100"
+        opcode: "delay"
+        instruction_id: 88
+        operand_ids: 87
+      }
+      instructions {
+        name: "get-tuple-element.38"
+        opcode: "delay"
+        instruction_id: 89
+        operand_ids: 44
+      }
+      instructions {
+        name: "tuple.101"
+        opcode: "delay"
+        instruction_id: 90
+        seconds: 1.0643686453037926e-11
+        operand_ids: 89
+      }
+      instructions {
+        name: "get-tuple-element.102"
+        opcode: "delay"
+        instruction_id: 91
+        operand_ids: 90
+      }
+      instructions {
+        name: "constant.72"
+        opcode: "delay"
+        instruction_id: 92
+      }
+      instructions {
+        name: "broadcast.73"
+        opcode: "delay"
+        instruction_id: 93
+        bytes_in: 4
+        bytes_out: 524288
+        seconds: 6.9754997866766644e-07
+        operand_ids: 92
+      }
+      instructions {
+        name: "multiply.74"
+        opcode: "delay"
+        instruction_id: 94
+        ops: 131072
+        bytes_in: 1048576
+        bytes_out: 524288
+        seconds: 2.0926338493154617e-06
+        operand_ids: 93
+        operand_ids: 66
+      }
+      instructions {
+        name: "constant.75"
+        opcode: "delay"
+        instruction_id: 95
+      }
+      instructions {
+        name: "broadcast.76"
+        opcode: "delay"
+        instruction_id: 96
+        bytes_in: 4
+        bytes_out: 524288
+        seconds: 6.9754997866766644e-07
+        operand_ids: 95
+      }
+      instructions {
+        name: "multiply.77"
+        opcode: "delay"
+        instruction_id: 97
+        ops: 131072
+        bytes_in: 1048576
+        bytes_out: 524288
+        seconds: 2.0926338493154617e-06
+        operand_ids: 94
+        operand_ids: 96
+      }
+      instructions {
+        name: "dot.85"
+        opcode: "delay"
+        instruction_id: 98
+        ops: 268435456
+        bytes_in: 4718592
+        bytes_out: 524288
+        seconds: 6.9754464675497729e-06
+        operand_ids: 97
+        operand_ids: 62
+      }
+      instructions {
+        name: "transpose.86"
+        opcode: "delay"
+        instruction_id: 99
+        operand_ids: 98
+      }
+      instructions {
+        name: "dot.87"
+        opcode: "delay"
+        instruction_id: 100
+        ops: 268435456
+        bytes_in: 1048576
+        bytes_out: 4194304
+        seconds: 6.9754464675497729e-06
+        operand_ids: 99
+        operand_ids: 58
+      }
+      instructions {
+        name: "transpose.88"
+        opcode: "delay"
+        instruction_id: 101
+        operand_ids: 100
+      }
+      instructions {
+        name: "all-reduce.89"
+        opcode: "all-reduce"
+        instruction_id: 102
+        ops: 1048576
+        bytes_in: 8388608
+        bytes_out: 4194304
+        seconds: 1.6741070794523694e-05
+        communication_groups {
+          group_ids: 0
+          group_ids: 1
+          group_ids: 2
+          group_ids: 3
+          group_ids: 4
+          group_ids: 5
+          group_ids: 6
+          group_ids: 7
+        }
+        operand_ids: 101
+        inner_subroutines {
+          name: "sum.28"
+          subroutine_root_id: 127
+          execution_probability: 1
+          execution_count: 1
+          instructions {
+            name: "x.29"
+            opcode: "delay"
+            instruction_id: 125
+          }
+          instructions {
+            name: "y.30"
+            opcode: "delay"
+            instruction_id: 126
+          }
+          instructions {
+            name: "add.31"
+            opcode: "delay"
+            instruction_id: 127
+            ops: 1048576
+            bytes_in: 8388608
+            bytes_out: 4194304
+            seconds: 1.6741070794523694e-05
+            operand_ids: 125
+            operand_ids: 126
+          }
+        }
+      }
+      instructions {
+        name: "constant.90"
+        opcode: "delay"
+        instruction_id: 103
+      }
+      instructions {
+        name: "broadcast.91"
+        opcode: "delay"
+        instruction_id: 104
+        bytes_in: 4
+        bytes_out: 4194304
+        seconds: 5.5803625400585588e-06
+        operand_ids: 103
+      }
+      instructions {
+        name: "multiply.92"
+        opcode: "delay"
+        instruction_id: 105
+        ops: 1048576
+        bytes_in: 8388608
+        bytes_out: 4194304
+        seconds: 1.6741070794523694e-05
+        operand_ids: 102
+        operand_ids: 104
+      }
+      instructions {
+        name: "subtract.93"
+        opcode: "delay"
+        instruction_id: 106
+        ops: 1048576
+        bytes_in: 8388608
+        bytes_out: 4194304
+        seconds: 1.6741070794523694e-05
+        operand_ids: 59
+        operand_ids: 105
+      }
+      instructions {
+        name: "tuple.103"
+        opcode: "delay"
+        instruction_id: 107
+        seconds: 1.0643686453037926e-11
+        operand_ids: 106
+      }
+      instructions {
+        name: "get-tuple-element.104"
+        opcode: "delay"
+        instruction_id: 108
+        operand_ids: 107
+      }
+      instructions {
+        name: "dot.78"
+        opcode: "delay"
+        instruction_id: 109
+        ops: 268435456
+        bytes_in: 1048576
+        bytes_out: 4194304
+        seconds: 6.9754464675497729e-06
+        operand_ids: 97
+        operand_ids: 61
+      }
+      instructions {
+        name: "transpose.79"
+        opcode: "delay"
+        instruction_id: 110
+        operand_ids: 109
+      }
+      instructions {
+        name: "all-reduce.80"
+        opcode: "all-reduce"
+        instruction_id: 111
+        ops: 1048576
+        bytes_in: 8388608
+        bytes_out: 4194304
+        seconds: 1.6741070794523694e-05
+        communication_groups {
+          group_ids: 0
+          group_ids: 1
+          group_ids: 2
+          group_ids: 3
+          group_ids: 4
+          group_ids: 5
+          group_ids: 6
+          group_ids: 7
+        }
+        operand_ids: 110
+        inner_subroutines {
+          name: "sum.24"
+          subroutine_root_id: 130
+          execution_probability: 1
+          execution_count: 1
+          instructions {
+            name: "x.25"
+            opcode: "delay"
+            instruction_id: 128
+          }
+          instructions {
+            name: "y.26"
+            opcode: "delay"
+            instruction_id: 129
+          }
+          instructions {
+            name: "add.27"
+            opcode: "delay"
+            instruction_id: 130
+            ops: 1048576
+            bytes_in: 8388608
+            bytes_out: 4194304
+            seconds: 1.6741070794523694e-05
+            operand_ids: 128
+            operand_ids: 129
+          }
+        }
+      }
+      instructions {
+        name: "constant.81"
+        opcode: "delay"
+        instruction_id: 112
+      }
+      instructions {
+        name: "broadcast.82"
+        opcode: "delay"
+        instruction_id: 113
+        bytes_in: 4
+        bytes_out: 4194304
+        seconds: 5.5803625400585588e-06
+        operand_ids: 112
+      }
+      instructions {
+        name: "multiply.83"
+        opcode: "delay"
+        instruction_id: 114
+        ops: 1048576
+        bytes_in: 8388608
+        bytes_out: 4194304
+        seconds: 1.6741070794523694e-05
+        operand_ids: 111
+        operand_ids: 113
+      }
+      instructions {
+        name: "subtract.84"
+        opcode: "delay"
+        instruction_id: 115
+        ops: 1048576
+        bytes_in: 8388608
+        bytes_out: 4194304
+        seconds: 1.6741070794523694e-05
+        operand_ids: 62
+        operand_ids: 114
+      }
+      instructions {
+        name: "tuple.105"
+        opcode: "delay"
+        instruction_id: 116
+        seconds: 1.0643686453037926e-11
+        operand_ids: 115
+      }
+      instructions {
+        name: "get-tuple-element.106"
+        opcode: "delay"
+        instruction_id: 117
+        operand_ids: 116
+      }
+      instructions {
+        name: "tuple.107"
+        opcode: "delay"
+        instruction_id: 118
+        seconds: 7.4505804303903744e-11
+        operand_ids: 83
+        operand_ids: 75
+        operand_ids: 52
+        operand_ids: 88
+        operand_ids: 91
+        operand_ids: 108
+        operand_ids: 117
+      }
+    }
+    inner_subroutines {
+      name: "cond_wrapper.119"
+      subroutine_root_id: 133
+      execution_probability: 1
+      execution_count: 2
+      instructions {
+        name: "inputs.120"
+        opcode: "delay"
+        instruction_id: 131
+      }
+      instructions {
+        name: "call.121"
+        opcode: "call"
+        instruction_id: 132
+        ops: 1
+        seconds: 2.2617834688487548e-11
+        operand_ids: 131
+        inner_subroutines {
+          name: "_functionalize_cond_0__.108"
+          subroutine_root_id: 143
+          execution_probability: 1
+          execution_count: 1
+          instructions {
+            name: "arg_tuple.109"
+            opcode: "delay"
+            instruction_id: 134
+          }
+          instructions {
+            name: "get-tuple-element.111"
+            opcode: "delay"
+            instruction_id: 135
+            operand_ids: 134
+          }
+          instructions {
+            name: "get-tuple-element.112"
+            opcode: "delay"
+            instruction_id: 136
+            operand_ids: 134
+          }
+          instructions {
+            name: "get-tuple-element.113"
+            opcode: "delay"
+            instruction_id: 137
+            operand_ids: 134
+          }
+          instructions {
+            name: "get-tuple-element.115"
+            opcode: "delay"
+            instruction_id: 138
+            operand_ids: 134
+          }
+          instructions {
+            name: "get-tuple-element.116"
+            opcode: "delay"
+            instruction_id: 139
+            operand_ids: 134
+          }
+          instructions {
+            name: "get-tuple-element.110"
+            opcode: "delay"
+            instruction_id: 140
+            operand_ids: 134
+          }
+          instructions {
+            name: "get-tuple-element.114"
+            opcode: "delay"
+            instruction_id: 141
+            operand_ids: 134
+          }
+          instructions {
+            name: "compare.117"
+            opcode: "delay"
+            instruction_id: 142
+            ops: 1
+            bytes_in: 8
+            bytes_out: 1
+            seconds: 1.1974147368087884e-11
+            operand_ids: 140
+            operand_ids: 141
+          }
+          instructions {
+            name: "tuple.118"
+            opcode: "delay"
+            instruction_id: 143
+            seconds: 1.0643686453037926e-11
+            operand_ids: 142
+          }
+        }
+      }
+      instructions {
+        name: "get-tuple-element.122"
+        opcode: "delay"
+        instruction_id: 133
+        operand_ids: 132
+      }
+    }
+  }
+  instructions {
+    name: "get-tuple-element.124"
+    opcode: "delay"
+    instruction_id: 17
+    operand_ids: 16
+  }
+  instructions {
+    name: "get-tuple-element.125"
+    opcode: "delay"
+    instruction_id: 18
+    operand_ids: 16
+  }
+  instructions {
+    name: "get-tuple-element.126"
+    opcode: "delay"
+    instruction_id: 19
+    operand_ids: 16
+  }
+  instructions {
+    name: "get-tuple-element.127"
+    opcode: "delay"
+    instruction_id: 20
+    operand_ids: 16
+  }
+  instructions {
+    name: "get-tuple-element.128"
+    opcode: "delay"
+    instruction_id: 21
+    operand_ids: 16
+  }
+  instructions {
+    name: "get-tuple-element.129"
+    opcode: "delay"
+    instruction_id: 22
+    operand_ids: 16
+  }
+  instructions {
+    name: "get-tuple-element.130"
+    opcode: "delay"
+    instruction_id: 23
+    operand_ids: 16
+  }
+  instructions {
+    name: "tuple.131"
+    opcode: "delay"
+    instruction_id: 24
+    seconds: 7.4505804303903744e-11
+    operand_ids: 17
+    operand_ids: 18
+    operand_ids: 19
+    operand_ids: 20
+    operand_ids: 21
+    operand_ids: 22
+    operand_ids: 23
+  }
+  instructions {
+    name: "get-tuple-element.132"
+    opcode: "delay"
+    instruction_id: 25
+    operand_ids: 24
+  }
+  instructions {
+    name: "get-tuple-element.134"
+    opcode: "delay"
+    instruction_id: 26
+    operand_ids: 24
+  }
+  instructions {
+    name: "get-tuple-element.133"
+    opcode: "delay"
+    instruction_id: 27
+    operand_ids: 24
+  }
+  instructions {
+    name: "reshape.138"
+    opcode: "delay"
+    instruction_id: 28
+    bytes_in: 4
+    bytes_out: 4
+    seconds: 1.0643686453037926e-11
+    operand_ids: 27
+  }
+  instructions {
+    name: "tuple.139"
+    opcode: "delay"
+    instruction_id: 29
+    seconds: 1.0643686453037926e-11
+    operand_ids: 28
+  }
+  instructions {
+    name: "get-tuple-element.140"
+    opcode: "delay"
+    instruction_id: 30
+    operand_ids: 29
+  }
+  instructions {
+    name: "get-tuple-element.136"
+    opcode: "delay"
+    instruction_id: 31
+    operand_ids: 24
+  }
+  instructions {
+    name: "reshape.141"
+    opcode: "delay"
+    instruction_id: 32
+    bytes_in: 4194304
+    bytes_out: 4194304
+    seconds: 1.1160714166180696e-05
+    operand_ids: 31
+  }
+  instructions {
+    name: "tuple.142"
+    opcode: "delay"
+    instruction_id: 33
+    seconds: 1.0643686453037926e-11
+    operand_ids: 32
+  }
+  instructions {
+    name: "get-tuple-element.143"
+    opcode: "delay"
+    instruction_id: 34
+    operand_ids: 33
+  }
+  instructions {
+    name: "get-tuple-element.137"
+    opcode: "delay"
+    instruction_id: 35
+    operand_ids: 24
+  }
+  instructions {
+    name: "reshape.144"
+    opcode: "delay"
+    instruction_id: 36
+    bytes_in: 4194304
+    bytes_out: 4194304
+    seconds: 1.1160714166180696e-05
+    operand_ids: 35
+  }
+  instructions {
+    name: "tuple.145"
+    opcode: "delay"
+    instruction_id: 37
+    seconds: 1.0643686453037926e-11
+    operand_ids: 36
+  }
+  instructions {
+    name: "get-tuple-element.146"
+    opcode: "delay"
+    instruction_id: 38
+    operand_ids: 37
+  }
+  instructions {
+    name: "get-tuple-element.135"
+    opcode: "delay"
+    instruction_id: 39
+    operand_ids: 24
+  }
+  instructions {
+    name: "reshape.147"
+    opcode: "delay"
+    instruction_id: 40
+    bytes_in: 8
+    bytes_out: 8
+    seconds: 2.1287372906075852e-11
+    operand_ids: 39
+  }
+  instructions {
+    name: "tuple.148"
+    opcode: "delay"
+    instruction_id: 41
+    seconds: 1.0643686453037926e-11
+    operand_ids: 40
+  }
+  instructions {
+    name: "get-tuple-element.149"
+    opcode: "delay"
+    instruction_id: 42
+    operand_ids: 41
+  }
+  instructions {
+    name: "tuple.150"
+    opcode: "delay"
+    instruction_id: 43
+    seconds: 4.2574745812151704e-11
+    operand_ids: 30
+    operand_ids: 34
+    operand_ids: 38
+    operand_ids: 42
+  }
+}

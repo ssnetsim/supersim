@@ -1,6 +1,6 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
-release = "1.8.1"
+release = "1.10.0"
 http_archive(
   name = "googletest",
   urls = ["https://github.com/google/googletest/archive/release-" + release + ".tar.gz"],
@@ -12,7 +12,7 @@ http_file(
   urls = ["https://raw.githubusercontent.com/nicmcd/pkgbuild/master/cpplint.BUILD"],
 )
 
-release = "1.3.0"
+release = "1.5.4"
 http_archive(
   name = "cpplint",
   urls = ["https://github.com/cpplint/cpplint/archive/" + release + ".tar.gz"],
@@ -49,6 +49,35 @@ http_archive(
     urls = ["https://github.com/nlohmann/json/archive/v" + release + ".tar.gz"],
     strip_prefix = "json-" + release,
     build_file = "@nlohmann_json_build//file:downloaded",
+)
+
+hash = "6d5bb42"
+http_archive(
+  name = "com_google_paragraph",
+    urls = ["https://github.com/google/paragraph/tarball/" + hash],
+    type = "tar.gz",
+    strip_prefix = "google-paragraph-" + hash,
+)
+
+hash = "97d8af4"
+http_archive(
+    name = "rules_proto",
+    urls = [
+        "https://github.com/bazelbuild/rules_proto/tarball/" + hash,
+    ],
+    type = "tar.gz",
+    strip_prefix = "bazelbuild-rules_proto-" + hash,
+)
+load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
+rules_proto_dependencies()
+rules_proto_toolchains()
+
+hash = "c51510d"
+http_archive(
+    name = "com_google_absl",
+    urls = ["https://github.com/abseil/abseil-cpp/tarball/" + hash],
+    type = "tar.gz",
+    strip_prefix = "abseil-abseil-cpp-" + hash,
 )
 
 hash = "6b56ef3"

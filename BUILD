@@ -20,6 +20,10 @@ LIBS = [
     "@libstrop//:strop",
     "@libfio//:fio",
     "@libsettings//:settings",
+    "@com_google_absl//absl/strings:str_format",
+    "@com_google_paragraph//paragraph/graph",
+    "@com_google_paragraph//paragraph/scheduling:scheduler",
+    "@com_google_paragraph//paragraph/shim:statusor",
     "@zlib//:zlib",
     "@nlohmann_json//:nlohmann_json",
 ]
@@ -174,7 +178,7 @@ py_binary(
 
 filegroup(
     name = "config_files",
-    srcs = glob(["config/*"]),
+    srcs = glob(["config/**"]),
 )
 
 [
