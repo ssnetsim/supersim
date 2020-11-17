@@ -1,0 +1,21 @@
+{
+  "collective": {
+    "all-reduce": {
+      "algorithm": "unidir-ring"
+    },
+    "barrier": {
+      "algorithm": "centralized"
+    }
+  },
+  "protocol": {
+    "sendrecv": {
+      "algorithm": "push"
+    },
+    "recv": {
+      "algorithm": "push"
+    },
+    "send": {
+      "algorithm": "push"
+    }
+  }
+}
