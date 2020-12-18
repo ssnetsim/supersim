@@ -15,7 +15,7 @@
 #include "traffic/continuous/LoopbackCTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include "test/TestSetup_TESTLIB.h"
@@ -26,7 +26,7 @@ TEST(LoopbackCTP, self) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   LoopbackCTP tp("TP", nullptr, TOTAL, ME, settings);
 

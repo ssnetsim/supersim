@@ -40,7 +40,7 @@ static std::string ppp(bool* _bools, u64 _len) {
   return ss.str();
 }
 
-void AllocatorTest(Json::Value _settings, AllocatorVerifier _verifier,
+void AllocatorTest(nlohmann::json _settings, AllocatorVerifier _verifier,
                    bool _singleRequest) {
   for (u32 C = 1; C < 16; C++) {
     for (u32 R = 1; R < 16; R++) {
@@ -139,7 +139,7 @@ void AllocatorTest(Json::Value _settings, AllocatorVerifier _verifier,
   }
 }
 
-void AllocatorLoadBalanceTest(Json::Value _settings) {
+void AllocatorLoadBalanceTest(nlohmann::json _settings) {
   const bool DBG = false;
   const u32 C = 16;
   const u32 R = 16;

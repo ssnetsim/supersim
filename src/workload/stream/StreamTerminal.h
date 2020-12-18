@@ -15,7 +15,7 @@
 #ifndef WORKLOAD_STREAM_STREAMTERMINAL_H_
 #define WORKLOAD_STREAM_STREAMTERMINAL_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -35,7 +35,7 @@ class StreamTerminal : public Terminal {
  public:
   StreamTerminal(const std::string& _name, const Component* _parent,
                  u32 _id, const std::vector<u32>& _address, ::Application* _app,
-                 Json::Value _settings);
+                 nlohmann::json _settings);
   ~StreamTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;

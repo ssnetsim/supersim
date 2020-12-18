@@ -27,15 +27,15 @@
 namespace SingleRouter {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // concentration
-  concentration_ = _settings["concentration"].asUInt();
+  concentration_ = _settings["concentration"].get<u32>();
   assert(concentration_ > 0);
   dbgprintf("concentration_ = %u", concentration_);
 
   // ports per interface
-  interfacePorts_ = _settings["interface_ports"].asUInt();
+  interfacePorts_ = _settings["interface_ports"].get<u32>();
   assert(interfacePorts_ > 0);
   assert(concentration_ % interfacePorts_ == 0);
   dbgprintf("interfacePorts_ = %u", interfacePorts_);

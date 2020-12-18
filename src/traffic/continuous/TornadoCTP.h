@@ -15,7 +15,7 @@
 #ifndef TRAFFIC_CONTINUOUS_TORNADOCTP_H_
 #define TRAFFIC_CONTINUOUS_TORNADOCTP_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -26,7 +26,7 @@ class TornadoCTP : public ContinuousTrafficPattern {
  public:
   TornadoCTP(
       const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, Json::Value _settings);
+      u32 _self, nlohmann::json _settings);
   ~TornadoCTP();
 
   u32 nextDestination() override;

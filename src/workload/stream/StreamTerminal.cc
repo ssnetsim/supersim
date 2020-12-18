@@ -31,30 +31,30 @@ namespace Stream {
 StreamTerminal::StreamTerminal(
     const std::string& _name, const Component* _parent, u32 _id,
     const std::vector<u32>& _address, ::Application* _app,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Terminal(_name, _parent, _id, _address, _app) {
   // create a message size distribution
   messageSizeDistribution_ = MessageSizeDistribution::create(
       "MessageSizeDistribution", this, _settings["message_size_distribution"]);
 
   // protocol class of injection
-  assert(_settings.isMember("protocol_class"));
-  protocolClass_ = _settings["protocol_class"].asUInt();
+  assert(_settings.contains("protocol_class"));
+  protocolClass_ = _settings["protocol_class"].get<u32>();
 
   // message quantity limition
-  numMessages_ = _settings["num_messages"].asUInt();
+  numMessages_ = _settings["num_messages"].get<u32>();
 
   // apply the routines only if this terminal is targeted
   Application* app = reinterpret_cast<Application*>(application());
   if (_id == app->getSource()) {
     // get the injection rate
-    assert(_settings.isMember("injection_rate") &&
-           _settings["injection_rate"].isDouble());
-    injectionRate_ = _settings["injection_rate"].asDouble();
+    assert(_settings.contains("injection_rate") &&
+           _settings["injection_rate"].is_number_float());
+    injectionRate_ = _settings["injection_rate"].get<f64>();
     assert(injectionRate_ >= 0.0 && injectionRate_ <= 1.0);
 
     // max packet size
-    maxPacketSize_ = _settings["max_packet_size"].asUInt();
+    maxPacketSize_ = _settings["max_packet_size"].get<u32>();
 
     // choose a random number of cycles in the future to start
     // make an event to start the Terminal in the future

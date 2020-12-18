@@ -15,7 +15,7 @@
 #ifndef NETWORK_INTERFACEONLY_NETWORK_H_
 #define NETWORK_INTERFACEONLY_NETWORK_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -32,7 +32,7 @@ namespace InterfaceOnly {
 class Network : public ::Network {
  public:
   Network(const std::string& _name, const Component* _parent,
-          MetadataHandler* _metadataHandler, Json::Value _settings);
+          MetadataHandler* _metadataHandler, nlohmann::json _settings);
   ~Network();
 
   // this is the injection algorithm factory for this network

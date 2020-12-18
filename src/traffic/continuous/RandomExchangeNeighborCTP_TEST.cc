@@ -15,7 +15,7 @@
 #include "traffic/continuous/RandomExchangeNeighborCTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <mut/mut.h>
 #include <prim/prim.h>
 #include <strop/strop.h>
@@ -28,13 +28,15 @@
 
 TEST(RandomExchangeNeighborCTP, evenSpread_1d) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
-  Json::Value settings;
+  nlohmann::json settings;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(8);
-  settings["interface_ports"] = Json::Value(2);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(8);
+  settings["interface_ports"] = nlohmann::json(2);
+  settings["all_interfaces"] = false;
   settings["enabled_dimensions"][0] = true;
+  settings["enabled_dimensions"][1] = false;
 
   std::vector<u32> widths = {4, 4};
 
@@ -106,13 +108,13 @@ TEST(RandomExchangeNeighborCTP, evenSpread_1d) {
 
 TEST(RandomExchangeNeighborCTP, evenSpread_1d_all_terminals) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
-  Json::Value settings;
+  nlohmann::json settings;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(8);
-  settings["interface_ports"] = Json::Value(2);
-  settings["enabled_dimensions"][0] = true;
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(8);
+  settings["interface_ports"] = nlohmann::json(2);
+  settings["enabled_dimensions"] = {true, false};
   settings["all_interfaces"] = true;
 
   std::vector<u32> widths = {4, 4};
@@ -185,12 +187,12 @@ TEST(RandomExchangeNeighborCTP, evenSpread_1d_all_terminals) {
 
 TEST(RandomExchangeNeighborCTP, evenSpread_2d_all_terminals) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
-  Json::Value settings;
+  nlohmann::json settings;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(8);
-  settings["interface_ports"] = Json::Value(2);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(8);
+  settings["interface_ports"] = nlohmann::json(2);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["all_interfaces"] = true;

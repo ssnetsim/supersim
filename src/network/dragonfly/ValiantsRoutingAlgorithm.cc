@@ -34,15 +34,15 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
     u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
     u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : RoutingAlgorithm(
           _name, _parent, _router, _baseVc, _numVcs, _inputPort, _inputVc,
           _localWidth, _localWeight, _globalWidth, _globalWeight,
           _concentration, _interfacePorts, _routerRadix, _globalPortsPerRouter,
           _settings),
-      mode_(parseRoutingMode(_settings["mode"].asString())) {
-  assert(_settings.isMember("smart_intermediate_node"));
-  smartIntermediateNode_ = _settings["smart_intermediate_node"].asBool();
+      mode_(parseRoutingMode(_settings["mode"].get<std::string>())) {
+  assert(_settings.contains("smart_intermediate_node"));
+  smartIntermediateNode_ = _settings["smart_intermediate_node"].get<bool>();
 
   // Req VCs and port bases
   rcs_ = 4;

@@ -15,7 +15,7 @@
 #ifndef TRAFFIC_CONTINUOUS_RANDOMBLOCKOUTCTP_H_
 #define TRAFFIC_CONTINUOUS_RANDOMBLOCKOUTCTP_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -26,7 +26,7 @@ class RandomBlockOutCTP : public ContinuousTrafficPattern {
  public:
   RandomBlockOutCTP(
       const std::string& _name, const Component* _parent,
-      u32 _numTerminals, u32 _self, Json::Value _settings);
+      u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~RandomBlockOutCTP();
 
   u32 nextDestination() override;

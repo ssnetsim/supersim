@@ -29,7 +29,7 @@ namespace AllToAll {
 Application::Application(
     const std::string& _name, const Component* _parent, u32 _id,
     Workload* _workload, MetadataHandler* _metadataHandler,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings) {
   // all terminals are the same

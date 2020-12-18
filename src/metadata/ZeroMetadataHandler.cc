@@ -19,7 +19,7 @@
 #include "event/Simulator.h"
 #include "types/Packet.h"
 
-ZeroMetadataHandler::ZeroMetadataHandler(Json::Value _settings)
+ZeroMetadataHandler::ZeroMetadataHandler(nlohmann::json _settings)
     : MetadataHandler(_settings) {}
 
 ZeroMetadataHandler::~ZeroMetadataHandler() {}

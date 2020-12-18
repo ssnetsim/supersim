@@ -35,13 +35,13 @@ namespace OutputQueued {
 Router::Router(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, Json::Value _settings)
+    MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Router(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
                _metadataHandler, _settings),
-      transferLatency_(_settings["transfer_latency"].asUInt()),
+      transferLatency_(_settings["transfer_latency"].get<u32>()),
       congestionMode_(parseCongestionMode(
-          _settings["congestion_mode"].asString())) {
-  assert(!_settings["transfer_latency"].isNull());
+          _settings["congestion_mode"].get<std::string>())) {
+  assert(!_settings["transfer_latency"].is_null());
   assert(transferLatency_ > 0);
 
   // determine the size of credits
@@ -57,12 +57,12 @@ Router::Router(
   expPackets_.resize(numPorts_, nullptr);
 
   // queue depths
-  assert(_settings.isMember("output_queue_depth"));
-  if (_settings["output_queue_depth"].isString()) {
-    assert(_settings["output_queue_depth"].asString() == "infinite");
+  assert(_settings.contains("output_queue_depth"));
+  if (_settings["output_queue_depth"].is_string()) {
+    assert(_settings["output_queue_depth"].get<std::string>() == "infinite");
     outputQueueDepth_ = U32_MAX;
   } else {
-    outputQueueDepth_ = _settings["output_queue_depth"].asUInt();
+    outputQueueDepth_ = _settings["output_queue_depth"].get<u32>();
     assert(outputQueueDepth_ > 0);
   }
 
@@ -71,20 +71,20 @@ Router::Router(
   inputQueueMult_ = 0;
   inputQueueMax_ = 0;
   inputQueueMin_ = 0;
-  assert(_settings.isMember("input_queue_mode"));
-  if (_settings["input_queue_mode"].asString() == "tailored") {
+  assert(_settings.contains("input_queue_mode"));
+  if (_settings["input_queue_mode"].get<std::string>() == "tailored") {
     inputQueueTailored_ = true;
-    inputQueueMult_ = _settings["input_queue_depth"].asDouble();
+    inputQueueMult_ = _settings["input_queue_depth"].get<f64>();
     assert(inputQueueMult_ > 0.0);
     // max and min queue depth
-    assert(_settings.isMember("input_queue_min"));
-    inputQueueMin_ = _settings["input_queue_min"].asUInt();
-    assert(_settings.isMember("input_queue_max"));
-    inputQueueMax_ = _settings["input_queue_max"].asUInt();
+    assert(_settings.contains("input_queue_min"));
+    inputQueueMin_ = _settings["input_queue_min"].get<u32>();
+    assert(_settings.contains("input_queue_max"));
+    inputQueueMax_ = _settings["input_queue_max"].get<u32>();
     assert(inputQueueMin_ <= inputQueueMax_);
-  } else if (_settings["input_queue_mode"].asString() == "fixed") {
+  } else if (_settings["input_queue_mode"].get<std::string>() == "fixed") {
     inputQueueTailored_ = false;
-    inputQueueDepth_ = _settings["input_queue_depth"].asUInt();
+    inputQueueDepth_ = _settings["input_queue_depth"].get<u32>();
     assert(inputQueueDepth_ > 0);
   } else {
     fprintf(stderr, "Wrong input queue mode, options: tailor or fixed\n");
@@ -105,8 +105,8 @@ Router::Router(
   }
 
   // determine if the router will use store and forward
-  assert(_settings.isMember("store_and_forward"));
-  bool storeAndForward = _settings["store_and_forward"].asBool();
+  assert(_settings.contains("store_and_forward"));
+  bool storeAndForward = _settings["store_and_forward"].get<bool>();
 
   // create routing algorithms, input queues, link to routing algorithm,
   //  crossbar, and schedulers

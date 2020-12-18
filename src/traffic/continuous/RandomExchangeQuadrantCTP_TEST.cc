@@ -15,7 +15,7 @@
 #include "traffic/continuous/RandomExchangeQuadrantCTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <mut/mut.h>
 #include <prim/prim.h>
 #include <strop/strop.h>
@@ -28,12 +28,12 @@
 
 TEST(RandomExchangeQuadrantCTP, evenSpread) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
-  Json::Value settings;
+  nlohmann::json settings;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
 
   u32 dimensions = 2;
   std::vector<u32> widths = {4, 4};

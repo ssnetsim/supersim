@@ -15,7 +15,7 @@
 #include "network/hyperx/LeastCongestedQueueRoutingAlgorithm.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <vector>
@@ -38,7 +38,7 @@ TEST(HyperX_LeastCongestedQueueRoutingAlgorithm, construct) {
         for (auto& maxOutput : maxOutputs) {
           for (auto& minType : minTypes) {
             for (auto& shortCut : shortCuts) {
-              Json::Value settings;
+              nlohmann::json settings;
               settings["algorithm"] = "least_congested_queue";
               settings["latency"] = latency;
               settings["output_type"] = outputType;

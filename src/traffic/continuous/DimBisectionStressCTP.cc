@@ -24,26 +24,26 @@
 
 DimBisectionStressCTP::DimBisectionStressCTP(
     const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, Json::Value _settings)
+    u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
-  assert(_settings.isMember("dimensions") &&
-         _settings["dimensions"].isArray());
-  assert(_settings.isMember("concentration") &&
-         _settings["concentration"].isUInt());
-  assert(_settings.isMember("interface_ports") &&
-         _settings["interface_ports"].isUInt());
+  assert(_settings.contains("dimensions") &&
+         _settings["dimensions"].is_array());
+  assert(_settings.contains("concentration") &&
+         _settings["concentration"].is_number_integer());
+  assert(_settings.contains("interface_ports") &&
+         _settings["interface_ports"].is_number_integer());
   const u32 dimensions = _settings["dimensions"].size();
   std::vector<u32> widths(dimensions);
   for (u32 i = 0; i < dimensions; i++) {
-    widths.at(i) = _settings["dimensions"][i].asUInt();
+    widths.at(i) = _settings["dimensions"][i].get<u32>();
   }
-  const u32 concentration = _settings["concentration"].asUInt();
-  const u32 interfacePorts = _settings["interface_ports"].asUInt();
+  const u32 concentration = _settings["concentration"].get<u32>();
+  const u32 interfacePorts = _settings["interface_ports"].get<u32>();
 
-  assert(_settings.isMember("mode") &&
-         _settings["mode"].isString());
+  assert(_settings.contains("mode") &&
+         _settings["mode"].is_string());
   for (u32 i = 0; i < dimensions; i++) {
     assert(widths.at(i) % 2 == 0);
   }

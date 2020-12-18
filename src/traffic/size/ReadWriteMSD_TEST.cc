@@ -15,7 +15,7 @@
 #include "traffic/size/ReadWriteMSD.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 #include "test/TestSetup_TESTLIB.h"
 #include "traffic/size/MessageSizeDistribution.h"
@@ -33,7 +33,7 @@ TEST(ReadWriteMSD, simple) {
   const f64 RP = 0.75;
 
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "read_write";
   settings["read_request_size"] = RQ;
   settings["read_response_size"] = RS;

@@ -21,7 +21,7 @@
 
 InjectionAlgorithm::InjectionAlgorithm(
     const std::string& _name, const Component* _parent, Interface* _interface,
-    u32 _baseVc, u32 _numVcs, u32 _inputPc, Json::Value _settings)
+    u32 _baseVc, u32 _numVcs, u32 _inputPc, nlohmann::json _settings)
     : Component(_name, _parent), interface_(_interface), baseVc_(_baseVc),
       numVcs_(_numVcs), inputPc_(_inputPc) {
   assert(interface_ != nullptr);

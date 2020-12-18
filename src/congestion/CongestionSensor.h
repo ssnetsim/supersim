@@ -15,7 +15,7 @@
 #ifndef CONGESTION_CONGESTIONSENSOR_H_
 #define CONGESTION_CONGESTIONSENSOR_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -26,7 +26,7 @@
 #include "event/Component.h"
 
 #define CONGESTIONSENSOR_ARGS const std::string&, const Component*, \
-    PortedDevice*, Json::Value
+    PortedDevice*, nlohmann::json
 
 class CongestionSensor : public Component, public CreditWatcher {
  public:
@@ -45,7 +45,7 @@ class CongestionSensor : public Component, public CreditWatcher {
   };
 
   CongestionSensor(const std::string& _name, const Component* _parent,
-                   PortedDevice* _device, Json::Value _settings);
+                   PortedDevice* _device, nlohmann::json _settings);
   virtual ~CongestionSensor();
 
   // this is a congestion status factory

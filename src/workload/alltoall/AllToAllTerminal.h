@@ -15,7 +15,7 @@
 #ifndef WORKLOAD_ALLTOALL_ALLTOALLTERMINAL_H_
 #define WORKLOAD_ALLTOALL_ALLTOALLTERMINAL_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -38,7 +38,7 @@ class AllToAllTerminal : public Terminal {
  public:
   AllToAllTerminal(const std::string& _name, const Component* _parent,
                    u32 _id, const std::vector<u32>& _address,
-                   ::Application* _app, Json::Value _settings);
+                   ::Application* _app, nlohmann::json _settings);
   ~AllToAllTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;

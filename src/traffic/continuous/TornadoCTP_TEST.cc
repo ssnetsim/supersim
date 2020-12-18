@@ -16,7 +16,7 @@
 
 #include <bits/bits.h>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <cassert>
@@ -26,14 +26,14 @@
 TEST(TornadoCTP, no_dimMask) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   TornadoCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(5);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(5);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
 
   numTerminals = 4 * 4 * 5 * 1;
   pairs = {
@@ -65,15 +65,16 @@ TEST(TornadoCTP, no_dimMask) {
 TEST(TornadoCTP, dimension_0) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   TornadoCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(5);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(5);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
+  settings["enabled_dimensions"][1] = false;
 
   numTerminals = 4 * 4 * 5 * 1;
   pairs = {
@@ -105,14 +106,15 @@ TEST(TornadoCTP, dimension_0) {
 TEST(TornadoCTP, dimension_1) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   TornadoCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(5);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(5);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
+  settings["enabled_dimensions"][0] = false;
   settings["enabled_dimensions"][1] = true;
 
   numTerminals = 4 * 4 * 5 * 1;
@@ -144,16 +146,18 @@ TEST(TornadoCTP, dimension_1) {
 TEST(TornadoCTP, dimension_1_3d) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   TornadoCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(5);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(5);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
+  settings["enabled_dimensions"][0] = false;
   settings["enabled_dimensions"][1] = true;
+  settings["enabled_dimensions"][2] = false;
 
   numTerminals = 3 * 4 * 4 * 5 * 1;
   pairs = {
@@ -184,16 +188,16 @@ TEST(TornadoCTP, dimension_1_3d) {
 TEST(TornadoCTP, dimension_1_3d_1) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   TornadoCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(5);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
-  settings["enabled_dimensions"][1] = true;
+  settings["dimensions"][0] = nlohmann::json(5);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
+  settings["enabled_dimensions"] = {false, true, false};
 
   numTerminals = 3 * 4 * 4 * 5 * 1;
   pairs = {
@@ -224,14 +228,14 @@ TEST(TornadoCTP, dimension_1_3d_1) {
 TEST(TornadoCTP, 2d) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   TornadoCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(5);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(5);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
 
@@ -278,15 +282,15 @@ TEST(TornadoCTP, 2d) {
 TEST(TornadoCTP, 3d) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   TornadoCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(5);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(5);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["enabled_dimensions"][2] = true;

@@ -16,7 +16,7 @@
 #define ROUTING_REDUCTION_H_
 
 #include <colhash/tuplehash.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -28,13 +28,13 @@
 #include "routing/mode.h"
 
 #define REDUCTION_ARGS const std::string&, const Component*,  \
-    const PortedDevice*, RoutingMode, bool, Json::Value
+    const PortedDevice*, RoutingMode, bool, nlohmann::json
 
 class Reduction : public Component {
  public:
   Reduction(const std::string& _name, const Component* _parent,
             const PortedDevice* _device, RoutingMode _mode,
-            bool _ignoreDuplicates, Json::Value _settings);
+            bool _ignoreDuplicates, nlohmann::json _settings);
   virtual ~Reduction();
 
   // this is a reduction factory

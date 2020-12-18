@@ -28,36 +28,36 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
                        _dimensionWeights, _concentration, _interfacePorts,
                        _settings) {
-  assert(_settings.isMember("adaptivity_type") &&
-         _settings["adaptivity_type"].isString());
-  assert(_settings.isMember("output_type") &&
-         _settings["output_type"].isString());
-  assert(_settings.isMember("decision_scheme") &&
-         _settings["decision_scheme"].isString());
+  assert(_settings.contains("adaptivity_type") &&
+         _settings["adaptivity_type"].is_string());
+  assert(_settings.contains("output_type") &&
+         _settings["output_type"].is_string());
+  assert(_settings.contains("decision_scheme") &&
+         _settings["decision_scheme"].is_string());
 
-  assert(_settings.isMember("max_outputs") &&
-         _settings["max_outputs"].isUInt());
-  maxOutputs_ = _settings["max_outputs"].asUInt();
+  assert(_settings.contains("max_outputs") &&
+         _settings["max_outputs"].is_number_integer());
+  maxOutputs_ = _settings["max_outputs"].get<u32>();
 
-  assert(_settings.isMember("output_algorithm") &&
-         _settings["output_algorithm"].isString());
-  if (_settings["output_algorithm"].asString() == "random") {
+  assert(_settings.contains("output_algorithm") &&
+         _settings["output_algorithm"].is_string());
+  if (_settings["output_algorithm"].get<std::string>() == "random") {
     outputAlg_ = OutputAlg::Rand;
-  } else if (_settings["output_algorithm"].asString() == "minimal") {
+  } else if (_settings["output_algorithm"].get<std::string>() == "minimal") {
     outputAlg_ = OutputAlg::Min;
   } else {
     fprintf(stderr, "Unknown output algorithm:");
     fprintf(stderr, " '%s'\n",
-            _settings["output_algorithm"].asString().c_str());
+            _settings["output_algorithm"].get<std::string>().c_str());
     assert(false);
   }
 
-  std::string outputType = _settings["output_type"].asString();
+  std::string outputType = _settings["output_type"].get<std::string>();
   if (outputType == "port") {
     outputTypePort_ = true;
   } else if (outputType == "vc") {
@@ -68,7 +68,7 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
     assert(false);
   }
 
-  if (_settings["adaptivity_type"].asString() == "dimension_adaptive") {
+  if (_settings["adaptivity_type"].get<std::string>() == "dimension_adaptive") {
     if (outputType == "vc") {
       adaptivityType_ = AdaptiveRoutingAlg::DDALV;
     } else if (outputType == "port") {
@@ -78,7 +78,7 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
       fprintf(stderr, " '%s'\n", outputType.c_str());
       assert(false);
     }
-  } else if (_settings["adaptivity_type"].asString() == "dimension_order") {
+  } else if (_settings["adaptivity_type"].get<std::string>() == "dimension_order") {
     if (outputType == "vc") {
       adaptivityType_ = AdaptiveRoutingAlg::DOALV;
     } else if (outputType == "port") {
@@ -88,11 +88,11 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
       fprintf(stderr, " '%s'\n", outputType.c_str());
       assert(false);
     }
-  } else if (_settings["adaptivity_type"].asString() == "variable") {
-    assert(_settings.isMember("max_deroutes"));
-    maxDeroutesAllowed_ = _settings["max_deroutes"].asUInt();
-    assert(_settings.isMember("multi_deroute"));
-    multiDeroute_ = _settings["multi_deroute"].asBool();
+  } else if (_settings["adaptivity_type"].get<std::string>() == "variable") {
+    assert(_settings.contains("max_deroutes"));
+    maxDeroutesAllowed_ = _settings["max_deroutes"].get<u32>();
+    assert(_settings.contains("multi_deroute"));
+    multiDeroute_ = _settings["multi_deroute"].get<bool>();
     if (outputType == "vc") {
       adaptivityType_ = AdaptiveRoutingAlg::VDALV;
     } else if (outputType == "port") {
@@ -104,47 +104,47 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
     }
   } else {
     fprintf(stderr, "Unknown adaptive algorithm:");
-    fprintf(stderr, " '%s'\n", _settings["adaptivity_type"].asString().c_str());
+    fprintf(stderr, " '%s'\n", _settings["adaptivity_type"].get<std::string>().c_str());
     assert(false);
   }
 
-  if (_settings["decision_scheme"].asString() == "monolithic_weighted") {
+  if (_settings["decision_scheme"].get<std::string>() == "monolithic_weighted") {
     decisionScheme_ = DecisionScheme::MW;
-    assert(_settings.isMember("independent_bias"));
-    iBias_ = _settings["independent_bias"].asDouble();
-    assert(_settings.isMember("congestion_bias"));
-    cBias_ = _settings["congestion_bias"].asDouble();
-    if (!_settings.isMember("bias_mode")) {
+    assert(_settings.contains("independent_bias"));
+    iBias_ = _settings["independent_bias"].get<f64>();
+    assert(_settings.contains("congestion_bias"));
+    cBias_ = _settings["congestion_bias"].get<f64>();
+    if (!_settings.contains("bias_mode")) {
       biasMode_ = BiasScheme::REGULAR;
-    } else if (_settings["bias_mode"].asString() == "regular") {
+    } else if (_settings["bias_mode"].get<std::string>() == "regular") {
       biasMode_ = BiasScheme::REGULAR;
-    } else if (_settings["bias_mode"].asString() == "bimodal") {
+    } else if (_settings["bias_mode"].get<std::string>() == "bimodal") {
       biasMode_ = BiasScheme::BIMODAL;
-    } else if (_settings["bias_mode"].asString() == "proportional") {
+    } else if (_settings["bias_mode"].get<std::string>() == "proportional") {
       biasMode_ = BiasScheme::PROPORTIONAL;
-    } else if (_settings["bias_mode"].asString() == "differential") {
+    } else if (_settings["bias_mode"].get<std::string>() == "differential") {
       biasMode_ = BiasScheme::DIFFERENTIAL;
-    } else if (_settings["bias_mode"].asString() ==
+    } else if (_settings["bias_mode"].get<std::string>() ==
                "proportional_differential") {
       biasMode_ = BiasScheme::PROPORTIONALDIF;
     } else {
       fprintf(stderr, "Unknown weighting scheme:");
-      fprintf(stderr, " '%s'\n", _settings["bias_mode"].asString().c_str());
+      fprintf(stderr, " '%s'\n", _settings["bias_mode"].get<std::string>().c_str());
       assert(false);
     }
-  } else if (_settings["decision_scheme"].asString() == "staged_threshold") {
+  } else if (_settings["decision_scheme"].get<std::string>() == "staged_threshold") {
     decisionScheme_ = DecisionScheme::ST;
-    assert(_settings.isMember("threshold_min"));
-    assert(_settings.isMember("threshold_nonmin"));
-    thresholdMin_ = _settings["threshold_min"].asDouble();
-    thresholdNonMin_ = _settings["threshold_nonmin"].asDouble();
-  } else if (_settings["decision_scheme"].asString() == "threshold_weighted") {
+    assert(_settings.contains("threshold_min"));
+    assert(_settings.contains("threshold_nonmin"));
+    thresholdMin_ = _settings["threshold_min"].get<f64>();
+    thresholdNonMin_ = _settings["threshold_nonmin"].get<f64>();
+  } else if (_settings["decision_scheme"].get<std::string>() == "threshold_weighted") {
     decisionScheme_ = DecisionScheme::TW;
-    assert(_settings.isMember("threshold"));
-    threshold_ = _settings["threshold"].asDouble();
+    assert(_settings.contains("threshold"));
+    threshold_ = _settings["threshold"].get<f64>();
   } else {
     fprintf(stderr, "Unknown decision scheme:");
-    fprintf(stderr, " '%s'\n", _settings["decision_scheme"].asString().c_str());
+    fprintf(stderr, " '%s'\n", _settings["decision_scheme"].get<std::string>().c_str());
     assert(false);
   }
 
@@ -152,15 +152,15 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
       decisionScheme_ == DecisionScheme::TW) {
     // ensure hop_count_mode if using weights
 
-    assert(_settings.isMember("hop_count_mode"));
-    if (_settings["hop_count_mode"].asString() == "absolute") {
+    assert(_settings.contains("hop_count_mode"));
+    if (_settings["hop_count_mode"].get<std::string>() == "absolute") {
       hopCountMode_ = HopCountMode::ABS;
-    } else if (_settings["hop_count_mode"].asString() == "normalized") {
+    } else if (_settings["hop_count_mode"].get<std::string>() == "normalized") {
       hopCountMode_ = HopCountMode::NORM;
     } else {
       fprintf(stderr, "Unknown hop_count scheme:");
       fprintf(stderr, " '%s'\n",
-              _settings["hop_count_mode"].asString().c_str());
+              _settings["hop_count_mode"].get<std::string>().c_str());
       assert(false);
     }
   }

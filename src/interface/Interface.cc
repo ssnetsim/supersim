@@ -21,7 +21,7 @@
 Interface::Interface(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, Json::Value _settings)
+    MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : Component(_name, _parent),
       PortedDevice(_id, _address, _numPorts, _numVcs), network_(_network),
       messageReceiver_(nullptr), metadataHandler_(_metadataHandler) {}
@@ -31,9 +31,9 @@ Interface::~Interface() {}
 Interface* Interface::create(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, Json::Value _settings) {
+    MetadataHandler* _metadataHandler, nlohmann::json _settings) {
   // retrieve the type
-  const std::string& type = _settings["type"].asString();
+  const std::string& type = _settings["type"].get<std::string>();
 
   // attempt to build the interface
   Interface* interface = factory::ObjectFactory<

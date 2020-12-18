@@ -16,14 +16,14 @@
 #define STATS_TRAFFICLOG_H_
 
 #include <fio/OutFile.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include "event/Component.h"
 
 class TrafficLog {
  public:
-  explicit TrafficLog(Json::Value _settings);
+  explicit TrafficLog(nlohmann::json _settings);
   ~TrafficLog();
   void logTraffic(const Component* _device, u32 _inputPort, u32 _inputVc,
                   u32 _outputPort, u32 _outputVc, u32 _flits);

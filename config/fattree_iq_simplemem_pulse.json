@@ -5,10 +5,10 @@
     "interface_cycle_time": 2,
     "terminal_cycle_time": 1,
     "print_progress": true,
-    "print_interval": 1.0,  // seconds
+    "print_interval": 1.0,
     "random_seed": 12345678,
     "info_log": {
-      "file": null  // "info.csv"
+      "file": null
     }
   },
   "network": {
@@ -20,7 +20,7 @@
         "num_vcs": 2,
         "routing": {
           "algorithm": "common_ancestor",
-          "latency": 1,  // cycles
+          "latency": 1,
           "least_common_ancestor": false,
           "mode": "port_ave",
           "selection": "flow_hash",
@@ -39,7 +39,7 @@
         "num_vcs": 2,
         "routing": {
           "algorithm": "common_ancestor",
-          "latency": 1,  // cycles
+          "latency": 1,
           "least_common_ancestor": true,
           "mode": "port_max",
           "selection": "all",
@@ -57,20 +57,20 @@
     ],
     "internal_channels": [
       {
-        "latency": 3  // cycles
+        "latency": 3
       },
       {
-        "latency": 2  // cycles
+        "latency": 2
       }
     ],
     "external_channel": {
-      "latency": 1  // cycles
+      "latency": 1
     },
     "channel_log": {
-      "file": null  // "channels.csv"
+      "file": null
     },
     "traffic_log": {
-      "file": null  // "traffic.csv"
+      "file": null
     },
     "router": {
       "architecture": "input_queued",
@@ -80,19 +80,19 @@
         "granularity": 0,
         "minimum": 0.0,
         "offset": 0.0,
-        "mode": "normalized_vc", //(normalized_port/vc absolute_port/vc)
+        "mode": "normalized_vc",
         "phantom": true,
         "value_coeff": 1.23,
         "length_coeff": 2.5
       },
       "congestion_mode": "downstream",
-      "input_queue_mode": "fixed",  // fixed or tailored
+      "input_queue_mode": "fixed",
       "input_queue_depth": 16,
       "vca_swa_wait": false,
       "store_and_forward": false,
       "output_queue_depth": 64,
       "crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       },
       "vc_scheduler": {
         "allocator": {
@@ -115,8 +115,8 @@
           "resource_arbiter": {
             "type": "dual_stage_class",
             "classes": 2,
-            "class_map": [0, 0, 1],  // maps to the TCs of the 3 VCs
-            "metadata_func": "none",  // "none", "min", or "max"
+            "class_map": [0, 0, 1],
+            "metadata_func": "none",
             "stage1_arbiter": {
               "type": "lslp"
             },
@@ -146,10 +146,10 @@
         "packet_lock": true,
         "idle_unlock": true
       },
-      "init_credits_mode": "$&(network.router.input_queue_mode)&$",
-      "init_credits": "$&(network.router.input_queue_depth)&$",
+      "init_credits_mode": "$&(/network/router/input_queue_mode)&$",
+      "init_credits": "$&(/network/router/input_queue_depth)&$",
       "crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       }
     }
   },
@@ -160,16 +160,16 @@
   },
   "workload": {
     "message_log": {
-      "file": null  // "data.mpf.gz"
+      "file": null
     },
     "applications": [
       {
         "type": "simple_mem",
         "memory_slice": 4096,
-        "block_size": 64,  // bytes
+        "block_size": 64,
         "bytes_per_flit": 4,
-        "header_overhead": 16,  // bytes
-        "max_packet_size": 16,  // flits
+        "header_overhead": 16,
+        "max_packet_size": 16,
         "processor_terminal": {
           "protocol_class": 0,
           "latency": 10,
@@ -180,22 +180,22 @@
           "latency": 15
         },
         "rate_log": {
-          "file": null  // "rates.csv"
+          "file": null
         }
       },
       {
         "type": "pulse",
         "pulse_terminal": {
-          // requests
+
           "request_protocol_class": 1,
           "request_injection_rate": 0.25,
-          // responses
+
           "enable_responses": false,
-          // traffic generation
+
           "delay": 1000,
           "num_transactions": 500,
           "max_packet_size": 16,
-          "transaction_size": 1,  // requests
+          "transaction_size": 1,
           "traffic_pattern": {
             "type": "random_exchange"
           },
@@ -205,7 +205,7 @@
           }
         },
         "rate_log": {
-          "file": null  // "rates.csv"
+          "file": null
         }
       }
     ]

@@ -14,7 +14,7 @@
  */
 #include "allocator/RSeparableAllocator.h"
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <gtest/gtest.h>
 #include <prim/prim.h>
 
@@ -24,9 +24,9 @@
 
 TEST(RSeparableAllocator, lslp) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "lslp";
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["slip_latch"] = true;
   allocSettings["type"] = "r_separable";
@@ -37,10 +37,10 @@ TEST(RSeparableAllocator, lslp) {
 
 TEST(RSeparableAllocator, greater) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "comparing";
   arbSettings["greater"] = true;
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["slip_latch"] = true;
   allocSettings["type"] = "r_separable";
@@ -51,10 +51,10 @@ TEST(RSeparableAllocator, greater) {
 
 TEST(RSeparableAllocator, lesser) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "comparing";
   arbSettings["greater"] = false;
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["slip_latch"] = true;
   allocSettings["type"] = "r_separable";
@@ -65,9 +65,9 @@ TEST(RSeparableAllocator, lesser) {
 
 TEST(RSeparableAllocator, random) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "random";
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["slip_latch"] = true;
   allocSettings["type"] = "r_separable";

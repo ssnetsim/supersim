@@ -15,7 +15,7 @@
 #ifndef NETWORK_BUTTERFLY_ROUTINGALGORITHM_H_
 #define NETWORK_BUTTERFLY_ROUTINGALGORITHM_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -26,7 +26,7 @@
 #include "router/Router.h"
 
 #define BUTTERFLY_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
-    Router*, u32, u32, u32, u32, u32, u32, u32, u32, Json::Value
+    Router*, u32, u32, u32, u32, u32, u32, u32, u32, nlohmann::json
 
 namespace Butterfly {
 
@@ -36,7 +36,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
       const std::string& _name, const Component* _parent,
       Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       u32 _numPorts, u32 _numStages, u32 _interfacePorts, u32 _stage,
-      Json::Value _settings);
+      nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the butterfly topology

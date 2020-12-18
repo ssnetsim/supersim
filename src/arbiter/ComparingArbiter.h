@@ -15,7 +15,7 @@
 #ifndef ARBITER_COMPARINGARBITER_H_
 #define ARBITER_COMPARINGARBITER_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -28,7 +28,7 @@
 class ComparingArbiter : public Arbiter {
  public:
   ComparingArbiter(const std::string& _name, const Component* _parent,
-                   u32 _size, Json::Value _settings);
+                   u32 _size, nlohmann::json _settings);
   ~ComparingArbiter();
 
   u32 arbitrate() override;

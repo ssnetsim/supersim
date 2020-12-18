@@ -15,7 +15,7 @@
 #ifndef WORKLOAD_SIMPLEMEM_MEMORYTERMINAL_H_
 #define WORKLOAD_SIMPLEMEM_MEMORYTERMINAL_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <queue>
@@ -33,7 +33,7 @@ class MemoryTerminal : public Terminal {
  public:
   MemoryTerminal(const std::string& _name, const Component* _parent,
                  u32 _id, const std::vector<u32>& _address, u32 _memorySlice,
-                 ::Application* _app, Json::Value _settings);
+                 ::Application* _app, nlohmann::json _settings);
   ~MemoryTerminal();
   void processEvent(void* _event, s32 _type) override;
 

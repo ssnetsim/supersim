@@ -15,7 +15,7 @@
 #ifndef ARBITER_LSLPARBITER_H_
 #define ARBITER_LSLPARBITER_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -27,7 +27,7 @@
 class LslpArbiter : public Arbiter {
  public:
   LslpArbiter(const std::string& _name, const Component* _parent,
-              u32 _size, Json::Value _settings);
+              u32 _size, nlohmann::json _settings);
   ~LslpArbiter();
 
   void latch() override;

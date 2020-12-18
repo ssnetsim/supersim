@@ -15,7 +15,7 @@
 #ifndef ALLOCATOR_CRSEPARABLEALLOCATOR_H_
 #define ALLOCATOR_CRSEPARABLEALLOCATOR_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -29,7 +29,7 @@ class CrSeparableAllocator : public Allocator {
  public:
   CrSeparableAllocator(const std::string& _name, const Component* _parent,
                        u32 _numClients, u32 _numResources,
-                       Json::Value _settings);
+                       nlohmann::json _settings);
   ~CrSeparableAllocator();
 
   void setRequest(u32 _client, u32 _resource, bool* _request) override;

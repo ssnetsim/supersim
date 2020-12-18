@@ -27,7 +27,7 @@
 CongestionTestRouter::CongestionTestRouter(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, Json::Value _settings)
+    MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : Router(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
              _metadataHandler, _settings),
       congestionSensor_(nullptr) {
@@ -145,7 +145,7 @@ void StatusCheck::processEvent(void* _event, s32 _type) {
 
 CongestionTestSensor::CongestionTestSensor(
     const std::string& _name, const Component* _parent, PortedDevice* _device,
-    Json::Value _settings, const std::vector<f64>* _congestion)
+    nlohmann::json _settings, const std::vector<f64>* _congestion)
     : CongestionSensor(_name, _parent, _device, _settings),
       congestion_(_congestion) {}
 

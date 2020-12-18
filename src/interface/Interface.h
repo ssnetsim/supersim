@@ -15,7 +15,7 @@
 #ifndef INTERFACE_INTERFACE_H_
 #define INTERFACE_INTERFACE_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -37,7 +37,7 @@ class PacketReassembler;
 class MessageReassembler;
 
 #define INTERFACE_ARGS const std::string&, const Component*, Network*, u32,  \
-    const std::vector<u32>&, u32, u32, MetadataHandler*, Json::Value
+    const std::vector<u32>&, u32, u32, MetadataHandler*, nlohmann::json
 
 class Interface : public Component, public PortedDevice, public FlitSender,
                   public FlitReceiver, public CreditSender,
@@ -46,7 +46,7 @@ class Interface : public Component, public PortedDevice, public FlitSender,
   Interface(const std::string& _name, const Component* _parent,
             Network* _network, u32 _id, const std::vector<u32>& _address,
             u32 _numPorts, u32 _numVcs, MetadataHandler* _metadataHandler,
-            Json::Value _settings);
+            nlohmann::json _settings);
   virtual ~Interface();
 
   // this is an interface factory

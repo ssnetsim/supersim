@@ -15,7 +15,7 @@
 #ifndef NETWORK_MESH_INJECTIONALGORITHM_H_
 #define NETWORK_MESH_INJECTIONALGORITHM_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -25,7 +25,7 @@
 #include "interface/Interface.h"
 
 #define MESH_INJECTIONALGORITHM_ARGS const std::string&, \
-    const Component*, Interface*, u32, u32, u32, Json::Value
+    const Component*, Interface*, u32, u32, u32, nlohmann::json
 
 namespace Mesh {
 
@@ -33,7 +33,7 @@ class InjectionAlgorithm : public ::InjectionAlgorithm {
  public:
   InjectionAlgorithm(const std::string& _name, const Component* _parent,
                      Interface* _interface, u32 _baseVc, u32 _numVcs,
-                     u32 _inputPc, Json::Value _settings);
+                     u32 _inputPc, nlohmann::json _settings);
   virtual ~InjectionAlgorithm();
 
   // this is a injection algorithm factory for the Mesh topology

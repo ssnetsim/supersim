@@ -15,7 +15,7 @@
 #ifndef NETWORK_TORUS_ROUTINGALGORITHM_H_
 #define NETWORK_TORUS_ROUTINGALGORITHM_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -27,7 +27,7 @@
 
 #define TORUS_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
     Router*, u32, u32, u32, u32, const std::vector<u32>&, \
-    const std::vector<u32>&, u32, u32, Json::Value
+    const std::vector<u32>&, u32, u32, nlohmann::json
 
 namespace Torus {
 
@@ -39,7 +39,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
       const std::vector<u32>& _dimensionWidths,
       const std::vector<u32>& _dimensionWeights,
       u32 _concentration, u32 _interface,
-      Json::Value _settings);
+      nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the torus topology

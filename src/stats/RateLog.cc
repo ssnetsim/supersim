@@ -16,11 +16,11 @@
 
 #include <cassert>
 
-RateLog::RateLog(Json::Value _settings)
+RateLog::RateLog(nlohmann::json _settings)
     : outFile_(nullptr) {
-  if (!_settings["file"].isNull()) {
+  if (!_settings["file"].is_null()) {
     // create file
-    outFile_ = new fio::OutFile(_settings["file"].asString());
+    outFile_ = new fio::OutFile(_settings["file"].get<std::string>());
 
     // write header
     outFile_->write("id,name,injection,delivered,ejection\n");

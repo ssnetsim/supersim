@@ -19,7 +19,7 @@
 #include <cassert>
 
 Allocator::Allocator(const std::string& _name, const Component* _parent,
-                     u32 _numClients, u32 _numResources, Json::Value _settings)
+                     u32 _numClients, u32 _numResources, nlohmann::json _settings)
     : Component(_name, _parent),
       numClients_(_numClients), numResources_(_numResources) {
   assert(numClients_ > 0);
@@ -30,9 +30,9 @@ Allocator::~Allocator() {}
 
 Allocator* Allocator::create(
     const std::string& _name, const Component* _parent,
-    u32 _numClients, u32 _numResources, Json::Value _settings) {
+    u32 _numClients, u32 _numResources, nlohmann::json _settings) {
   // retrieve the allocator type
-  const std::string& type = _settings["type"].asString();
+  const std::string& type = _settings["type"].get<std::string>();
 
   // try to construct an allocator
   Allocator* alloc = factory::ObjectFactory<Allocator, ALLOCATOR_ARGS>::create(

@@ -15,7 +15,7 @@
 #ifndef NETWORK_FATTREE_ROUTINGALGORITHM_H_
 #define NETWORK_FATTREE_ROUTINGALGORITHM_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -28,7 +28,7 @@
 
 #define FATTREE_ROUTINGALGORITHM_ARGS                                 \
   const std::string&, const Component*, Router*, u32, u32, u32, u32,  \
-    const std::vector<std::tuple<u32, u32, u32> >*, u32, Json::Value
+    const std::vector<std::tuple<u32, u32, u32> >*, u32, nlohmann::json
 
 namespace FatTree {
 
@@ -38,7 +38,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
       const std::string& _name, const Component* _parent,
       Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<std::tuple<u32, u32, u32> >* _radices,
-      u32 _interfacePorts, Json::Value _settings);
+      u32 _interfacePorts, nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the fat tree topology

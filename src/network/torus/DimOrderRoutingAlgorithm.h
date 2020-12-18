@@ -15,7 +15,7 @@
 #ifndef NETWORK_TORUS_DIMORDERROUTINGALGORITHM_H_
 #define NETWORK_TORUS_DIMORDERROUTINGALGORITHM_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -37,7 +37,7 @@ class DimOrderRoutingAlgorithm : public RoutingAlgorithm {
       const std::vector<u32>& _dimensionWidths,
       const std::vector<u32>& _dimensionWeights,
       u32 _concentration, u32 _interfacePorts,
-      Json::Value _settings);
+      nlohmann::json _settings);
   ~DimOrderRoutingAlgorithm();
 
  protected:

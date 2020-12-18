@@ -15,7 +15,7 @@
 #ifndef NETWORK_MESH_COMMONINJECTIONALGORITHM_H_
 #define NETWORK_MESH_COMMONINJECTIONALGORITHM_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -28,7 +28,7 @@ class CommonInjectionAlgorithm : public InjectionAlgorithm {
  public:
   CommonInjectionAlgorithm(const std::string& _name, const Component* _parent,
                            Interface* _interface, u32 _baseVc, u32 _numVcs,
-                           u32 _inputPc, Json::Value _settings);
+                           u32 _inputPc, nlohmann::json _settings);
   ~CommonInjectionAlgorithm();
 
   void processMessage(Message* _message) override;

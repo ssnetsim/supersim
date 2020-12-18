@@ -22,7 +22,7 @@
 
 CrSeparableAllocator::CrSeparableAllocator(
     const std::string& _name, const Component* _parent,
-    u32 _numClients, u32 _numResources, Json::Value _settings)
+    u32 _numClients, u32 _numResources, nlohmann::json _settings)
     : Allocator(_name, _parent, _numClients, _numResources, _settings) {
   // pointer arrays
   requests_.resize(numClients_ * numResources_, nullptr);
@@ -58,9 +58,9 @@ CrSeparableAllocator::CrSeparableAllocator(
   }
 
   // parse settings
-  iterations_ = _settings["iterations"].asUInt();
+  iterations_ = _settings["iterations"].get<u32>();
   assert(iterations_ > 0);
-  slipLatch_ = _settings["slip_latch"].asBool();
+  slipLatch_ = _settings["slip_latch"].get<bool>();
 }
 
 CrSeparableAllocator::~CrSeparableAllocator() {

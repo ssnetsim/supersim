@@ -27,10 +27,10 @@
 namespace FatTree {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // interface ports
-  interfacePorts_ = _settings["interface_ports"].asUInt();
+  interfacePorts_ = _settings["interface_ports"].get<u32>();
   assert(interfacePorts_ > 0);
 
   // network structure
@@ -42,8 +42,8 @@ Network::Network(const std::string& _name, const Component* _parent,
   for (u32 level = 0; level < numLevels_; level++) {
     if (level < numLevels_ - 1) {
       assert(_settings["down_up"][level].size() == 2);
-      u32 down = _settings["down_up"][level][0].asUInt();
-      u32 up = _settings["down_up"][level][1].asUInt();
+      u32 down = _settings["down_up"][level][0].get<u32>();
+      u32 up = _settings["down_up"][level][1].get<u32>();
       // radices
       radices_.push_back(std::make_tuple(down, up, down + up));
       // interfaces per group
@@ -60,7 +60,7 @@ Network::Network(const std::string& _name, const Component* _parent,
     } else {
       // last level
       assert(_settings["down_up"][level].size() == 1);
-      u32 down = _settings["down_up"][level][0].asUInt();
+      u32 down = _settings["down_up"][level][0].get<u32>();
       // radices
       radices_.push_back(std::make_tuple(down, 0, down));
       // interfaces per group
@@ -103,7 +103,7 @@ Network::Network(const std::string& _name, const Component* _parent,
     }
   }
 
-  assert(_settings["internal_channels"].isArray());
+  assert(_settings["internal_channels"].is_array());
   assert(_settings["internal_channels"].size() == numLevels_ - 1);
 
   // create internal channels, link routers via channels

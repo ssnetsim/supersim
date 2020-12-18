@@ -15,7 +15,7 @@
 #include "network/hyperx/MinRoutingAlgorithm.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <vector>
@@ -35,7 +35,7 @@ TEST(HyperX_MinRoutingAlgorithm, construct) {
       for (auto& outputAlg : outputAlgs) {
         for (auto& maxOutput : maxOutputs) {
           for (auto& minType : minTypes) {
-            Json::Value settings;
+            nlohmann::json settings;
             settings["algorithm"] = "minimal";
             settings["latency"] = latency;
             settings["output_type"] = outputType;

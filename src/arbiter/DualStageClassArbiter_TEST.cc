@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <gtest/gtest.h>
 #include <prim/prim.h>
 
@@ -40,17 +40,17 @@ TEST(DualStageClassArbiter, full) {
       }
     } while (hotCount(request, size) <= size/2);
 
-    Json::Value settings;
+    nlohmann::json settings;
     settings["classes"] = 2;
-    settings["class_map"] = Json::Value(Json::arrayValue);
-    settings["class_map"].resize(3);
-    settings["class_map"][0] = 0;
-    settings["class_map"][1] = 1;
-    settings["class_map"][2] = 1;
+    settings["class_map"] = nlohmann::json::array();
+    settings["class_map"].push_back(0);
+    settings["class_map"].push_back(1);
+    settings["class_map"].push_back(1);
     settings["metadata_func"] = "min";
-    settings["stage1_arbiter"] = Json::Value();
+    settings["stage1_arbiter"] = nlohmann::json();
     settings["stage1_arbiter"]["type"] = "comparing";
-    settings["stage2_arbiter"] = Json::Value();
+    settings["stage1_arbiter"]["greater"] = false;
+    settings["stage2_arbiter"] = nlohmann::json();
     settings["stage2_arbiter"]["type"] = "lru";
 
     Arbiter* arb = new DualStageClassArbiter(

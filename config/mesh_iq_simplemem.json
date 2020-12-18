@@ -5,10 +5,10 @@
     "interface_cycle_time": 1,
     "terminal_cycle_time": 1,
     "print_progress": true,
-    "print_interval": 1.0,  // seconds
+    "print_interval": 1.0,
     "random_seed": 12345678,
     "info_log": {
-      "file": null  // "info.csv"
+      "file": null
     }
   },
   "network": {
@@ -23,13 +23,13 @@
         "routing": {
           "algorithm": "dimension_order",
           "latency": 1,
-          "mode": "vc", // vc, port_ave, port_min, port_max
+          "mode": "vc",
           "reduction": {
-            "algorithm": "all_minimal", // all_minimal, least_congested_minimal, weighted
+            "algorithm": "all_minimal",
             "max_outputs": 0,
             "congestion_bias": 0.1,
             "independent_bias": 0.0,
-            "non_minimal_weight_func": "regular" // regular, always_nonmin
+            "non_minimal_weight_func": "regular"
           }
         },
         "injection": {
@@ -43,13 +43,13 @@
         "routing": {
           "algorithm": "dimension_order",
           "latency": 1,
-          "mode": "vc", // vc, port_ave, port_min, port_max
+          "mode": "vc",
           "reduction": {
-            "algorithm": "all_minimal", // all_minimal, least_congested_minimal, weighted
+            "algorithm": "all_minimal",
             "max_outputs": 0,
             "congestion_bias": 0.1,
             "independent_bias": 0.0,
-            "non_minimal_weight_func": "regular" // regular, always_nonmin
+            "non_minimal_weight_func": "regular"
           }
         },
         "injection": {
@@ -60,16 +60,16 @@
       }
     ],
     "internal_channel": {
-      "latency": 1  // cycles
+      "latency": 1
     },
     "external_channel": {
-      "latency": 1  // cycles
+      "latency": 1
     },
     "channel_log": {
-      "file": null  // "channels.csv"
+      "file": null
     },
     "traffic_log": {
-      "file": null  // "traffic.csv"
+      "file": null
     },
     "router": {
       "architecture": "input_queued",
@@ -79,16 +79,16 @@
         "granularity": 0,
         "minimum": 0.0,
         "offset": 0.0,
-        "mode": "absolute_port"  // {normalized,absolute}_{port,vc}
+        "mode": "absolute_port"
       },
       "congestion_mode": "output",
-      "input_queue_mode": "fixed",  // fixed or tailored
+      "input_queue_mode": "fixed",
       "input_queue_depth": 24,
       "vca_swa_wait": true,
       "store_and_forward": true,
       "output_queue_depth": 64,
       "crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       },
       "vc_scheduler": {
         "allocator": {
@@ -133,10 +133,10 @@
         "packet_lock": true,
         "idle_unlock": false
       },
-      "init_credits_mode": "$&(network.router.input_queue_mode)&$",
-      "init_credits": "$&(network.router.input_queue_depth)&$",
+      "init_credits_mode": "$&(/network/router/input_queue_mode)&$",
+      "init_credits": "$&(/network/router/input_queue_depth)&$",
       "crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       }
     }
   },
@@ -145,17 +145,17 @@
   },
   "workload": {
     "message_log": {
-      "file": null  // "data.mpf.gz"
+      "file": null
     },
     "applications": [
       {
         "type": "simple_mem",
-        "max_injection_rate": -1,  // infinite injection rate
+        "max_injection_rate": -1,
         "memory_slice": 4096,
-        "block_size": 64,  // bytes
+        "block_size": 64,
         "bytes_per_flit": 4,
-        "header_overhead": 16,  // bytes
-        "max_packet_size": 16,  // flits
+        "header_overhead": 16,
+        "max_packet_size": 16,
         "processor_terminal": {
           "protocol_class": 0,
           "latency": 10,
@@ -166,7 +166,7 @@
           "latency": 15
         },
         "rate_log": {
-          "file": null  // "rates.csv"
+          "file": null
         }
       }
     ]

@@ -29,17 +29,17 @@ namespace SimpleMem {
 MemoryTerminal::MemoryTerminal(
     const std::string& _name, const Component* _parent, u32 _id,
     const std::vector<u32>& _address, u32 _memorySlice, ::Application* _app,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app),
       fsm_(eState::kWaiting) {
   // protocol class of injection
-  assert(_settings.isMember("protocol_class"));
-  protocolClass_ = _settings["protocol_class"].asUInt();
+  assert(_settings.contains("protocol_class"));
+  protocolClass_ = _settings["protocol_class"].get<u32>();
 
   // memory region and latency
   memoryOffset_ = (_id / 2) * _memorySlice;
   memory_ = new u8[_memorySlice];
-  latency_ = _settings["latency"].asUInt();
+  latency_ = _settings["latency"].get<u32>();
   assert(latency_ > 0);
 }
 

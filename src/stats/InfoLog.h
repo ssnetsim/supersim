@@ -16,14 +16,14 @@
 #define STATS_INFOLOG_H_
 
 #include <fio/OutFile.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
 
 class InfoLog {
  public:
-  explicit InfoLog(Json::Value _settings);
+  explicit InfoLog(nlohmann::json _settings);
   ~InfoLog();
   void logInfo(const std::string& _name, const std::string& _value);
 

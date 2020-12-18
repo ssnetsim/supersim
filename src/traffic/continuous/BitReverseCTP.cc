@@ -21,7 +21,7 @@
 
 BitReverseCTP::BitReverseCTP(
     const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, Json::Value _settings)
+    u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   assert(bits::isPow2(numTerminals_));

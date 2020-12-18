@@ -15,7 +15,7 @@
 #include "network/hyperx/UgalRoutingAlgorithm.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <vector>
@@ -67,7 +67,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                             for (auto& cbias : cbiass) {
                               for (auto& biasMode : biasModes) {
                                 for (auto& hopCountMode : hopCountModes) {
-                                  Json::Value settings;
+                                  nlohmann::json settings;
                                   settings["algorithm"] = "ugal";
                                   settings["latency"] = latency;
                                   settings["output_type"] = outputType;
@@ -99,7 +99,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                           } else if (decScheme == "staged_threshold") {
                             for (auto& ithresholdMin : thresholdMin) {
                               for (auto& ithresholdNonmin : thresholdNonmin) {
-                                Json::Value settings;
+                                nlohmann::json settings;
                                 settings["algorithm"] = "ugal";
                                 settings["latency"] = latency;
                                 settings["output_type"] = outputType;
@@ -130,7 +130,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                           } else if (decScheme == "threshold_weighted") {
                             for (auto& threshold : thresholds) {
                               for (auto& hopCountMode : hopCountModes) {
-                                Json::Value settings;
+                                nlohmann::json settings;
                                 settings["algorithm"] = "ugal";
                                 settings["latency"] = latency;
                                 settings["output_type"] = outputType;
@@ -159,7 +159,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                             }
                           } else if (decScheme == "threshold_minimal") {
                             for (auto& threshold : thresholds) {
-                              Json::Value settings;
+                              nlohmann::json settings;
                               settings["algorithm"] = "ugal";
                               settings["latency"] = latency;
                               settings["output_type"] = outputType;
@@ -207,7 +207,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                           for (auto& cbias : cbiass) {
                             for (auto& biasMode : biasModes) {
                               for (auto& hopCountMode : hopCountModes) {
-                                Json::Value settings;
+                                nlohmann::json settings;
                                 settings["algorithm"] = "ugal";
                                 settings["latency"] = latency;
                                 settings["output_type"] = outputType;
@@ -238,7 +238,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                         } else if (decScheme == "staged_threshold") {
                           for (auto& ithresholdMin : thresholdMin) {
                             for (auto& ithresholdNonmin : thresholdNonmin) {
-                              Json::Value settings;
+                              nlohmann::json settings;
                               settings["algorithm"] = "ugal";
                               settings["latency"] = latency;
                               settings["output_type"] = outputType;
@@ -268,7 +268,7 @@ TEST(HyperX_UgalRoutingAlgorithm, construct) {
                         } else if (decScheme == "threshold_weighted") {
                           for (auto& threshold : thresholds) {
                             for (auto& hopCountMode : hopCountModes) {
-                              Json::Value settings;
+                              nlohmann::json settings;
                               settings["algorithm"] = "ugal";
                               settings["latency"] = latency;
                               settings["output_type"] = outputType;

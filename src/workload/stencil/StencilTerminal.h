@@ -15,7 +15,7 @@
 #ifndef WORKLOAD_STENCIL_STENCILTERMINAL_H_
 #define WORKLOAD_STENCIL_STENCILTERMINAL_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -40,7 +40,7 @@ class StencilTerminal : public Terminal {
       const std::vector<u32>& _address, const std::vector<u32>* _termToProc,
       const std::vector<u32>* _procToTerm,
       const std::vector<std::tuple<u32, u32> >& _exchangeSendMessages,
-      u32 _exchangeRecvMessages, ::Application* _app, Json::Value _settings);
+      u32 _exchangeRecvMessages, ::Application* _app, nlohmann::json _settings);
   ~StencilTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;

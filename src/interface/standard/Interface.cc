@@ -37,7 +37,7 @@ namespace Standard {
 Interface::Interface(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, Json::Value _settings)
+    MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Interface(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
                   _metadataHandler, _settings) {
   // init credits
@@ -46,21 +46,21 @@ Interface::Interface(
   inputQueueMult_ = 0;
   inputQueueMax_ = 0;
   inputQueueMin_ = 0;
-  assert(_settings.isMember("init_credits_mode"));
+  assert(_settings.contains("init_credits_mode"));
 
-  if (_settings["init_credits_mode"].asString() == "tailored") {
+  if (_settings["init_credits_mode"].get<std::string>() == "tailored") {
     inputQueueTailored_ = true;
-    inputQueueMult_ = _settings["init_credits"].asDouble();
+    inputQueueMult_ = _settings["init_credits"].get<f64>();
     assert(inputQueueMult_ > 0.0);
     // max and min queue depth
-    assert(_settings.isMember("credits_min"));
-    inputQueueMin_ = _settings["credits_min"].asUInt();
-    assert(_settings.isMember("credits_max"));
-    inputQueueMax_ = _settings["credits_max"].asUInt();
+    assert(_settings.contains("credits_min"));
+    inputQueueMin_ = _settings["credits_min"].get<u32>();
+    assert(_settings.contains("credits_max"));
+    inputQueueMax_ = _settings["credits_max"].get<u32>();
     assert(inputQueueMin_ <= inputQueueMax_);
-  } else if (_settings["init_credits_mode"].asString() == "fixed") {
+  } else if (_settings["init_credits_mode"].get<std::string>() == "fixed") {
     inputQueueTailored_ = false;
-    initCredits_ = _settings["init_credits"].asUInt();
+    initCredits_ = _settings["init_credits"].get<u32>();
     assert(initCredits_ > 0);
   } else {
     fprintf(stderr, "Wrong init credits mode, options: tailor or fixed\n");

@@ -15,7 +15,7 @@
 #ifndef EVENT_SIMULATOR_H_
 #define EVENT_SIMULATOR_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 #include <rnd/Random.h>
 
@@ -27,7 +27,7 @@ class Workload;
 
 class Simulator {
  public:
-  explicit Simulator(Json::Value _settings);
+  explicit Simulator(nlohmann::json _settings);
   virtual ~Simulator();
 
   // this adds an event to the queue

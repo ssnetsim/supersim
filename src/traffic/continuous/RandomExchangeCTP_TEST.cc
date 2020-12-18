@@ -15,7 +15,7 @@
 #include "traffic/continuous/RandomExchangeCTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <mut/mut.h>
 #include <prim/prim.h>
 #include <strop/strop.h>
@@ -36,7 +36,7 @@ TEST(RandomExchangeCTP, evenSpread) {
 
   TestSetup test(1234, 1234, 1234, 1234, 56789);
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   std::vector<RandomExchangeCTP*> tps(TPS);
   for (u32 idx = 0; idx < TPS; idx++) {

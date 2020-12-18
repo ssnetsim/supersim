@@ -28,7 +28,7 @@ LeastCongestedQueueRoutingAlgorithm::LeastCongestedQueueRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
                        _dimensionWeights, _concentration, _interfacePorts,
@@ -40,29 +40,29 @@ LeastCongestedQueueRoutingAlgorithm::LeastCongestedQueueRoutingAlgorithm(
   //  N + 1 = last hop to dimension N
   //  we can eject flit to destination terminal using any VC
 
-  assert(_settings.isMember("minimal") && _settings["minimal"].isString());
-  assert(_settings.isMember("output_type") &&
-         _settings["output_type"].isString());
-  assert(_settings.isMember("max_outputs") &&
-         _settings["max_outputs"].isUInt());
+  assert(_settings.contains("minimal") && _settings["minimal"].is_string());
+  assert(_settings.contains("output_type") &&
+         _settings["output_type"].is_string());
+  assert(_settings.contains("max_outputs") &&
+         _settings["max_outputs"].is_number_integer());
 
-  maxOutputs_ = _settings["max_outputs"].asUInt();
+  maxOutputs_ = _settings["max_outputs"].get<u32>();
 
-  assert(_settings.isMember("output_algorithm") &&
-         _settings["output_algorithm"].isString());
-  if (_settings["output_algorithm"].asString() == "random") {
+  assert(_settings.contains("output_algorithm") &&
+         _settings["output_algorithm"].is_string());
+  if (_settings["output_algorithm"].get<std::string>() == "random") {
     outputAlg_ = OutputAlg::Rand;
-  } else if (_settings["output_algorithm"].asString() == "minimal") {
+  } else if (_settings["output_algorithm"].get<std::string>() == "minimal") {
     outputAlg_ = OutputAlg::Min;
   } else {
     fprintf(stderr, "Unknown output algorithm:");
     fprintf(stderr, " '%s'\n",
-            _settings["output_algorithm"].asString().c_str());
+            _settings["output_algorithm"].get<std::string>().c_str());
     assert(false);
   }
 
-  std::string minimalType = _settings["minimal"].asString();
-  std::string outputType = _settings["output_type"].asString();
+  std::string minimalType = _settings["minimal"].get<std::string>();
+  std::string outputType = _settings["output_type"].get<std::string>();
   if (outputType == "port") {
     outputTypePort_ = true;
   } else if (outputType == "vc") {
@@ -73,7 +73,7 @@ LeastCongestedQueueRoutingAlgorithm::LeastCongestedQueueRoutingAlgorithm(
     assert(false);
   }
 
-  shortCut_ = _settings["short_cut"].asBool();
+  shortCut_ = _settings["short_cut"].get<bool>();
 
   if (minimalType == "dimension_order") {
     if (outputType == "vc") {

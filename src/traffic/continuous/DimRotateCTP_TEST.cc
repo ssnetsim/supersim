@@ -16,7 +16,7 @@
 
 #include <bits/bits.h>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <cassert>
@@ -26,15 +26,15 @@
 TEST(DimRotateCTP, right) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimRotateCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(3);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(3);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "right";
 
   numTerminals = 4 * 3 * 3 * 3 * 1;
@@ -87,15 +87,15 @@ TEST(DimRotateCTP, right) {
 TEST(DimRotateCTP, left) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimRotateCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(3);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(3);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "left";
 
   numTerminals = 4 * 3 * 3 * 3 * 1;

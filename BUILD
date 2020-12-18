@@ -21,7 +21,7 @@ LIBS = [
     "@libfio//:fio",
     "@libsettings//:settings",
     "@zlib//:zlib",
-    "@jsoncpp//:jsoncpp",
+    "@nlohmann_json//:nlohmann_json",
 ]
 
 cc_library(

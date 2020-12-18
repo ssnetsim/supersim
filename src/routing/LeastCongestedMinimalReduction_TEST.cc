@@ -14,7 +14,7 @@
  */
 #include "routing/LeastCongestedMinimalReduction.h"
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <gtest/gtest.h>
 
 #include "architecture/PortedDevice_TESTLIB.h"
@@ -27,7 +27,7 @@ TEST(LeastCongestedMinimalReduction, vc) {
     const u32 ROUNDS = 100000;
 
     TestPortedDevice dev(4, 6);
-    Json::Value settings;
+    nlohmann::json settings;
     settings["max_outputs"] = 1;
     LeastCongestedMinimalReduction red(
         "Reduction", nullptr, &dev, RoutingMode::kVc, false, settings);

@@ -25,7 +25,7 @@
 #include "types/Packet.h"
 
 LocalTimestampMetadataHandler::LocalTimestampMetadataHandler(
-    Json::Value _settings)
+    nlohmann::json _settings)
     : MetadataHandler(_settings) {}
 
 LocalTimestampMetadataHandler::~LocalTimestampMetadataHandler() {}

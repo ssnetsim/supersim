@@ -27,8 +27,8 @@
 #define CRDT 0xEF
 
 Channel::Channel(const std::string& _name, const Component* _parent,
-                 u32 _numVcs, Json::Value _settings)
-    : Channel(_name, _parent, _numVcs, _settings["latency"].asUInt()) {}
+                 u32 _numVcs, nlohmann::json _settings)
+    : Channel(_name, _parent, _numVcs, _settings["latency"].get<u32>()) {}
 
 Channel::Channel(const std::string& _name, const Component* _parent,
                  u32 _numVcs, u32 _latency)

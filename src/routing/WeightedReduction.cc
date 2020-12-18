@@ -24,15 +24,15 @@
 WeightedReduction::WeightedReduction(
     const std::string& _name, const Component* _parent,
     const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Reduction(_name, _parent, _device, _mode, _ignoreDuplicates, _settings),
-      congestionBias_(_settings["congestion_bias"].asDouble()),
-      independentBias_(_settings["independent_bias"].asDouble()),
+      congestionBias_(_settings["congestion_bias"].get<f64>()),
+      independentBias_(_settings["independent_bias"].get<f64>()),
       nonMinWeightFunc_(retrieveNonMinimalWeightFunc(
-          _settings["non_minimal_weight_func"].asString())) {
+          _settings["non_minimal_weight_func"].get<std::string>())) {
   // check inputs
-  assert(!_settings["congestion_bias"].isNull());
-  assert(!_settings["independent_bias"].isNull());
+  assert(!_settings["congestion_bias"].is_null());
+  assert(!_settings["independent_bias"].is_null());
   assert(nonMinWeightFunc_ != nullptr);
 }
 

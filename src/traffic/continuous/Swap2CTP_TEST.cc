@@ -15,7 +15,7 @@
 #include "traffic/continuous/Swap2CTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <bits/bits.h>
 #include <prim/prim.h>
 
@@ -26,14 +26,14 @@
 TEST(Swap2CTP, no_enabled_dims) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   Swap2CTP* tp;
   std::map<u32, u32> swap1, swap2;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(2);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(2);
+  settings["interface_ports"] = nlohmann::json(1);
 
   numTerminals = 2 * 3 * 4;
   swap1 = {
@@ -94,14 +94,14 @@ TEST(Swap2CTP, no_enabled_dims) {
 TEST(Swap2CTP, enabled_dims_0_1) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   Swap2CTP* tp;
   std::map<u32, u32> swap1, swap2;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(2);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(2);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
 
@@ -164,17 +164,18 @@ TEST(Swap2CTP, enabled_dims_0_1) {
 TEST(Swap2CTP, enabled_dims_1_0_3d) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   Swap2CTP* tp;
   std::map<u32, u32> swap1, swap2;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(2);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(2);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
+  settings["enabled_dimensions"][2] = false;
 
   numTerminals = 2 * 3 * 4;
   swap1 = {

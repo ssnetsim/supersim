@@ -31,20 +31,20 @@ namespace SimpleMem {
 Application::Application(const std::string& _name, const Component* _parent,
                          u32 _id, Workload* _workload,
                          MetadataHandler* _metadataHandler,
-                         Json::Value _settings)
+                         nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings) {
   // check the memory system setup
-  memorySlice_ = _settings["memory_slice"].asUInt();
+  memorySlice_ = _settings["memory_slice"].get<u32>();
   totalMemory_ = memorySlice_ * (numTerminals() / 2);
-  blockSize_ = _settings["block_size"].asUInt();
+  blockSize_ = _settings["block_size"].get<u32>();
   assert(bits::isPow2(blockSize_));
   assert((memorySlice_ % blockSize_) == 0);
 
-  bytesPerFlit_ = _settings["bytes_per_flit"].asUInt();
+  bytesPerFlit_ = _settings["bytes_per_flit"].get<u32>();
   assert(bytesPerFlit_ > 0);
-  headerOverhead_ = _settings["header_overhead"].asUInt();
-  maxPacketSize_ = _settings["max_packet_size"].asUInt();
+  headerOverhead_ = _settings["header_overhead"].get<u32>();
+  maxPacketSize_ = _settings["max_packet_size"].get<u32>();
 
   // create terminals
   remainingProcessors_ = 0;

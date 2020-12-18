@@ -16,7 +16,7 @@
 #define NETWORK_FATTREE_COMMONANCESTORROUTINGALGORITHM_H_
 
 #include <colhash/tuplehash.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 #include <rnd/Random.h>
 
@@ -39,7 +39,7 @@ class CommonAncestorRoutingAlgorithm : public RoutingAlgorithm {
       const std::string& _name, const Component* _parent, Router* _router,
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<std::tuple<u32, u32, u32> >* _radices,
-      u32 _interfacePorts, Json::Value _settings);
+      u32 _interfacePorts, nlohmann::json _settings);
   ~CommonAncestorRoutingAlgorithm();
 
  protected:

@@ -15,7 +15,7 @@
 #ifndef WORKLOAD_SIMPLEMEM_APPLICATION_H_
 #define WORKLOAD_SIMPLEMEM_APPLICATION_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -32,7 +32,7 @@ class Application : public ::Application {
  public:
   Application(const std::string& _name, const Component* _parent, u32 _id,
               Workload* _workload, MetadataHandler* _metadataHandler,
-              Json::Value _settings);
+              nlohmann::json _settings);
   ~Application();
   f64 percentComplete() const override;
   void start() override;

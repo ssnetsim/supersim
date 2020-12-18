@@ -16,7 +16,7 @@
 
 #include <bits/bits.h>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <cassert>
@@ -26,15 +26,15 @@
 TEST(DimTransposeCTP, no_enabled_dims) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimTransposeCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(3);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(3);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
 
   numTerminals = 4 * 3 * 3 * 3 * 1;
   pairs = {
@@ -86,17 +86,18 @@ TEST(DimTransposeCTP, no_enabled_dims) {
 TEST(DimTransposeCTP, enabled_dims_0_1) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimTransposeCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(3);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(3);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
+  settings["enabled_dimensions"][2] = false;
 
   numTerminals = 4 * 3 * 3 * 3 * 1;
   pairs = {
@@ -148,16 +149,17 @@ TEST(DimTransposeCTP, enabled_dims_0_1) {
 TEST(DimTransposeCTP, enabled_dims_0_2) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimTransposeCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(3);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(3);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
+  settings["enabled_dimensions"][1] = false;
   settings["enabled_dimensions"][2] = true;
 
   numTerminals = 4 * 3 * 3 * 3 * 1;

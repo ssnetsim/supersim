@@ -32,15 +32,15 @@ namespace Stencil {
 Application::Application(
     const std::string& _name, const Component* _parent, u32 _id,
     Workload* _workload, MetadataHandler* _metadataHandler,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings),
       termToProc_(numTerminals(), U32_MAX),
       procToTerm_(numTerminals(), U32_MAX) {
   // create map from terminal to process
-  assert(_settings.isMember("process_placement") &&
-         _settings["process_placement"].isString());
-  std::string placementAlg = _settings["process_placement"].asString();
+  assert(_settings.contains("process_placement") &&
+         _settings["process_placement"].is_string());
+  std::string placementAlg = _settings["process_placement"].get<std::string>();
   if (placementAlg == "linear") {
     for (u32 t = 0; t < numTerminals(); t++) {
       termToProc_.at(t) = t;
@@ -65,8 +65,8 @@ Application::Application(
   //  for each terminal, this determines:
   //   1. the destination and sizes of messages to send
   //   2. the number of messages to receive
-  assert(_settings.isMember("exchange_messages") &&
-         _settings["exchange_messages"].isString());
+  assert(_settings.contains("exchange_messages") &&
+         _settings["exchange_messages"].is_string());
 
   // send message matrix of {dst, size}
   std::vector<std::vector<std::tuple<u32, u32> > > exchangeSendMessages(
@@ -76,7 +76,7 @@ Application::Application(
   std::vector<u32> exchangeRecvMessages(numTerminals(), 0);
 
   // read the file
-  fio::InFile inf(_settings["exchange_messages"].asString(), fio::kDefaultDelim,
+  fio::InFile inf(_settings["exchange_messages"].get<std::string>(), fio::kDefaultDelim,
                   1048576);
   fio::InFile::Status sts = fio::InFile::Status::OK;
   u32 lineNum = 0;
@@ -113,9 +113,9 @@ Application::Application(
   assert(lineNum == numTerminals());
 
   // organize the send messages
-  assert(_settings.isMember("send_order") &&
-         _settings["send_order"].isString());
-  std::string sendOrder = _settings["send_order"].asString();
+  assert(_settings.contains("send_order") &&
+         _settings["send_order"].is_string());
+  std::string sendOrder = _settings["send_order"].get<std::string>();
   for (u32 t = 0; t < numTerminals(); t++) {
     if (sendOrder == "ascending") {
       // do nothing, it is already in order

@@ -23,7 +23,7 @@ namespace Butterfly {
 RoutingAlgorithm::RoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _numPorts,
-    u32 _numStages, u32 _interfacePorts, u32 _stage, Json::Value _settings)
+    u32 _numStages, u32 _interfacePorts, u32 _stage, nlohmann::json _settings)
     : ::RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                          _inputVc, _settings),
       numPorts_(_numPorts), numStages_(_numStages),
@@ -34,9 +34,9 @@ RoutingAlgorithm::~RoutingAlgorithm() {}
 RoutingAlgorithm* RoutingAlgorithm::create(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _numPorts,
-    u32 _numStages, u32 _interfacePorts, u32 _stage, Json::Value _settings) {
+    u32 _numStages, u32 _interfacePorts, u32 _stage, nlohmann::json _settings) {
   // retrieve the algorithm
-  const std::string& algorithm = _settings["algorithm"].asString();
+  const std::string& algorithm = _settings["algorithm"].get<std::string>();
 
   // attempt to create the routing algorithm
   RoutingAlgorithm* ra = factory::ObjectFactory<

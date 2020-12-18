@@ -20,9 +20,9 @@
 
 Crossbar::Crossbar(const std::string& _name, const Component* _parent,
                    u32 _numInputs, u32 _numOutputs, Simulator::Clock _clock,
-                   Json::Value _settings)
+                   nlohmann::json _settings)
     : Component(_name, _parent), clock_(_clock),
-      latency_(_settings["latency"].asUInt()),
+      latency_(_settings["latency"].get<u32>()),
       numInputs_(_numInputs), numOutputs_(_numOutputs) {
   assert(latency_ > 0);
 

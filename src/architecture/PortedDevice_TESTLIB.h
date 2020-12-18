@@ -17,7 +17,7 @@
 
 #include "architecture/PortedDevice.h"
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 // this is a test ported device
 class TestPortedDevice : public PortedDevice {

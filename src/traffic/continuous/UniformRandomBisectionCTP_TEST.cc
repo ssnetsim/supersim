@@ -15,7 +15,7 @@
 #include "traffic/continuous/UniformRandomBisectionCTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <mut/mut.h>
 #include <prim/prim.h>
 #include <strop/strop.h>

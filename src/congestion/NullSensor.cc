@@ -20,7 +20,7 @@
 
 NullSensor::NullSensor(
     const std::string& _name, const Component* _parent, PortedDevice* _device,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : CongestionSensor(_name, _parent, _device, _settings) {}
 
 NullSensor::~NullSensor() {}

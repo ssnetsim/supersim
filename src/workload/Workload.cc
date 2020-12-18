@@ -20,12 +20,12 @@
 #include "workload/Application.h"
 
 Workload::Workload(const std::string& _name, const Component* _parent,
-                   MetadataHandler* _metadataHandler, Json::Value _settings)
+                   MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : Component(_name, _parent), fsm_(Workload::Fsm::READY),
       readyCount_(0), completeCount_(0), doneCount_(0), monitoring_(false) {
   // determine the number of applications in the workload
-  assert(_settings.isMember("applications") &&
-         _settings["applications"].isArray());
+  assert(_settings.contains("applications") &&
+         _settings["applications"].is_array());
   u32 numApps = _settings["applications"].size();
 
   // create the message distributors

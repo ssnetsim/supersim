@@ -15,7 +15,7 @@
 #ifndef CONGESTION_BUFFEROCCUPANCY_H_
 #define CONGESTION_BUFFEROCCUPANCY_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -26,7 +26,7 @@
 class BufferOccupancy : public CongestionSensor {
  public:
   BufferOccupancy(const std::string& _name, const Component* _parent,
-                  PortedDevice* _device, Json::Value _settings);
+                  PortedDevice* _device, nlohmann::json _settings);
   ~BufferOccupancy();
 
   // CreditWatcher interface

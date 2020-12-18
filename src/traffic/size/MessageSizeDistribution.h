@@ -15,7 +15,7 @@
 #ifndef TRAFFIC_SIZE_MESSAGESIZEDISTRIBUTION_H_
 #define TRAFFIC_SIZE_MESSAGESIZEDISTRIBUTION_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -24,12 +24,12 @@
 #include "types/Message.h"
 
 #define MESSAGESIZEDISTRIBUTION_ARGS const std::string&, const Component*, \
-    Json::Value
+    nlohmann::json
 
 class MessageSizeDistribution : public Component {
  public:
   MessageSizeDistribution(const std::string& _name, const Component* _parent,
-                          Json::Value _settings);
+                          nlohmann::json _settings);
   virtual ~MessageSizeDistribution();
 
   // this is the message size distribution factory

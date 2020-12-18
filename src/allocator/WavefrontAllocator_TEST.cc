@@ -14,7 +14,7 @@
  */
 #include "allocator/WavefrontAllocator.h"
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <gtest/gtest.h>
 #include <prim/prim.h>
 
@@ -25,7 +25,7 @@
 
 TEST(WavefrontAllocator, sequential) {
   // create the allocator settings
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["scheme"] = "sequential";
   allocSettings["type"] = "wavefront";
 
@@ -36,7 +36,7 @@ TEST(WavefrontAllocator, sequential) {
 
 TEST(WavefrontAllocator, random) {
   // create the allocator settings
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["scheme"] = "random";
   allocSettings["type"] = "wavefront";
 

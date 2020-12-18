@@ -15,7 +15,7 @@
 #ifndef ARBITER_RANDOMARBITER_H_
 #define ARBITER_RANDOMARBITER_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -28,7 +28,7 @@
 class RandomArbiter : public Arbiter {
  public:
   RandomArbiter(const std::string& _name, const Component* _parent,
-                u32 _size, Json::Value _settings);
+                u32 _size, nlohmann::json _settings);
   ~RandomArbiter();
 
   u32 arbitrate() override;

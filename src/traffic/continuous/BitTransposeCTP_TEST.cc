@@ -16,7 +16,7 @@
 
 #include <bits/bits.h>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include "test/TestSetup_TESTLIB.h"
@@ -25,7 +25,7 @@ TEST(BitTransposeCTP, simple) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
 
   u32 src, dst;
-  Json::Value settings;
+  nlohmann::json settings;
   BitTransposeCTP* tp;
   u32 numTerminals = 16;
   std::map<u32, u32> pairs = {

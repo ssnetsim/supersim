@@ -15,7 +15,7 @@
 #ifndef METADATA_METADATAHANDLER_H_
 #define METADATA_METADATAHANDLER_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 class Application;
@@ -23,11 +23,11 @@ class Interface;
 class Packet;
 class Router;
 
-#define METADATAHANDLER_ARGS Json::Value
+#define METADATAHANDLER_ARGS nlohmann::json
 
 class MetadataHandler {
  public:
-  explicit MetadataHandler(Json::Value _settings);
+  explicit MetadataHandler(nlohmann::json _settings);
   virtual ~MetadataHandler();
 
   // this is the metadata handler factory

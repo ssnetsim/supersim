@@ -15,7 +15,7 @@
 #ifndef ROUTING_WEIGHTEDREDUCTION_H_
 #define ROUTING_WEIGHTEDREDUCTION_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -31,7 +31,7 @@ class WeightedReduction : public Reduction {
   WeightedReduction(
       const std::string& _name, const Component* _parent,
       const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-      Json::Value _settings);
+      nlohmann::json _settings);
   ~WeightedReduction();
 
   void process(

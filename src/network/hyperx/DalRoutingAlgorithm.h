@@ -16,7 +16,7 @@
 #define NETWORK_HYPERX_DALROUTINGALGORITHM_H_
 
 #include <colhash/tuplehash.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -38,7 +38,7 @@ class DalRoutingAlgorithm : public RoutingAlgorithm {
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<u32>& _dimensionWidths,
       const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, u32 _interfacePorts, Json::Value _settings);
+      u32 _concentration, u32 _interfacePorts, nlohmann::json _settings);
   ~DalRoutingAlgorithm();
 
   void vcScheduled(Flit* _flit, u32 _port, u32 _vc);

@@ -21,28 +21,28 @@
 
 DualStageClassArbiter::DualStageClassArbiter(
     const std::string& _name, const Component* _parent, u32 _size,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {
   // parse the classes settings to get stage 1 size and class assignments
-  assert(_settings.isMember("classes") &&
-         _settings["classes"].isUInt());
-  numClasses_ = _settings["classes"].asUInt();
+  assert(_settings.contains("classes") &&
+         _settings["classes"].is_number_integer());
+  numClasses_ = _settings["classes"].get<u32>();
   assert(numClasses_ > 0);
-  assert(_settings.isMember("class_map") &&
-         _settings["class_map"].isArray());
+  assert(_settings.contains("class_map") &&
+         _settings["class_map"].is_array());
   numGroups_ = _settings["class_map"].size();
   assert(size_ % numGroups_ == 0);
   std::vector<u32> classes(numGroups_, U32_MAX);
   for (u32 group = 0; group < numGroups_; group++) {
-    u32 groupClass = _settings["class_map"][group].asUInt();
+    u32 groupClass = _settings["class_map"][group].get<u32>();
     assert(groupClass < numClasses_);
     classes.at(group) = groupClass;
   }
 
   // determine the method for computing the metadata for stage 1
-  assert(_settings.isMember("metadata_func") &&
-         _settings["metadata_func"].isString());
-  std::string metadataFunc = _settings["metadata_func"].asString();
+  assert(_settings.contains("metadata_func") &&
+         _settings["metadata_func"].is_string());
+  std::string metadataFunc = _settings["metadata_func"].get<std::string>();
   if (metadataFunc == "none") {
     metadataFunc_ = DualStageClassArbiter::MetadataFunc::NONE;
   } else if (metadataFunc == "min") {

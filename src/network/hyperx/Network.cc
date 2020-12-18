@@ -31,25 +31,25 @@
 namespace HyperX {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // dimensions and concentration
-  assert(_settings["dimension_widths"].isArray());
+  assert(_settings["dimension_widths"].is_array());
   dimensions_ = _settings["dimension_widths"].size();
   assert(_settings["dimension_weights"].size() == dimensions_);
   dimensionWidths_.resize(dimensions_);
   for (u32 i = 0; i < dimensions_; i++) {
-    dimensionWidths_.at(i) = _settings["dimension_widths"][i].asUInt();
+    dimensionWidths_.at(i) = _settings["dimension_widths"][i].get<u32>();
     assert(dimensionWidths_.at(i) >= 2);
   }
   dimensionWeights_.resize(dimensions_);
   for (u32 i = 0; i < dimensions_; i++) {
-    dimensionWeights_.at(i) = _settings["dimension_weights"][i].asUInt();
+    dimensionWeights_.at(i) = _settings["dimension_weights"][i].get<u32>();
     assert(dimensionWeights_.at(i) >= 1);
   }
-  concentration_ = _settings["concentration"].asUInt();
+  concentration_ = _settings["concentration"].get<u32>();
   assert(concentration_ > 0);
-  interfacePorts_ = _settings["interface_ports"].asUInt();
+  interfacePorts_ = _settings["interface_ports"].get<u32>();
   assert(interfacePorts_ > 0);
   assert(concentration_ % interfacePorts_ == 0);
   dbgprintf("dimensions_ = %u", dimensions_);
@@ -62,16 +62,16 @@ Network::Network(const std::string& _name, const Component* _parent,
 
   // varying channel latency per dimension
   std::vector<f64> scalars;
-  assert(_settings.isMember("channel_mode"));
+  assert(_settings.contains("channel_mode"));
 
   // scalar
-  if (_settings["channel_mode"].asString() == "scalar") {
-    assert(_settings["channel_scalars"].isArray());
+  if (_settings["channel_mode"].get<std::string>() == "scalar") {
+    assert(_settings["channel_scalars"].is_array());
     assert(_settings["channel_scalars"].size() == dimensions_);
     scalars.resize(dimensions_);
     for (u32 i = 0; i < dimensions_; i++) {
-      if ( _settings["channel_scalars"][i].asFloat() > 0.0 ) {
-        scalars.at(i) = _settings["channel_scalars"][i].asFloat();
+      if ( _settings["channel_scalars"][i].get<f32>() > 0.0 ) {
+        scalars.at(i) = _settings["channel_scalars"][i].get<f32>();
       } else {
         scalars.at(i) = 1.0;
       }
@@ -126,7 +126,7 @@ Network::Network(const std::string& _name, const Component* _parent,
                                      dimWidth;
 
         // determine the channel latency for current dim and offset
-        if (_settings["channel_mode"].asString() == "scalar") {
+        if (_settings["channel_mode"].get<std::string>() == "scalar") {
           f64 link_dist = fabs((s64)sourceAddress.at(dim) -
                                (s64)destinationAddress.at(dim));
           u32 channelLatency = (u32)(ceil(scalars[dim] * link_dist));

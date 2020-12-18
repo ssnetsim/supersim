@@ -25,7 +25,7 @@ RoutingAlgorithm::RoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
     u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
     u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                          _inputVc, _settings),
       localWidth_(_localWidth), localWeight_(_localWeight),
@@ -41,9 +41,9 @@ RoutingAlgorithm* RoutingAlgorithm::create(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
     u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
     u32 _interfacePorts,  u32 _routerRadix, u32 _globalPortsPerRouter,
-    Json::Value _settings) {
+    nlohmann::json _settings) {
   // retrieve the algorithm
-  const std::string& algorithm = _settings["algorithm"].asString();
+  const std::string& algorithm = _settings["algorithm"].get<std::string>();
 
   // attempt to create the routing algorithm
   RoutingAlgorithm* ra = factory::ObjectFactory<

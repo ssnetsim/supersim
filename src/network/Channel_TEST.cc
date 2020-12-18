@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <cmath>
@@ -219,7 +219,7 @@ TEST(Channel, full) {
 
     const u32 latency = gSim->rnd.nextU64(1, 5);
 
-    Json::Value settings;
+    nlohmann::json settings;
     settings["latency"] = latency;
     Channel c("TestChannel", nullptr, 8, settings);
 

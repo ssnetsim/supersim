@@ -16,7 +16,7 @@
 
 #include <bits/bits.h>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <cassert>
@@ -26,14 +26,14 @@
 TEST(NeighborCTP, no_dimMask) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "right";
 
   numTerminals = 4 * 3 * 4 * 1;
@@ -65,16 +65,16 @@ TEST(NeighborCTP, no_dimMask) {
 TEST(NeighborCTP, dimension_0_right) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "right";
-  settings["enabled_dimensions"][0] = true;
+  settings["enabled_dimensions"] = {true, false};
 
   numTerminals = 4 * 3 * 4 * 1;
   pairs = {
@@ -105,16 +105,16 @@ TEST(NeighborCTP, dimension_0_right) {
 TEST(NeighborCTP, dimension_0_left) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "left";
-  settings["enabled_dimensions"][0] = true;
+  settings["enabled_dimensions"] = {true, false};
 
   numTerminals = 4 * 3 * 4;
   pairs = {
@@ -145,16 +145,16 @@ TEST(NeighborCTP, dimension_0_left) {
 TEST(NeighborCTP, dimension_1_left) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "left";
-  settings["enabled_dimensions"][1] = true;
+  settings["enabled_dimensions"] = {false, true};
 
   numTerminals = 4 * 3 * 4;
   pairs = {
@@ -184,17 +184,17 @@ TEST(NeighborCTP, dimension_1_left) {
 TEST(NeighborCTP, dimension_1_left_3d) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "left";
-  settings["enabled_dimensions"][1] = true;
+  settings["enabled_dimensions"] = {false, true, false};
 
   numTerminals = 3 * 3 * 4 * 4;
   pairs = {
@@ -224,17 +224,17 @@ TEST(NeighborCTP, dimension_1_left_3d) {
 TEST(NeighborCTP, dimension_1_left_3d_1) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["direction"] = "left";
-  settings["enabled_dimensions"][1] = true;
+  settings["enabled_dimensions"] = {false, true, false};
 
   numTerminals = 3 * 3 * 4 * 4;
   pairs = {
@@ -264,14 +264,14 @@ TEST(NeighborCTP, dimension_1_left_3d_1) {
 TEST(NeighborCTP, 2d_left) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["direction"] = "left";
@@ -311,14 +311,14 @@ TEST(NeighborCTP, 2d_left) {
 TEST(NeighborCTP, 2d_right) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["direction"] = "right";
@@ -358,15 +358,15 @@ TEST(NeighborCTP, 2d_right) {
 TEST(NeighborCTP, 3d_right) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   NeighborCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(3);
-  settings["dimensions"][2] = Json::Value(3);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(1);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(3);
+  settings["dimensions"][2] = nlohmann::json(3);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(1);
   settings["enabled_dimensions"][0] = true;
   settings["enabled_dimensions"][1] = true;
   settings["enabled_dimensions"][2] = true;

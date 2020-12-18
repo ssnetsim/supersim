@@ -20,7 +20,7 @@
 
 DistributionTrafficPattern::DistributionTrafficPattern(
     const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, Json::Value _settings)
+    u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : Component(_name, _parent), numTerminals_(_numTerminals), self_(_self) {
   assert(numTerminals_ > 0);
   assert(self_ < numTerminals_);
@@ -30,9 +30,9 @@ DistributionTrafficPattern::~DistributionTrafficPattern() {}
 
 DistributionTrafficPattern* DistributionTrafficPattern::create(
     const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, Json::Value _settings) {
+    u32 _self, nlohmann::json _settings) {
   // retrieve type
-  const std::string& type = _settings["type"].asString();
+  const std::string& type = _settings["type"].get<std::string>();
 
   // try to construct a traffic pattern
   DistributionTrafficPattern* tp = factory::ObjectFactory<

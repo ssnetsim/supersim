@@ -31,29 +31,29 @@ DimOrderRoutingAlgorithm::DimOrderRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
                        _concentration, _interfacePorts, _settings) {
-  assert(_settings.isMember("output_type") &&
-         _settings["output_type"].isString());
-  assert(_settings.isMember("max_outputs") &&
-         _settings["max_outputs"].isUInt());
+  assert(_settings.contains("output_type") &&
+         _settings["output_type"].is_string());
+  assert(_settings.contains("max_outputs") &&
+         _settings["max_outputs"].is_number_integer());
 
-  assert(_settings.isMember("output_algorithm") &&
-         _settings["output_algorithm"].isString());
-  if (_settings["output_algorithm"].asString() == "random") {
+  assert(_settings.contains("output_algorithm") &&
+         _settings["output_algorithm"].is_string());
+  if (_settings["output_algorithm"].get<std::string>() == "random") {
     outputAlg_ = OutputAlg::Rand;
-  } else if (_settings["output_algorithm"].asString() == "minimal") {
+  } else if (_settings["output_algorithm"].get<std::string>() == "minimal") {
     outputAlg_ = OutputAlg::Min;
   } else {
     fprintf(stderr, "Unknown output algorithm:");
     fprintf(stderr, " '%s'\n",
-            _settings["output_algorithm"].asString().c_str());
+            _settings["output_algorithm"].get<std::string>().c_str());
     assert(false);
   }
 
-  std::string outputType = _settings["output_type"].asString();
+  std::string outputType = _settings["output_type"].get<std::string>();
   if (outputType == "port") {
     outputTypePort_ = true;
   } else if (outputType == "vc") {
@@ -64,7 +64,7 @@ DimOrderRoutingAlgorithm::DimOrderRoutingAlgorithm(
     assert(false);
   }
 
-  maxOutputs_ = _settings["max_outputs"].asUInt();
+  maxOutputs_ = _settings["max_outputs"].get<u32>();
 }
 
 DimOrderRoutingAlgorithm::~DimOrderRoutingAlgorithm() {}

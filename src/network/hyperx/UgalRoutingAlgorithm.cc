@@ -28,7 +28,7 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
                        _dimensionWeights, _concentration, _interfacePorts,
@@ -43,40 +43,40 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
   //  2N = last hop to dimension N
   //  we can eject flit to destination terminal using any VC
 
-  assert(_settings.isMember("minimal") && _settings["minimal"].isString());
-  assert(_settings.isMember("non_minimal") &&
-         _settings["non_minimal"].isString());
-  assert(_settings.isMember("output_type") &&
-         _settings["output_type"].isString());
-  assert(_settings.isMember("max_outputs") &&
-         _settings["max_outputs"].isUInt());
+  assert(_settings.contains("minimal") && _settings["minimal"].is_string());
+  assert(_settings.contains("non_minimal") &&
+         _settings["non_minimal"].is_string());
+  assert(_settings.contains("output_type") &&
+         _settings["output_type"].is_string());
+  assert(_settings.contains("max_outputs") &&
+         _settings["max_outputs"].is_number_integer());
 
-  assert(_settings.isMember("output_algorithm") &&
-         _settings["output_algorithm"].isString());
-  if (_settings["output_algorithm"].asString() == "random") {
+  assert(_settings.contains("output_algorithm") &&
+         _settings["output_algorithm"].is_string());
+  if (_settings["output_algorithm"].get<std::string>() == "random") {
     outputAlg_ = OutputAlg::Rand;
-  } else if (_settings["output_algorithm"].asString() == "minimal") {
+  } else if (_settings["output_algorithm"].get<std::string>() == "minimal") {
     outputAlg_ = OutputAlg::Min;
   } else {
     fprintf(stderr, "Unknown output algorithm:");
     fprintf(stderr, " '%s'\n",
-            _settings["output_algorithm"].asString().c_str());
+            _settings["output_algorithm"].get<std::string>().c_str());
     assert(false);
   }
 
-  maxOutputs_ = _settings["max_outputs"].asUInt();
+  maxOutputs_ = _settings["max_outputs"].get<u32>();
 
-  std::string minimalType = _settings["minimal"].asString();
-  std::string outputType = _settings["output_type"].asString();
-  std::string nonMinimalType = _settings["non_minimal"].asString();
-  assert(_settings.isMember("short_cut"));
-  shortCut_ = _settings["short_cut"].asBool();
+  std::string minimalType = _settings["minimal"].get<std::string>();
+  std::string outputType = _settings["output_type"].get<std::string>();
+  std::string nonMinimalType = _settings["non_minimal"].get<std::string>();
+  assert(_settings.contains("short_cut"));
+  shortCut_ = _settings["short_cut"].get<bool>();
 
   if (nonMinimalType == "valiants") {
     nonMinimalAlg_ = NonMinRoutingAlg::VAL;
-    assert(_settings.isMember("intermediate_node") &&
-           _settings["intermediate_node"].isString());
-    std::string intermediateNode = _settings["intermediate_node"].asString();
+    assert(_settings.contains("intermediate_node") &&
+           _settings["intermediate_node"].is_string());
+    std::string intermediateNode = _settings["intermediate_node"].get<std::string>();
     if (intermediateNode == "regular") {
       intNodeAlg_ = IntNodeAlg::REG;
     } else if (intermediateNode == "source") {
@@ -160,58 +160,58 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
     assert(false);
   }
 
-  if (_settings["decision_scheme"].asString() == "monolithic_weighted") {
-    assert(_settings.isMember("independent_bias"));
-    iBias_ = _settings["independent_bias"].asFloat();
+  if (_settings["decision_scheme"].get<std::string>() == "monolithic_weighted") {
+    assert(_settings.contains("independent_bias"));
+    iBias_ = _settings["independent_bias"].get<f32>();
     decisionScheme_ = DecisionScheme::MW;
-    assert(_settings.isMember("congestion_bias"));
-    cBias_ = _settings["congestion_bias"].asFloat();
+    assert(_settings.contains("congestion_bias"));
+    cBias_ = _settings["congestion_bias"].get<f32>();
 
-    assert(_settings.isMember("bias_mode"));
-    if (_settings["bias_mode"].asString() == "regular") {
+    assert(_settings.contains("bias_mode"));
+    if (_settings["bias_mode"].get<std::string>() == "regular") {
       biasMode_ = BiasScheme::REGULAR;
-    } else if (_settings["bias_mode"].asString() == "bimodal") {
+    } else if (_settings["bias_mode"].get<std::string>() == "bimodal") {
       biasMode_ = BiasScheme::BIMODAL;
-    } else if (_settings["bias_mode"].asString() == "proportional") {
+    } else if (_settings["bias_mode"].get<std::string>() == "proportional") {
       biasMode_ = BiasScheme::PROPORTIONAL;
-    } else if (_settings["bias_mode"].asString() == "differential") {
+    } else if (_settings["bias_mode"].get<std::string>() == "differential") {
       biasMode_ = BiasScheme::DIFFERENTIAL;
-    } else if (_settings["bias_mode"].asString() ==
+    } else if (_settings["bias_mode"].get<std::string>() ==
         "proportional_differential") {
       biasMode_ = BiasScheme::PROPORTIONALDIF;
     } else {
       fprintf(stderr, "Unknown weighting scheme:");
-      fprintf(stderr, " '%s'\n", _settings["bias_mode"].asString().c_str());
+      fprintf(stderr, " '%s'\n", _settings["bias_mode"].get<std::string>().c_str());
       assert(false);
     }
-  } else if (_settings["decision_scheme"].asString() == "staged_threshold") {
+  } else if (_settings["decision_scheme"].get<std::string>() == "staged_threshold") {
     decisionScheme_ = DecisionScheme::ST;
-    assert(_settings.isMember("threshold_min"));
-    assert(_settings.isMember("threshold_nonmin"));
-    thresholdMin_ = _settings["threshold_min"].asDouble();
-    thresholdNonMin_ = _settings["threshold_nonmin"].asDouble();
-  } else if (_settings["decision_scheme"].asString() == "threshold_weighted") {
+    assert(_settings.contains("threshold_min"));
+    assert(_settings.contains("threshold_nonmin"));
+    thresholdMin_ = _settings["threshold_min"].get<f64>();
+    thresholdNonMin_ = _settings["threshold_nonmin"].get<f64>();
+  } else if (_settings["decision_scheme"].get<std::string>() == "threshold_weighted") {
     decisionScheme_ = DecisionScheme::TW;
-    assert(_settings.isMember("threshold"));
-    threshold_ = _settings["threshold"].asDouble();
+    assert(_settings.contains("threshold"));
+    threshold_ = _settings["threshold"].get<f64>();
   } else {
     fprintf(stderr, "Unknown decision scheme:");
-    fprintf(stderr, " '%s'\n", _settings["decision_scheme"].asString().c_str());
+    fprintf(stderr, " '%s'\n", _settings["decision_scheme"].get<std::string>().c_str());
     assert(false);
   }
 
   if (decisionScheme_ == DecisionScheme::MW ||
       decisionScheme_ == DecisionScheme::TW) {
     // ensure hop_count_mode if using weights
-    assert(_settings.isMember("hop_count_mode"));
-    if (_settings["hop_count_mode"].asString() == "absolute") {
+    assert(_settings.contains("hop_count_mode"));
+    if (_settings["hop_count_mode"].get<std::string>() == "absolute") {
       hopCountMode_ = HopCountMode::ABS;
-    } else if (_settings["hop_count_mode"].asString() == "normalized") {
+    } else if (_settings["hop_count_mode"].get<std::string>() == "normalized") {
       hopCountMode_ = HopCountMode::NORM;
     } else {
       fprintf(stderr, "Unknown hop_count scheme:");
       fprintf(stderr, " '%s'\n",
-              _settings["hop_count_mode"].asString().c_str());
+              _settings["hop_count_mode"].get<std::string>().c_str());
       assert(false);
     }
   }
@@ -225,8 +225,8 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
   } else {
     assert(_numVcs >= _dimensionWidths.size() + 1);
   }
-  assert(_settings.isMember("min_all_vc_sets"));
-  minAllVcSets_ = _settings["min_all_vc_sets"].asBool();
+  assert(_settings.contains("min_all_vc_sets"));
+  minAllVcSets_ = _settings["min_all_vc_sets"].get<bool>();
 }
 
 UgalRoutingAlgorithm::~UgalRoutingAlgorithm() {}

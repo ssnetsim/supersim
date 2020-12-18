@@ -33,11 +33,11 @@ DimOrderRoutingAlgorithm::DimOrderRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
                        _concentration, _interfacePorts, _settings),
-      mode_(parseRoutingMode(_settings["mode"].asString())) {
+      mode_(parseRoutingMode(_settings["mode"].get<std::string>())) {
   // VC set mapping:
   //  0 = all routing
   assert(numVcs_ >= 1);

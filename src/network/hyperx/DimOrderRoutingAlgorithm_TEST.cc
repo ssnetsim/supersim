@@ -15,7 +15,7 @@
 #include "network/hyperx/DimOrderRoutingAlgorithm.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <vector>
@@ -33,7 +33,7 @@ TEST(HyperX_DimOrderRoutingAlgorithm, construct) {
     for (auto& outputType : outputTypes) {
       for (auto& outputAlg : outputAlgs) {
         for (auto& maxOutput : maxOutputs) {
-          Json::Value settings;
+          nlohmann::json settings;
           settings["algorithm"] = "dimension_order";
           settings["latency"] = latency;
           settings["output_type"] = outputType;

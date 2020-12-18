@@ -33,20 +33,20 @@ namespace Blast {
 Application::Application(
     const std::string& _name, const Component* _parent, u32 _id,
     Workload* _workload, MetadataHandler* _metadataHandler,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings),
-      killOnSaturation_(_settings["kill_on_saturation"].asBool()),
-      logDuringSaturation_(_settings["log_during_saturation"].asBool()),
-      maxSaturationCycles_(_settings["max_saturation_cycles"].asUInt()),
-      warmupThreshold_(_settings["warmup_threshold"].asDouble()) {
+      killOnSaturation_(_settings["kill_on_saturation"].get<bool>()),
+      logDuringSaturation_(_settings["log_during_saturation"].get<bool>()),
+      maxSaturationCycles_(_settings.value("max_saturation_cycles", 0)),
+      warmupThreshold_(_settings["warmup_threshold"].get<f64>()) {
   // check settings
-  assert(!_settings["kill_on_saturation"].isNull());
-  assert(!_settings["log_during_saturation"].isNull());
+  assert(!_settings["kill_on_saturation"].is_null());
+  assert(!_settings["log_during_saturation"].is_null());
   if (logDuringSaturation_) {
-    assert(!_settings["max_saturation_cycles"].isNull());
+    assert(!_settings["max_saturation_cycles"].is_null());
   }
-  assert(!_settings["warmup_threshold"].isNull());
+  assert(!_settings["warmup_threshold"].is_null());
   assert(warmupThreshold_ >= 0.0);
   assert(warmupThreshold_ <= 1.0);
 

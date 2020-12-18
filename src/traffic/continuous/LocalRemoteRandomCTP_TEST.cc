@@ -15,7 +15,7 @@
 #include "traffic/continuous/LocalRemoteRandomCTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <mut/mut.h>
 #include <prim/prim.h>
 #include <strop/strop.h>
@@ -48,7 +48,7 @@ TEST(LocalRemoteRandomCTP, full) {
 
     TestSetup ts(1, 1, 1, 1, 0xDEAD * 123 + 0xBEEF);
 
-    Json::Value settings;
+    nlohmann::json settings;
     settings["block_size"] = BSIZE;
     settings["local_probability"] = PROB;
 

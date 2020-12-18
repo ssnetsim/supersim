@@ -15,7 +15,7 @@
 #include "traffic/distribution/RandomDTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <mut/mut.h>
 #include <prim/prim.h>
 #include <strop/strop.h>
@@ -36,7 +36,7 @@ TEST(RandomDTP, evenSpread) {
 
   TestSetup test(1234, 1234, 1234, 1234, 56789);
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   std::vector<RandomDTP*> tps(TPS);
   for (u32 idx = 0; idx < TPS; idx++) {
@@ -83,7 +83,7 @@ TEST(RandomDTP, noSelf) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = false;
   RandomDTP tp("TP", nullptr, TOTAL, ME, settings);
 
@@ -102,7 +102,7 @@ TEST(RandomDTP, completeDist) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 500;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   RandomDTP tp("TP", nullptr, TOTAL, ME, settings);
 

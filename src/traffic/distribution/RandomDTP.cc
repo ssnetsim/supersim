@@ -20,11 +20,11 @@
 
 RandomDTP::RandomDTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, Json::Value _settings)
+    u32 _self, nlohmann::json _settings)
     : DistributionTrafficPattern(_name, _parent, _numTerminals, _self,
                                  _settings) {
-  assert(_settings.isMember("send_to_self"));
-  sendToSelf_ = _settings["send_to_self"].asBool();
+  assert(_settings.contains("send_to_self"));
+  sendToSelf_ = _settings["send_to_self"].get<bool>();
 
   reset();
 }

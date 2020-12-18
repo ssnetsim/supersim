@@ -14,7 +14,7 @@
  */
 #include "allocator/RcSeparableAllocator.h"
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <gtest/gtest.h>
 #include <prim/prim.h>
 
@@ -24,9 +24,9 @@
 
 TEST(RcSeparableAllocator, lslp) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "lslp";
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 3;
@@ -40,10 +40,10 @@ TEST(RcSeparableAllocator, lslp) {
 
 TEST(RcSeparableAllocator, greater) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "comparing";
   arbSettings["greater"] = true;
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 2;
@@ -57,10 +57,10 @@ TEST(RcSeparableAllocator, greater) {
 
 TEST(RcSeparableAllocator, lesser) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "comparing";
   arbSettings["greater"] = false;
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 1;
@@ -74,9 +74,9 @@ TEST(RcSeparableAllocator, lesser) {
 
 TEST(RcSeparableAllocator, random) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "random";
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 1;

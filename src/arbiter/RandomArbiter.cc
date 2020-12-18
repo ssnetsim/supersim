@@ -18,7 +18,7 @@
 
 RandomArbiter::RandomArbiter(
     const std::string& _name, const Component* _parent, u32 _size,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {
   temp_.reserve(size_);
 }

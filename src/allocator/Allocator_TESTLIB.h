@@ -15,7 +15,7 @@
 #ifndef ALLOCATOR_ALLOCATOR_TESTLIB_H_
 #define ALLOCATOR_ALLOCATOR_TESTLIB_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 typedef void(*AllocatorVerifier)(u32 _numClients, u32 _numResources,
@@ -24,8 +24,8 @@ typedef void(*AllocatorVerifier)(u32 _numClients, u32 _numResources,
 
 u64 AllocatorIndex(u64 _numClients, u64 _client, u64 _resource);
 
-void AllocatorTest(Json::Value _settings, AllocatorVerifier _verifier,
+void AllocatorTest(nlohmann::json _settings, AllocatorVerifier _verifier,
                    bool _singleRequest);
-void AllocatorLoadBalanceTest(Json::Value _settings);
+void AllocatorLoadBalanceTest(nlohmann::json _settings);
 
 #endif  // ALLOCATOR_ALLOCATOR_TESTLIB_H_

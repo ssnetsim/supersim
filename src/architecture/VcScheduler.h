@@ -15,7 +15,7 @@
 #ifndef ARCHITECTURE_VCSCHEDULER_H_
 #define ARCHITECTURE_VCSCHEDULER_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -43,7 +43,7 @@ class VcScheduler : public Component {
   // constructor and destructor
   VcScheduler(const std::string& _name, const Component* _parent,
               u32 _numClients, u32 _totalVcs, Simulator::Clock _clock,
-              Json::Value _settings);
+              nlohmann::json _settings);
   ~VcScheduler();
 
   // constant attributes

@@ -18,9 +18,10 @@
 
 ComparingArbiter::ComparingArbiter(
     const std::string& _name, const Component* _parent,
-    u32 _size, Json::Value _settings)
+    u32 _size, nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {
-  greater_ = _settings["greater"].asBool();
+  assert(_settings.contains("greater") && _settings["greater"].is_boolean());
+  greater_ = _settings["greater"].get<bool>();
   temp_.reserve(size_);
 }
 

@@ -32,25 +32,25 @@
 namespace Torus {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // dimensions and concentration
-  assert(_settings["dimension_widths"].isArray());
+  assert(_settings["dimension_widths"].is_array());
   dimensions_ = _settings["dimension_widths"].size();
-  concentration_ = _settings["concentration"].asUInt();
+  concentration_ = _settings["concentration"].get<u32>();
   assert(concentration_ > 0);
-  interfacePorts_ = _settings["interface_ports"].asUInt();
+  interfacePorts_ = _settings["interface_ports"].get<u32>();
   assert(interfacePorts_ > 0);
   assert(concentration_ % interfacePorts_ == 0);
   dimensionWidths_.resize(dimensions_);
   for (u32 i = 0; i < dimensions_; i++) {
-    dimensionWidths_.at(i) = _settings["dimension_widths"][i].asUInt();
+    dimensionWidths_.at(i) = _settings["dimension_widths"][i].get<u32>();
   }
 
   assert(_settings["dimension_weights"].size() == dimensions_);
   dimensionWeights_.resize(dimensions_);
   for (u32 i = 0; i < dimensions_; i++) {
-    dimensionWeights_.at(i) = _settings["dimension_weights"][i].asUInt();
+    dimensionWeights_.at(i) = _settings["dimension_weights"][i].get<u32>();
     assert(dimensionWeights_.at(i) >= 1);
   }
 

@@ -15,7 +15,7 @@
 #ifndef TRAFFIC_SIZE_RANDOMMSD_H_
 #define TRAFFIC_SIZE_RANDOMMSD_H_
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <prim/prim.h>
 
 #include <string>
@@ -27,7 +27,7 @@ class RandomMSD : public MessageSizeDistribution {
  public:
   RandomMSD(
       const std::string& _name, const Component* _parent,
-      Json::Value _settings);
+      nlohmann::json _settings);
   virtual ~RandomMSD();
 
   // size bounds

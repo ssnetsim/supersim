@@ -14,7 +14,7 @@
  */
 #include "test/TestSetup_TESTLIB.h"
 
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <settings/settings.h>
 
 #include <string>
@@ -44,7 +44,7 @@ TestSetup::TestSetup(u64 _channelCycleTime, u64 _routerCycleTime,
       "}\n" +
       std::string();
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings::initString(str.c_str(), &settings);
 
   gSim = new VectorQueue(settings["simulator"]);

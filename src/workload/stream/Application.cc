@@ -30,12 +30,12 @@ namespace Stream {
 Application::Application(
     const std::string& _name, const Component* _parent, u32 _id,
     Workload* _workload, MetadataHandler* _metadataHandler,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings),
       doMonitoring_(true) {
   // the index of the pair of communicating terminals
-  s32 src = _settings["source_terminal"].asInt();
+  s32 src = _settings["source_terminal"].get<s32>();
   if (src < 0) {
     sourceTerminal_ = gSim->rnd.nextU64(0, numTerminals() - 1);
   } else {
@@ -43,7 +43,7 @@ Application::Application(
   }
   dbgprintf("source terminal is %u", sourceTerminal_);
 
-  s32 dst = _settings["destination_terminal"].asInt();
+  s32 dst = _settings["destination_terminal"].get<s32>();
   if (dst < 0) {
     do {
       destinationTerminal_ = gSim->rnd.nextU64(0, numTerminals() - 1);

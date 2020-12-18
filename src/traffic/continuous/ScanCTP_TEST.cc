@@ -15,7 +15,7 @@
 #include "traffic/continuous/ScanCTP.h"
 
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <mut/mut.h>
 #include <prim/prim.h>
 
@@ -29,7 +29,7 @@ TEST(ScanCTP, ascend_self_random) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   settings["direction"] = "ascend";
   settings["initial"] = "random";
@@ -51,7 +51,7 @@ TEST(ScanCTP, ascend_self_321) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   settings["direction"] = "ascend";
   settings["initial"] = 321;
@@ -71,7 +71,7 @@ TEST(ScanCTP, descend_self_random) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   settings["direction"] = "descend";
   settings["initial"] = "random";
@@ -94,7 +94,7 @@ TEST(ScanCTP, descend_self_321) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = true;
   settings["direction"] = "descend";
   settings["initial"] = 321;
@@ -115,7 +115,7 @@ TEST(ScanCTP, ascend_noself_random) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = false;
   settings["direction"] = "ascend";
   settings["initial"] = "random";
@@ -141,7 +141,7 @@ TEST(ScanCTP, ascend_noself_321) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = false;
   settings["direction"] = "ascend";
   settings["initial"] = 321;
@@ -166,7 +166,7 @@ TEST(ScanCTP, descend_noself_random) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = false;
   settings["direction"] = "descend";
   settings["initial"] = "random";
@@ -193,7 +193,7 @@ TEST(ScanCTP, descend_noself_321) {
   const u32 TOTAL = 5000;
   const u32 ME = 50;
   const u32 ROUNDS = 5000000;
-  Json::Value settings;
+  nlohmann::json settings;
   settings["send_to_self"] = false;
   settings["direction"] = "descend";
   settings["initial"] = 321;

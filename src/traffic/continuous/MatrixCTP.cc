@@ -104,12 +104,12 @@ void clearCummulativeDistributions() {
 
 MatrixCTP::MatrixCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, Json::Value _settings)
+    u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
-  assert(_settings.isMember("file") && _settings["file"].isString());
+  assert(_settings.contains("file") && _settings["file"].is_string());
   cumulativeDistribution_ = retrieveCummulativeDistribution(
-      _settings["file"].asString(), self_, numTerminals_);
+      _settings["file"].get<std::string>(), self_, numTerminals_);
 }
 
 MatrixCTP::~MatrixCTP() {}

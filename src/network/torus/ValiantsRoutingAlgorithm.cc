@@ -33,11 +33,11 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
     u32 _concentration, u32 _interfacePorts,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
                        _concentration, _interfacePorts, _settings),
-      mode_(parseRoutingMode(_settings["mode"].asString())) {
+      mode_(parseRoutingMode(_settings["mode"].get<std::string>())) {
   // VC set mapping:
   //  0 = stage 0 no dateline
   //  1 = stage 0 dateline
