@@ -18,6 +18,7 @@
 
 #include <sstream>
 #include <string>
+#include <unordered_set>
 
 #include "allocator/Allocator.h"
 

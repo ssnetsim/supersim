@@ -18,6 +18,8 @@
 
 #include <cassert>
 
+#include <utility>
+
 static u32 computeNumVcs(const Json::Value& _pcs) {
   u32 sum = 0;
   for (u32 pc = 0; pc < _pcs.size(); pc++) {

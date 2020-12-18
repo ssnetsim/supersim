@@ -21,6 +21,8 @@
 
 #include <cassert>
 
+#include <unordered_map>
+
 namespace {
 
 // this holds cummulative distributions

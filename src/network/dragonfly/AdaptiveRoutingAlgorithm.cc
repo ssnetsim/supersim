@@ -18,6 +18,7 @@
 
 #include <cassert>
 #include <tuple>
+#include <unordered_set>
 #include <vector>
 
 #include "network/dragonfly/util.h"

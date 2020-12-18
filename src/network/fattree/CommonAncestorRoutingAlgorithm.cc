@@ -20,6 +20,7 @@
 #include <cassert>
 
 #include <tuple>
+#include <unordered_set>
 #include <vector>
 
 #include "network/fattree/util.h"

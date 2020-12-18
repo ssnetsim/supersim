@@ -22,6 +22,7 @@
 
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 #include "event/Component.h"

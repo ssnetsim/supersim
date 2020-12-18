@@ -18,6 +18,8 @@
 
 #include <cassert>
 
+#include <utility>
+
 #include "architecture/util.h"
 #include "workload/Application.h"
 #include "interface/standard/Ejector.h"

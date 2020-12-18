@@ -17,6 +17,8 @@
 #include <factory/ObjectFactory.h>
 
 #include <cassert>
+
+#include <unordered_set>
 #include <tuple>
 
 #include "types/Message.h"
