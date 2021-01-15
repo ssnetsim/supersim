@@ -94,7 +94,8 @@ AllToAllTerminal::AllToAllTerminal(
   // latency of request processing
   assert(!enableResponses_ ||
          _settings.contains("request_processing_latency"));
-  requestProcessingLatency_ = _settings["request_processing_latency"].get<u32>();
+  requestProcessingLatency_ =
+      _settings["request_processing_latency"].get<u32>();
 
   // protocol class of injection of responses
   assert(!enableResponses_ || _settings.contains("response_protocol_class"));

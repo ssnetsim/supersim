@@ -16,6 +16,8 @@
 
 #include <cassert>
 
+#include <string>
+
 ChannelLog::ChannelLog(u32 _numVcs, nlohmann::json _settings)
     : numVcs_(_numVcs), outFile_(nullptr) {
   if (!_settings["file"].is_null()) {

@@ -76,8 +76,8 @@ Application::Application(
   std::vector<u32> exchangeRecvMessages(numTerminals(), 0);
 
   // read the file
-  fio::InFile inf(_settings["exchange_messages"].get<std::string>(), fio::kDefaultDelim,
-                  1048576);
+  fio::InFile inf(_settings["exchange_messages"].get<std::string>(),
+                  fio::kDefaultDelim, 1048576);
   fio::InFile::Status sts = fio::InFile::Status::OK;
   u32 lineNum = 0;
   dbgprintf("reading exchange matrix");

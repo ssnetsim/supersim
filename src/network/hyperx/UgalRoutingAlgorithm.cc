@@ -76,7 +76,8 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
     nonMinimalAlg_ = NonMinRoutingAlg::VAL;
     assert(_settings.contains("intermediate_node") &&
            _settings["intermediate_node"].is_string());
-    std::string intermediateNode = _settings["intermediate_node"].get<std::string>();
+    std::string intermediateNode =
+        _settings["intermediate_node"].get<std::string>();
     if (intermediateNode == "regular") {
       intNodeAlg_ = IntNodeAlg::REG;
     } else if (intermediateNode == "source") {
@@ -160,7 +161,8 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
     assert(false);
   }
 
-  if (_settings["decision_scheme"].get<std::string>() == "monolithic_weighted") {
+  if (_settings["decision_scheme"].get<std::string>() ==
+      "monolithic_weighted") {
     assert(_settings.contains("independent_bias"));
     iBias_ = _settings["independent_bias"].get<f32>();
     decisionScheme_ = DecisionScheme::MW;
@@ -181,22 +183,26 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
       biasMode_ = BiasScheme::PROPORTIONALDIF;
     } else {
       fprintf(stderr, "Unknown weighting scheme:");
-      fprintf(stderr, " '%s'\n", _settings["bias_mode"].get<std::string>().c_str());
+      fprintf(stderr, " '%s'\n",
+              _settings["bias_mode"].get<std::string>().c_str());
       assert(false);
     }
-  } else if (_settings["decision_scheme"].get<std::string>() == "staged_threshold") {
+  } else if (_settings["decision_scheme"].get<std::string>() ==
+             "staged_threshold") {
     decisionScheme_ = DecisionScheme::ST;
     assert(_settings.contains("threshold_min"));
     assert(_settings.contains("threshold_nonmin"));
     thresholdMin_ = _settings["threshold_min"].get<f64>();
     thresholdNonMin_ = _settings["threshold_nonmin"].get<f64>();
-  } else if (_settings["decision_scheme"].get<std::string>() == "threshold_weighted") {
+  } else if (_settings["decision_scheme"].get<std::string>() ==
+             "threshold_weighted") {
     decisionScheme_ = DecisionScheme::TW;
     assert(_settings.contains("threshold"));
     threshold_ = _settings["threshold"].get<f64>();
   } else {
     fprintf(stderr, "Unknown decision scheme:");
-    fprintf(stderr, " '%s'\n", _settings["decision_scheme"].get<std::string>().c_str());
+    fprintf(stderr, " '%s'\n",
+            _settings["decision_scheme"].get<std::string>().c_str());
     assert(false);
   }
 

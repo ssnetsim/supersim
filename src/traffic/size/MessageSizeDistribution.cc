@@ -17,13 +17,15 @@
 #include <factory/ObjectFactory.h>
 
 MessageSizeDistribution::MessageSizeDistribution(
-    const std::string& _name, const Component* _parent, nlohmann::json _settings)
+    const std::string& _name, const Component* _parent,
+    nlohmann::json _settings)
     : Component(_name, _parent) {}
 
 MessageSizeDistribution::~MessageSizeDistribution() {}
 
 MessageSizeDistribution* MessageSizeDistribution::create(
-    const std::string& _name, const Component* _parent, nlohmann::json _settings) {
+    const std::string& _name, const Component* _parent,
+    nlohmann::json _settings) {
   // retrieve the type
   const std::string& type = _settings["type"].get<std::string>();
 

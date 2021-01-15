@@ -78,7 +78,8 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
       fprintf(stderr, " '%s'\n", outputType.c_str());
       assert(false);
     }
-  } else if (_settings["adaptivity_type"].get<std::string>() == "dimension_order") {
+  } else if (_settings["adaptivity_type"].get<std::string>() ==
+             "dimension_order") {
     if (outputType == "vc") {
       adaptivityType_ = AdaptiveRoutingAlg::DOALV;
     } else if (outputType == "port") {
@@ -104,11 +105,13 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
     }
   } else {
     fprintf(stderr, "Unknown adaptive algorithm:");
-    fprintf(stderr, " '%s'\n", _settings["adaptivity_type"].get<std::string>().c_str());
+    fprintf(stderr, " '%s'\n",
+            _settings["adaptivity_type"].get<std::string>().c_str());
     assert(false);
   }
 
-  if (_settings["decision_scheme"].get<std::string>() == "monolithic_weighted") {
+  if (_settings["decision_scheme"].get<std::string>() ==
+      "monolithic_weighted") {
     decisionScheme_ = DecisionScheme::MW;
     assert(_settings.contains("independent_bias"));
     iBias_ = _settings["independent_bias"].get<f64>();
@@ -129,22 +132,26 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
       biasMode_ = BiasScheme::PROPORTIONALDIF;
     } else {
       fprintf(stderr, "Unknown weighting scheme:");
-      fprintf(stderr, " '%s'\n", _settings["bias_mode"].get<std::string>().c_str());
+      fprintf(stderr, " '%s'\n",
+              _settings["bias_mode"].get<std::string>().c_str());
       assert(false);
     }
-  } else if (_settings["decision_scheme"].get<std::string>() == "staged_threshold") {
+  } else if (_settings["decision_scheme"].get<std::string>() ==
+             "staged_threshold") {
     decisionScheme_ = DecisionScheme::ST;
     assert(_settings.contains("threshold_min"));
     assert(_settings.contains("threshold_nonmin"));
     thresholdMin_ = _settings["threshold_min"].get<f64>();
     thresholdNonMin_ = _settings["threshold_nonmin"].get<f64>();
-  } else if (_settings["decision_scheme"].get<std::string>() == "threshold_weighted") {
+  } else if (_settings["decision_scheme"].get<std::string>() ==
+             "threshold_weighted") {
     decisionScheme_ = DecisionScheme::TW;
     assert(_settings.contains("threshold"));
     threshold_ = _settings["threshold"].get<f64>();
   } else {
     fprintf(stderr, "Unknown decision scheme:");
-    fprintf(stderr, " '%s'\n", _settings["decision_scheme"].get<std::string>().c_str());
+    fprintf(stderr, " '%s'\n",
+            _settings["decision_scheme"].get<std::string>().c_str());
     assert(false);
   }
 

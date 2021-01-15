@@ -18,8 +18,9 @@
 
 #include <cassert>
 
-Allocator::Allocator(const std::string& _name, const Component* _parent,
-                     u32 _numClients, u32 _numResources, nlohmann::json _settings)
+Allocator::Allocator(
+    const std::string& _name, const Component* _parent, u32 _numClients,
+    u32 _numResources, nlohmann::json _settings)
     : Component(_name, _parent),
       numClients_(_numClients), numResources_(_numResources) {
   assert(numClients_ > 0);

@@ -27,8 +27,9 @@
 
 class ContinuousTrafficPattern : public Component {
  public:
-  ContinuousTrafficPattern(const std::string& _name, const Component* _parent,
-                           u32 _numTerminals, u32 _self, nlohmann::json _settings);
+  ContinuousTrafficPattern(
+      const std::string& _name, const Component* _parent, u32 _numTerminals,
+      u32 _self, nlohmann::json _settings);
   virtual ~ContinuousTrafficPattern();
 
   // this is the factory for continuous traffic patterns

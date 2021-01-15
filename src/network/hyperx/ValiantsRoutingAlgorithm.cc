@@ -66,7 +66,8 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
 
   maxOutputs_ = _settings["max_outputs"].get<u32>();
 
-  std::string intermediateNode = _settings["intermediate_node"].get<std::string>();
+  std::string intermediateNode =
+      _settings["intermediate_node"].get<std::string>();
   std::string minimalType = _settings["minimal"].get<std::string>();
   std::string outputType = _settings["output_type"].get<std::string>();
   shortCut_ = _settings["short_cut"].get<bool>();

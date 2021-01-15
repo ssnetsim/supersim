@@ -49,7 +49,8 @@ StencilTerminal::StencilTerminal(
       exchangeRecvMessages_(_exchangeRecvMessages),
       collectiveSize_(_settings["collective_size"].get<u32>()),
       exchangeProtocolClass_(_settings["exchange_protocol_class"].get<u32>()),
-      collectiveProtocolClass_(_settings["collective_protocol_class"].get<u32>()),
+      collectiveProtocolClass_(
+          _settings["collective_protocol_class"].get<u32>()),
       computeDelay_(_settings["compute_delay"].get<u64>()) {
   // check settings
   assert(numIterations_ > 0);

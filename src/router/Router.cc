@@ -37,7 +37,8 @@ Router* Router::create(
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
     MetadataHandler* _metadataHandler, nlohmann::json _settings) {
   // retrieve the architecture
-  const std::string& architecture = _settings["architecture"].get<std::string>();
+  const std::string& architecture =
+      _settings["architecture"].get<std::string>();
 
   // attempt to build the router
   Router* router = factory::ObjectFactory<Router, ROUTER_ARGS>::create(
