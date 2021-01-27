@@ -14,10 +14,10 @@
  */
 #include "traffic/size/ProbabilityMSD.h"
 
-#include <mut/mut.h>
-#include <factory/ObjectFactory.h>
-
 #include <algorithm>
+
+#include "factory/ObjectFactory.h"
+#include "mut/mut.h"
 
 ProbabilityMSD::ProbabilityMSD(
     const std::string& _name, const Component* _parent,

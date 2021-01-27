@@ -14,20 +14,19 @@
  */
 #include "interface/standard/Interface.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <utility>
 
 #include "architecture/util.h"
-#include "workload/Application.h"
+#include "factory/ObjectFactory.h"
 #include "interface/standard/Ejector.h"
 #include "interface/standard/MessageReassembler.h"
 #include "interface/standard/OutputQueue.h"
 #include "interface/standard/PacketReassembler.h"
 #include "network/Network.h"
 #include "types/MessageOwner.h"
+#include "workload/Application.h"
 
 // event types
 #define INJECT_MESSAGE (0x45)

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <prim/prim.h>
+#include "prim/prim.h"
 
 #ifndef ROUTING_UTIL_H_
 #define ROUTING_UTIL_H_

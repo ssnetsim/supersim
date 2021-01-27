@@ -15,11 +15,10 @@
 #ifndef ARCHITECTURE_PORTEDDEVICE_H_
 #define ARCHITECTURE_PORTEDDEVICE_H_
 
-#include <prim/prim.h>
-
 #include <vector>
 
 #include "network/Channel.h"
+#include "prim/prim.h"
 
 class PortedDevice {
  public:

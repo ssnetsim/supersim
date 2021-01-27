@@ -15,9 +15,9 @@
 #ifndef NETWORK_DRAGONFLY_UTIL_H_
 #define NETWORK_DRAGONFLY_UTIL_H_
 
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "prim/prim.h"
 
 namespace Dragonfly {
 u32 computeOffset(u32 _source, u32 _destination, u32 _width);

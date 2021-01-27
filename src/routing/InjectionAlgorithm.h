@@ -15,14 +15,13 @@
 #ifndef ROUTING_INJECTIONALGORITHM_H_
 #define ROUTING_INJECTIONALGORITHM_H_
 
-#include <prim/prim.h>
-#include <nlohmann/json.hpp>
-
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Message.h"
 #include "types/Packet.h"
 

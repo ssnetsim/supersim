@@ -14,9 +14,9 @@
  */
 #include "traffic/distribution/RandomDTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 RandomDTP::RandomDTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,

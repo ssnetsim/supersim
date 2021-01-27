@@ -12,16 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "test/TestSetup_TESTLIB.h"
-
-#include <nlohmann/json.hpp>
-#include <settings/settings.h>
-
 #include <string>
 
 #include "event/Component.h"
 #include "event/Simulator.h"
 #include "event/VectorQueue.h"
+#include "nlohmann/json.hpp"
+#include "settings/settings.h"
+#include "test/TestSetup_TESTLIB.h"
 
 TestSetup::TestSetup(u64 _channelCycleTime, u64 _routerCycleTime,
                      u64 _interfaceCycleTime, u64 _terminalCycleTime,

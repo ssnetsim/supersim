@@ -15,13 +15,12 @@
 #ifndef WORKLOAD_STREAM_STREAMTERMINAL_H_
 #define WORKLOAD_STREAM_STREAMTERMINAL_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/size/MessageSizeDistribution.h"
 #include "workload/Terminal.h"
 

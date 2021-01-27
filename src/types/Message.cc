@@ -16,8 +16,8 @@
 
 #include <cassert>
 
-#include "workload/Terminal.h"
 #include "types/Packet.h"
+#include "workload/Terminal.h"
 
 Message::Message(u32 _numPackets, void* _data)
     : data_(_data), transaction_(U32_MAX), protocolClass_(U32_MAX),

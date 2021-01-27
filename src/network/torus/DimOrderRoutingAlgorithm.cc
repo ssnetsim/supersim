@@ -14,17 +14,16 @@
  */
 #include "network/torus/DimOrderRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 
-#include <unordered_set>
 #include <tuple>
+#include <unordered_set>
 
+#include "factory/ObjectFactory.h"
+#include "network/torus/util.h"
+#include "strop/strop.h"
 #include "types/Message.h"
 #include "types/Packet.h"
-#include "network/torus/util.h"
 
 namespace Torus {
 

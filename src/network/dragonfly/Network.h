@@ -15,9 +15,6 @@
 #ifndef NETWORK_DRAGONFLY_NETWORK_H_
 #define NETWORK_DRAGONFLY_NETWORK_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
@@ -25,6 +22,8 @@
 #include "interface/Interface.h"
 #include "network/Channel.h"
 #include "network/Network.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 #include "util/DimensionalArray.h"
 

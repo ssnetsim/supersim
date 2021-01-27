@@ -14,16 +14,15 @@
  */
 #include "network/mesh/ValiantsRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
-#include <unordered_set>
 #include <tuple>
+#include <unordered_set>
 
+#include "factory/ObjectFactory.h"
+#include "network/mesh/util.h"
 #include "types/Message.h"
 #include "types/Packet.h"
-#include "network/mesh/util.h"
 
 namespace Mesh {
 

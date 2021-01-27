@@ -12,19 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <nlohmann/json.hpp>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "arbiter/DualStageClassArbiter.h"
 
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
-#include "arbiter/DualStageClassArbiter.h"
-
 #include "arbiter/Arbiter_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
-
 
 TEST(DualStageClassArbiter, full) {
   TestSetup testSetup(1, 1, 1, 1, 123);

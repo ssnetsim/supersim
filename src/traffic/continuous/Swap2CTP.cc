@@ -14,12 +14,11 @@
  */
 #include "traffic/continuous/Swap2CTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
+#include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
 Swap2CTP::Swap2CTP(

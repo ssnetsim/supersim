@@ -15,12 +15,11 @@
 #ifndef NETWORK_INTERFACEONLY_COMMONINJECTIONALGORITHM_H_
 #define NETWORK_INTERFACEONLY_COMMONINJECTIONALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "network/interfaceonly/InjectionAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 namespace InterfaceOnly {
 

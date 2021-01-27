@@ -15,11 +15,11 @@
 #ifndef STATS_INFOLOG_H_
 #define STATS_INFOLOG_H_
 
-#include <fio/OutFile.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
+
+#include "fio/OutFile.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class InfoLog {
  public:

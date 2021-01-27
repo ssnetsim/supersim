@@ -14,9 +14,8 @@
  */
 #include "traffic/size/ReadWriteMSD.h"
 
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
 #include "test/TestSetup_TESTLIB.h"
 #include "traffic/size/MessageSizeDistribution.h"
 #include "types/Message.h"

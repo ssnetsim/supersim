@@ -14,16 +14,15 @@
  */
 #include "network/parkinglot/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/parkinglot/InjectionAlgorithm.h"
 #include "network/parkinglot/RoutingAlgorithm.h"
+#include "strop/strop.h"
 
 namespace ParkingLot {
 

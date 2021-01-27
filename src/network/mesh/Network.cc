@@ -14,19 +14,18 @@
  */
 #include "network/mesh/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 #include "network/mesh/InjectionAlgorithm.h"
 #include "network/mesh/RoutingAlgorithm.h"
 #include "network/mesh/util.h"
+#include "strop/strop.h"
 #include "util/DimensionIterator.h"
 
 namespace Mesh {

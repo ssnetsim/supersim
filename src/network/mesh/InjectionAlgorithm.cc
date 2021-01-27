@@ -14,7 +14,7 @@
  */
 #include "network/mesh/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace Mesh {
 

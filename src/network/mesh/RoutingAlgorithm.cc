@@ -14,8 +14,7 @@
  */
 #include "network/mesh/RoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
+#include "factory/ObjectFactory.h"
 #include "network/mesh/util.h"
 
 namespace Mesh {

@@ -12,14 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "congestion/Congestion_TESTLIB.h"
-
-#include <gtest/gtest.h>
-
 #include <queue>
 #include <tuple>
 
+#include "congestion/Congestion_TESTLIB.h"
 #include "event/Component.h"
+#include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
 
 /*********************** CongestionTestRouter class ***************************/

@@ -14,16 +14,15 @@
  */
 #include "workload/stream/Application.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
+#include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
+#include "network/Network.h"
 #include "workload/NullTerminal.h"
 #include "workload/stream/StreamTerminal.h"
-#include "event/Simulator.h"
-#include "network/Network.h"
 
 namespace Stream {
 

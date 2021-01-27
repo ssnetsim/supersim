@@ -14,13 +14,12 @@
  */
 #include "traffic/continuous/ScanCTP.h"
 
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <mut/mut.h>
-#include <prim/prim.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
+#include "mut/mut.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(ScanCTP, ascend_self_random) {

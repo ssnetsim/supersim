@@ -14,11 +14,10 @@
  */
 #include "traffic/size/RandomMSD.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 RandomMSD::RandomMSD(
     const std::string& _name, const Component* _parent,

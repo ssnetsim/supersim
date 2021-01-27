@@ -15,14 +15,13 @@
 #ifndef ALLOCATOR_ALLOCATOR_H_
 #define ALLOCATOR_ALLOCATOR_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 #define ALLOCATOR_ARGS const std::string&, const Component*, u32, u32,  \
     nlohmann::json

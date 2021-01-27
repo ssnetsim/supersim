@@ -15,15 +15,14 @@
 #ifndef NETWORK_DRAGONFLY_ROUTINGALGORITHM_H_
 #define NETWORK_DRAGONFLY_ROUTINGALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
-#include "routing/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "routing/RoutingAlgorithm.h"
 
 #define DRAGONFLY_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
     Router*, u32, u32, u32, u32, u32, u32, u32, u32, u32, u32, u32, u32, \

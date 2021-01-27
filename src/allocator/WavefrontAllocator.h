@@ -15,14 +15,13 @@
 #ifndef ALLOCATOR_WAVEFRONTALLOCATOR_H_
 #define ALLOCATOR_WAVEFRONTALLOCATOR_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "allocator/Allocator.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class WavefrontAllocator : public Allocator {
  public:

@@ -12,20 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <nlohmann/json.hpp>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "architecture/CrossbarScheduler.h"
 
 #include <algorithm>
 #include <string>
 #include <tuple>
 
-#include "architecture/CrossbarScheduler.h"
 #include "event/Component.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "test/TestSetup_TESTLIB.h"
 #include "types/Flit.h"
 #include "types/Packet.h"
-
-#include "test/TestSetup_TESTLIB.h"
 
 class CrossbarSchedulerTestClient : public CrossbarScheduler::Client,
                                     public Component {

@@ -14,7 +14,7 @@
  */
 #include "arbiter/RandomArbiter.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 RandomArbiter::RandomArbiter(
     const std::string& _name, const Component* _parent, u32 _size,

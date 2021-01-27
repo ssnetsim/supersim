@@ -14,12 +14,11 @@
  */
 #include "network/cube/util.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include <vector>
 
 #include "event/Simulator.h"
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(CubeUtil, computeNumRoutersAndInterfaces) {

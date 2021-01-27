@@ -15,9 +15,6 @@
 #ifndef NETWORK_NETWORK_H_
 #define NETWORK_NETWORK_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -27,9 +24,11 @@
 #include "interface/Interface.h"
 #include "metadata/MetadataHandler.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "router/Router.h"
 #include "routing/InjectionAlgorithm.h"
 #include "routing/RoutingAlgorithm.h"
-#include "router/Router.h"
 #include "stats/ChannelLog.h"
 #include "stats/TrafficLog.h"
 

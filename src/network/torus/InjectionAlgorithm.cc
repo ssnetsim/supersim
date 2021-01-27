@@ -14,7 +14,7 @@
  */
 #include "network/torus/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace Torus {
 

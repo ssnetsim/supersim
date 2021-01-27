@@ -15,12 +15,11 @@
 #ifndef NETWORK_TORUS_COMMONINJECTIONALGORITHM_H_
 #define NETWORK_TORUS_COMMONINJECTIONALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "network/torus/InjectionAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 namespace Torus {
 

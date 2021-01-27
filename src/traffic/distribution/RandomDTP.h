@@ -15,12 +15,11 @@
 #ifndef TRAFFIC_DISTRIBUTION_RANDOMDTP_H_
 #define TRAFFIC_DISTRIBUTION_RANDOMDTP_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/distribution/DistributionTrafficPattern.h"
 
 class RandomDTP : public DistributionTrafficPattern {

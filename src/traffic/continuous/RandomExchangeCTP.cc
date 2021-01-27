@@ -14,7 +14,7 @@
  */
 #include "traffic/continuous/RandomExchangeCTP.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 RandomExchangeCTP::RandomExchangeCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,

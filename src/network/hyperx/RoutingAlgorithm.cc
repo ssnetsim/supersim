@@ -14,9 +14,9 @@
  */
 #include "network/hyperx/RoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 namespace HyperX {
 

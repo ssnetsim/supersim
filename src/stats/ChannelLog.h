@@ -15,13 +15,12 @@
 #ifndef STATS_CHANNELLOG_H_
 #define STATS_CHANNELLOG_H_
 
-#include <fio/OutFile.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <sstream>
 
+#include "fio/OutFile.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class ChannelLog {
  public:

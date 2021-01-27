@@ -15,15 +15,14 @@
 #ifndef ALLOCATOR_CRSEPARABLEALLOCATOR_H_
 #define ALLOCATOR_CRSEPARABLEALLOCATOR_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "allocator/Allocator.h"
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class CrSeparableAllocator : public Allocator {
  public:

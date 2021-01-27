@@ -14,10 +14,10 @@
  */
 #include "arbiter/DualStageClassArbiter.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cstring>
+
+#include "factory/ObjectFactory.h"
 
 DualStageClassArbiter::DualStageClassArbiter(
     const std::string& _name, const Component* _parent, u32 _size,

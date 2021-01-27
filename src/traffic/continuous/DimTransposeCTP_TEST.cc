@@ -14,13 +14,12 @@
  */
 #include "traffic/continuous/DimTransposeCTP.h"
 
-#include <bits/bits.h>
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <cassert>
 
+#include "bits/bits.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(DimTransposeCTP, no_enabled_dims) {

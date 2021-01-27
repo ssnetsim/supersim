@@ -15,14 +15,13 @@
 #ifndef ROUTING_ALLMINIMALREDUCTION_H_
 #define ROUTING_ALLMINIMALREDUCTION_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_set>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/Reduction.h"
 
 class AllMinimalReduction : public Reduction {

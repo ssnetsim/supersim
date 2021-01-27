@@ -14,7 +14,7 @@
  */
 #include "network/butterfly/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace Butterfly {
 

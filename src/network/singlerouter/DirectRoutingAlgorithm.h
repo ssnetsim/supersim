@@ -15,13 +15,12 @@
 #ifndef NETWORK_SINGLEROUTER_DIRECTROUTINGALGORITHM_H_
 #define NETWORK_SINGLEROUTER_DIRECTROUTINGALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
 #include "network/singlerouter/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 namespace SingleRouter {

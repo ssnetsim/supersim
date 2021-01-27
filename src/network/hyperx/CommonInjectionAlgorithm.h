@@ -15,12 +15,11 @@
 #ifndef NETWORK_HYPERX_COMMONINJECTIONALGORITHM_H_
 #define NETWORK_HYPERX_COMMONINJECTIONALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "network/hyperx/InjectionAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 namespace HyperX {
 

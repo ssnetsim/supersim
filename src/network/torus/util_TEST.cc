@@ -14,10 +14,10 @@
  */
 #include "network/torus/util.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 
 TEST(Torus, computeMinimalHops) {
   std::vector<u32> src;

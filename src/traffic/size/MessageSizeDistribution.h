@@ -15,12 +15,11 @@
 #ifndef TRAFFIC_SIZE_MESSAGESIZEDISTRIBUTION_H_
 #define TRAFFIC_SIZE_MESSAGESIZEDISTRIBUTION_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Message.h"
 
 #define MESSAGESIZEDISTRIBUTION_ARGS const std::string&, const Component*, \

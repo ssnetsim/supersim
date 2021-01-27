@@ -14,12 +14,11 @@
  */
 #include "event/Simulator.h"
 
-#include <gtest/gtest.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
 
 namespace {

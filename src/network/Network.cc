@@ -14,11 +14,11 @@
  */
 #include "network/Network.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <utility>
+
+#include "factory/ObjectFactory.h"
 
 static u32 computeNumVcs(const nlohmann::json& _pcs) {
   u32 sum = 0;

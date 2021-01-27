@@ -14,8 +14,7 @@
  */
 #include "network/parkinglot/CommonInjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
+#include "factory/ObjectFactory.h"
 #include "network/common/injection.h"
 
 namespace ParkingLot {

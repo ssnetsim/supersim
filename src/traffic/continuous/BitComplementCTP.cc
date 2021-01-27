@@ -14,10 +14,10 @@
  */
 #include "traffic/continuous/BitComplementCTP.h"
 
-#include <bits/bits.h>
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "bits/bits.h"
+#include "factory/ObjectFactory.h"
 
 BitComplementCTP::BitComplementCTP(
     const std::string& _name, const Component* _parent,

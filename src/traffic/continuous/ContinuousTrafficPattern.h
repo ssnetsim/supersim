@@ -15,12 +15,11 @@
 #ifndef TRAFFIC_CONTINUOUS_CONTINUOUSTRAFFICPATTERN_H_
 #define TRAFFIC_CONTINUOUS_CONTINUOUSTRAFFICPATTERN_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 #define CONTINUOUSTRAFFICPATTERN_ARGS const std::string&, const Component*, \
     u32, u32, nlohmann::json

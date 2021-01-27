@@ -15,13 +15,12 @@
 #ifndef ARBITER_LSLPARBITER_H_
 #define ARBITER_LSLPARBITER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 // last served -> lowest priority (LSLP) aka round-robin
 class LslpArbiter : public Arbiter {

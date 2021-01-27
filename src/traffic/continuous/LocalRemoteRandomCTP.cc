@@ -14,9 +14,9 @@
  */
 #include "traffic/continuous/LocalRemoteRandomCTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 LocalRemoteRandomCTP::LocalRemoteRandomCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,

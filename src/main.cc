@@ -12,22 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <nlohmann/json.hpp>
-#include <settings/settings.h>
-
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 
 #include <string>
 #include <vector>
 
-#include "workload/Workload.h"
-#include "workload/Terminal.h"
 #include "event/Simulator.h"
 #include "event/VectorQueue.h"
 #include "metadata/MetadataHandler.h"
 #include "network/Network.h"
+#include "nlohmann/json.hpp"
+#include "settings/settings.h"
+#include "workload/Terminal.h"
+#include "workload/Workload.h"
 
 s32 main(s32 _argc, char** _argv) {
   // turn off buffered output on stdout and stderr

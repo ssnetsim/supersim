@@ -15,9 +15,6 @@
 #ifndef INTERFACE_STANDARD_INTERFACE_H_
 #define INTERFACE_STANDARD_INTERFACE_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -27,14 +24,16 @@
 #include "architecture/CrossbarScheduler.h"
 #include "interface/Interface.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/InjectionAlgorithm.h"
 #include "types/Credit.h"
 #include "types/CreditReceiver.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
-#include "types/Packet.h"
 #include "types/Message.h"
 #include "types/MessageReceiver.h"
+#include "types/Packet.h"
 
 // architectural drawing here: https://bit.ly/2LK3uF4
 

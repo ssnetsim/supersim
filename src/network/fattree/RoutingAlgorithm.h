@@ -15,16 +15,15 @@
 #ifndef NETWORK_FATTREE_ROUTINGALGORITHM_H_
 #define NETWORK_FATTREE_ROUTINGALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <vector>
 
 #include "event/Component.h"
-#include "routing/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "routing/RoutingAlgorithm.h"
 
 #define FATTREE_ROUTINGALGORITHM_ARGS                                 \
   const std::string&, const Component*, Router*, u32, u32, u32, u32,  \

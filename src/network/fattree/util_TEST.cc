@@ -14,10 +14,10 @@
  */
 #include "network/fattree/util.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 
 TEST(FatTree, translateInterfaceIdToAddress) {
   std::vector<u32> act;

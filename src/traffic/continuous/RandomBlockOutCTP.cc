@@ -14,9 +14,9 @@
  */
 #include "traffic/continuous/RandomBlockOutCTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 RandomBlockOutCTP::RandomBlockOutCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,

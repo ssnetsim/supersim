@@ -12,14 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <bits/bits.h>
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
+#include "traffic/continuous/DimBisectionStressCTP.h"
 
 #include <cassert>
 
-#include "traffic/continuous/DimBisectionStressCTP.h"
+#include "bits/bits.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(DimBisectionStressCTP, parity) {

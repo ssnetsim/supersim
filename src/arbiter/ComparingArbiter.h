@@ -15,14 +15,13 @@
 #ifndef ARBITER_COMPARINGARBITER_H_
 #define ARBITER_COMPARINGARBITER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 // compares the metadata value, random tie-breaker
 class ComparingArbiter : public Arbiter {

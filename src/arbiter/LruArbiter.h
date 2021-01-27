@@ -15,14 +15,13 @@
 #ifndef ARBITER_LRUARBITER_H_
 #define ARBITER_LRUARBITER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <list>
 #include <string>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 // least receeived used (LRU)
 class LruArbiter : public Arbiter {

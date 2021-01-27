@@ -14,9 +14,9 @@
  */
 #include "interface/Interface.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 Interface::Interface(
     const std::string& _name, const Component* _parent, Network* _network,

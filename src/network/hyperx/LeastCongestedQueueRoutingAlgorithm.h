@@ -15,18 +15,17 @@
 #ifndef NETWORK_HYPERX_LEASTCONGESTEDQUEUEROUTINGALGORITHM_H_
 #define NETWORK_HYPERX_LEASTCONGESTEDQUEUEROUTINGALGORITHM_H_
 
-#include <colhash/tuplehash.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_set>
 #include <vector>
 
+#include "colhash/tuplehash.h"
 #include "event/Component.h"
 #include "network/hyperx/RoutingAlgorithm.h"
 #include "network/hyperx/util.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 namespace HyperX {

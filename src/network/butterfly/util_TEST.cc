@@ -14,10 +14,10 @@
  */
 #include "network/butterfly/util.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 
 TEST(Butterfly, translateInterfaceIdToAddress1) {
   const u32 routerRadix = 2;

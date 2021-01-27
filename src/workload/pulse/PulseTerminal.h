@@ -15,15 +15,14 @@
 #ifndef WORKLOAD_PULSE_PULSETERMINAL_H_
 #define WORKLOAD_PULSE_PULSETERMINAL_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/continuous/ContinuousTrafficPattern.h"
 #include "traffic/size/MessageSizeDistribution.h"
 #include "workload/Terminal.h"

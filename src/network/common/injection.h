@@ -15,9 +15,8 @@
 #ifndef NETWORK_COMMON_INJECTION_H_
 #define NETWORK_COMMON_INJECTION_H_
 
-#include <prim/prim.h>
-
 #include "interface/Interface.h"
+#include "prim/prim.h"
 #include "routing/InjectionAlgorithm.h"
 #include "types/Message.h"
 

@@ -15,15 +15,14 @@
 #ifndef ARCHITECTURE_CROSSBAR_H_
 #define ARCHITECTURE_CROSSBAR_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <list>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
 

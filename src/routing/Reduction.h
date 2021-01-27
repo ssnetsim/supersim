@@ -15,16 +15,15 @@
 #ifndef ROUTING_REDUCTION_H_
 #define ROUTING_REDUCTION_H_
 
-#include <colhash/tuplehash.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_set>
 
 #include "architecture/PortedDevice.h"
+#include "colhash/tuplehash.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/mode.h"
 
 #define REDUCTION_ARGS const std::string&, const Component*,  \

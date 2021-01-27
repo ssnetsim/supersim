@@ -14,13 +14,12 @@
  */
 #include "network/singlerouter/Network.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/singlerouter/InjectionAlgorithm.h"
 #include "network/singlerouter/RoutingAlgorithm.h"
 

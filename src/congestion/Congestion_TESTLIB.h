@@ -15,9 +15,6 @@
 #ifndef CONGESTION_CONGESTION_TESTLIB_H_
 #define CONGESTION_CONGESTION_TESTLIB_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <vector>
@@ -27,6 +24,8 @@
 #include "event/Component.h"
 #include "metadata/MetadataHandler.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 // this is a test class for implementing an router API for congestion status

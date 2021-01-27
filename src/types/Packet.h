@@ -15,9 +15,9 @@
 #ifndef TYPES_PACKET_H_
 #define TYPES_PACKET_H_
 
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "prim/prim.h"
 
 class Flit;
 class Message;

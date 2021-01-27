@@ -14,7 +14,7 @@
  */
 #include "network/dragonfly/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace Dragonfly {
 

@@ -15,12 +15,11 @@
 #ifndef NETWORK_HYPERX_UTIL_H_
 #define NETWORK_HYPERX_UTIL_H_
 
-#include <prim/prim.h>
-
+#include <tuple>
 #include <unordered_set>
 #include <vector>
-#include <tuple>
 
+#include "prim/prim.h"
 #include "router/Router.h"
 #include "types/Message.h"
 #include "types/Packet.h"

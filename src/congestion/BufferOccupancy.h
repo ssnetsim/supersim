@@ -15,13 +15,12 @@
 #ifndef CONGESTION_BUFFEROCCUPANCY_H_
 #define CONGESTION_BUFFEROCCUPANCY_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "congestion/CongestionSensor.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class BufferOccupancy : public CongestionSensor {
  public:

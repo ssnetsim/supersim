@@ -14,9 +14,9 @@
  */
 #include "traffic/continuous/ContinuousTrafficPattern.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 ContinuousTrafficPattern::ContinuousTrafficPattern(
     const std::string& _name, const Component* _parent,

@@ -14,14 +14,13 @@
  */
 #include "workload/stencil/StencilTerminal.h"
 
-#include <bits/bits.h>
-#include <mut/mut.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 
+#include "bits/bits.h"
+#include "mut/mut.h"
 #include "network/Network.h"
 #include "stats/MessageLog.h"
 #include "types/Flit.h"

@@ -14,13 +14,12 @@
  */
 #include "traffic/size/ReadWriteMSD.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <algorithm>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 ReadWriteMSD::ReadWriteMSD(
     const std::string& _name, const Component* _parent,

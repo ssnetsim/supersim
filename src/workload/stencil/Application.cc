@@ -14,18 +14,17 @@
  */
 #include "workload/stencil/Application.h"
 
-#include <factory/ObjectFactory.h>
-#include <fio/InFile.h>
-#include <strop/strop.h>
-
 #include <cassert>
 
 #include <tuple>
 #include <vector>
 
-#include "workload/stencil/StencilTerminal.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
+#include "fio/InFile.h"
 #include "network/Network.h"
+#include "strop/strop.h"
+#include "workload/stencil/StencilTerminal.h"
 
 namespace Stencil {
 

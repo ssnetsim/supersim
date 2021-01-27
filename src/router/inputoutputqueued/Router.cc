@@ -14,13 +14,12 @@
  */
 #include "router/inputoutputqueued/Router.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include "architecture/util.h"
 #include "congestion/CongestionSensor.h"
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
 #include "router/inputoutputqueued/Ejector.h"
 #include "router/inputoutputqueued/InputQueue.h"

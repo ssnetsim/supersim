@@ -15,12 +15,11 @@
 #ifndef NETWORK_DRAGONFLY_COMMONINJECTIONALGORITHM_H_
 #define NETWORK_DRAGONFLY_COMMONINJECTIONALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "network/dragonfly/InjectionAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 namespace Dragonfly {
 

@@ -15,9 +15,9 @@
 #ifndef ROUTING_MODE_H_
 #define ROUTING_MODE_H_
 
-#include <prim/prim.h>
-
 #include <string>
+
+#include "prim/prim.h"
 
 class Router;
 

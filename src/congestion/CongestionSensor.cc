@@ -14,13 +14,12 @@
  */
 #include "congestion/CongestionSensor.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 
+#include "factory/ObjectFactory.h"
 #include "router/Router.h"
 
 CongestionSensor::CongestionSensor(

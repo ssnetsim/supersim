@@ -14,18 +14,17 @@
  */
 #include "workload/pulse/PulseTerminal.h"
 
-#include <fio/InFile.h>
-#include <mut/mut.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 #include <utility>
 
+#include "fio/InFile.h"
+#include "mut/mut.h"
 #include "network/Network.h"
 #include "stats/MessageLog.h"
+#include "strop/strop.h"
 #include "types/Flit.h"
 #include "types/Packet.h"
 #include "workload/pulse/Application.h"

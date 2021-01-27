@@ -14,13 +14,11 @@
  */
 #include "allocator/WavefrontAllocator.h"
 
-#include <nlohmann/json.hpp>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
-#include "settings/settings.h"
-
 #include "allocator/Allocator_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "settings/settings.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(WavefrontAllocator, sequential) {

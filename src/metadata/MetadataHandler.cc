@@ -14,11 +14,11 @@
  */
 #include "metadata/MetadataHandler.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <string>
+
+#include "factory/ObjectFactory.h"
 
 MetadataHandler::MetadataHandler(nlohmann::json _settings) {}
 

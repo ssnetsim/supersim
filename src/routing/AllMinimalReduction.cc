@@ -14,7 +14,7 @@
  */
 #include "routing/AllMinimalReduction.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 AllMinimalReduction::AllMinimalReduction(
     const std::string& _name, const Component* _parent,

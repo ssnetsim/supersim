@@ -14,18 +14,17 @@
  */
 #include "network/fattree/CommonAncestorRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 
 #include <tuple>
 #include <unordered_set>
 #include <vector>
 
+#include "factory/ObjectFactory.h"
 #include "network/fattree/util.h"
-#include "types/Packet.h"
+#include "strop/strop.h"
 #include "types/Message.h"
+#include "types/Packet.h"
 
 namespace FatTree {
 

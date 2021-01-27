@@ -12,12 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "routing/RoutingAlgorithm_TESTLIB.h"
-
 #include <cassert>
 
 #include <tuple>
 #include <vector>
+
+#include "routing/RoutingAlgorithm_TESTLIB.h"
 
 RoutingAlgorithmTestRouter::RoutingAlgorithmTestRouter(
     const std::string& _name, u32 _numPorts, u32 _numVcs)

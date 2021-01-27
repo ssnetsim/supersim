@@ -15,7 +15,7 @@
 #ifndef CONGESTION_UTIL_H_
 #define CONGESTION_UTIL_H_
 
-#include <prim/prim.h>
+#include "prim/prim.h"
 
 /*
  * Tolerance is used as a slush factor. Differences less than the tolerance are

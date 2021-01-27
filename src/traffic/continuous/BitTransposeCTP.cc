@@ -14,10 +14,10 @@
  */
 #include "traffic/continuous/BitTransposeCTP.h"
 
-#include <bits/bits.h>
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "bits/bits.h"
+#include "factory/ObjectFactory.h"
 
 BitTransposeCTP::BitTransposeCTP(
     const std::string& _name, const Component* _parent,

@@ -14,7 +14,7 @@
  */
 #include "network/singlerouter/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace SingleRouter {
 

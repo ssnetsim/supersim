@@ -14,11 +14,10 @@
  */
 #include "traffic/continuous/BitReverseCTP.h"
 
-#include <bits/bits.h>
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
+#include "bits/bits.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(BitReverseCTP, simple) {

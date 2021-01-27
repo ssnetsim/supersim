@@ -14,19 +14,18 @@
  */
 #include "network/hyperx/util.h"
 
-#include <colhash/tuplehash.h>
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-#include <strop/strop.h>
-
+#include <iostream>
 #include <unordered_set>
 #include <vector>
-#include <iostream>
 
+#include "colhash/tuplehash.h"
 #include "event/Component.h"
+#include "gtest/gtest.h"
 #include "network/cube/util.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "strop/strop.h"
 #include "test/TestSetup_TESTLIB.h"
 
 namespace {

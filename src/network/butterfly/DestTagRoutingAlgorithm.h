@@ -15,14 +15,13 @@
 #ifndef NETWORK_BUTTERFLY_DESTTAGROUTINGALGORITHM_H_
 #define NETWORK_BUTTERFLY_DESTTAGROUTINGALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
 #include "network/butterfly/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 namespace Butterfly {

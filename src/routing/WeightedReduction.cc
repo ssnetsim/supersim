@@ -14,12 +14,11 @@
  */
 #include "routing/WeightedReduction.h"
 
-#include <factory/FunctionFactory.h>
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "congestion/util.h"
+#include "factory/FunctionFactory.h"
+#include "factory/ObjectFactory.h"
 
 WeightedReduction::WeightedReduction(
     const std::string& _name, const Component* _parent,

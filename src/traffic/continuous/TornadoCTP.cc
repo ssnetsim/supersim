@@ -14,12 +14,11 @@
  */
 #include "traffic/continuous/TornadoCTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
+#include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
 TornadoCTP::TornadoCTP(

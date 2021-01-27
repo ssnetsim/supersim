@@ -15,11 +15,10 @@
 #ifndef ROUTER_INPUTOUTPUTQUEUED_EJECTOR_H_
 #define ROUTER_INPUTOUTPUTQUEUED_EJECTOR_H_
 
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
+#include "prim/prim.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
 

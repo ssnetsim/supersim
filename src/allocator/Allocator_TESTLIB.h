@@ -15,8 +15,8 @@
 #ifndef ALLOCATOR_ALLOCATOR_TESTLIB_H_
 #define ALLOCATOR_ALLOCATOR_TESTLIB_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 typedef void(*AllocatorVerifier)(u32 _numClients, u32 _numResources,
                                  const bool* _request, const u64* _metadata,

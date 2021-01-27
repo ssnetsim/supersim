@@ -14,10 +14,9 @@
  */
 #include "routing/LeastCongestedMinimalReduction.h"
 
-#include <nlohmann/json.hpp>
-#include <gtest/gtest.h>
-
 #include "architecture/PortedDevice_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(LeastCongestedMinimalReduction, vc) {

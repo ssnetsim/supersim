@@ -14,15 +14,14 @@
  */
 #include "network/singlerouter/DirectRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <tuple>
 #include <vector>
 
-#include "types/Packet.h"
+#include "factory/ObjectFactory.h"
 #include "types/Message.h"
+#include "types/Packet.h"
 
 namespace SingleRouter {
 

@@ -14,15 +14,14 @@
  */
 #include "workload/pulse/Application.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
-#include "workload/pulse/PulseTerminal.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
+#include "workload/pulse/PulseTerminal.h"
 
 namespace Pulse {
 

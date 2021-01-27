@@ -14,11 +14,10 @@
  */
 #include "allocator/WavefrontAllocator.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 WavefrontAllocator::WavefrontAllocator(
     const std::string& _name, const Component* _parent,

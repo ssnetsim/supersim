@@ -14,7 +14,7 @@
  */
 #include "arbiter/ComparingArbiter.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 ComparingArbiter::ComparingArbiter(
     const std::string& _name, const Component* _parent,

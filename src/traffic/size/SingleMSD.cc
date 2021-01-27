@@ -14,11 +14,10 @@
  */
 #include "traffic/size/SingleMSD.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 SingleMSD::SingleMSD(
     const std::string& _name, const Component* _parent,

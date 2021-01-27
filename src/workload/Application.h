@@ -15,14 +15,13 @@
 #ifndef WORKLOAD_APPLICATION_H_
 #define WORKLOAD_APPLICATION_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "stats/RateLog.h"
 
 class MetadataHandler;

@@ -15,13 +15,12 @@
 #ifndef ARBITER_RANDOMPRIORITYARBITER_H_
 #define ARBITER_RANDOMPRIORITYARBITER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 // chooses random priority
 class RandomPriorityArbiter : public Arbiter {

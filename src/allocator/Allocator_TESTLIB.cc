@@ -12,16 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "allocator/Allocator_TESTLIB.h"
-
-#include <gtest/gtest.h>
-
 #include <sstream>
 #include <string>
 #include <unordered_set>
 
 #include "allocator/Allocator.h"
-
+#include "allocator/Allocator_TESTLIB.h"
+#include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
 
 u64 AllocatorIndex(u64 _numClients, u64 _client, u64 _resource) {

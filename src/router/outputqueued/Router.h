@@ -15,9 +15,6 @@
 #ifndef ROUTER_OUTPUTQUEUED_ROUTER_H_
 #define ROUTER_OUTPUTQUEUED_ROUTER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <queue>
 #include <string>
 #include <tuple>
@@ -29,8 +26,10 @@
 #include "congestion/CongestionSensor.h"
 #include "event/Component.h"
 #include "network/Channel.h"
-#include "routing/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "routing/RoutingAlgorithm.h"
 #include "types/Credit.h"
 #include "types/Flit.h"
 

@@ -15,17 +15,16 @@
 #ifndef NETWORK_DRAGONFLY_VALIANTSROUTINGALGORITHM_H_
 #define NETWORK_DRAGONFLY_VALIANTSROUTINGALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
 #include "network/dragonfly/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
-#include "routing/mode.h"
 #include "routing/Reduction.h"
+#include "routing/mode.h"
 
 namespace Dragonfly {
 

@@ -14,13 +14,12 @@
  */
 #include "network/hyperx/SkippingDimensionsRoutingAlgorithm.h"
 
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
 #include "network/hyperx/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/RoutingAlgorithm_TESTLIB.h"
 
 TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {

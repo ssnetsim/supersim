@@ -14,17 +14,16 @@
  */
 #include "network/butterfly/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/butterfly/InjectionAlgorithm.h"
 #include "network/butterfly/RoutingAlgorithm.h"
 #include "network/butterfly/util.h"
+#include "strop/strop.h"
 
 namespace Butterfly {
 

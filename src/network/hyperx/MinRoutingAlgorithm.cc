@@ -14,12 +14,11 @@
  */
 #include "network/hyperx/MinRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <utility>  // std::pair
 
+#include "factory/ObjectFactory.h"
 #include "types/Message.h"
 #include "types/Packet.h"
 

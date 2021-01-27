@@ -15,11 +15,10 @@
 #ifndef TRAFFIC_CONTINUOUS_LOCALREMOTERANDOMCTP_H_
 #define TRAFFIC_CONTINUOUS_LOCALREMOTERANDOMCTP_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/continuous/ContinuousTrafficPattern.h"
 
 class LocalRemoteRandomCTP : public ContinuousTrafficPattern {

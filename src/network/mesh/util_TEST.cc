@@ -14,10 +14,10 @@
  */
 #include "network/mesh/util.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 
 TEST(Mesh, computeMinimalHops) {
   std::vector<u32> src;

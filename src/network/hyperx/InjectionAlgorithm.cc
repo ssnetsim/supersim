@@ -14,7 +14,7 @@
  */
 #include "network/hyperx/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace HyperX {
 

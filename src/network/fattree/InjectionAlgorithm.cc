@@ -14,7 +14,7 @@
  */
 #include "network/fattree/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace FatTree {
 

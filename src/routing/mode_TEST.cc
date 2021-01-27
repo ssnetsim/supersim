@@ -14,9 +14,8 @@
  */
 #include "routing/mode.h"
 
-#include <gtest/gtest.h>
-
 #include "congestion/Congestion_TESTLIB.h"
+#include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(RoutingMode, portAveMinMax) {

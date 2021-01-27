@@ -15,14 +15,13 @@
 #ifndef WORKLOAD_SIMPLEMEM_MEMORYTERMINAL_H_
 #define WORKLOAD_SIMPLEMEM_MEMORYTERMINAL_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <queue>
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "workload/Terminal.h"
 
 class Application;

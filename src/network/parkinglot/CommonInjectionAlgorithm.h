@@ -15,12 +15,11 @@
 #ifndef NETWORK_PARKINGLOT_COMMONINJECTIONALGORITHM_H_
 #define NETWORK_PARKINGLOT_COMMONINJECTIONALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "network/parkinglot/InjectionAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 namespace ParkingLot {
 

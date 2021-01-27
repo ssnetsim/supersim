@@ -14,12 +14,12 @@
  */
 #include "congestion/BufferOccupancy.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
+
+#include "factory/ObjectFactory.h"
 
 namespace {
 const s32 INCR = 0x50;

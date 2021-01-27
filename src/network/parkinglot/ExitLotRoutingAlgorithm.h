@@ -15,13 +15,12 @@
 #ifndef NETWORK_PARKINGLOT_EXITLOTROUTINGALGORITHM_H_
 #define NETWORK_PARKINGLOT_EXITLOTROUTINGALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
 #include "network/parkinglot/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 namespace ParkingLot {

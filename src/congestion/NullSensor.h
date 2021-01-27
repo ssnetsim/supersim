@@ -15,13 +15,12 @@
 #ifndef CONGESTION_NULLSENSOR_H_
 #define CONGESTION_NULLSENSOR_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "congestion/CongestionSensor.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class NullSensor : public CongestionSensor {
  public:

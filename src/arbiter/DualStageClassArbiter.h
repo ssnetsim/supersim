@@ -15,14 +15,13 @@
 #ifndef ARBITER_DUALSTAGECLASSARBITER_H_
 #define ARBITER_DUALSTAGECLASSARBITER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 // groups requestors into classes for first stage of arbitration then
 //  uses stage one output to drive stage two arbiter

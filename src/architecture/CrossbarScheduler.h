@@ -15,9 +15,6 @@
 #ifndef ARCHITECTURE_CROSSBARSCHEDULER_H_
 #define ARCHITECTURE_CROSSBARSCHEDULER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -25,6 +22,8 @@
 #include "allocator/Allocator.h"
 #include "architecture/CreditWatcher.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Flit.h"
 
 class CrossbarScheduler : public Component, public CreditWatcher {

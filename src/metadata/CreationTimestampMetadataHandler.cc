@@ -14,16 +14,15 @@
  */
 #include "metadata/CreationTimestampMetadataHandler.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <string>
 
-#include "workload/Application.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 #include "types/Message.h"
 #include "types/Packet.h"
+#include "workload/Application.h"
 
 CreationTimestampMetadataHandler::CreationTimestampMetadataHandler(
     nlohmann::json _settings)

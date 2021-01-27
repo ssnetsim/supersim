@@ -14,14 +14,13 @@
  */
 #include "workload/alltoall/AllToAllTerminal.h"
 
-#include <mut/mut.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 #include <utility>
 
+#include "mut/mut.h"
 #include "network/Network.h"
 #include "stats/MessageLog.h"
 #include "types/Flit.h"

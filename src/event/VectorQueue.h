@@ -15,14 +15,13 @@
 #ifndef EVENT_VECTORQUEUE_H_
 #define EVENT_VECTORQUEUE_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <queue>
 #include <vector>
 
-#include "event/Simulator.h"
 #include "event/Component.h"
+#include "event/Simulator.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class VectorQueue : public Simulator {
  public:

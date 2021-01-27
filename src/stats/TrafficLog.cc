@@ -16,12 +16,12 @@
 
 #include <cassert>
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "event/Simulator.h"
-#include "types/Packet.h"
 #include "types/Flit.h"
+#include "types/Packet.h"
 
 TrafficLog::TrafficLog(nlohmann::json _settings)
     : outFile_(nullptr) {

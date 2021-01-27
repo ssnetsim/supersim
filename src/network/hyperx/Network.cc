@@ -14,18 +14,17 @@
  */
 #include "network/hyperx/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
-#include "network/hyperx/util.h"
 #include "network/hyperx/InjectionAlgorithm.h"
 #include "network/hyperx/RoutingAlgorithm.h"
+#include "network/hyperx/util.h"
+#include "strop/strop.h"
 #include "util/DimensionIterator.h"
 
 namespace HyperX {

@@ -14,9 +14,9 @@
  */
 #include "arbiter/LruArbiter.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <vector>
+
+#include "factory/ObjectFactory.h"
 
 LruArbiter::LruArbiter(const std::string& _name, const Component* _parent,
                        u32 _size, nlohmann::json _settings)

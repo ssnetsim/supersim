@@ -14,7 +14,7 @@
  */
 #include "network/interfaceonly/InjectionAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 namespace InterfaceOnly {
 

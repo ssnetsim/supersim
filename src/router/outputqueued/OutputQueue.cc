@@ -16,9 +16,9 @@
 
 #include <cassert>
 
-#include <string>
-#include <queue>
 #include <algorithm>
+#include <queue>
+#include <string>
 
 #include "router/outputqueued/Router.h"
 #include "types/Packet.h"

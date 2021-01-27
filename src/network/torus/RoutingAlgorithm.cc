@@ -14,8 +14,7 @@
  */
 #include "network/torus/RoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
+#include "factory/ObjectFactory.h"
 #include "network/torus/util.h"
 
 namespace Torus {

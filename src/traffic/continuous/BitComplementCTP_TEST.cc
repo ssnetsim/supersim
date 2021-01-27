@@ -14,10 +14,9 @@
  */
 #include "traffic/continuous/BitComplementCTP.h"
 
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(BitComplementCTP, simple) {

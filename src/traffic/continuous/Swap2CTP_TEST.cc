@@ -14,13 +14,12 @@
  */
 #include "traffic/continuous/Swap2CTP.h"
 
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <bits/bits.h>
-#include <prim/prim.h>
-
 #include <cassert>
 
+#include "bits/bits.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(Swap2CTP, no_enabled_dims) {

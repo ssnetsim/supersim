@@ -14,15 +14,14 @@
  */
 #include "metadata/LocalTimestampMetadataHandler.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <string>
 
-#include "workload/Application.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 #include "types/Packet.h"
+#include "workload/Application.h"
 
 LocalTimestampMetadataHandler::LocalTimestampMetadataHandler(
     nlohmann::json _settings)

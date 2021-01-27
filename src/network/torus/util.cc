@@ -13,8 +13,10 @@
  * limitations under the License.
  */
 #include "network/torus/util.h"
-#include <algorithm>
+
 #include <cassert>
+
+#include <algorithm>
 
 namespace Torus {
 

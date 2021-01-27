@@ -15,14 +15,13 @@
 #ifndef NETWORK_INTERFACEONLY_INJECTIONALGORITHM_H_
 #define NETWORK_INTERFACEONLY_INJECTIONALGORITHM_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
-#include "routing/InjectionAlgorithm.h"
 #include "interface/Interface.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "routing/InjectionAlgorithm.h"
 
 #define INTERFACEONLY_INJECTIONALGORITHM_ARGS const std::string&, \
     const Component*, Interface*, u32, u32, u32, nlohmann::json

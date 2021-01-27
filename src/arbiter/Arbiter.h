@@ -15,13 +15,12 @@
 #ifndef ARBITER_ARBITER_H_
 #define ARBITER_ARBITER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 #define ARBITER_ARGS const std::string&, const Component*, u32, nlohmann::json
 

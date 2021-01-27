@@ -14,7 +14,7 @@
  */
 #include "traffic/size/MessageSizeDistribution.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 MessageSizeDistribution::MessageSizeDistribution(
     const std::string& _name, const Component* _parent,

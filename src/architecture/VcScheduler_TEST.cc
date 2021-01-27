@@ -12,9 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <nlohmann/json.hpp>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "architecture/VcScheduler.h"
 
 #include <string>
 #include <unordered_map>
@@ -22,8 +20,9 @@
 #include <utility>
 
 #include "event/Component.h"
-#include "architecture/VcScheduler.h"
-
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 class VcSchedulerTestClient : public VcScheduler::Client, public Component {

@@ -14,9 +14,9 @@
  */
 #include "allocator/Allocator.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 Allocator::Allocator(
     const std::string& _name, const Component* _parent, u32 _numClients,

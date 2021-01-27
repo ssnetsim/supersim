@@ -14,9 +14,8 @@
  */
 #include "routing/LeastCongestedMinimalReduction.h"
 
-#include <factory/ObjectFactory.h>
-
 #include "congestion/util.h"
+#include "factory/ObjectFactory.h"
 
 LeastCongestedMinimalReduction::LeastCongestedMinimalReduction(
     const std::string& _name, const Component* _parent,

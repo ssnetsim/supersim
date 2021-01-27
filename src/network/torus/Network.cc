@@ -14,19 +14,18 @@
  */
 #include "network/torus/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 #include "network/torus/InjectionAlgorithm.h"
 #include "network/torus/RoutingAlgorithm.h"
 #include "network/torus/util.h"
+#include "strop/strop.h"
 #include "util/DimensionIterator.h"
 
 namespace Torus {

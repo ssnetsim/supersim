@@ -15,12 +15,11 @@
 #ifndef TRAFFIC_CONTINUOUS_SCANCTP_H_
 #define TRAFFIC_CONTINUOUS_SCANCTP_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/continuous/ContinuousTrafficPattern.h"
 
 class ScanCTP : public ContinuousTrafficPattern {

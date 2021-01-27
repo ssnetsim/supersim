@@ -15,9 +15,9 @@
 #ifndef NETWORK_TORUS_UTIL_H_
 #define NETWORK_TORUS_UTIL_H_
 
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "prim/prim.h"
 
 namespace Torus {
 

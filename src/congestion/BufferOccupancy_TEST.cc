@@ -14,11 +14,10 @@
  */
 #include "congestion/BufferOccupancy.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include "congestion/CongestionSensor.h"
 #include "congestion/Congestion_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(BufferOccupancy, normVc) {

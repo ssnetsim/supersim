@@ -14,13 +14,11 @@
  */
 #include "allocator/RSeparableAllocator.h"
 
-#include <nlohmann/json.hpp>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
-#include "settings/settings.h"
-
 #include "allocator/Allocator_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "settings/settings.h"
 
 TEST(RSeparableAllocator, lslp) {
   // create the allocator settings

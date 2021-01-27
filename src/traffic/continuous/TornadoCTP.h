@@ -15,11 +15,10 @@
 #ifndef TRAFFIC_CONTINUOUS_TORNADOCTP_H_
 #define TRAFFIC_CONTINUOUS_TORNADOCTP_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/continuous/ContinuousTrafficPattern.h"
 
 class TornadoCTP : public ContinuousTrafficPattern {

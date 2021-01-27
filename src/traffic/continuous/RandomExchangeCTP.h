@@ -15,11 +15,10 @@
 #ifndef TRAFFIC_CONTINUOUS_RANDOMEXCHANGECTP_H_
 #define TRAFFIC_CONTINUOUS_RANDOMEXCHANGECTP_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/continuous/ContinuousTrafficPattern.h"
 
 class RandomExchangeCTP : public ContinuousTrafficPattern {

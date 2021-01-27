@@ -14,16 +14,14 @@
  */
 #include "workload/blast/Application.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
-#include "workload/blast/BlastTerminal.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
-
+#include "workload/blast/BlastTerminal.h"
 
 #define kForceWarmed   (0x123)
 #define kMaxSaturation (0x456)

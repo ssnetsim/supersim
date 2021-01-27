@@ -15,11 +15,10 @@
 #ifndef INTERFACE_STANDARD_PACKETREASSEMBLER_H_
 #define INTERFACE_STANDARD_PACKETREASSEMBLER_H_
 
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
+#include "prim/prim.h"
 #include "types/Flit.h"
 #include "types/Packet.h"
 

@@ -14,14 +14,13 @@
  */
 #include "network/hyperx/util.h"  // NOLINT (build/include)
 
-#include <colhash/tuplehash.h>
-
 #include <cassert>
 
 #include <algorithm>
 #include <iostream>
 #include <set>
 
+#include "colhash/tuplehash.h"
 #include "network/cube/util.h"
 
 const f64 TOLERANCE = 1e-6;

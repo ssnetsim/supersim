@@ -14,11 +14,10 @@
  */
 #include "allocator/RSeparableAllocator.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "arbiter/Arbiter.h"
+#include "factory/ObjectFactory.h"
 
 RSeparableAllocator::RSeparableAllocator(
     const std::string& _name, const Component* _parent,

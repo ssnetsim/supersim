@@ -15,14 +15,13 @@
 #ifndef ARBITER_RANDOMARBITER_H_
 #define ARBITER_RANDOMARBITER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 // choose random request
 class RandomArbiter : public Arbiter {

@@ -14,10 +14,10 @@
  */
 #include "traffic/continuous/BitRotateCTP.h"
 
-#include <bits/bits.h>
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "bits/bits.h"
+#include "factory/ObjectFactory.h"
 
 BitRotateCTP::BitRotateCTP(
     const std::string& _name, const Component* _parent,

@@ -15,15 +15,14 @@
 #ifndef ARCHITECTURE_VCSCHEDULER_H_
 #define ARCHITECTURE_VCSCHEDULER_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <unordered_set>
 #include <vector>
 
 #include "allocator/Allocator.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class VcScheduler : public Component {
  public:

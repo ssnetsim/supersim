@@ -15,9 +15,6 @@
 #ifndef INTERFACE_INTERFACE_H_
 #define INTERFACE_INTERFACE_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <vector>
@@ -25,13 +22,15 @@
 #include "architecture/PortedDevice.h"
 #include "event/Component.h"
 #include "metadata/MetadataHandler.h"
+#include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/CreditReceiver.h"
 #include "types/CreditSender.h"
 #include "types/FlitReceiver.h"
 #include "types/FlitSender.h"
 #include "types/Message.h"
 #include "types/MessageReceiver.h"
-#include "network/Channel.h"
 
 class PacketReassembler;
 class MessageReassembler;

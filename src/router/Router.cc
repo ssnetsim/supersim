@@ -14,11 +14,10 @@
  */
 #include "router/Router.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 
+#include "factory/ObjectFactory.h"
+#include "strop/strop.h"
 #include "types/Packet.h"
 #include "workload/Workload.h"
 

@@ -15,11 +15,10 @@
 #ifndef STATS_TRAFFICLOG_H_
 #define STATS_TRAFFICLOG_H_
 
-#include <fio/OutFile.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include "event/Component.h"
+#include "fio/OutFile.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class TrafficLog {
  public:

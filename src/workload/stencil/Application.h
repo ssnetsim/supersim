@@ -15,13 +15,12 @@
 #ifndef WORKLOAD_STENCIL_APPLICATION_H_
 #define WORKLOAD_STENCIL_APPLICATION_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "workload/Application.h"
 #include "workload/Workload.h"
 

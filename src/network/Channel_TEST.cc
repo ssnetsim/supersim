@@ -12,9 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <gtest/gtest.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
+#include "network/Channel.h"
 
 #include <cmath>
 
@@ -22,14 +20,14 @@
 #include <unordered_set>
 
 #include "event/Component.h"
-#include "network/Channel.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "test/TestSetup_TESTLIB.h"
 #include "types/Credit.h"
 #include "types/CreditReceiver.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
-
-#include "test/TestSetup_TESTLIB.h"
-
 
 const bool DEBUG = false;
 

@@ -14,17 +14,16 @@
  */
 #include "workload/Application.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <utility>
 
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
 #include "workload/Terminal.h"
-#include "workload/util.h"
 #include "workload/Workload.h"
+#include "workload/util.h"
 
 Application::Application(
     const std::string& _name, const Component* _parent, u32 _id,

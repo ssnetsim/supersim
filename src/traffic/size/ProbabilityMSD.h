@@ -15,12 +15,11 @@
 #ifndef TRAFFIC_SIZE_PROBABILITYMSD_H_
 #define TRAFFIC_SIZE_PROBABILITYMSD_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/size/MessageSizeDistribution.h"
 #include "types/Message.h"
 

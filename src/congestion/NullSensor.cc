@@ -14,9 +14,9 @@
  */
 #include "congestion/NullSensor.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <algorithm>
+
+#include "factory/ObjectFactory.h"
 
 NullSensor::NullSensor(
     const std::string& _name, const Component* _parent, PortedDevice* _device,

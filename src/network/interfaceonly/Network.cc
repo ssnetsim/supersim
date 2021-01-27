@@ -14,13 +14,12 @@
  */
 #include "network/interfaceonly/Network.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/interfaceonly/InjectionAlgorithm.h"
 
 namespace InterfaceOnly {

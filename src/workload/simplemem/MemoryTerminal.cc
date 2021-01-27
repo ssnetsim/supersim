@@ -18,9 +18,9 @@
 #include <cstring>
 
 #include "event/Simulator.h"
+#include "types/Flit.h"
 #include "types/Message.h"
 #include "types/Packet.h"
-#include "types/Flit.h"
 #include "workload/simplemem/Application.h"
 #include "workload/simplemem/MemoryOp.h"
 

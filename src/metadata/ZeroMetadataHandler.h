@@ -15,9 +15,8 @@
 #ifndef METADATA_ZEROMETADATAHANDLER_H_
 #define METADATA_ZEROMETADATAHANDLER_H_
 
-#include <nlohmann/json.hpp>
-
 #include "metadata/MetadataHandler.h"
+#include "nlohmann/json.hpp"
 
 class Application;
 

@@ -15,21 +15,20 @@
 #ifndef NETWORK_FATTREE_COMMONANCESTORROUTINGALGORITHM_H_
 #define NETWORK_FATTREE_COMMONANCESTORROUTINGALGORITHM_H_
 
-#include <colhash/tuplehash.h>
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-#include <rnd/Random.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_map>
 #include <vector>
 
+#include "colhash/tuplehash.h"
 #include "event/Component.h"
 #include "network/fattree/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "rnd/Random.h"
 #include "router/Router.h"
-#include "routing/mode.h"
 #include "routing/Reduction.h"
+#include "routing/mode.h"
 
 namespace FatTree {
 

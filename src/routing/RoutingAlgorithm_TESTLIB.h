@@ -15,10 +15,9 @@
 #ifndef ROUTING_ROUTINGALGORITHM_TESTLIB_H_
 #define ROUTING_ROUTINGALGORITHM_TESTLIB_H_
 
-#include <prim/prim.h>
-
 #include <string>
 
+#include "prim/prim.h"
 #include "router/Router.h"
 
 /*

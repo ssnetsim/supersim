@@ -15,15 +15,14 @@
 #ifndef CONGESTION_CONGESTIONSENSOR_H_
 #define CONGESTION_CONGESTIONSENSOR_H_
 
-#include <nlohmann/json.hpp>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "architecture/CreditWatcher.h"
 #include "architecture/PortedDevice.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 #define CONGESTIONSENSOR_ARGS const std::string&, const Component*, \
     PortedDevice*, nlohmann::json

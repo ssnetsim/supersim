@@ -14,7 +14,7 @@
  */
 #include "arbiter/RandomPriorityArbiter.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 RandomPriorityArbiter::RandomPriorityArbiter(
     const std::string& _name, const Component* _parent, u32 _size,

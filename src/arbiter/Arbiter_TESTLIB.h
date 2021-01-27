@@ -15,11 +15,10 @@
 #ifndef ARBITER_ARBITER_TESTLIB_H_
 #define ARBITER_ARBITER_TESTLIB_H_
 
-#include <prim/prim.h>
-
 #include <vector>
 
 #include "arbiter/Arbiter.h"
+#include "prim/prim.h"
 
 u32 hotCount(bool* _bools, u32 _len);
 u32 winnerId(bool* _bools, u32 _len);

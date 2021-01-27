@@ -16,8 +16,7 @@
 #define ARCHITECTURE_PORTEDDEVICE_TESTLIB_H_
 
 #include "architecture/PortedDevice.h"
-
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 
 // this is a test ported device
 class TestPortedDevice : public PortedDevice {

@@ -14,9 +14,9 @@
  */
 #include "traffic/distribution/DistributionTrafficPattern.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 DistributionTrafficPattern::DistributionTrafficPattern(
     const std::string& _name, const Component* _parent,

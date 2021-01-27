@@ -14,15 +14,14 @@
  */
 #include "workload/alltoall/Application.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
-#include "workload/alltoall/AllToAllTerminal.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
+#include "workload/alltoall/AllToAllTerminal.h"
 
 namespace AllToAll {
 

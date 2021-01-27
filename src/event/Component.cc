@@ -15,8 +15,9 @@
 #include "event/Component.h"
 
 #include <cassert>
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
+
 #include <utility>
 
 #include "event/Simulator.h"

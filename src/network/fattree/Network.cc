@@ -14,15 +14,14 @@
  */
 #include "network/fattree/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
+#include "factory/ObjectFactory.h"
 #include "network/fattree/InjectionAlgorithm.h"
 #include "network/fattree/RoutingAlgorithm.h"
 #include "network/fattree/util.h"
+#include "strop/strop.h"
 
 namespace FatTree {
 

@@ -14,12 +14,11 @@
  */
 #include "network/hyperx/DimOrderRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <unordered_set>
 
+#include "factory/ObjectFactory.h"
 #include "network/hyperx/util.h"
 #include "types/Message.h"
 #include "types/Packet.h"

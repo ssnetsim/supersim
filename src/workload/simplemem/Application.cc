@@ -14,17 +14,16 @@
  */
 #include "workload/simplemem/Application.h"
 
-#include <bits/bits.h>
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
+#include "bits/bits.h"
+#include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
+#include "network/Network.h"
 #include "workload/simplemem/MemoryTerminal.h"
 #include "workload/simplemem/ProcessorTerminal.h"
-#include "event/Simulator.h"
-#include "network/Network.h"
 
 namespace SimpleMem {
 
