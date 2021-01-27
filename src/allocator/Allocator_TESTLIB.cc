@@ -12,16 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "allocator/Allocator_TESTLIB.h"
-
-#include <gtest/gtest.h>
-
 #include <sstream>
 #include <string>
 #include <unordered_set>
 
 #include "allocator/Allocator.h"
-
+#include "allocator/Allocator_TESTLIB.h"
+#include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
 
 u64 AllocatorIndex(u64 _numClients, u64 _client, u64 _resource) {
@@ -40,7 +37,7 @@ static std::string ppp(bool* _bools, u64 _len) {
   return ss.str();
 }
 
-void AllocatorTest(Json::Value _settings, AllocatorVerifier _verifier,
+void AllocatorTest(nlohmann::json _settings, AllocatorVerifier _verifier,
                    bool _singleRequest) {
   for (u32 C = 1; C < 16; C++) {
     for (u32 R = 1; R < 16; R++) {
@@ -139,7 +136,7 @@ void AllocatorTest(Json::Value _settings, AllocatorVerifier _verifier,
   }
 }
 
-void AllocatorLoadBalanceTest(Json::Value _settings) {
+void AllocatorLoadBalanceTest(nlohmann::json _settings) {
   const bool DBG = false;
   const u32 C = 16;
   const u32 R = 16;

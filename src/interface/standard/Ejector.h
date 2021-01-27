@@ -15,12 +15,11 @@
 #ifndef INTERFACE_STANDARD_EJECTOR_H_
 #define INTERFACE_STANDARD_EJECTOR_H_
 
-#include <prim/prim.h>
-
 #include <string>
 
-#include "interface/standard/Interface.h"
 #include "event/Component.h"
+#include "interface/standard/Interface.h"
+#include "prim/prim.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
 

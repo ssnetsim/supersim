@@ -14,9 +14,8 @@
  */
 #include "traffic/size/RandomMSD.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
 #include "test/TestSetup_TESTLIB.h"
 #include "traffic/size/MessageSizeDistribution.h"
 
@@ -26,7 +25,7 @@ TEST(RandomMSD, simple) {
   const u32 MIN = 3;
   const u32 MAX = 8;
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "random";
   settings["min_message_size"] = MIN;
   settings["max_message_size"] = MAX;
@@ -60,7 +59,7 @@ TEST(RandomMSD, dependent) {
   const u32 MIN = 3;
   const u32 MAX = 8;
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "random";
   settings["min_message_size"] = 1;
   settings["max_message_size"] = 1;

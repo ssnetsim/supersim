@@ -16,11 +16,13 @@
 
 #include <cassert>
 
-ChannelLog::ChannelLog(u32 _numVcs, Json::Value _settings)
+#include <string>
+
+ChannelLog::ChannelLog(u32 _numVcs, nlohmann::json _settings)
     : numVcs_(_numVcs), outFile_(nullptr) {
-  if (!_settings["file"].isNull()) {
+  if (!_settings["file"].is_null()) {
     // create file
-    outFile_ = new fio::OutFile(_settings["file"].asString());
+    outFile_ = new fio::OutFile(_settings["file"].get<std::string>());
 
     // set up the stream
     ss_.precision(6);

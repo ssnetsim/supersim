@@ -15,7 +15,7 @@
 #ifndef TEST_TESTSETUP_TESTLIB_H_
 #define TEST_TESTSETUP_TESTLIB_H_
 
-#include <prim/prim.h>
+#include "prim/prim.h"
 
 class TestSetup {
  public:

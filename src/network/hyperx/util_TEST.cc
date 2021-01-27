@@ -14,19 +14,18 @@
  */
 #include "network/hyperx/util.h"
 
-#include <colhash/tuplehash.h>
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <prim/prim.h>
-#include <strop/strop.h>
-
+#include <iostream>
 #include <unordered_set>
 #include <vector>
-#include <iostream>
 
+#include "colhash/tuplehash.h"
 #include "event/Component.h"
+#include "gtest/gtest.h"
 #include "network/cube/util.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "strop/strop.h"
 #include "test/TestSetup_TESTLIB.h"
 
 namespace {
@@ -56,8 +55,8 @@ TEST(HyperX, computeMinimalHops) {
   ASSERT_EQ(exp, HyperX::computeMinimalHops(&src, &dst, dimensions));
 }
 
-Json::Value makeJSON(u32 _numPorts, u32 _numVcs) {
-  Json::Value settings;
+nlohmann::json makeJSON(u32 _numPorts, u32 _numVcs) {
+  nlohmann::json settings;
   settings["num_ports"] = _numPorts;
   settings["num_vcs"] = _numVcs;
   return settings;

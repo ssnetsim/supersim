@@ -15,16 +15,15 @@
 #ifndef NETWORK_TORUS_VALIANTSROUTINGALGORITHM_H_
 #define NETWORK_TORUS_VALIANTSROUTINGALGORITHM_H_
 
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
 #include "network/torus/RoutingAlgorithm.h"
+#include "prim/prim.h"
 #include "router/Router.h"
-#include "routing/mode.h"
 #include "routing/Reduction.h"
+#include "routing/mode.h"
 
 namespace Torus {
 
@@ -36,7 +35,7 @@ class ValiantsRoutingAlgorithm : public RoutingAlgorithm {
       const std::vector<u32>& _dimensionWidths,
       const std::vector<u32>& _dimensionWeights,
       u32 _concentration, u32 _interfacePorts,
-      Json::Value _settings);
+      nlohmann::json _settings);
   ~ValiantsRoutingAlgorithm();
 
  protected:

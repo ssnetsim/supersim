@@ -61,10 +61,10 @@ RoutingAlgorithm::Client::~Client() {}
 RoutingAlgorithm::RoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Component(_name, _parent), router_(_router), baseVc_(_baseVc),
       numVcs_(_numVcs), inputPort_(_inputPort), inputVc_(_inputVc),
-      latency_(_settings["latency"].asUInt()) {
+      latency_(_settings["latency"].get<u32>()) {
   assert(router_ != nullptr);
   assert(latency_ > 0);
   assert(numVcs_ <= router_->numVcs());

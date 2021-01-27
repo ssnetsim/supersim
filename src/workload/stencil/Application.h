@@ -15,13 +15,12 @@
 #ifndef WORKLOAD_STENCIL_APPLICATION_H_
 #define WORKLOAD_STENCIL_APPLICATION_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "workload/Application.h"
 #include "workload/Workload.h"
 
@@ -33,7 +32,7 @@ class Application : public ::Application {
  public:
   Application(const std::string& _name, const Component* _parent, u32 _id,
               Workload* _workload, MetadataHandler* _metadataHandler,
-              Json::Value _settings);
+              nlohmann::json _settings);
   ~Application();
   f64 percentComplete() const override;
   void start() override;

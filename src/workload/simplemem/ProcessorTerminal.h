@@ -15,13 +15,12 @@
 #ifndef WORKLOAD_SIMPLEMEM_PROCESSORTERMINAL_H_
 #define WORKLOAD_SIMPLEMEM_PROCESSORTERMINAL_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "workload/Terminal.h"
 
 class Application;
@@ -32,7 +31,7 @@ class ProcessorTerminal : public Terminal {
  public:
   ProcessorTerminal(const std::string& _name, const Component* _parent,
                     u32 _id, const std::vector<u32>& _address,
-                    ::Application* _app, Json::Value _settings);
+                    ::Application* _app, nlohmann::json _settings);
   ~ProcessorTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;

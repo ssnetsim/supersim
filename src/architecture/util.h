@@ -15,9 +15,9 @@
 #ifndef ARCHITECTURE_UTIL_H_
 #define ARCHITECTURE_UTIL_H_
 
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "prim/prim.h"
 
 u32 computeTailoredBufferLength(f64 _inputQueueMult, u32 _inputQueueMin,
                                 u32 _inputQueueMax, u32 _channelLatency);

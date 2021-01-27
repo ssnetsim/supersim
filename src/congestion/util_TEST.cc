@@ -14,7 +14,7 @@
  */
 #include "congestion/util.h"
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 TEST(Congestion_Util, tolerance) {
   ASSERT_EQ(CONGESTION_TOLERANCE, 1e-6);

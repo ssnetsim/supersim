@@ -14,22 +14,21 @@
  */
 #include "workload/Application.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <utility>
 
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
 #include "workload/Terminal.h"
-#include "workload/util.h"
 #include "workload/Workload.h"
+#include "workload/util.h"
 
 Application::Application(
     const std::string& _name, const Component* _parent, u32 _id,
     Workload* _workload, MetadataHandler* _metadataHandler,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Component(_name, _parent), id_(_id), workload_(_workload),
       metadataHandler_(_metadataHandler) {
   Network* network = gSim->getNetwork();
@@ -60,9 +59,9 @@ Application::~Application() {
 Application* Application::create(
     const std::string& _name, const Component* _parent, u32 _id,
     Workload* _workload, MetadataHandler* _metadataHandler,
-    Json::Value _settings) {
+    nlohmann::json _settings) {
   // retrieve the application type
-  const std::string& type = _settings["type"].asString();
+  const std::string& type = _settings["type"].get<std::string>();
 
   // attempt to create the application
   Application* app = factory::ObjectFactory<

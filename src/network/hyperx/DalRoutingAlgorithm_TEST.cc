@@ -14,13 +14,12 @@
  */
 #include "network/hyperx/DalRoutingAlgorithm.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
 #include "network/hyperx/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/RoutingAlgorithm_TESTLIB.h"
 
 TEST(HyperX_DalRoutingAlgorithm, construct) {
@@ -57,7 +56,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                       if (adType == "variable") {
                         for (auto& maxDeroute : maxDeroutes) {
                           for (auto& multiDeroute : multiDeroutes) {
-                            Json::Value settings;
+                            nlohmann::json settings;
                             settings["algorithm"] = "dal";
                             settings["latency"] = latency;
                             settings["output_type"] = outputType;
@@ -80,7 +79,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                           }
                         }
                       } else {  //  not "variable
-                        Json::Value settings;
+                        nlohmann::json settings;
                         settings["algorithm"] = "dal";
                         settings["latency"] = latency;
                         settings["output_type"] = outputType;
@@ -108,7 +107,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                       if (adType == "variable") {
                         for (auto& maxDeroute : maxDeroutes) {
                           for (auto& multiDeroute : multiDeroutes) {
-                            Json::Value settings;
+                            nlohmann::json settings;
                             settings["algorithm"] = "dal";
                             settings["latency"] = latency;
                             settings["output_type"] = outputType;
@@ -133,7 +132,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                       } else {  //  not "variable
                         for (auto& ithresholdMin : thresholdMin) {
                           for (auto& ithresholdNonmin : thresholdNonmin) {
-                            Json::Value settings;
+                            nlohmann::json settings;
                             settings["algorithm"] = "dal";
                             settings["latency"] = latency;
                             settings["output_type"] = outputType;
@@ -163,7 +162,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                       if (adType == "variable") {
                         for (auto& maxDeroute : maxDeroutes) {
                           for (auto& multiDeroute : multiDeroutes) {
-                            Json::Value settings;
+                            nlohmann::json settings;
                             settings["algorithm"] = "dal";
                             settings["latency"] = latency;
                             settings["output_type"] = outputType;
@@ -186,7 +185,7 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
                           }
                         }
                       } else {  //  not "variable
-                        Json::Value settings;
+                        nlohmann::json settings;
                         settings["algorithm"] = "dal";
                         settings["latency"] = latency;
                         settings["output_type"] = outputType;

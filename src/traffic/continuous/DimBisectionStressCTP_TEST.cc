@@ -12,27 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <bits/bits.h>
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <prim/prim.h>
+#include "traffic/continuous/DimBisectionStressCTP.h"
 
 #include <cassert>
 
-#include "traffic/continuous/DimBisectionStressCTP.h"
+#include "bits/bits.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(DimBisectionStressCTP, parity) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimBisectionStressCTP* tp;
   std::map<u32, u32> pairs_DC, pairs_HB;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(2);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(2);
   settings["mode"] = "parity";
 
   numTerminals = 2 * 4 * 4;
@@ -102,14 +102,14 @@ TEST(DimBisectionStressCTP, parity) {
 TEST(DimBisectionStressCTP, half) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimBisectionStressCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(2);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(2);
   settings["mode"] = "half";
 
   numTerminals = 2 * 4 * 4;
@@ -152,14 +152,14 @@ TEST(DimBisectionStressCTP, half) {
 TEST(DimBisectionStressCTP, quadrant) {
   TestSetup test(1, 1, 1, 1, 0xBAADF00D);
   u32 src, dst, numTerminals;
-  Json::Value settings;
+  nlohmann::json settings;
   DimBisectionStressCTP* tp;
   std::map<u32, u32> pairs;
 
-  settings["dimensions"][0] = Json::Value(4);
-  settings["dimensions"][1] = Json::Value(4);
-  settings["concentration"] = Json::Value(4);
-  settings["interface_ports"] = Json::Value(2);
+  settings["dimensions"][0] = nlohmann::json(4);
+  settings["dimensions"][1] = nlohmann::json(4);
+  settings["concentration"] = nlohmann::json(4);
+  settings["interface_ports"] = nlohmann::json(2);
   settings["mode"] = "quadrant";
 
   numTerminals = 2 * 4 * 4;

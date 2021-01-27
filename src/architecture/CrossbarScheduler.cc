@@ -29,16 +29,16 @@ CrossbarScheduler::Client::~Client() {}
 CrossbarScheduler::CrossbarScheduler(
     const std::string& _name, const Component* _parent, u32 _numClients,
     u32 _totalVcs, u32 _crossbarPorts, u32 _globalVcOffset,
-    Simulator::Clock _clock, Json::Value _settings)
+    Simulator::Clock _clock, nlohmann::json _settings)
     : Component(_name, _parent), numClients_(_numClients),
       totalVcs_(_totalVcs), crossbarPorts_(_crossbarPorts),
       globalVcOffset_(_globalVcOffset), clock_(_clock),
-      fullPacket_(_settings["full_packet"].asBool()),
-      packetLock_(_settings["packet_lock"].asBool()),
-      idleUnlock_(_settings["idle_unlock"].asBool()) {
-  assert(!_settings["full_packet"].isNull());
-  assert(!_settings["packet_lock"].isNull());
-  assert(!_settings["idle_unlock"].isNull());
+      fullPacket_(_settings["full_packet"].get<bool>()),
+      packetLock_(_settings["packet_lock"].get<bool>()),
+      idleUnlock_(_settings["idle_unlock"].get<bool>()) {
+  assert(!_settings["full_packet"].is_null());
+  assert(!_settings["packet_lock"].is_null());
+  assert(!_settings["idle_unlock"].is_null());
   if (!warningIssued && !fullPacket_ && packetLock_ && !idleUnlock_) {
     printf("**************************************************************\n"
            "** WARNING!!!!!!! Packet-Channel Flit-Buffer Flow Control   **\n"

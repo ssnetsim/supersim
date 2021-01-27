@@ -12,17 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "arbiter/LruArbiter.h"
 
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
-#include "arbiter/LruArbiter.h"
-
 #include "arbiter/Arbiter_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(LruArbiter, full) {
@@ -33,7 +32,7 @@ TEST(LruArbiter, full) {
     u64* metadata = new u64[size];
     bool* grant = new bool[size];
 
-    Arbiter* arb = new LruArbiter("Arb", nullptr, size, Json::Value());
+    Arbiter* arb = new LruArbiter("Arb", nullptr, size, nlohmann::json());
     assert(arb->size() == size);
 
     // link the structures
@@ -149,7 +148,7 @@ TEST(LruArbiter, dist) {
         count[idx] = 0;
       }
 
-      Json::Value arbSettings;
+      nlohmann::json arbSettings;
       Arbiter* arb = new LruArbiter("Arb", nullptr, size, arbSettings);
       assert(arb->size() == size);
       for (u32 idx = 0; idx < size; idx++) {

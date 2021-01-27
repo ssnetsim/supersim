@@ -14,25 +14,24 @@
  */
 #include "network/parkinglot/ExitLotRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
-#include "types/Packet.h"
+#include "factory/ObjectFactory.h"
 #include "types/Message.h"
+#include "types/Packet.h"
 
 namespace ParkingLot {
 
 ExitLotRoutingAlgorithm::ExitLotRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _outputPort,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _outputPort, _settings),
-      adaptive_(_settings["adaptive"].asBool()) {
-  assert(!_settings["adaptive"].isNull());
+      adaptive_(_settings["adaptive"].get<bool>()) {
+  assert(!_settings["adaptive"].is_null());
 }
 
 ExitLotRoutingAlgorithm::~ExitLotRoutingAlgorithm() {}

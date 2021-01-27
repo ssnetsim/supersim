@@ -15,17 +15,16 @@
 #ifndef NETWORK_MESH_DIMORDERROUTINGALGORITHM_H_
 #define NETWORK_MESH_DIMORDERROUTINGALGORITHM_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
 #include "network/mesh/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
-#include "routing/mode.h"
 #include "routing/Reduction.h"
+#include "routing/mode.h"
 
 namespace Mesh {
 
@@ -36,7 +35,7 @@ class DimOrderRoutingAlgorithm : public RoutingAlgorithm {
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<u32>& _dimensionWidths,
       const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, u32 _interfacePorts, Json::Value _settings);
+      u32 _concentration, u32 _interfacePorts, nlohmann::json _settings);
   ~DimOrderRoutingAlgorithm();
 
  protected:

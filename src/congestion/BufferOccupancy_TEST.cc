@@ -14,11 +14,10 @@
  */
 #include "congestion/BufferOccupancy.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include "congestion/CongestionSensor.h"
 #include "congestion/Congestion_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(BufferOccupancy, normVc) {
@@ -30,13 +29,13 @@ TEST(BufferOccupancy, normVc) {
   const u32 latency = 8;
   const u32 granularity = 0;
 
-  Json::Value routerSettings;
+  nlohmann::json routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
       nullptr, routerSettings);
   router.setDebug(debug);
 
-  Json::Value sensorSettings;
+  nlohmann::json sensorSettings;
   sensorSettings["latency"] = latency;
   sensorSettings["granularity"] = granularity;
   sensorSettings["mode"] = "normalized_vc";
@@ -108,13 +107,13 @@ TEST(BufferOccupancy, absVc) {
   const u32 latency = 8;
   const u32 granularity = 0;
 
-  Json::Value routerSettings;
+  nlohmann::json routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
       nullptr, routerSettings);
   router.setDebug(debug);
 
-  Json::Value sensorSettings;
+  nlohmann::json sensorSettings;
   sensorSettings["latency"] = latency;
   sensorSettings["granularity"] = granularity;
   sensorSettings["mode"] = "absolute_vc";
@@ -185,13 +184,13 @@ TEST(BufferOccupancy, normPort) {
   const u32 latency = 8;
   const u32 granularity = 0;
 
-  Json::Value routerSettings;
+  nlohmann::json routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
       nullptr, routerSettings);
   router.setDebug(debug);
 
-  Json::Value sensorSettings;
+  nlohmann::json sensorSettings;
   sensorSettings["latency"] = latency;
   sensorSettings["granularity"] = granularity;
   sensorSettings["mode"] = "normalized_port";
@@ -266,13 +265,13 @@ TEST(BufferOccupancy, absPort) {
   const u32 latency = 8;
   const u32 granularity = 0;
 
-  Json::Value routerSettings;
+  nlohmann::json routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
       nullptr, routerSettings);
   router.setDebug(debug);
 
-  Json::Value sensorSettings;
+  nlohmann::json sensorSettings;
   sensorSettings["latency"] = latency;
   sensorSettings["granularity"] = granularity;
   sensorSettings["mode"] = "absolute_port";
@@ -352,18 +351,18 @@ TEST(BufferOccupancy, phantomNormVc) {
       for (u32 channelLatency = 3; channelLatency <= 40; channelLatency += 3) {
         TestSetup test(1, 1, 1, 1, 1234);
 
-        Json::Value routerSettings;
+        nlohmann::json routerSettings;
         CongestionTestRouter router(
             "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
             nullptr, routerSettings);
         router.setDebug(debug);
 
-        Json::Value channelSettings;
+        nlohmann::json channelSettings;
         channelSettings["latency"] = channelLatency;
         Channel channel("Channel", nullptr, 8, channelSettings);
         router.setOutputChannel(0, &channel);
 
-        Json::Value sensorSettings;
+        nlohmann::json sensorSettings;
         sensorSettings["latency"] = sensorLatency;
         sensorSettings["granularity"] = granularity;
         sensorSettings["phantom"] = true;
@@ -427,18 +426,18 @@ TEST(BufferOccupancy, phantomAbsVc) {
       for (u32 channelLatency = 3; channelLatency <= 40; channelLatency += 3) {
         TestSetup test(1, 1, 1, 1, 1234);
 
-        Json::Value routerSettings;
+        nlohmann::json routerSettings;
         CongestionTestRouter router(
             "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
             nullptr, routerSettings);
         router.setDebug(debug);
 
-        Json::Value channelSettings;
+        nlohmann::json channelSettings;
         channelSettings["latency"] = channelLatency;
         Channel channel("Channel", nullptr, 8, channelSettings);
         router.setOutputChannel(0, &channel);
 
-        Json::Value sensorSettings;
+        nlohmann::json sensorSettings;
         sensorSettings["latency"] = sensorLatency;
         sensorSettings["granularity"] = granularity;
         sensorSettings["phantom"] = true;

@@ -14,12 +14,12 @@
  */
 #include "congestion/BufferOccupancy.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
+
+#include "factory/ObjectFactory.h"
 
 namespace {
 const s32 INCR = 0x50;
@@ -29,10 +29,10 @@ const s32 PHANTOM = 0x87;
 
 BufferOccupancy::BufferOccupancy(
     const std::string& _name, const Component* _parent, PortedDevice* _device,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : CongestionSensor(_name, _parent, _device, _settings),
-      latency_(_settings["latency"].asUInt()),
-      mode_(parseMode(_settings["mode"].asString())) {
+      latency_(_settings["latency"].get<u32>()),
+      mode_(parseMode(_settings["mode"].get<std::string>())) {
   assert(latency_ > 0);
   u32 totalVcs = numPorts_ * numVcs_;
   normalizationDivisors_.resize(totalVcs, 0);
@@ -40,16 +40,16 @@ BufferOccupancy::BufferOccupancy(
 
   // phantom is an optional setting
   phantom_ = false;
-  if (_settings.isMember("phantom")) {
-    assert(_settings["phantom"].isBool());
-    phantom_ = _settings["phantom"].asBool();
+  if (_settings.contains("phantom")) {
+    assert(_settings["phantom"].is_boolean());
+    phantom_ = _settings["phantom"].get<bool>();
     if (phantom_) {
-      assert(_settings.isMember("value_coeff") &&
-             _settings["value_coeff"].isDouble());
-      assert(_settings.isMember("length_coeff") &&
-             _settings["length_coeff"].isDouble());
-      valueCoeff_ = _settings["value_coeff"].asDouble();
-      lengthCoeff_ = _settings["length_coeff"].asDouble();
+      assert(_settings.contains("value_coeff") &&
+             _settings["value_coeff"].is_number_float());
+      assert(_settings.contains("length_coeff") &&
+             _settings["length_coeff"].is_number_float());
+      valueCoeff_ = _settings["value_coeff"].get<f64>();
+      lengthCoeff_ = _settings["length_coeff"].get<f64>();
       windows_.resize(totalVcs, 0);
     }
   }

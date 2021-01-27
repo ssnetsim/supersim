@@ -14,28 +14,27 @@
  */
 #include "traffic/size/ReadWriteMSD.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <algorithm>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 ReadWriteMSD::ReadWriteMSD(
     const std::string& _name, const Component* _parent,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
-      readRequestSize_(_settings["read_request_size"].asUInt()),
-      readResponseSize_(_settings["read_response_size"].asUInt()),
-      writeRequestSize_(_settings["write_request_size"].asUInt()),
-      writeResponseSize_(_settings["write_response_size"].asUInt()),
-      readProbability_(_settings["read_probability"].asDouble()) {
+      readRequestSize_(_settings["read_request_size"].get<u32>()),
+      readResponseSize_(_settings["read_response_size"].get<u32>()),
+      writeRequestSize_(_settings["write_request_size"].get<u32>()),
+      writeResponseSize_(_settings["write_response_size"].get<u32>()),
+      readProbability_(_settings["read_probability"].get<f64>()) {
   assert(readRequestSize_ > 0);
   assert(readResponseSize_ > 0);
   assert(writeRequestSize_ > 0);
   assert(writeResponseSize_ > 0);
-  assert(!_settings["read_probability"].isNull());
+  assert(!_settings["read_probability"].is_null());
   assert(readProbability_ >= 0.0 && readProbability_ <= 1.0);
 
   assert(readRequestSize_ != writeRequestSize_);

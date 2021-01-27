@@ -14,14 +14,13 @@
  */
 #include "workload/alltoall/AllToAllTerminal.h"
 
-#include <mut/mut.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 #include <utility>
 
+#include "mut/mut.h"
 #include "network/Network.h"
 #include "stats/MessageLog.h"
 #include "types/Flit.h"
@@ -49,28 +48,28 @@ namespace AllToAll {
 AllToAllTerminal::AllToAllTerminal(
     const std::string& _name, const Component* _parent, u32 _id,
     const std::vector<u32>& _address, ::Application* _app,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app) {
   // get the injection rate
-  assert(_settings.isMember("request_injection_rate") &&
-         _settings["request_injection_rate"].isDouble());
-  requestInjectionRate_ = _settings["request_injection_rate"].asDouble();
+  assert(_settings.contains("request_injection_rate") &&
+         _settings["request_injection_rate"].is_number_float());
+  requestInjectionRate_ = _settings["request_injection_rate"].get<f64>();
   assert(requestInjectionRate_ >= 0.0 && requestInjectionRate_ <= 1.0);
 
   // iteration quantity limitation
-  assert(_settings.isMember("num_iterations"));
-  numIterations_ = _settings["num_iterations"].asUInt();
-  assert(_settings.isMember("perform_barriers") &&
-         _settings["perform_barriers"].isBool());
-  performBarriers_ = _settings["perform_barriers"].asBool();
+  assert(_settings.contains("num_iterations"));
+  numIterations_ = _settings["num_iterations"].get<u32>();
+  assert(_settings.contains("perform_barriers") &&
+         _settings["perform_barriers"].is_boolean());
+  performBarriers_ = _settings["perform_barriers"].get<bool>();
   inBarrier_ = false;
 
   // max packet size
-  maxPacketSize_  = _settings["max_packet_size"].asUInt();
+  maxPacketSize_  = _settings["max_packet_size"].get<u32>();
   assert(maxPacketSize_ > 0);
 
   // transaction size
-  transactionSize_ = _settings["transaction_size"].asUInt();
+  transactionSize_ = _settings["transaction_size"].get<u32>();
   assert(transactionSize_ > 0);
 
   // create a traffic pattern
@@ -83,26 +82,27 @@ AllToAllTerminal::AllToAllTerminal(
       "MessageSizeDistribution", this, _settings["message_size_distribution"]);
 
   // protocol class of injection of requests
-  assert(_settings.isMember("request_protocol_class"));
-  requestProtocolClass_ = _settings["request_protocol_class"].asUInt();
+  assert(_settings.contains("request_protocol_class"));
+  requestProtocolClass_ = _settings["request_protocol_class"].get<u32>();
 
   // enablement of request/response flows
-  assert(_settings.isMember("enable_responses") &&
-         _settings["enable_responses"].isBool());
-  enableResponses_ = _settings["enable_responses"].asBool();
+  assert(_settings.contains("enable_responses") &&
+         _settings["enable_responses"].is_boolean());
+  enableResponses_ = _settings["enable_responses"].get<bool>();
 
   // latency of request processing
   assert(!enableResponses_ ||
-         _settings.isMember("request_processing_latency"));
-  requestProcessingLatency_ = _settings["request_processing_latency"].asUInt();
+         _settings.contains("request_processing_latency"));
+  requestProcessingLatency_ =
+      _settings["request_processing_latency"].get<u32>();
 
   // protocol class of injection of responses
-  assert(!enableResponses_ || _settings.isMember("response_protocol_class"));
-  responseProtocolClass_ = _settings["response_protocol_class"].asUInt();
+  assert(!enableResponses_ || _settings.contains("response_protocol_class"));
+  responseProtocolClass_ = _settings["response_protocol_class"].get<u32>();
 
   // start time delay
-  assert(_settings.isMember("delay"));
-  delay_ = _settings["delay"].asUInt();
+  assert(_settings.contains("delay"));
+  delay_ = _settings["delay"].get<u32>();
 
   // initialize the counters
   loggableCompleteCount_ = 0;

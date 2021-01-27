@@ -14,22 +14,21 @@
  */
 #include "workload/pulse/Application.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <vector>
 
-#include "workload/pulse/PulseTerminal.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
+#include "workload/pulse/PulseTerminal.h"
 
 namespace Pulse {
 
 Application::Application(
     const std::string& _name, const Component* _parent, u32 _id,
     Workload* _workload, MetadataHandler* _metadataHandler,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings) {
   // all terminals are the same

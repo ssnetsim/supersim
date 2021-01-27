@@ -15,17 +15,16 @@
 #ifndef STATS_CHANNELLOG_H_
 #define STATS_CHANNELLOG_H_
 
-#include <fio/OutFile.h>
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <sstream>
 
+#include "fio/OutFile.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class ChannelLog {
  public:
-  ChannelLog(u32 _numVcs, Json::Value _settings);
+  ChannelLog(u32 _numVcs, nlohmann::json _settings);
   ~ChannelLog();
   void logChannel(const Channel* _channel);
 

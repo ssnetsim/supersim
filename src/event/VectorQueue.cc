@@ -16,7 +16,7 @@
 
 #include <cassert>
 
-VectorQueue::VectorQueue(Json::Value _settings)
+VectorQueue::VectorQueue(nlohmann::json _settings)
     : Simulator(_settings) {}
 
 VectorQueue::~VectorQueue() {}

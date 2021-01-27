@@ -15,21 +15,20 @@
 #ifndef ARBITER_DUALSTAGECLASSARBITER_H_
 #define ARBITER_DUALSTAGECLASSARBITER_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 // groups requestors into classes for first stage of arbitration then
 //  uses stage one output to drive stage two arbiter
 class DualStageClassArbiter : public Arbiter {
  public:
   DualStageClassArbiter(const std::string& _name, const Component* _parent,
-                        u32 _size, Json::Value _settings);
+                        u32 _size, nlohmann::json _settings);
   ~DualStageClassArbiter();
 
   void setMetadata(u32 _port, const u64* _metadata) override;

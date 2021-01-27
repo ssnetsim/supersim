@@ -12,17 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "arbiter/LslpArbiter.h"
 
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
-#include "arbiter/LslpArbiter.h"
-
 #include "arbiter/Arbiter_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(LslpArbiter, full) {
@@ -39,7 +38,7 @@ TEST(LslpArbiter, full) {
       }
     } while (hotCount(request, size) <= size/2);
 
-    Arbiter* arb = new LslpArbiter("Arb", nullptr, size, Json::Value());
+    Arbiter* arb = new LslpArbiter("Arb", nullptr, size, nlohmann::json());
     assert(arb->size() == size);
     for (u32 idx = 0; idx < size; idx++) {
       arb->setRequest(idx, &request[idx]);
@@ -110,7 +109,7 @@ TEST(LslpArbiter, dist) {
         count[idx] = 0;
       }
 
-      Json::Value arbSettings;
+      nlohmann::json arbSettings;
       Arbiter* arb = new LslpArbiter("Arb", nullptr, size, arbSettings);
       assert(arb->size() == size);
       for (u32 idx = 0; idx < size; idx++) {

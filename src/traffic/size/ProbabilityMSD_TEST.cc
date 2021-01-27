@@ -14,19 +14,18 @@
  */
 #include "traffic/size/ProbabilityMSD.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
 #include "test/TestSetup_TESTLIB.h"
 #include "traffic/size/MessageSizeDistribution.h"
 
 TEST(ProbabilityMSD, simple) {
   TestSetup ts(123, 123, 123, 123, 123);
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "probability";
-  settings["message_sizes"] = Json::Value(Json::arrayValue);
-  settings["size_probabilities"] = Json::Value(Json::arrayValue);
+  settings["message_sizes"] = nlohmann::json::array();
+  settings["size_probabilities"] = nlohmann::json::array();
 
   std::unordered_map<u32, f64> probs = {{8, 0.5}, {1, 0.3}, {5, 0.2}};
   {
@@ -63,10 +62,10 @@ TEST(ProbabilityMSD, simple) {
 TEST(ProbabilityMSD, simple_over1) {
   TestSetup ts(123, 123, 123, 123, 123);
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "probability";
-  settings["message_sizes"] = Json::Value(Json::arrayValue);
-  settings["size_probabilities"] = Json::Value(Json::arrayValue);
+  settings["message_sizes"] = nlohmann::json::array();
+  settings["size_probabilities"] = nlohmann::json::array();
 
   std::unordered_map<u32, f64> probs = {{8, 5}, {1, 3}, {5, 2}};
   {
@@ -103,12 +102,12 @@ TEST(ProbabilityMSD, simple_over1) {
 TEST(ProbabilityMSD, dependent) {
   TestSetup ts(123, 123, 123, 123, 123);
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "probability";
-  settings["message_sizes"] = Json::Value(Json::arrayValue);
-  settings["size_probabilities"] = Json::Value(Json::arrayValue);
-  settings["dependent_message_sizes"] = Json::Value(Json::arrayValue);
-  settings["dependent_size_probabilities"] = Json::Value(Json::arrayValue);
+  settings["message_sizes"] = nlohmann::json::array();
+  settings["size_probabilities"] = nlohmann::json::array();
+  settings["dependent_message_sizes"] = nlohmann::json::array();
+  settings["dependent_size_probabilities"] = nlohmann::json::array();
 
   std::unordered_map<u32, f64> probs = {{1000, 1.0}};
   {

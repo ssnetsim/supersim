@@ -15,21 +15,20 @@
 #ifndef TRAFFIC_DISTRIBUTION_DISTRIBUTIONTRAFFICPATTERN_H_
 #define TRAFFIC_DISTRIBUTION_DISTRIBUTIONTRAFFICPATTERN_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 #define DISTRIBUTIONTRAFFICPATTERN_ARGS const std::string&, const Component*, \
-    u32, u32, Json::Value
+    u32, u32, nlohmann::json
 
 class DistributionTrafficPattern : public Component {
  public:
   DistributionTrafficPattern(
       const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, Json::Value _settings);
+      u32 _self, nlohmann::json _settings);
   virtual ~DistributionTrafficPattern();
 
   // this is the factory for distribution traffic patterns

@@ -15,9 +15,9 @@
 #ifndef ROUTING_NONMINIMALWEIGHTFUNC_H_
 #define ROUTING_NONMINIMALWEIGHTFUNC_H_
 
-#include <prim/prim.h>
-
 #include <string>
+
+#include "prim/prim.h"
 
 #define NONMINIMALWEIGHTFUNC_RET f64
 #define NONMINIMALWEIGHTFUNC_ARGS u32, u32, f64, f64, f64, f64

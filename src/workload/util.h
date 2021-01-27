@@ -15,7 +15,7 @@
 #ifndef WORKLOAD_UTIL_H_
 #define WORKLOAD_UTIL_H_
 
-#include <prim/prim.h>
+#include "prim/prim.h"
 
 /*
  * This generates a 64-bit transaction ID.

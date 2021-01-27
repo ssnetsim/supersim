@@ -16,12 +16,12 @@
 #define INTERFACE_STANDARD_MESSAGEREASSEMBLER_H_
 
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 #include "event/Component.h"
-#include "types/Packet.h"
 #include "types/Message.h"
+#include "types/Packet.h"
 
 namespace Standard {
 

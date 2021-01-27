@@ -15,14 +15,13 @@
 #ifndef WORKLOAD_APPLICATION_H_
 #define WORKLOAD_APPLICATION_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "stats/RateLog.h"
 
 class MetadataHandler;
@@ -30,13 +29,13 @@ class Terminal;
 class Workload;
 
 #define APPLICATION_ARGS const std::string&, const Component*, u32, Workload*, \
-    MetadataHandler*, Json::Value
+    MetadataHandler*, nlohmann::json
 
 class Application : public Component {
  public:
   Application(const std::string& _name, const Component* _parent, u32 _id,
               Workload* _workload, MetadataHandler* _metadataHandler,
-              Json::Value _settings);
+              nlohmann::json _settings);
   virtual ~Application();
 
   // this is an application factory

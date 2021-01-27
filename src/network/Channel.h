@@ -15,13 +15,12 @@
 #ifndef NETWORK_CHANNEL_H_
 #define NETWORK_CHANNEL_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class Flit;
 class FlitReceiver;
@@ -31,7 +30,7 @@ class CreditReceiver;
 class Channel : public Component {
  public:
   Channel(const std::string& _name, const Component* _parent,
-          u32 _numVcs, Json::Value _settings);
+          u32 _numVcs, nlohmann::json _settings);
   Channel(const std::string& _name, const Component* _parent,
           u32 _numVcs, u32 _latency);
   ~Channel();

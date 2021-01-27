@@ -14,33 +14,33 @@
  */
 #include "traffic/size/ProbabilityMSD.h"
 
-#include <mut/mut.h>
-#include <factory/ObjectFactory.h>
-
 #include <algorithm>
+
+#include "factory/ObjectFactory.h"
+#include "mut/mut.h"
 
 ProbabilityMSD::ProbabilityMSD(
     const std::string& _name, const Component* _parent,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
-      doDependent_(_settings.isMember("dependent_message_sizes") &&
-                   _settings.isMember("dependent_size_probabilities")) {
+      doDependent_(_settings.contains("dependent_message_sizes") &&
+                   _settings.contains("dependent_size_probabilities")) {
   // verify input settings
-  assert(_settings.isMember("message_sizes") &&
-         _settings["message_sizes"].isArray());
-  assert(_settings.isMember("size_probabilities") &&
-         _settings["size_probabilities"].isArray());
+  assert(_settings.contains("message_sizes") &&
+         _settings["message_sizes"].is_array());
+  assert(_settings.contains("size_probabilities") &&
+         _settings["size_probabilities"].is_array());
   assert(_settings["message_sizes"].size() > 0);
   assert(_settings["message_sizes"].size() ==
          _settings["size_probabilities"].size());
   if (!doDependent_) {
-    assert(!_settings.isMember("dependent_message_sizes"));
-    assert(!_settings.isMember("dependent_size_probabilities"));
+    assert(!_settings.contains("dependent_message_sizes"));
+    assert(!_settings.contains("dependent_size_probabilities"));
   } else {
-    assert(_settings.isMember("dependent_message_sizes") &&
-           _settings["dependent_message_sizes"].isArray());
-    assert(_settings.isMember("dependent_size_probabilities") &&
-           _settings["dependent_size_probabilities"].isArray());
+    assert(_settings.contains("dependent_message_sizes") &&
+           _settings["dependent_message_sizes"].is_array());
+    assert(_settings.contains("dependent_size_probabilities") &&
+           _settings["dependent_size_probabilities"].is_array());
     assert(_settings["dependent_message_sizes"].size() > 0);
     assert(_settings["dependent_message_sizes"].size() ==
            _settings["dependent_size_probabilities"].size());
@@ -53,11 +53,11 @@ ProbabilityMSD::ProbabilityMSD(
 
   // parse the message size array and the size probabilities array
   for (u32 idx = 0; idx < size; idx++) {
-    u32 messageSize = _settings["message_sizes"][idx].asUInt();
+    u32 messageSize = _settings["message_sizes"][idx].get<u32>();
     assert(messageSize > 0);
     messageSizes_.at(idx) = messageSize;
     probabilityDistribution.at(idx) =
-        _settings["size_probabilities"][idx].asDouble();
+        _settings["size_probabilities"][idx].get<f64>();
   }
 
   // create a cumulative distribution from the probability distribution
@@ -72,11 +72,11 @@ ProbabilityMSD::ProbabilityMSD(
 
     // parse the message size array and the size probabilities array
     for (u32 idx = 0; idx < depSize; idx++) {
-      u32 depMessageSize = _settings["dependent_message_sizes"][idx].asUInt();
+      u32 depMessageSize = _settings["dependent_message_sizes"][idx].get<u32>();
       assert(depMessageSize > 0);
       depMessageSizes_.at(idx) = depMessageSize;
       depProbabilityDistribution.at(idx) =
-          _settings["dependent_size_probabilities"][idx].asDouble();
+          _settings["dependent_size_probabilities"][idx].get<f64>();
     }
 
     // create a cumulative distribution from the probability distribution

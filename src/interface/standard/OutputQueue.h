@@ -15,17 +15,16 @@
 #ifndef INTERFACE_STANDARD_OUTPUTQUEUE_H_
 #define INTERFACE_STANDARD_OUTPUTQUEUE_H_
 
-#include <prim/prim.h>
-
 #include <queue>
 #include <string>
 #include <vector>
 
-#include "event/Component.h"
-#include "types/Flit.h"
-#include "types/FlitReceiver.h"
 #include "architecture/Crossbar.h"
 #include "architecture/CrossbarScheduler.h"
+#include "event/Component.h"
+#include "prim/prim.h"
+#include "types/Flit.h"
+#include "types/FlitReceiver.h"
 
 namespace Standard {
 

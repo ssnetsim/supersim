@@ -5,10 +5,10 @@
     "interface_cycle_time": 500,
     "terminal_cycle_time": 250,
     "print_progress": true,
-    "print_interval": 1.0,  // seconds
+    "print_interval": 1.0,
     "random_seed": 1234567,
     "info_log": {
-      "file": null  // "info.csv"
+      "file": null
     }
   },
   "network": {
@@ -25,7 +25,7 @@
         "routing": {
           "algorithm": "minimal",
           "latency": 1,
-          "mode": "vc", // port_ave, port_min, port_max
+          "mode": "vc",
           "randomized_global": true,
           "reduction": {
             "algorithm": "all_minimal",
@@ -43,7 +43,7 @@
         "routing": {
           "algorithm": "valiants",
           "latency": 1,
-          "mode": "vc", // port_ave, port_min, port_max
+          "mode": "vc",
           "smart_intermediate_node": true,
           "reduction": {
             "algorithm": "all_minimal",
@@ -61,7 +61,7 @@
         "routing": {
           "algorithm": "adaptive",
           "latency": 1,
-          "mode": "vc", // port_ave, port_min, port_max
+          "mode": "vc",
           "progressive_adaptive": true,
           "valiant_node": true,
           "reduction": {
@@ -79,21 +79,21 @@
         }
       }
     ],
-    "channel_mode": "fixed",  // "fixed" | "scalar"
+    "channel_mode": "fixed",
     "global_channel": {
-      "latency": 10  // cycles
+      "latency": 10
     },
     "local_channel": {
-      "latency": 5  // cycles
+      "latency": 5
     },
     "external_channel": {
-      "latency": 2  // cycles
+      "latency": 2
     },
     "channel_log": {
-      "file": null  // "channels.csv"
+      "file": null
     },
     "traffic_log": {
-      "file": null  // "traffic.csv"
+      "file": null
     },
     "router": {
       "architecture": "output_queued",
@@ -103,19 +103,19 @@
         "granularity": 0,
         "minimum": 0.0,
         "offset": 0.1,
-        "mode": "absolute_vc"  // {normalized,absolute}_{port,vc}
+        "mode": "absolute_vc"
       },
       "congestion_mode": "output",
-      "input_queue_mode": "fixed",  // fixed or tailored
+      "input_queue_mode": "fixed",
       "input_queue_depth": 64,
       "store_and_forward": false,
       "transfer_latency": 25,
       "output_queue_depth": "infinite",
       "crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       },
       "output_crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       },
       "output_crossbar_scheduler": {
         "allocator": {
@@ -132,11 +132,11 @@
     },
     "interface": {
       "type": "standard",
-      "crossbar_scheduler": "$&(network.router.output_crossbar_scheduler)&$",
-      "init_credits_mode": "$&(network.router.input_queue_mode)&$",
-      "init_credits": "$&(network.router.input_queue_depth)&$",
+      "crossbar_scheduler": "$&(/network/router/output_crossbar_scheduler)&$",
+      "init_credits_mode": "$&(/network/router/input_queue_mode)&$",
+      "init_credits": "$&(/network/router/input_queue_depth)&$",
       "crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       }
     }
   },
@@ -145,7 +145,7 @@
   },
   "workload": {
     "message_log": {
-      "file": null  // "data.mpf.gz"
+      "file": null
     },
     "applications": [
       {
@@ -161,10 +161,10 @@
           }
         },
         "rate_log": {
-          "file": null  // "rates.csv"
+          "file": null
         },
-        "source_terminal": -1,  // < 0 is random
-        "destination_terminal": -1  // < 0 is random
+        "source_terminal": -1,
+        "destination_terminal": -1
       },
       {
         "type": "stream",
@@ -179,10 +179,10 @@
           }
         },
         "rate_log": {
-          "file": null  // "rates.csv"
+          "file": null
         },
-        "source_terminal": -1,  // < 0 is random
-        "destination_terminal": -1  // < 0 is random
+        "source_terminal": -1,
+        "destination_terminal": -1
       },
       {
         "type": "stream",
@@ -197,10 +197,10 @@
           }
         },
         "rate_log": {
-          "file": null  // "rates.csv"
+          "file": null
         },
-        "source_terminal": -1,  // < 0 is random
-        "destination_terminal": -1  // < 0 is random
+        "source_terminal": -1,
+        "destination_terminal": -1
       }
     ]
   },

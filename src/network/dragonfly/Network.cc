@@ -14,65 +14,64 @@
  */
 #include "network/dragonfly/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
-#include "network/dragonfly/util.h"
 #include "network/dragonfly/InjectionAlgorithm.h"
 #include "network/dragonfly/RoutingAlgorithm.h"
+#include "network/dragonfly/util.h"
+#include "strop/strop.h"
 #include "util/DimensionIterator.h"
 
 namespace Dragonfly {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // concentration
-  assert(_settings.isMember("concentration"));
-  concentration_ = _settings["concentration"].asUInt();
+  assert(_settings.contains("concentration"));
+  concentration_ = _settings["concentration"].get<u32>();
   assert(concentration_ > 0);
 
   // interface ports
-  interfacePorts_ = _settings["interface_ports"].asUInt();
+  interfacePorts_ = _settings["interface_ports"].get<u32>();
   assert(interfacePorts_ > 0);
   assert(concentration_ % interfacePorts_ == 0);
 
   // local
-  assert(_settings.isMember("local_width"));
-  localWidth_ = _settings["local_width"].asUInt();
-  assert(_settings.isMember("local_weight"));
-  localWeight_ = _settings["local_weight"].asUInt();
+  assert(_settings.contains("local_width"));
+  localWidth_ = _settings["local_width"].get<u32>();
+  assert(_settings.contains("local_weight"));
+  localWeight_ = _settings["local_weight"].get<u32>();
   assert(localWidth_ > 0);
   assert(localWeight_ > 0);
 
   // global
-  assert(_settings.isMember("global_width"));
-  globalWidth_ = _settings["global_width"].asUInt();
-  assert(_settings.isMember("global_weight"));
-  globalWeight_ = _settings["global_weight"].asUInt();
+  assert(_settings.contains("global_width"));
+  globalWidth_ = _settings["global_width"].get<u32>();
+  assert(_settings.contains("global_weight"));
+  globalWeight_ = _settings["global_weight"].get<u32>();
   assert(globalWidth_ > 0);
   assert(globalWeight_ > 0);
 
   // channels
-  assert(_settings.isMember("channel_mode"));
-  assert(_settings.isMember("global_channel"));
-  assert(_settings.isMember("local_channel"));
-  assert(_settings.isMember("external_channel"));
+  assert(_settings.contains("channel_mode"));
+  assert(_settings.contains("global_channel"));
+  assert(_settings.contains("local_channel"));
+  assert(_settings.contains("external_channel"));
 
   // scalars
   f64 global_scalar = 0.0;
   f64 local_scalar = 0.0;
-  if (_settings["channel_mode"].asString() == "scalar") {
-    assert(_settings.isMember("global_scalar"));
-    assert(_settings.isMember("local_scalar"));
-    global_scalar = _settings["global_scalar"].asFloat();
-    local_scalar = _settings["local_scalar"].asFloat();
+  if (_settings["channel_mode"].get<std::string>() == "scalar") {
+    assert(_settings.contains("global_scalar"));
+    assert(_settings.contains("local_scalar"));
+    global_scalar = _settings["global_scalar"].get<f32>();
+    local_scalar = _settings["local_scalar"].get<f32>();
   }
 
   // radix
@@ -124,7 +123,7 @@ Network::Network(const std::string& _name, const Component* _parent,
             strop::vecString<u32>(dstAddress, '-');
 
         // determine the global channel latency for current src dst group
-        if (_settings["channel_mode"].asString() == "scalar") {
+        if (_settings["channel_mode"].get<std::string>() == "scalar") {
           f64 link_dist = fabs((s64)srcGroup - (s64)dstGroup);
           u32 channelLatency = (u32)(ceil(global_scalar * link_dist));
 
@@ -162,7 +161,7 @@ Network::Network(const std::string& _name, const Component* _parent,
               "-to-" + strop::vecString<u32>(dstAddress, '-') + "-" +
               std::to_string(weight);
           // determine the local channel latency
-          if (_settings["channel_mode"].asString() == "scalar") {
+          if (_settings["channel_mode"].get<std::string>() == "scalar") {
             f64 link_dist = fabs((s64)srcRouter - (s64)dstRouter);
             u32 channelLatency = (u32)(ceil(local_scalar * link_dist));
 

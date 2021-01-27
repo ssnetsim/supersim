@@ -14,13 +14,12 @@
  */
 #include "network/hyperx/SkippingDimensionsRoutingAlgorithm.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
 #include "network/hyperx/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/RoutingAlgorithm_TESTLIB.h"
 
 TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {
@@ -61,7 +60,7 @@ TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {
                       if (decScheme == "monolithic_weighted") {
                         for (auto& ibias : ibiass) {
                           for (auto& cbias : cbiass) {
-                            Json::Value settings;
+                            nlohmann::json settings;
                             settings["algorithm"] = "skipping_dimensions";
                             settings["latency"] = latency;
                             settings["output_type"] = outputType;
@@ -86,7 +85,7 @@ TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {
                       } else if (decScheme == "staged_threshold") {
                         for (auto& ithresholdMin : thresholdMin) {
                           for (auto& ithresholdNonmin : thresholdNonmin) {
-                            Json::Value settings;
+                            nlohmann::json settings;
                             settings["algorithm"] = "skipping_dimensions";
                             settings["latency"] = latency;
                             settings["output_type"] = outputType;
@@ -111,7 +110,7 @@ TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {
                         }
                       } else if (decScheme == "threshold_weighted") {
                         for (auto& threshold : thresholds) {
-                          Json::Value settings;
+                          nlohmann::json settings;
                           settings["algorithm"] = "skipping_dimensions";
                           settings["latency"] = latency;
                           settings["output_type"] = outputType;

@@ -15,18 +15,17 @@
 #ifndef METADATA_LOCALTIMESTAMPMETADATAHANDLER_H_
 #define METADATA_LOCALTIMESTAMPMETADATAHANDLER_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <unordered_map>
 
 #include "metadata/MetadataHandler.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class Application;
 
 class LocalTimestampMetadataHandler : public MetadataHandler {
  public:
-  explicit LocalTimestampMetadataHandler(Json::Value _settings);
+  explicit LocalTimestampMetadataHandler(nlohmann::json _settings);
   ~LocalTimestampMetadataHandler();
 
   void packetInterfaceArrival(

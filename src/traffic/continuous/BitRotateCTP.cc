@@ -14,20 +14,20 @@
  */
 #include "traffic/continuous/BitRotateCTP.h"
 
-#include <bits/bits.h>
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "bits/bits.h"
+#include "factory/ObjectFactory.h"
 
 BitRotateCTP::BitRotateCTP(
     const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, Json::Value _settings)
+    u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   assert(bits::isPow2(numTerminals_));
-  assert(_settings.isMember("direction"));
-  assert(_settings["direction"].isString());
-  std::string dir = _settings["direction"].asString();
+  assert(_settings.contains("direction"));
+  assert(_settings["direction"].is_string());
+  std::string dir = _settings["direction"].get<std::string>();
   if (dir == "right") {
     dest_ = bits::rotateRight<u32>(self_, bits::floorLog2(numTerminals_));
   } else if (dir == "left") {

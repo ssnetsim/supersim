@@ -12,17 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "arbiter/ComparingArbiter.h"
 
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
-#include "arbiter/ComparingArbiter.h"
-
 #include "arbiter/Arbiter_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(ComparingArbiter, full) {
@@ -42,7 +41,7 @@ TEST(ComparingArbiter, full) {
         }
       } while (hotCount(request, size) <= size/2);
 
-      Json::Value asettings;
+      nlohmann::json asettings;
       asettings["greater"] = greater;
       Arbiter* arb = new ComparingArbiter("Arb", nullptr, size, asettings);
       assert(arb->size() == size);
@@ -118,7 +117,7 @@ TEST(ComparingArbiter, dist) {
         count[idx] = 0;
       }
 
-      Json::Value arbSettings;
+      nlohmann::json arbSettings;
       arbSettings["greater"] = false;
       Arbiter* arb = new ComparingArbiter("Arb", nullptr, size, arbSettings);
       assert(arb->size() == size);

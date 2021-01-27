@@ -16,28 +16,28 @@
 
 #include <cassert>
 
-#include "workload/simplemem/Application.h"
-#include "workload/simplemem/MemoryOp.h"
 #include "event/Simulator.h"
+#include "types/Flit.h"
 #include "types/Message.h"
 #include "types/Packet.h"
-#include "types/Flit.h"
+#include "workload/simplemem/Application.h"
+#include "workload/simplemem/MemoryOp.h"
 
 namespace SimpleMem {
 
 ProcessorTerminal::ProcessorTerminal(
     const std::string& _name, const Component* _parent, u32 _id,
     const std::vector<u32>& _address, ::Application* _app,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app) {
   // protocol class of injection
-  assert(_settings.isMember("protocol_class"));
-  protocolClass_ = _settings["protocol_class"].asUInt();
+  assert(_settings.contains("protocol_class"));
+  protocolClass_ = _settings["protocol_class"].get<u32>();
 
   // latency and memory access
-  latency_ = _settings["latency"].asUInt();
+  latency_ = _settings["latency"].get<u32>();
   assert(latency_ > 0);
-  numMemoryAccesses_ = _settings["memory_accesses"].asUInt();
+  numMemoryAccesses_ = _settings["memory_accesses"].get<u32>();
   remainingAccesses_ = numMemoryAccesses_;
 
   // initialize state machine

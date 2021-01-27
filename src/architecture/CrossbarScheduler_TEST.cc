@@ -12,20 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "architecture/CrossbarScheduler.h"
 
 #include <algorithm>
 #include <string>
 #include <tuple>
 
-#include "architecture/CrossbarScheduler.h"
 #include "event/Component.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "test/TestSetup_TESTLIB.h"
 #include "types/Flit.h"
 #include "types/Packet.h"
-
-#include "test/TestSetup_TESTLIB.h"
 
 class CrossbarSchedulerTestClient : public CrossbarScheduler::Client,
                                     public Component {
@@ -167,13 +166,13 @@ TEST(CrossbarScheduler, basic) {
 
           // setup
           TestSetup testSetup(12, 12, 12, 12, 0x1234567890abcdf);
-          Json::Value arbSettings;
+          nlohmann::json arbSettings;
           arbSettings["type"] = "random";
-          Json::Value allocSettings;
+          nlohmann::json allocSettings;
           allocSettings["type"] = "r_separable";
           allocSettings["resource_arbiter"] = arbSettings;
           allocSettings["slip_latch"] = true;
-          Json::Value schSettings;
+          nlohmann::json schSettings;
           schSettings["allocator"] = allocSettings;
           schSettings["full_packet"] = std::get<0>(style);
           schSettings["packet_lock"] = std::get<1>(style);

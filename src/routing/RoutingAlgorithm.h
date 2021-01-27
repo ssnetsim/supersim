@@ -15,20 +15,19 @@
 #ifndef ROUTING_ROUTINGALGORITHM_H_
 #define ROUTING_ROUTINGALGORITHM_H_
 
-#include <prim/prim.h>
-#include <json/json.h>
-
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Flit.h"
 
 class Router;
 
 #define ROUTINGALGORITHM_ARGS const std::string&, const Component*, Router*, \
-    u32, u32, u32, u32, Json::Value
+    u32, u32, u32, u32, nlohmann::json
 
 class RoutingAlgorithm : public Component {
  public:
@@ -74,7 +73,7 @@ class RoutingAlgorithm : public Component {
    */
   RoutingAlgorithm(const std::string& _name, const Component* _parent,
                    Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort,
-                   u32 _inputVc, Json::Value _settings);
+                   u32 _inputVc, nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
   u32 latency() const;
   u32 baseVc() const;

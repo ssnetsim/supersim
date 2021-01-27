@@ -14,14 +14,13 @@
  */
 #include "traffic/continuous/GroupAttackCTP.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <mut/mut.h>
-#include <prim/prim.h>
-#include <strop/strop.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
+#include "mut/mut.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "strop/strop.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(GroupAttackCTP, half_permutation) {
@@ -33,7 +32,7 @@ TEST(GroupAttackCTP, half_permutation) {
     u32 concentration = gSim->rnd.nextU64(1, 20);
 
     for (u32 test = 0; test < 100; test++) {
-      Json::Value settings;
+      nlohmann::json settings;
       settings["group_size"] = groupSize;
       settings["concentration"] = concentration;
       settings["destination_mode"] = "peer";
@@ -77,7 +76,7 @@ TEST(GroupAttackCTP, opposite_permutation) {
     u32 concentration = gSim->rnd.nextU64(1, 20);
 
     for (u32 test = 0; test < 100; test++) {
-      Json::Value settings;
+      nlohmann::json settings;
       settings["group_size"] = groupSize;
       settings["concentration"] = concentration;
       settings["destination_mode"] = "peer";
@@ -122,7 +121,7 @@ TEST(GroupAttackCTP, offset_permutation) {
     u32 concentration = gSim->rnd.nextU64(1, 10);
     for (s32 offset = -1; (u32)abs(offset) < groupCount; offset ++) {
       for (u32 test = 0; test < 100; test++) {
-        Json::Value settings;
+        nlohmann::json settings;
         settings["group_size"] = groupSize;
         settings["concentration"] = concentration;
         settings["destination_mode"] = "peer";
@@ -191,7 +190,7 @@ TEST(GroupAttackCTP, random) {
              groupCount, groupSize, concentration);
     }
     for (u32 test = 0; test < TESTS; test++) {
-      Json::Value settings;
+      nlohmann::json settings;
       settings["group_size"] = groupSize;
       settings["concentration"] = concentration;
       settings["destination_mode"] = "random";

@@ -15,9 +15,6 @@
 #ifndef NETWORK_NETWORK_H_
 #define NETWORK_NETWORK_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -27,19 +24,21 @@
 #include "interface/Interface.h"
 #include "metadata/MetadataHandler.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "router/Router.h"
 #include "routing/InjectionAlgorithm.h"
 #include "routing/RoutingAlgorithm.h"
-#include "router/Router.h"
 #include "stats/ChannelLog.h"
 #include "stats/TrafficLog.h"
 
 #define NETWORK_ARGS const std::string&, const Component*, MetadataHandler*, \
-    Json::Value
+    nlohmann::json
 
 class Network : public Component {
  public:
   Network(const std::string& _name, const Component* _parent,
-          MetadataHandler* _metadataHandler, Json::Value _settings);
+          MetadataHandler* _metadataHandler, nlohmann::json _settings);
   virtual ~Network();
 
   // this is a network factory
@@ -95,14 +94,14 @@ class Network : public Component {
   struct PcSettings {
     u32 baseVc;
     u32 numVcs;
-    Json::Value injection;
-    Json::Value routing;
+    nlohmann::json injection;
+    nlohmann::json routing;
   };
 
   virtual void collectChannels(std::vector<Channel*>* _channels) = 0;
 
   // this loads the routing algorithm info vector
-  void loadProtocolClassInfo(Json::Value _settings);
+  void loadProtocolClassInfo(nlohmann::json _settings);
 
   // this only works between load and clear calls
   const PcSettings& pcSettings(u32 _pc) const;

@@ -14,20 +14,19 @@
  */
 #include "routing/Reduction.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 Reduction::Reduction(const std::string& _name, const Component* _parent,
                      const PortedDevice* _device, RoutingMode _mode,
-                     bool _ignoreDuplicates, Json::Value _settings)
+                     bool _ignoreDuplicates, nlohmann::json _settings)
     : Component(_name, _parent), device_(_device),
-      mode_(_mode), maxOutputs_(_settings["max_outputs"].asUInt()),
+      mode_(_mode), maxOutputs_(_settings["max_outputs"].get<u32>()),
       ignoreDuplicates_(_ignoreDuplicates), start_(true) {
   // check inputs
-  assert(!_settings["max_outputs"].isNull());
+  assert(!_settings["max_outputs"].is_null());
 }
 
 Reduction::~Reduction() {}
@@ -35,9 +34,9 @@ Reduction::~Reduction() {}
 Reduction* Reduction::create(
     const std::string& _name, const Component* _parent,
     const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-    Json::Value _settings) {
+    nlohmann::json _settings) {
   // retrieve algorithm
-  const std::string& algorithm = _settings["algorithm"].asString();
+  const std::string& algorithm = _settings["algorithm"].get<std::string>();
 
   // attempt to build the reduction algorithm
   Reduction* reduction = factory::ObjectFactory<

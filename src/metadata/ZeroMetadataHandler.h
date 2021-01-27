@@ -15,15 +15,14 @@
 #ifndef METADATA_ZEROMETADATAHANDLER_H_
 #define METADATA_ZEROMETADATAHANDLER_H_
 
-#include <json/json.h>
-
 #include "metadata/MetadataHandler.h"
+#include "nlohmann/json.hpp"
 
 class Application;
 
 class ZeroMetadataHandler : public MetadataHandler {
  public:
-  explicit ZeroMetadataHandler(Json::Value _settings);
+  explicit ZeroMetadataHandler(nlohmann::json _settings);
   ~ZeroMetadataHandler();
 
   void packetInjection(const Application* _app, Packet* _packet) override;

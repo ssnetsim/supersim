@@ -5,10 +5,10 @@
     "interface_cycle_time": 8,
     "terminal_cycle_time": 3,
     "print_progress": true,
-    "print_interval": 1.0,  // seconds
+    "print_interval": 1.0,
     "random_seed": 12345678,
     "info_log": {
-      "file": null  // "info.csv"
+      "file": null
     }
   },
   "network": {
@@ -30,10 +30,10 @@
       "latency": 2
     },
     "channel_log": {
-      "file": null  // "channels.csv"
+      "file": null
     },
     "traffic_log": {
-      "file": null  // "traffic.csv"
+      "file": null
     },
     "interface": {
       "type": "standard",
@@ -53,7 +53,7 @@
       "init_credits_mode": "fixed",
       "init_credits": 8,
       "crossbar": {
-        "latency": 1  // cycles
+        "latency": 1
       }
     }
   },
@@ -62,7 +62,7 @@
   },
   "workload": {
     "message_log": {
-      "file": null  // "data.mpf.gz"
+      "file": null
     },
     "applications": [
       {
@@ -71,19 +71,19 @@
         "kill_on_saturation": false,
         "log_during_saturation": false,
         "blast_terminal": {
-          // requests
+        
           "request_protocol_class": 0,
           "request_injection_rate": 0.45,
-          // responses
+         
           "enable_responses": false,
-          // warmup
-          "warmup_interval": 200,  // delivered flits
+         
+          "warmup_interval": 200,
           "warmup_window": 15,
           "warmup_attempts": 20,
-          // traffic generation
+         
           "num_transactions": 50000,
           "max_packet_size": 16,
-          "transaction_size": 10,  // requests
+          "transaction_size": 10,
           "multi_destination_transactions": false,
           "traffic_pattern": {
             "type": "loopback"
@@ -95,7 +95,7 @@
           }
         },
         "rate_log": {
-          "file": null  // "rates.csv"
+          "file": null
         }
       }
     ]

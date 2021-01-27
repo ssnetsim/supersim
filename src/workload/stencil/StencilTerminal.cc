@@ -14,14 +14,13 @@
  */
 #include "workload/stencil/StencilTerminal.h"
 
-#include <bits/bits.h>
-#include <mut/mut.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 
+#include "bits/bits.h"
+#include "mut/mut.h"
 #include "network/Network.h"
 #include "stats/MessageLog.h"
 #include "types/Flit.h"
@@ -40,23 +39,24 @@ StencilTerminal::StencilTerminal(
     const std::vector<u32>& _address, const std::vector<u32>* _termToProc,
     const std::vector<u32>* _procToTerm,
     const std::vector<std::tuple<u32, u32> >& _exchangeSendMessages,
-    u32 _exchangeRecvMessages, ::Application* _app, Json::Value _settings)
+    u32 _exchangeRecvMessages, ::Application* _app, nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app),
-      numIterations_(_settings["num_iterations"].asUInt()),
-      maxPacketSize_(_settings["max_packet_size"].asUInt()),
+      numIterations_(_settings["num_iterations"].get<u32>()),
+      maxPacketSize_(_settings["max_packet_size"].get<u32>()),
       termToProc_(_termToProc), procToTerm_(_procToTerm),
       exchangeSendMessages_(_exchangeSendMessages),
       exchangeRecvMessages_(_exchangeRecvMessages),
-      collectiveSize_(_settings["collective_size"].asUInt()),
-      exchangeProtocolClass_(_settings["exchange_protocol_class"].asUInt()),
-      collectiveProtocolClass_(_settings["collective_protocol_class"].asUInt()),
-      computeDelay_(_settings["compute_delay"].asUInt64()) {
+      collectiveSize_(_settings["collective_size"].get<u32>()),
+      exchangeProtocolClass_(_settings["exchange_protocol_class"].get<u32>()),
+      collectiveProtocolClass_(
+          _settings["collective_protocol_class"].get<u32>()),
+      computeDelay_(_settings["compute_delay"].get<u64>()) {
   // check settings
   assert(numIterations_ > 0);
   assert(maxPacketSize_ > 0);
-  assert(!_settings["collective_size"].isNull());
-  assert(!_settings["exchange_protocol_class"].isNull());
-  assert(!_settings["collective_protocol_class"].isNull());
+  assert(!_settings["collective_size"].is_null());
+  assert(!_settings["exchange_protocol_class"].is_null());
+  assert(!_settings["collective_protocol_class"].is_null());
   assert(computeDelay_ > 0);  // this avoids massive recursion
 
   // initialize state

@@ -15,9 +15,9 @@
 #ifndef UTIL_DIMENSIONITERATOR_H_
 #define UTIL_DIMENSIONITERATOR_H_
 
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "prim/prim.h"
 
 class DimensionIterator {
  public:

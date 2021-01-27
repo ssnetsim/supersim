@@ -14,10 +14,9 @@
  */
 #include "routing/WeightedReduction.h"
 
-#include <json/json.h>
-#include <gtest/gtest.h>
-
 #include "architecture/PortedDevice_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(WeightedReduction, vc) {
@@ -25,7 +24,7 @@ TEST(WeightedReduction, vc) {
     TestSetup ts(1, 1, 1, 1, 12345+i);
 
     TestPortedDevice dev(4, 6);
-    Json::Value settings;
+    nlohmann::json settings;
     settings["max_outputs"] = 1;
     settings["congestion_bias"] = 0.0;
     settings["independent_bias"] = 0.0;

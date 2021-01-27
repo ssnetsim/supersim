@@ -15,14 +15,13 @@
 #ifndef ROUTING_LEASTCONGESTEDMINIMALREDUCTION_H_
 #define ROUTING_LEASTCONGESTEDMINIMALREDUCTION_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_set>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/Reduction.h"
 
 class LeastCongestedMinimalReduction : public Reduction {
@@ -30,7 +29,7 @@ class LeastCongestedMinimalReduction : public Reduction {
   LeastCongestedMinimalReduction(
       const std::string& _name, const Component* _parent,
       const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-      Json::Value _settings);
+      nlohmann::json _settings);
   ~LeastCongestedMinimalReduction();
 
   void process(

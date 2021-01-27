@@ -14,30 +14,29 @@
  */
 #include "network/butterfly/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/butterfly/InjectionAlgorithm.h"
 #include "network/butterfly/RoutingAlgorithm.h"
 #include "network/butterfly/util.h"
+#include "strop/strop.h"
 
 namespace Butterfly {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // radix and stages
-  routerRadix_ = _settings["radix"].asUInt();
+  routerRadix_ = _settings["radix"].get<u32>();
   assert(routerRadix_ >= 2);
-  numStages_ = _settings["stages"].asUInt();
+  numStages_ = _settings["stages"].get<u32>();
   assert(numStages_ >= 1);
   stageWidth_ = (u32)pow(routerRadix_, numStages_ - 1);
-  interfacePorts_ = _settings["interface_ports"].asUInt();
+  interfacePorts_ = _settings["interface_ports"].get<u32>();
   assert(interfacePorts_ > 0);
   assert(routerRadix_ % interfacePorts_ == 0);
 

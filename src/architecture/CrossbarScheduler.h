@@ -15,9 +15,6 @@
 #ifndef ARCHITECTURE_CROSSBARSCHEDULER_H_
 #define ARCHITECTURE_CROSSBARSCHEDULER_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -25,6 +22,8 @@
 #include "allocator/Allocator.h"
 #include "architecture/CreditWatcher.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Flit.h"
 
 class CrossbarScheduler : public Component, public CreditWatcher {
@@ -49,7 +48,7 @@ class CrossbarScheduler : public Component, public CreditWatcher {
   CrossbarScheduler(const std::string& _name, const Component* _parent,
                     u32 _numClients, u32 _totalVcs, u32 _crossbarPorts,
                     u32 _globalVcOffset, Simulator::Clock _clock,
-                    Json::Value _settings);
+                    nlohmann::json _settings);
   ~CrossbarScheduler();
 
   // constant attributes

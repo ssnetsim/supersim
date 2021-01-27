@@ -15,9 +15,9 @@
 #ifndef UTIL_DIMENSIONALARRAY_H_
 #define UTIL_DIMENSIONALARRAY_H_
 
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "prim/prim.h"
 
 template <typename T>
 class DimensionalArray {

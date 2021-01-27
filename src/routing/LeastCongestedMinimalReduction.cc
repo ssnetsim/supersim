@@ -14,14 +14,13 @@
  */
 #include "routing/LeastCongestedMinimalReduction.h"
 
-#include <factory/ObjectFactory.h>
-
 #include "congestion/util.h"
+#include "factory/ObjectFactory.h"
 
 LeastCongestedMinimalReduction::LeastCongestedMinimalReduction(
     const std::string& _name, const Component* _parent,
     const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Reduction(_name, _parent, _device, _mode, _ignoreDuplicates, _settings) {}
 
 LeastCongestedMinimalReduction::~LeastCongestedMinimalReduction() {}

@@ -15,14 +15,13 @@
 #ifndef NETWORK_BUTTERFLY_DESTTAGROUTINGALGORITHM_H_
 #define NETWORK_BUTTERFLY_DESTTAGROUTINGALGORITHM_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
 #include "network/butterfly/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 namespace Butterfly {
@@ -32,7 +31,8 @@ class DestTagRoutingAlgorithm : public RoutingAlgorithm {
   DestTagRoutingAlgorithm(
       const std::string& _name, const Component* _parent, Router* _router,
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _numPorts,
-      u32 _numStages, u32 _interfacePorts, u32 _stage, Json::Value _settings);
+      u32 _numStages, u32 _interfacePorts, u32 _stage,
+      nlohmann::json _settings);
   ~DestTagRoutingAlgorithm();
 
  protected:

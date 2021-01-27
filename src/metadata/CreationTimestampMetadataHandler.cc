@@ -14,23 +14,22 @@
  */
 #include "metadata/CreationTimestampMetadataHandler.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <string>
 
-#include "workload/Application.h"
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 #include "types/Message.h"
 #include "types/Packet.h"
+#include "workload/Application.h"
 
 CreationTimestampMetadataHandler::CreationTimestampMetadataHandler(
-    Json::Value _settings)
+    nlohmann::json _settings)
     : MetadataHandler(_settings) {
-  assert(_settings.isMember("delay"));
-  delay_ = _settings["delay"].asUInt64();
-  std::string alg = _settings["algorithm"].asString();
+  assert(_settings.contains("delay"));
+  delay_ = _settings["delay"].get<u64>();
+  std::string alg = _settings["algorithm"].get<std::string>();
   if (alg == "message") {
     alg_ = Algorithm::kMessage;
   } else if (alg == "transaction") {

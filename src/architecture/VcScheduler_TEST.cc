@@ -12,9 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "architecture/VcScheduler.h"
 
 #include <string>
 #include <unordered_map>
@@ -22,8 +20,9 @@
 #include <utility>
 
 #include "event/Component.h"
-#include "architecture/VcScheduler.h"
-
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 class VcSchedulerTestClient : public VcScheduler::Client, public Component {
@@ -186,15 +185,15 @@ TEST(VcScheduler, basic) {
 
         std::unordered_set<u32> requests;
 
-        Json::Value arbSettings;
+        nlohmann::json arbSettings;
         arbSettings["type"] = "random";
-        Json::Value allocSettings;
+        nlohmann::json allocSettings;
         allocSettings["type"] = "rc_separable";
         allocSettings["resource_arbiter"] = arbSettings;
         allocSettings["client_arbiter"] = arbSettings;
         allocSettings["iterations"] = 1;
         allocSettings["slip_latch"] = true;
-        Json::Value schSettings;
+        nlohmann::json schSettings;
         schSettings["allocator"] = allocSettings;
         VcScheduler* vcSch = new VcScheduler(
             "VcSch", nullptr, C, V, Simulator::Clock::ROUTER, schSettings);
@@ -250,16 +249,16 @@ TEST(VcScheduler, dist) {
       assert(requests.size() == N);
 
       // setup
-      Json::Value arbSettings;
+      nlohmann::json arbSettings;
       arbSettings["type"] = arb;
       arbSettings["greater"] = false;
-      Json::Value allocSettings;
+      nlohmann::json allocSettings;
       allocSettings["type"] = "rc_separable";
       allocSettings["resource_arbiter"] = arbSettings;
       allocSettings["client_arbiter"] = arbSettings;
       allocSettings["iterations"] = 1;
       allocSettings["slip_latch"] = false;
-      Json::Value schSettings;
+      nlohmann::json schSettings;
       schSettings["allocator"] = allocSettings;
       VcScheduler* vcSch = new VcScheduler(
           "VcSch", nullptr, C, V, Simulator::Clock::ROUTER, schSettings);

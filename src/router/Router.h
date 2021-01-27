@@ -15,9 +15,6 @@
 #ifndef ROUTER_ROUTER_H_
 #define ROUTER_ROUTER_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <vector>
@@ -25,6 +22,8 @@
 #include "architecture/PortedDevice.h"
 #include "event/Component.h"
 #include "metadata/MetadataHandler.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/CreditReceiver.h"
 #include "types/CreditSender.h"
 #include "types/FlitReceiver.h"
@@ -33,14 +32,14 @@
 class Network;
 
 #define ROUTER_ARGS const std::string&, const Component*, Network*, u32, \
-    const std::vector<u32>&, u32, u32, MetadataHandler*, Json::Value
+    const std::vector<u32>&, u32, u32, MetadataHandler*, nlohmann::json
 
 class Router : public Component, public PortedDevice, public FlitSender,
                public FlitReceiver, public CreditSender, public CreditReceiver {
  public:
   Router(const std::string& _name, const Component* _parent, Network* _network,
          u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-         MetadataHandler* _metadataHandler, Json::Value _settings);
+         MetadataHandler* _metadataHandler, nlohmann::json _settings);
   virtual ~Router();
 
   // this is a router factory

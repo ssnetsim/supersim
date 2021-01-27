@@ -14,10 +14,9 @@
  */
 #include "workload/util.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include "event/Simulator.h"
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(WorkloadUtil, transactionId) {

@@ -14,22 +14,21 @@
  */
 #include "traffic/size/RandomMSD.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 RandomMSD::RandomMSD(
     const std::string& _name, const Component* _parent,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
-      minMessageSize_(_settings["min_message_size"].asUInt()),
-      maxMessageSize_(_settings["max_message_size"].asUInt()),
-      doDependent_(_settings.isMember("dependent_min_message_size") &&
-                   _settings.isMember("dependent_max_message_size")),
-      depMinMessageSize_(_settings["dependent_min_message_size"].asUInt()),
-      depMaxMessageSize_(_settings["dependent_max_message_size"].asUInt()) {
+      minMessageSize_(_settings["min_message_size"].get<u32>()),
+      maxMessageSize_(_settings["max_message_size"].get<u32>()),
+      doDependent_(_settings.contains("dependent_min_message_size") &&
+                   _settings.contains("dependent_max_message_size")),
+      depMinMessageSize_(_settings.value("dependent_min_message_size", 0)),
+      depMaxMessageSize_(_settings.value("dependent_max_message_size", 0)) {
   assert(minMessageSize_ > 0);
   assert(maxMessageSize_ > 0);
   assert(maxMessageSize_ >= minMessageSize_);
@@ -38,8 +37,8 @@ RandomMSD::RandomMSD(
     assert(depMaxMessageSize_ > 0);
     assert(depMaxMessageSize_ >= depMinMessageSize_);
   } else {
-    assert(_settings["dependent_min_message_size"].isNull());
-    assert(_settings["dependent_max_message_size"].isNull());
+    assert(_settings["dependent_min_message_size"].is_null());
+    assert(_settings["dependent_max_message_size"].is_null());
   }
 }
 

@@ -16,10 +16,10 @@
 
 #include <cassert>
 
-#include "network/Network.h"
-#include "workload/Application.h"
 #include "event/Simulator.h"
 #include "metadata/MetadataHandler.h"
+#include "network/Network.h"
+#include "workload/Application.h"
 
 Terminal::Terminal(const std::string& _name, const Component* _parent, u32 _id,
                    const std::vector<u32>& _address, Application* _app)

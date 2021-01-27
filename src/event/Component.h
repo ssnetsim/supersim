@@ -15,13 +15,12 @@
 #ifndef EVENT_COMPONENT_H_
 #define EVENT_COMPONENT_H_
 
-#include <prim/prim.h>
-
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 
 #include "event/Simulator.h"
+#include "prim/prim.h"
 
 class Component {
  public:

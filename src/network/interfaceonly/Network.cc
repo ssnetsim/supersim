@@ -14,25 +14,24 @@
  */
 #include "network/interfaceonly/Network.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/interfaceonly/InjectionAlgorithm.h"
 
 namespace InterfaceOnly {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // num_interfaces
-  numInterfaces_ = _settings["num_interfaces"].asUInt();
+  numInterfaces_ = _settings["num_interfaces"].get<u32>();
   assert(numInterfaces_ > 0);
   assert(numInterfaces_ <= 2);
-  interfacePorts_ = _settings["interface_ports"].asUInt();
+  interfacePorts_ = _settings["interface_ports"].get<u32>();
   assert(interfacePorts_ > 0);
   dbgprintf("num_interfaces_ = %u", numInterfaces_);
 

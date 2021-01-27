@@ -15,8 +15,7 @@
 #ifndef WORKLOAD_SIMPLEMEM_MEMORYOP_H_
 #define WORKLOAD_SIMPLEMEM_MEMORYOP_H_
 
-#include <prim/prim.h>
-
+#include "prim/prim.h"
 #include "workload/simplemem/MemoryOp.h"
 
 namespace SimpleMem {

@@ -14,9 +14,8 @@
  */
 #include "traffic/size/SingleMSD.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
 #include "test/TestSetup_TESTLIB.h"
 #include "traffic/size/MessageSizeDistribution.h"
 
@@ -25,7 +24,7 @@ TEST(SingleMSD, simple) {
 
   const u32 SIZE = 3;
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "single";
   settings["message_size"] = SIZE;
 
@@ -46,7 +45,7 @@ TEST(SingleMSD, dependent) {
 
   const u32 SIZE = 3;
 
-  Json::Value settings;
+  nlohmann::json settings;
   settings["type"] = "single";
   settings["message_size"] = SIZE;
   settings["dependent_message_size"] = SIZE+1;

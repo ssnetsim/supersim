@@ -15,16 +15,16 @@
 #ifndef STATS_RATELOG_H_
 #define STATS_RATELOG_H_
 
-#include <fio/OutFile.h>
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <sstream>
 #include <string>
 
+#include "fio/OutFile.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+
 class RateLog {
  public:
-  explicit RateLog(Json::Value _settings);
+  explicit RateLog(nlohmann::json _settings);
   ~RateLog();
   void logRates(u32 _terminalId, const std::string& _terminalName,
                 f64 _injectionRate, f64 _deliveredRate, f64 _ejectionRate);

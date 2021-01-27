@@ -14,7 +14,7 @@
  */
 #include "routing/NonMinimalWeightFunc.h"
 
-#include <factory/FunctionFactory.h>
+#include "factory/FunctionFactory.h"
 
 NonMinimalWeightFunc retrieveNonMinimalWeightFunc(
     const std::string& _algorithm) {

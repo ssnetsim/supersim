@@ -15,21 +15,20 @@
 #ifndef ARBITER_ARBITER_H_
 #define ARBITER_ARBITER_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
-#define ARBITER_ARGS const std::string&, const Component*, u32, Json::Value
+#define ARBITER_ARGS const std::string&, const Component*, u32, nlohmann::json
 
 class Arbiter : public Component {
  public:
   // constructor
   Arbiter(const std::string& _name, const Component* _parent, u32 _size,
-          Json::Value _settings);
+          nlohmann::json _settings);
   virtual ~Arbiter();
 
   // this defines the arbiter factory

@@ -15,15 +15,14 @@
 #ifndef ARCHITECTURE_CROSSBAR_H_
 #define ARCHITECTURE_CROSSBAR_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <list>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
 
@@ -31,7 +30,7 @@ class Crossbar : public Component {
  public:
   Crossbar(const std::string& _name, const Component* _parent,
            u32 _numInputs, u32 _numOutputs, Simulator::Clock _clock,
-           Json::Value _settings);
+           nlohmann::json _settings);
   ~Crossbar();
   u32 numInputs() const;
   u32 numOutputs() const;

@@ -15,18 +15,17 @@
 #ifndef ROUTER_INPUTOUTPUTQUEUED_INPUTQUEUE_H_
 #define ROUTER_INPUTOUTPUTQUEUED_INPUTQUEUE_H_
 
-#include <prim/prim.h>
-
 #include <queue>
 #include <string>
 #include <vector>
 
-#include "event/Component.h"
-#include "routing/RoutingAlgorithm.h"
 #include "architecture/CreditWatcher.h"
 #include "architecture/Crossbar.h"
 #include "architecture/CrossbarScheduler.h"
 #include "architecture/VcScheduler.h"
+#include "event/Component.h"
+#include "prim/prim.h"
+#include "routing/RoutingAlgorithm.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
 

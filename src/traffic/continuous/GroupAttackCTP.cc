@@ -14,33 +14,33 @@
  */
 #include "traffic/continuous/GroupAttackCTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 GroupAttackCTP::GroupAttackCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, Json::Value _settings)
+    u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // verify settings exist
-  assert(_settings.isMember("group_size"));  // num routers per group
-  assert(_settings.isMember("concentration"));  // num terminals per router
-  assert(_settings.isMember("destination_mode"));  // within destination
-  assert(_settings.isMember("group_mode"));  // group to group
+  assert(_settings.contains("group_size"));  // num routers per group
+  assert(_settings.contains("concentration"));  // num terminals per router
+  assert(_settings.contains("destination_mode"));  // within destination
+  assert(_settings.contains("group_mode"));  // group to group
 
   // compute fixed values
-  groupSize_ = _settings["group_size"].asUInt();
-  concentration_ = _settings["concentration"].asUInt();
+  groupSize_ = _settings["group_size"].get<u32>();
+  concentration_ = _settings["concentration"].get<u32>();
   groupCount_ = numTerminals_ / (groupSize_ * concentration_);
-  assert(_settings["destination_mode"].isString());
+  assert(_settings["destination_mode"].is_string());
 
   // destination mode
-  if (_settings["destination_mode"].asString() == "peer") {
+  if (_settings["destination_mode"].get<std::string>() == "peer") {
     destinationMode_ = DestinationMode::kPeer;
-  } else if (_settings["destination_mode"].asString() == "random") {
+  } else if (_settings["destination_mode"].get<std::string>() == "random") {
     destinationMode_ = DestinationMode::kRandom;
-  } else if (_settings["destination_mode"].asString() == "complement") {
+  } else if (_settings["destination_mode"].get<std::string>() == "complement") {
     destinationMode_ = DestinationMode::kComplement;
   }
 
@@ -55,14 +55,14 @@ GroupAttackCTP::GroupAttackCTP(
   selfConc_ = selfIndex_ % concentration_;
 
   // group mode
-  if (_settings["group_mode"].isString()) {
-    if (_settings["group_mode"].asString() == "half") {
+  if (_settings["group_mode"].is_string()) {
+    if (_settings["group_mode"].get<std::string>() == "half") {
       destGroup_ = (selfGroup_ + (groupCount_ / 2)) % groupCount_;
-    } else if (_settings["group_mode"].asString() == "opposite") {
+    } else if (_settings["group_mode"].get<std::string>() == "opposite") {
       destGroup_ = (groupCount_ - 1) - selfGroup_;
     }
-  } else if (_settings["group_mode"].isInt()) {
-    s32 offset = _settings["group_mode"].asInt();
+  } else if (_settings["group_mode"].is_number_integer()) {
+    s32 offset = _settings["group_mode"].get<s32>();
     // don't rely on loop around
     assert((u32)abs(offset) < groupCount_);
     s32 destGroup = ((s32)selfGroup_ +

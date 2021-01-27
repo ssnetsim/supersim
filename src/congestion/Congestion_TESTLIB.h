@@ -15,9 +15,6 @@
 #ifndef CONGESTION_CONGESTION_TESTLIB_H_
 #define CONGESTION_CONGESTION_TESTLIB_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <vector>
@@ -27,6 +24,8 @@
 #include "event/Component.h"
 #include "metadata/MetadataHandler.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 // this is a test class for implementing an router API for congestion status
@@ -36,7 +35,7 @@ class CongestionTestRouter : public Router {
   CongestionTestRouter(
       const std::string& _name, const Component* _parent, Network* _network,
       u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-      MetadataHandler* _metadataHandler, Json::Value _settings);
+      MetadataHandler* _metadataHandler, nlohmann::json _settings);
   ~CongestionTestRouter();
 
   void setCongestionSensor(CongestionSensor* _congestionSensor);
@@ -111,7 +110,7 @@ class StatusCheck : public Component {
 class CongestionTestSensor : public CongestionSensor {
  public:
   CongestionTestSensor(const std::string& _name, const Component* _parent,
-                       PortedDevice* _device, Json::Value _settings,
+                       PortedDevice* _device, nlohmann::json _settings,
                        const std::vector<f64>* _congestion);
   ~CongestionTestSensor();
 

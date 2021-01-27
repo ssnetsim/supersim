@@ -15,9 +15,6 @@
 #ifndef NETWORK_PARKINGLOT_NETWORK_H_
 #define NETWORK_PARKINGLOT_NETWORK_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
@@ -25,6 +22,8 @@
 #include "interface/Interface.h"
 #include "network/Channel.h"
 #include "network/Network.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 namespace ParkingLot {
@@ -32,7 +31,7 @@ namespace ParkingLot {
 class Network : public ::Network {
  public:
   Network(const std::string& _name, const Component* _parent,
-          MetadataHandler* _metadataHandler, Json::Value _settings);
+          MetadataHandler* _metadataHandler, nlohmann::json _settings);
   ~Network();
 
   // this is the injection algorithm factory for this network

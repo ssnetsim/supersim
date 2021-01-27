@@ -15,11 +15,10 @@
 #ifndef WORKLOAD_RATEMONITOR_H_
 #define WORKLOAD_RATEMONITOR_H_
 
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
+#include "prim/prim.h"
 #include "types/Message.h"
 #include "types/MessageReceiver.h"
 

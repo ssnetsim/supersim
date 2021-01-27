@@ -14,19 +14,17 @@
  */
 #include "allocator/CrSeparableAllocator.h"
 
-#include <json/json.h>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
-#include "settings/settings.h"
-
 #include "allocator/Allocator_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "settings/settings.h"
 
 TEST(CrSeparableAllocator, lslp) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "lslp";
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 3;
@@ -40,10 +38,10 @@ TEST(CrSeparableAllocator, lslp) {
 
 TEST(CrSeparableAllocator, greater) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "comparing";
   arbSettings["greater"] = true;
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 2;
@@ -57,10 +55,10 @@ TEST(CrSeparableAllocator, greater) {
 
 TEST(CrSeparableAllocator, lesser) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "comparing";
   arbSettings["greater"] = false;
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 2;
@@ -74,9 +72,9 @@ TEST(CrSeparableAllocator, lesser) {
 
 TEST(CrSeparableAllocator, random) {
   // create the allocator settings
-  Json::Value arbSettings;
+  nlohmann::json arbSettings;
   arbSettings["type"] = "random";
-  Json::Value allocSettings;
+  nlohmann::json allocSettings;
   allocSettings["resource_arbiter"] = arbSettings;
   allocSettings["client_arbiter"] = arbSettings;
   allocSettings["iterations"] = 2;

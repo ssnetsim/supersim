@@ -14,13 +14,12 @@
  */
 #include "network/hyperx/ValiantsRoutingAlgorithm.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
 #include "network/hyperx/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/RoutingAlgorithm_TESTLIB.h"
 
 TEST(HyperX_ValiantsRoutingAlgorithm, construct) {
@@ -42,7 +41,7 @@ TEST(HyperX_ValiantsRoutingAlgorithm, construct) {
           for (auto& intNode : intNodes) {
             for (auto& minType : minTypes) {
               for (auto& shortCut : shortCuts) {
-                Json::Value settings;
+                nlohmann::json settings;
                 settings["algorithm"] = "valiants";
                 settings["latency"] = latency;
                 settings["output_type"] = outputType;

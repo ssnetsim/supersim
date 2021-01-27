@@ -15,19 +15,18 @@
 #ifndef NETWORK_DRAGONFLY_ROUTINGALGORITHM_H_
 #define NETWORK_DRAGONFLY_ROUTINGALGORITHM_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
-#include "routing/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "routing/RoutingAlgorithm.h"
 
 #define DRAGONFLY_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
     Router*, u32, u32, u32, u32, u32, u32, u32, u32, u32, u32, u32, u32, \
-    Json::Value
+    nlohmann::json
 
 namespace Dragonfly {
 
@@ -38,7 +37,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
       u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
       u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
-      Json::Value _settings);
+      nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the dragonfly topology

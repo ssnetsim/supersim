@@ -14,11 +14,10 @@
  */
 #include "network/dragonfly/util.h"
 
-#include <gtest/gtest.h>
-#include <prim/prim.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
+#include "prim/prim.h"
 
 TEST(Dragonfly, computeOffset) {
   // u32 computeOffset(u32 _source, u32 _destination, u32 _width)

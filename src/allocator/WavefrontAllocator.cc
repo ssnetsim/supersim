@@ -14,15 +14,14 @@
  */
 #include "allocator/WavefrontAllocator.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 WavefrontAllocator::WavefrontAllocator(
     const std::string& _name, const Component* _parent,
-    u32 _numClients, u32 _numResources, Json::Value _settings)
+    u32 _numClients, u32 _numResources, nlohmann::json _settings)
     : Allocator(_name, _parent, _numClients, _numResources, _settings) {
   // pointer vectors
   requests_.resize(numClients_ * numResources_, nullptr);
@@ -38,7 +37,7 @@ WavefrontAllocator::WavefrontAllocator(
   }
 
   // priority scheme
-  std::string scheme = _settings["scheme"].asString();
+  std::string scheme = _settings["scheme"].get<std::string>();
   if (scheme == "sequential") {
     scheme_ = WavefrontAllocator::PriorityScheme::kSequential;
   } else if (scheme == "random") {

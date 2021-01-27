@@ -14,23 +14,23 @@
  */
 #include "traffic/continuous/LocalRandomRemoteAttackCTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 LocalRandomRemoteAttackCTP::LocalRandomRemoteAttackCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, Json::Value _settings)
+    u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // verify settings exist
-  assert(_settings.isMember("block_size"));  // num terminals per block
-  assert(_settings.isMember("local_probability"));
-  assert(_settings.isMember("remote_mode"));
+  assert(_settings.contains("block_size"));  // num terminals per block
+  assert(_settings.contains("local_probability"));
+  assert(_settings.contains("remote_mode"));
 
   // compute fixed values
-  blockSize_ = _settings["block_size"].asUInt();
-  localProbability_ = _settings["local_probability"].asDouble();
+  blockSize_ = _settings["block_size"].get<u32>();
+  localProbability_ = _settings["local_probability"].get<f64>();
 
   // verify matching system size
   numBlocks_ = numTerminals_ / blockSize_;
@@ -41,14 +41,14 @@ LocalRandomRemoteAttackCTP::LocalRandomRemoteAttackCTP(
   assert(localProbability_ < 1.0);
 
   // compute destination from mode format
-  if (_settings["remote_mode"].isString()) {
-    if (_settings["remote_mode"].asString() == "half") {
+  if (_settings["remote_mode"].is_string()) {
+    if (_settings["remote_mode"].get<std::string>() == "half") {
       remoteBlock_ = (localBlock_ + (numBlocks_ / 2)) % numBlocks_;
-    } else if (_settings["remote_mode"].asString() == "opposite") {
+    } else if (_settings["remote_mode"].get<std::string>() == "opposite") {
       remoteBlock_ = (numBlocks_ - 1) - localBlock_;
     }
-  } else if (_settings["remote_mode"].isInt()) {
-    s32 offset = _settings["remote_mode"].asInt();
+  } else if (_settings["remote_mode"].is_number_integer()) {
+    s32 offset = _settings["remote_mode"].get<s32>();
     // don't rely on loop around
     assert((u32)abs(offset) < numBlocks_);
     s32 remoteBlock = ((s32)localBlock_ +

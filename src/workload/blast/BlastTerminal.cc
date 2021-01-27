@@ -14,18 +14,17 @@
  */
 #include "workload/blast/BlastTerminal.h"
 
-#include <fio/InFile.h>
-#include <mut/mut.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 #include <utility>
 
+#include "fio/InFile.h"
+#include "mut/mut.h"
 #include "network/Network.h"
 #include "stats/MessageLog.h"
+#include "strop/strop.h"
 #include "types/Flit.h"
 #include "types/Packet.h"
 #include "workload/blast/Application.h"
@@ -43,18 +42,18 @@ namespace Blast {
 
 BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
                              u32 _id, const std::vector<u32>& _address,
-                             ::Application* _app, Json::Value _settings)
+                             ::Application* _app, nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app) {
   // get the injection rate
-  assert(_settings.isMember("request_injection_rate") &&
-         _settings["request_injection_rate"].isDouble());
-  requestInjectionRate_ = _settings["request_injection_rate"].asDouble();
+  assert(_settings.contains("request_injection_rate") &&
+         _settings["request_injection_rate"].is_number_float());
+  requestInjectionRate_ = _settings["request_injection_rate"].get<f64>();
   assert(requestInjectionRate_ >= 0.0 && requestInjectionRate_ <= 1.0);
 
   // if relative injection is specified, modify the injection accordingly
-  if (_settings.isMember("relative_injection")) {
+  if (_settings.contains("relative_injection")) {
     // if a file is given, it is a csv of injection rates
-    fio::InFile inf(_settings["relative_injection"].asString());
+    fio::InFile inf(_settings["relative_injection"].get<std::string>());
     std::string line;
     u32 lineNum = 0;
     fio::InFile::Status sts = fio::InFile::Status::OK;
@@ -81,24 +80,24 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
   }
 
   // transaction quantity limitation
-  assert(_settings.isMember("num_transactions"));
-  numTransactions_ = _settings["num_transactions"].asUInt();
+  assert(_settings.contains("num_transactions"));
+  numTransactions_ = _settings["num_transactions"].get<u32>();
 
   // max packet size
-  maxPacketSize_  = _settings["max_packet_size"].asUInt();
+  maxPacketSize_  = _settings["max_packet_size"].get<u32>();
   assert(maxPacketSize_ > 0);
 
   // transaction size
-  transactionSize_ = _settings["transaction_size"].asUInt();
+  transactionSize_ = _settings["transaction_size"].get<u32>();
   assert(transactionSize_ > 0);
 
   // multiple destinations within transactions
   multiDestinationTransactions_ = false;
   if (transactionSize_ > 1) {
-    assert(_settings.isMember("multi_destination_transactions"));
-    assert(_settings["multi_destination_transactions"].isBool());
+    assert(_settings.contains("multi_destination_transactions"));
+    assert(_settings["multi_destination_transactions"].is_boolean());
     multiDestinationTransactions_ =
-        _settings["multi_destination_transactions"].asBool();
+        _settings["multi_destination_transactions"].get<bool>();
   }
 
   // create a traffic pattern
@@ -111,37 +110,36 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
       "MessageSizeDistribution", this, _settings["message_size_distribution"]);
 
   // protocol class of injection of requests
-  assert(_settings.isMember("request_protocol_class"));
-  requestProtocolClass_ = _settings["request_protocol_class"].asUInt();
+  assert(_settings.contains("request_protocol_class"));
+  requestProtocolClass_ = _settings["request_protocol_class"].get<u32>();
 
   // keep track if we've already told the app we are done
   notifiedDone_ = false;
 
   // enablement of request/response flows
-  assert(_settings.isMember("enable_responses") &&
-         _settings["enable_responses"].isBool());
-  enableResponses_ = _settings["enable_responses"].asBool();
+  assert(_settings.contains("enable_responses") &&
+         _settings["enable_responses"].is_boolean());
+  enableResponses_ = _settings["enable_responses"].get<bool>();
 
   // latency of request processing
   assert(!enableResponses_ ||
-         _settings.isMember("request_processing_latency"));
-  requestProcessingLatency_ = _settings["request_processing_latency"].asUInt();
+         _settings.contains("request_processing_latency"));
+  requestProcessingLatency_ = _settings.value("request_processing_latency", 0);
 
   // protocol class of injection of responses
-  assert(!enableResponses_ || _settings.isMember("response_protocol_class"));
-  responseProtocolClass_ = _settings["response_protocol_class"].asUInt();
+  assert(!enableResponses_ || _settings.contains("response_protocol_class"));
+  responseProtocolClass_ = _settings.value("response_protocol_class", 0);
 
   // warmup/saturation detector
   fsm_ = BlastTerminal::Fsm::WARMING;
-  warmupInterval_ = _settings["warmup_interval"].asUInt();
-  assert(!_settings["warmup_interval"].isNull());  // 0 turns off warmup
+  warmupInterval_ = _settings["warmup_interval"].get<u32>();
   if (warmupInterval_ > 0) {
     assert(warmupInterval_ >= 100);  // minimum when on
   }
   warmupFlitsReceived_ = 0;
-  warmupWindow_ = _settings["warmup_window"].asUInt();
+  warmupWindow_ = _settings["warmup_window"].get<u32>();
   assert(warmupWindow_ >= 5);
-  maxWarmupAttempts_ = _settings["warmup_attempts"].asUInt();
+  maxWarmupAttempts_ = _settings["warmup_attempts"].get<u32>();
   assert(maxWarmupAttempts_ > 0);
   warmupAttempts_ = 0;
   enrouteSamplePos_ = 0;

@@ -14,10 +14,9 @@
  */
 #include "network/hyperx/ValiantsRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
+#include "factory/ObjectFactory.h"
 #include "types/Message.h"
 #include "types/Packet.h"
 
@@ -28,7 +27,7 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
     const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, Json::Value _settings)
+    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
                        _inputPort, _inputVc, _dimensionWidths,
                        _dimensionWeights, _concentration, _interfacePorts,
@@ -43,33 +42,34 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
   //  2N = last hop to dimension N
   //  we can eject flit to destination terminal using any VC
 
-  assert(_settings.isMember("intermediate_node") &&
-         _settings["intermediate_node"].isString());
-  assert(_settings.isMember("minimal") && _settings["minimal"].isString());
-  assert(_settings.isMember("output_type") &&
-         _settings["output_type"].isString());
-  assert(_settings.isMember("max_outputs") &&
-         _settings["max_outputs"].isUInt());
+  assert(_settings.contains("intermediate_node") &&
+         _settings["intermediate_node"].is_string());
+  assert(_settings.contains("minimal") && _settings["minimal"].is_string());
+  assert(_settings.contains("output_type") &&
+         _settings["output_type"].is_string());
+  assert(_settings.contains("max_outputs") &&
+         _settings["max_outputs"].is_number_integer());
 
-  assert(_settings.isMember("output_algorithm") &&
-         _settings["output_algorithm"].isString());
-  if (_settings["output_algorithm"].asString() == "random") {
+  assert(_settings.contains("output_algorithm") &&
+         _settings["output_algorithm"].is_string());
+  if (_settings["output_algorithm"].get<std::string>() == "random") {
     outputAlg_ = OutputAlg::Rand;
-  } else if (_settings["output_algorithm"].asString() == "minimal") {
+  } else if (_settings["output_algorithm"].get<std::string>() == "minimal") {
     outputAlg_ = OutputAlg::Min;
   } else {
     fprintf(stderr, "Unknown output algorithm:");
     fprintf(stderr, " '%s'\n",
-            _settings["output_algorithm"].asString().c_str());
+            _settings["output_algorithm"].get<std::string>().c_str());
     assert(false);
   }
 
-  maxOutputs_ = _settings["max_outputs"].asUInt();
+  maxOutputs_ = _settings["max_outputs"].get<u32>();
 
-  std::string intermediateNode = _settings["intermediate_node"].asString();
-  std::string minimalType = _settings["minimal"].asString();
-  std::string outputType = _settings["output_type"].asString();
-  shortCut_ = _settings["short_cut"].asBool();
+  std::string intermediateNode =
+      _settings["intermediate_node"].get<std::string>();
+  std::string minimalType = _settings["minimal"].get<std::string>();
+  std::string outputType = _settings["output_type"].get<std::string>();
+  shortCut_ = _settings["short_cut"].get<bool>();
 
   if (intermediateNode == "regular") {
     intNodeAlg_ = IntNodeAlg::REG;

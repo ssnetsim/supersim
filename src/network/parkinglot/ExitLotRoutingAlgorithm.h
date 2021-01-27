@@ -15,13 +15,12 @@
 #ifndef NETWORK_PARKINGLOT_EXITLOTROUTINGALGORITHM_H_
 #define NETWORK_PARKINGLOT_EXITLOTROUTINGALGORITHM_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 
 #include "event/Component.h"
 #include "network/parkinglot/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
 
 namespace ParkingLot {
@@ -31,7 +30,7 @@ class ExitLotRoutingAlgorithm : public ParkingLot::RoutingAlgorithm {
   ExitLotRoutingAlgorithm(
       const std::string& _name, const Component* _parent, Router* _router,
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-      u32 _outputPort, Json::Value _settings);
+      u32 _outputPort, nlohmann::json _settings);
   ~ExitLotRoutingAlgorithm();
 
  protected:

@@ -15,18 +15,17 @@
 #ifndef EVENT_VECTORQUEUE_H_
 #define EVENT_VECTORQUEUE_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <queue>
 #include <vector>
 
-#include "event/Simulator.h"
 #include "event/Component.h"
+#include "event/Simulator.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class VectorQueue : public Simulator {
  public:
-  explicit VectorQueue(Json::Value _settings);
+  explicit VectorQueue(nlohmann::json _settings);
   ~VectorQueue();
   void addEvent(u64 _time, u8 _epsilon, Component* _component, void* _event,
                 s32 _type) override;

@@ -15,18 +15,17 @@
 #ifndef METADATA_CREATIONTIMESTAMPMETADATAHANDLER_H_
 #define METADATA_CREATIONTIMESTAMPMETADATAHANDLER_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <unordered_map>
 
 #include "metadata/MetadataHandler.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class Application;
 
 class CreationTimestampMetadataHandler : public MetadataHandler {
  public:
-  explicit CreationTimestampMetadataHandler(Json::Value _settings);
+  explicit CreationTimestampMetadataHandler(nlohmann::json _settings);
   ~CreationTimestampMetadataHandler();
 
   void packetInjection(const Application* _app, Packet* _packet) override;

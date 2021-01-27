@@ -15,12 +15,11 @@
 #ifndef WORKLOAD_NULLTERMINAL_H_
 #define WORKLOAD_NULLTERMINAL_H_
 
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "prim/prim.h"
 #include "workload/Terminal.h"
 
 class NullTerminal : public Terminal {

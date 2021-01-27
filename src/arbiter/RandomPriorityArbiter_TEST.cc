@@ -12,17 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
-#include <gtest/gtest.h>
-#include <prim/prim.h>
+#include "arbiter/RandomPriorityArbiter.h"
 
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
-#include "arbiter/RandomPriorityArbiter.h"
-
 #include "arbiter/Arbiter_TESTLIB.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(RandomPriorityArbiter, full) {
@@ -40,7 +39,7 @@ TEST(RandomPriorityArbiter, full) {
     } while (hotCount(request, size) <= size/2);
 
     Arbiter* arb = new RandomPriorityArbiter(
-        "Arb", nullptr, size, Json::Value());
+        "Arb", nullptr, size, nlohmann::json());
     assert(arb->size() == size);
     for (u32 idx = 0; idx < size; idx++) {
       arb->setRequest(idx, &request[idx]);

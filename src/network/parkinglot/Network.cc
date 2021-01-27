@@ -14,34 +14,33 @@
  */
 #include "network/parkinglot/Network.h"
 
-#include <factory/ObjectFactory.h>
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <tuple>
 
+#include "factory/ObjectFactory.h"
 #include "network/parkinglot/InjectionAlgorithm.h"
 #include "network/parkinglot/RoutingAlgorithm.h"
+#include "strop/strop.h"
 
 namespace ParkingLot {
 
 Network::Network(const std::string& _name, const Component* _parent,
-                 MetadataHandler* _metadataHandler, Json::Value _settings)
+                 MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Network(_name, _parent, _metadataHandler, _settings) {
   // attributes
-  concentration_ = _settings["concentration"].asUInt();
+  concentration_ = _settings["concentration"].get<u32>();
   assert(concentration_ > 0);
-  u32 interfacePorts = _settings["interface_ports"].asUInt();
+  u32 interfacePorts = _settings["interface_ports"].get<u32>();
   assert(interfacePorts == 1);
   u32 routerRadix = concentration_ + 2;
-  inputPort_ = _settings["input_port"].asUInt();
+  inputPort_ = _settings["input_port"].get<u32>();
   assert(inputPort_ < routerRadix);
-  outputPort_ = _settings["output_port"].asUInt();
+  outputPort_ = _settings["output_port"].get<u32>();
   assert(outputPort_ < routerRadix);
   assert(outputPort_ != inputPort_);
-  u32 routers = _settings["routers"].asUInt();
+  u32 routers = _settings["routers"].get<u32>();
   assert(routers > 0);
   u32 interfaces = concentration_ * routers + 1;
 

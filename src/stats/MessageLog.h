@@ -15,15 +15,14 @@
 #ifndef STATS_MESSAGELOG_H_
 #define STATS_MESSAGELOG_H_
 
-#include <fio/OutFile.h>
-#include <json/json.h>
-#include <prim/prim.h>
-
+#include "fio/OutFile.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "types/Message.h"
 
 class MessageLog {
  public:
-  explicit MessageLog(Json::Value _settings);
+  explicit MessageLog(nlohmann::json _settings);
   ~MessageLog();
   void logMessage(const Message* _message);
   void startTransaction(u64 _trans);

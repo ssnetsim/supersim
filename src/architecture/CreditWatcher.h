@@ -15,7 +15,7 @@
 #ifndef ARCHITECTURE_CREDITWATCHER_H_
 #define ARCHITECTURE_CREDITWATCHER_H_
 
-#include <prim/prim.h>
+#include "prim/prim.h"
 
 /*
  * This class defines the interface for devices that want to listen to the

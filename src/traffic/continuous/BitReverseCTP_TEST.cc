@@ -14,11 +14,10 @@
  */
 #include "traffic/continuous/BitReverseCTP.h"
 
-#include <bits/bits.h>
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <prim/prim.h>
-
+#include "bits/bits.h"
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(BitReverseCTP, simple) {
@@ -26,7 +25,7 @@ TEST(BitReverseCTP, simple) {
 
   const u32 TERMS = 1 << 8;
   for (u32 idx = 0; idx < TERMS; idx++) {
-    Json::Value settings;
+    nlohmann::json settings;
     BitReverseCTP tp("TP", nullptr, TERMS, idx, settings);
     for (u32 cnt = 0; cnt < 1000; cnt++) {
       u32 next = tp.nextDestination();

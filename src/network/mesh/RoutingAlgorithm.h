@@ -15,19 +15,18 @@
 #ifndef NETWORK_MESH_ROUTINGALGORITHM_H_
 #define NETWORK_MESH_ROUTINGALGORITHM_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
-#include "routing/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "routing/RoutingAlgorithm.h"
 
 #define MESH_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
     Router*, u32, u32, u32, u32, const std::vector<u32>&,           \
-    const std::vector<u32>&, u32, u32, Json::Value
+    const std::vector<u32>&, u32, u32, nlohmann::json
 
 namespace Mesh {
 
@@ -38,7 +37,7 @@ class RoutingAlgorithm : public ::RoutingAlgorithm {
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
       const std::vector<u32>& _dimensionWidths,
       const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, u32 _interfacePorts, Json::Value _settings);
+      u32 _concentration, u32 _interfacePorts, nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the mesh topology

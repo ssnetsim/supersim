@@ -34,16 +34,16 @@ http_archive(
 )
 
 http_file(
-  name = "jsoncpp_build",
-  urls = ["https://raw.githubusercontent.com/nicmcd/pkgbuild/master/jsoncpp.BUILD"],
+    name = "nlohmann_json_build",
+    urls = ["https://raw.githubusercontent.com/nicmcd/pkgbuild/master/nlohmannjson.BUILD"],
 )
 
-version = "1.8.4"
+release = "3.9.1"
 http_archive(
-  name = "jsoncpp",
-  urls = ["https://github.com/open-source-parsers/jsoncpp/archive/" + version + ".tar.gz"],
-  strip_prefix = "jsoncpp-" + version,
-  build_file = "@jsoncpp_build//file:downloaded",
+    name = "nlohmann_json",
+    urls = ["https://github.com/nlohmann/json/archive/v" + release + ".tar.gz"],
+    strip_prefix = "json-" + release,
+    build_file = "@nlohmann_json_build//file:downloaded",
 )
 
 hash = "6b56ef3"
@@ -110,7 +110,7 @@ http_archive(
   strip_prefix = "nicmcd-libfio-" + hash,
 )
 
-hash = "d7c6272"
+hash = "5027e1c"
 http_archive(
   name = "libsettings",
   urls = ["https://github.com/nicmcd/libsettings/tarball/" + hash],

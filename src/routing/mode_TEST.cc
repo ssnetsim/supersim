@@ -14,9 +14,8 @@
  */
 #include "routing/mode.h"
 
-#include <gtest/gtest.h>
-
 #include "congestion/Congestion_TESTLIB.h"
+#include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(RoutingMode, portAveMinMax) {
@@ -27,12 +26,12 @@ TEST(RoutingMode, portAveMinMax) {
   std::vector<f64> congestion = {0.5, 0.4, 0.1,
                                  0.2, 0.5, 0.9};
 
-  Json::Value routerSettings;
+  nlohmann::json routerSettings;
   CongestionTestRouter router(
       "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
       nullptr, routerSettings);
 
-  Json::Value sensorSettings;
+  nlohmann::json sensorSettings;
   sensorSettings["granularity"] = 0;
   sensorSettings["minimum"] = 0;
   sensorSettings["offset"] = 0;

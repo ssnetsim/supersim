@@ -16,11 +16,11 @@
 
 #include <cassert>
 
-InfoLog::InfoLog(Json::Value _settings)
+InfoLog::InfoLog(nlohmann::json _settings)
     : outFile_(nullptr) {
-  if (!_settings["file"].isNull()) {
+  if (!_settings["file"].is_null()) {
     // create file
-    outFile_ = new fio::OutFile(_settings["file"].asString());
+    outFile_ = new fio::OutFile(_settings["file"].get<std::string>());
   }
 }
 

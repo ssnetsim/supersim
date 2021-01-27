@@ -15,22 +15,21 @@
 #ifndef ALLOCATOR_ALLOCATOR_H_
 #define ALLOCATOR_ALLOCATOR_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "arbiter/Arbiter.h"
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 #define ALLOCATOR_ARGS const std::string&, const Component*, u32, u32,  \
-    Json::Value
+    nlohmann::json
 
 class Allocator : public Component {
  public:
   Allocator(const std::string& _name, const Component* _parent,
-            u32 _numClients, u32 _numResources, Json::Value _settings);
+            u32 _numClients, u32 _numResources, nlohmann::json _settings);
   virtual ~Allocator();
 
   // this is the factory for allocators

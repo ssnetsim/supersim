@@ -14,12 +14,11 @@
  */
 #include "router/inputqueued/Router.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "architecture/util.h"
 #include "congestion/CongestionSensor.h"
+#include "factory/ObjectFactory.h"
 #include "network/Network.h"
 #include "router/inputqueued/InputQueue.h"
 #include "router/inputqueued/OutputQueue.h"
@@ -29,11 +28,11 @@ namespace InputQueued {
 Router::Router(
     const std::string& _name, const Component* _parent, Network* _network,
     u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, Json::Value _settings)
+    MetadataHandler* _metadataHandler, nlohmann::json _settings)
     : ::Router(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
                _metadataHandler, _settings),
       congestionMode_(parseCongestionMode(
-          _settings["congestion_mode"].asString())) {
+          _settings["congestion_mode"].get<std::string>())) {
   // determine the size of credits
   creditSize_ = numVcs_ * (u32)std::ceil(
       (f64)gSim->cycleTime(Simulator::Clock::CHANNEL) /
@@ -45,21 +44,21 @@ Router::Router(
   inputQueueMult_ = 0;
   inputQueueMax_ = 0;
   inputQueueMin_ = 0;
-  assert(_settings.isMember("input_queue_mode"));
+  assert(_settings.contains("input_queue_mode"));
 
-  if (_settings["input_queue_mode"].asString() == "tailored") {
+  if (_settings["input_queue_mode"].get<std::string>() == "tailored") {
     inputQueueTailored_ = true;
-    inputQueueMult_ = _settings["input_queue_depth"].asDouble();
+    inputQueueMult_ = _settings["input_queue_depth"].get<f64>();
     assert(inputQueueMult_ > 0.0);
     // max and min queue depth
-    assert(_settings.isMember("input_queue_min"));
-    inputQueueMin_ = _settings["input_queue_min"].asUInt();
-    assert(_settings.isMember("input_queue_max"));
-    inputQueueMax_ = _settings["input_queue_max"].asUInt();
+    assert(_settings.contains("input_queue_min"));
+    inputQueueMin_ = _settings["input_queue_min"].get<u32>();
+    assert(_settings.contains("input_queue_max"));
+    inputQueueMax_ = _settings["input_queue_max"].get<u32>();
     assert(inputQueueMin_ <= inputQueueMax_);
-  } else if (_settings["input_queue_mode"].asString() == "fixed") {
+  } else if (_settings["input_queue_mode"].get<std::string>() == "fixed") {
     inputQueueTailored_ = false;
-    inputQueueDepth_ = _settings["input_queue_depth"].asUInt();
+    inputQueueDepth_ = _settings["input_queue_depth"].get<u32>();
     assert(inputQueueDepth_ > 0);
   } else {
     fprintf(stderr, "Wrong input queue mode, options: tailor or fixed\n");
@@ -67,10 +66,10 @@ Router::Router(
   }
 
   // pipeline control
-  assert(_settings.isMember("vca_swa_wait") &&
-         _settings["vca_swa_wait"].isBool());
-  bool vcaSwaWait = _settings["vca_swa_wait"].asBool();
-  u32 outputQueueDepth = _settings["output_queue_depth"].asUInt();
+  assert(_settings.contains("vca_swa_wait") &&
+         _settings["vca_swa_wait"].is_boolean());
+  bool vcaSwaWait = _settings["vca_swa_wait"].get<bool>();
+  u32 outputQueueDepth = _settings["output_queue_depth"].get<u32>();
   assert(outputQueueDepth > 0);
 
   // create a congestion status device
@@ -97,8 +96,8 @@ Router::Router(
       numPorts_, 0, Simulator::Clock::ROUTER, _settings["crossbar_scheduler"]);
 
   // determine if the router will use store and forward
-  assert(_settings.isMember("store_and_forward"));
-  bool storeAndForward = _settings["store_and_forward"].asBool();
+  assert(_settings.contains("store_and_forward"));
+  bool storeAndForward = _settings["store_and_forward"].get<bool>();
 
   // create routing algorithms, input queues, link to routing algorithm,
   //  crossbar, and schedulers

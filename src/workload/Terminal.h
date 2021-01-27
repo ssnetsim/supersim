@@ -15,17 +15,16 @@
 #ifndef WORKLOAD_TERMINAL_H_
 #define WORKLOAD_TERMINAL_H_
 
-#include <prim/prim.h>
-
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
-#include "workload/RateMonitor.h"
 #include "event/Component.h"
+#include "prim/prim.h"
 #include "stats/RateLog.h"
 #include "types/Message.h"
 #include "types/MessageReceiver.h"
+#include "workload/RateMonitor.h"
 
 class Application;
 

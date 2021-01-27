@@ -14,17 +14,14 @@
  */
 #include "traffic/continuous/MatrixCTP.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-// #include <mut/mut.h>
-#include <prim/prim.h>
-// #include <strop/strop.h>
-
 #include <cstdio>
 
 #include <tuple>
 #include <vector>
 
+#include "gtest/gtest.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "test/TestSetup_TESTLIB.h"
 
 const u32 SIZE4 = 4;
@@ -126,7 +123,7 @@ TEST(MatrixCTP, full) {
     // set up
     TestSetup testSetup(1234, 1234, 1234, 1234, 456789);
     writeCSV(makeCSV(testDist, testSize).c_str(), TMPFILE);
-    Json::Value settings;
+    nlohmann::json settings;
     settings["file"] = TMPFILE;
     std::vector<ContinuousTrafficPattern*> tps(testSize, nullptr);
     for (u32 tp = 0; tp < testSize; tp++) {

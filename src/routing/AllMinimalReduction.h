@@ -15,14 +15,13 @@
 #ifndef ROUTING_ALLMINIMALREDUCTION_H_
 #define ROUTING_ALLMINIMALREDUCTION_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_set>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/Reduction.h"
 
 class AllMinimalReduction : public Reduction {
@@ -30,7 +29,7 @@ class AllMinimalReduction : public Reduction {
   AllMinimalReduction(
       const std::string& _name, const Component* _parent,
       const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-      Json::Value _settings);
+      nlohmann::json _settings);
   ~AllMinimalReduction();
 
   void process(

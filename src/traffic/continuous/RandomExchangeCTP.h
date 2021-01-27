@@ -15,18 +15,17 @@
 #ifndef TRAFFIC_CONTINUOUS_RANDOMEXCHANGECTP_H_
 #define TRAFFIC_CONTINUOUS_RANDOMEXCHANGECTP_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/continuous/ContinuousTrafficPattern.h"
 
 class RandomExchangeCTP : public ContinuousTrafficPattern {
  public:
   RandomExchangeCTP(
       const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, Json::Value _settings);
+      u32 _self, nlohmann::json _settings);
   ~RandomExchangeCTP();
   u32 nextDestination() override;
 };

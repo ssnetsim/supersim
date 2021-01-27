@@ -15,8 +15,7 @@
 #ifndef TYPES_FLITRECEIVER_H_
 #define TYPES_FLITRECEIVER_H_
 
-#include <prim/prim.h>
-
+#include "prim/prim.h"
 #include "types/Flit.h"
 
 class FlitReceiver {

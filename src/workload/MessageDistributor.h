@@ -15,12 +15,11 @@
 #ifndef WORKLOAD_MESSAGEDISTRIBUTOR_H_
 #define WORKLOAD_MESSAGEDISTRIBUTOR_H_
 
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "prim/prim.h"
 #include "types/Message.h"
 #include "types/MessageReceiver.h"
 

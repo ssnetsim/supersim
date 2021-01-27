@@ -14,21 +14,21 @@
  */
 #include "traffic/continuous/ScanCTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 ScanCTP::ScanCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, Json::Value _settings)
+    u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
-  assert(_settings.isMember("send_to_self"));
-  sendToSelf_ = _settings["send_to_self"].asBool();
+  assert(_settings.contains("send_to_self"));
+  sendToSelf_ = _settings["send_to_self"].get<bool>();
 
   // set the direction of scan
-  assert(_settings.isMember("direction"));
-  std::string dir = _settings["direction"].asString();
+  assert(_settings.contains("direction"));
+  std::string dir = _settings["direction"].get<std::string>();
   if (dir == "ascend") {
     ascend_ = true;
   } else if (dir == "descend") {
@@ -41,15 +41,15 @@ ScanCTP::ScanCTP(
   }
 
   // set the initial destination
-  assert(_settings.isMember("initial"));
-  if ((_settings["initial"].isString()) &&
-      (_settings["initial"].asString() == "random")) {
+  assert(_settings.contains("initial"));
+  if ((_settings["initial"].is_string()) &&
+      (_settings["initial"].get<std::string>() == "random")) {
     do {
       next_ = gSim->rnd.nextU64(0, numTerminals_ - 1);
     } while (!sendToSelf_ && next_ == self_);
-  } else if ((_settings["initial"].isUInt()) &&
-             (_settings["initial"].asUInt() < numTerminals_)) {
-    next_ = _settings["initial"].asUInt();
+  } else if ((_settings["initial"].is_number_integer()) &&
+             (_settings["initial"].get<u32>() < numTerminals_)) {
+    next_ = _settings["initial"].get<u32>();
     if (next_ == self_ && !sendToSelf_) {
       advance();
       assert(next_ != self_);  // is this even possible?

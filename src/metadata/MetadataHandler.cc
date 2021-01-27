@@ -14,19 +14,19 @@
  */
 #include "metadata/MetadataHandler.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include <string>
 
-MetadataHandler::MetadataHandler(Json::Value _settings) {}
+#include "factory/ObjectFactory.h"
+
+MetadataHandler::MetadataHandler(nlohmann::json _settings) {}
 
 MetadataHandler::~MetadataHandler() {}
 
-MetadataHandler* MetadataHandler::create(Json::Value _settings) {
+MetadataHandler* MetadataHandler::create(nlohmann::json _settings) {
   // retrieve the type
-  const std::string& type = _settings["type"].asString();
+  const std::string& type = _settings["type"].get<std::string>();
 
   // attempt to create the metadata handler
   MetadataHandler* mh = factory::ObjectFactory<

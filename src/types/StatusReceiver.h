@@ -15,7 +15,7 @@
 #ifndef TYPES_STATUSRECEIVER_H_
 #define TYPES_STATUSRECEIVER_H_
 
-#include <prim/prim.h>
+#include "prim/prim.h"
 
 class StatusReceiver {
  public:

@@ -14,10 +14,10 @@
  */
 #include "network/dragonfly/util.h"
 
-#include <strop/strop.h>
-
 #include <cassert>
 #include <cmath>
+
+#include "strop/strop.h"
 
 namespace Dragonfly {
 

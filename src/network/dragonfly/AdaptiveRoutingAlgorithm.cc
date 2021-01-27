@@ -14,13 +14,13 @@
  */
 #include "network/dragonfly/AdaptiveRoutingAlgorithm.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
 #include <tuple>
 #include <unordered_set>
 #include <vector>
 
+#include "factory/ObjectFactory.h"
 #include "network/dragonfly/util.h"
 #include "routing/util.h"
 #include "types/Message.h"
@@ -37,11 +37,11 @@ static const u32 kGlobalMin = 5;
 static const u32 kDst1 = 6;
 
 std::vector<u32> AdaptiveRoutingAlgorithm::createRoutingClasses(
-    Json::Value _settings) {
-  assert(_settings.isMember("progressive_adaptive"));
-  bool par = _settings["progressive_adaptive"].asBool();
-  assert(_settings.isMember("valiant_node"));
-  bool valn = _settings["valiant_node"].asBool();
+    nlohmann::json _settings) {
+  assert(_settings.contains("progressive_adaptive"));
+  bool par = _settings["progressive_adaptive"].get<bool>();
+  assert(_settings.contains("valiant_node"));
+  bool valn = _settings["valiant_node"].get<bool>();
   // S1, S2, Global non-min, I1, I2, Global min, D1
   if (par && valn) {
     return std::vector<u32>({0, 1, 1, 2, 3, 3, 4});
@@ -61,19 +61,19 @@ AdaptiveRoutingAlgorithm::AdaptiveRoutingAlgorithm(
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
     u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
     u32 _interfacePorts,  u32 _routerRadix, u32 _globalPortsPerRouter,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : RoutingAlgorithm(
           _name, _parent, _router, _baseVc, _numVcs, _inputPort, _inputVc,
           _localWidth, _localWeight, _globalWidth, _globalWeight,
           _concentration, _interfacePorts, _routerRadix, _globalPortsPerRouter,
           _settings),
-      progressiveAdaptive_(_settings["progressive_adaptive"].asBool()),
-      valiantNode_(_settings["valiant_node"].asBool()),
+      progressiveAdaptive_(_settings["progressive_adaptive"].get<bool>()),
+      valiantNode_(_settings["valiant_node"].get<bool>()),
       routingClasses_(createRoutingClasses(_settings)),
-      mode_(parseRoutingMode(_settings["mode"].asString())) {
+      mode_(parseRoutingMode(_settings["mode"].get<std::string>())) {
   // checks
-  assert(_settings.isMember("progressive_adaptive"));
-  assert(_settings.isMember("valiant_node"));
+  assert(_settings.contains("progressive_adaptive"));
+  assert(_settings.contains("valiant_node"));
 
   // Req VCs and port bases
   rcs_ = 3 + progressiveAdaptive_ + valiantNode_;

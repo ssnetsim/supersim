@@ -14,10 +14,10 @@
  */
 #include "arbiter/LslpArbiter.h"
 
-#include <factory/ObjectFactory.h>
+#include "factory/ObjectFactory.h"
 
 LslpArbiter::LslpArbiter(const std::string& _name, const Component* _parent,
-                         u32 _size, Json::Value _settings)
+                         u32 _size, nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {
   nextPriority_ = gSim->rnd.nextU64(0, size_ - 1);
   latch();

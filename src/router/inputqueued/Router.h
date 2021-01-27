@@ -15,9 +15,6 @@
 #ifndef ROUTER_INPUTQUEUED_ROUTER_H_
 #define ROUTER_INPUTQUEUED_ROUTER_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <vector>
@@ -28,8 +25,10 @@
 #include "congestion/CongestionSensor.h"
 #include "event/Component.h"
 #include "network/Channel.h"
-#include "routing/RoutingAlgorithm.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "router/Router.h"
+#include "routing/RoutingAlgorithm.h"
 #include "types/Credit.h"
 #include "types/Flit.h"
 
@@ -44,7 +43,7 @@ class Router : public ::Router {
  public:
   Router(const std::string& _name, const Component* _parent, Network* _network,
          u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-         MetadataHandler* _metadataHandler, Json::Value _settings);
+         MetadataHandler* _metadataHandler, nlohmann::json _settings);
   ~Router();
 
   // Network

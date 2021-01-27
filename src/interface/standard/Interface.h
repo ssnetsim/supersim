@@ -15,9 +15,6 @@
 #ifndef INTERFACE_STANDARD_INTERFACE_H_
 #define INTERFACE_STANDARD_INTERFACE_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -27,14 +24,16 @@
 #include "architecture/CrossbarScheduler.h"
 #include "interface/Interface.h"
 #include "network/Channel.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "routing/InjectionAlgorithm.h"
 #include "types/Credit.h"
 #include "types/CreditReceiver.h"
 #include "types/Flit.h"
 #include "types/FlitReceiver.h"
-#include "types/Packet.h"
 #include "types/Message.h"
 #include "types/MessageReceiver.h"
+#include "types/Packet.h"
 
 // architectural drawing here: https://bit.ly/2LK3uF4
 
@@ -50,7 +49,7 @@ class Interface : public ::Interface {
   Interface(const std::string& _name, const Component* _parent,
             Network* _network, u32 _id, const std::vector<u32>& _address,
             u32 _numPorts, u32 _numVcs, MetadataHandler* _metadataHandler,
-            Json::Value _settings);
+            nlohmann::json _settings);
   ~Interface();
 
   void setInputChannel(u32 _port, Channel* _channel) override;

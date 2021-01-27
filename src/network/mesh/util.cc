@@ -13,8 +13,10 @@
  * limitations under the License.
  */
 #include "network/mesh/util.h"
-#include <algorithm>
+
 #include <cassert>
+
+#include <algorithm>
 
 namespace Mesh {
 

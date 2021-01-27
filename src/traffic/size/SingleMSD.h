@@ -15,11 +15,10 @@
 #ifndef TRAFFIC_SIZE_SINGLEMSD_H_
 #define TRAFFIC_SIZE_SINGLEMSD_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "traffic/size/MessageSizeDistribution.h"
 #include "types/Message.h"
 
@@ -27,7 +26,7 @@ class SingleMSD : public MessageSizeDistribution {
  public:
   SingleMSD(
       const std::string& _name, const Component* _parent,
-      Json::Value _settings);
+      nlohmann::json _settings);
   virtual ~SingleMSD();
 
   // size bounds

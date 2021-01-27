@@ -14,14 +14,13 @@
  */
 #include "traffic/continuous/RandomBlockOutCTP.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <mut/mut.h>
-#include <prim/prim.h>
-#include <strop/strop.h>
-
 #include <vector>
 
+#include "gtest/gtest.h"
+#include "mut/mut.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "strop/strop.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(RandomBlockOutCTP, all) {
@@ -32,7 +31,7 @@ TEST(RandomBlockOutCTP, all) {
 
   std::vector<RandomBlockOutCTP*> ctps(NUMTERMINALS, nullptr);
   for (u32 ctp = 0; ctp < NUMTERMINALS; ctp++) {
-    Json::Value settings;
+    nlohmann::json settings;
     settings["block_size"] = BLOCKSIZE;
     RandomBlockOutCTP* tp = new RandomBlockOutCTP(
         "TP_" + std::to_string(ctp), nullptr, NUMTERMINALS, ctp, settings);

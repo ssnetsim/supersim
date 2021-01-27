@@ -15,13 +15,12 @@
 #ifndef WORKLOAD_WORKLOAD_H_
 #define WORKLOAD_WORKLOAD_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "event/Component.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 #include "stats/MessageLog.h"
 #include "workload/MessageDistributor.h"
 
@@ -31,7 +30,7 @@ class MetadataHandler;
 class Workload : public Component {
  public:
   Workload(const std::string& _name, const Component* _parent,
-           MetadataHandler* _metadataHandler, Json::Value _settings);
+           MetadataHandler* _metadataHandler, nlohmann::json _settings);
   ~Workload();
 
   u32 numApplications() const;

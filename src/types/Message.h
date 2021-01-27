@@ -15,9 +15,9 @@
 #ifndef TYPES_MESSAGE_H_
 #define TYPES_MESSAGE_H_
 
-#include <prim/prim.h>
-
 #include <vector>
+
+#include "prim/prim.h"
 
 class Packet;
 class Terminal;

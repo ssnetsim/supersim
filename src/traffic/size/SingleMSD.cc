@@ -14,19 +14,18 @@
  */
 #include "traffic/size/SingleMSD.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 
 #include "event/Simulator.h"
+#include "factory/ObjectFactory.h"
 
 SingleMSD::SingleMSD(
     const std::string& _name, const Component* _parent,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
-      messageSize_(_settings["message_size"].asUInt()),
-      doDependent_(_settings.isMember("dependent_message_size")),
-      depMessageSize_(_settings["dependent_message_size"].asUInt()) {
+      messageSize_(_settings["message_size"].get<u32>()),
+      doDependent_(_settings.contains("dependent_message_size")),
+      depMessageSize_(_settings.value("dependent_message_size", 0)) {
   assert(messageSize_ > 0);
   if (doDependent_) {
     assert(depMessageSize_ > 0);

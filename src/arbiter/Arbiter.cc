@@ -14,13 +14,13 @@
  */
 #include "arbiter/Arbiter.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 Arbiter::Arbiter(
     const std::string& _name, const Component* _parent, u32 _size,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Component(_name, _parent), size_(_size) {
   assert(size_ > 0);
   requests_.resize(size_, nullptr);
@@ -32,9 +32,9 @@ Arbiter::~Arbiter() {}
 
 Arbiter* Arbiter::create(
     const std::string& _name, const Component* _parent, u32 _size,
-    Json::Value _settings) {
+    nlohmann::json _settings) {
   // retrieve the arbiter type
-  const std::string& type = _settings["type"].asString();
+  const std::string& type = _settings["type"].get<std::string>();
 
   // attempt to create the arbiter
   Arbiter* arb = factory::ObjectFactory<Arbiter, ARBITER_ARGS>::create(

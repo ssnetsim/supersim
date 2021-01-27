@@ -14,26 +14,25 @@
  */
 #include "congestion/CongestionSensor.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
 #include <cmath>
 
 #include <algorithm>
 
+#include "factory/ObjectFactory.h"
 #include "router/Router.h"
 
 CongestionSensor::CongestionSensor(
     const std::string& _name, const Component* _parent, PortedDevice* _device,
-    Json::Value _settings)
+    nlohmann::json _settings)
     : Component(_name, _parent), device_(_device),
       numPorts_(device_->numPorts()), numVcs_(device_->numVcs()),
-      granularity_(_settings["granularity"].asUInt()),
-      minimum_(_settings["minimum"].asDouble()),
-      offset_(_settings["offset"].asDouble()) {
-  assert(!_settings["granularity"].isNull());
-  assert(!_settings["minimum"].isNull());
-  assert(!_settings["offset"].isNull());
+      granularity_(_settings["granularity"].get<u32>()),
+      minimum_(_settings["minimum"].get<f64>()),
+      offset_(_settings["offset"].get<f64>()) {
+  assert(!_settings["granularity"].is_null());
+  assert(!_settings["minimum"].is_null());
+  assert(!_settings["offset"].is_null());
   assert(minimum_ >= 0.0);
   assert(offset_ >= 0.0);
 }
@@ -42,9 +41,9 @@ CongestionSensor::~CongestionSensor() {}
 
 CongestionSensor* CongestionSensor::create(
     const std::string& _name, const Component* _parent, PortedDevice* _device,
-    Json::Value _settings) {
+    nlohmann::json _settings) {
   // retrieve the algorithm
-  const std::string& algorithm = _settings["algorithm"].asString();
+  const std::string& algorithm = _settings["algorithm"].get<std::string>();
 
   // attempt to build the congestion status
   CongestionSensor* cs = factory::ObjectFactory<

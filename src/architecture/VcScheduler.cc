@@ -27,7 +27,7 @@ const s32 kAllocEvent = 123;
 
 VcScheduler::VcScheduler(const std::string& _name, const Component* _parent,
                          u32 _numClients, u32 _totalVcs,
-                         Simulator::Clock _clock, Json::Value _settings)
+                         Simulator::Clock _clock, nlohmann::json _settings)
     : Component(_name, _parent),
       numClients_(_numClients), totalVcs_(_totalVcs), clock_(_clock) {
   assert(numClients_ > 0 && numClients_ != U32_MAX);

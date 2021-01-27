@@ -14,15 +14,14 @@
  */
 #include "traffic/continuous/LocalRemoteRandomCTP.h"
 
-#include <gtest/gtest.h>
-#include <json/json.h>
-#include <mut/mut.h>
-#include <prim/prim.h>
-#include <strop/strop.h>
-
 #include <tuple>
 #include <vector>
 
+#include "gtest/gtest.h"
+#include "mut/mut.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
+#include "strop/strop.h"
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(LocalRemoteRandomCTP, full) {
@@ -48,7 +47,7 @@ TEST(LocalRemoteRandomCTP, full) {
 
     TestSetup ts(1, 1, 1, 1, 0xDEAD * 123 + 0xBEEF);
 
-    Json::Value settings;
+    nlohmann::json settings;
     settings["block_size"] = BSIZE;
     settings["local_probability"] = PROB;
 

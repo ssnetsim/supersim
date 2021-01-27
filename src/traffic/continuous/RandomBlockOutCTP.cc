@@ -14,20 +14,20 @@
  */
 #include "traffic/continuous/RandomBlockOutCTP.h"
 
-#include <factory/ObjectFactory.h>
-
 #include <cassert>
+
+#include "factory/ObjectFactory.h"
 
 RandomBlockOutCTP::RandomBlockOutCTP(
     const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, Json::Value _settings)
+    u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // verify settings exist
-  assert(_settings.isMember("block_size"));
+  assert(_settings.contains("block_size"));
 
   // compute fixed values
-  blockSize_ = _settings["block_size"].asUInt();
+  blockSize_ = _settings["block_size"].get<u32>();
   assert(numTerminals_ % blockSize_ == 0);
   blockBase_ = (self_ / blockSize_) * blockSize_;
 }

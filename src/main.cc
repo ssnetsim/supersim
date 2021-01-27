@@ -12,22 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <json/json.h>
-#include <settings/settings.h>
-
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 
 #include <string>
 #include <vector>
 
-#include "workload/Workload.h"
-#include "workload/Terminal.h"
 #include "event/Simulator.h"
 #include "event/VectorQueue.h"
 #include "metadata/MetadataHandler.h"
 #include "network/Network.h"
+#include "nlohmann/json.hpp"
+#include "settings/settings.h"
+#include "workload/Terminal.h"
+#include "workload/Workload.h"
 
 s32 main(s32 _argc, char** _argv) {
   // turn off buffered output on stdout and stderr
@@ -36,13 +35,13 @@ s32 main(s32 _argc, char** _argv) {
 
   // get JSON settings
   printf("Reading settings\n");
-  Json::Value settings;
+  nlohmann::json settings;
   settings::commandLine(_argc, _argv, &settings);
   printf("%s\n", settings::toString(settings).c_str());
 
   // enable debugging on select components
   for (u32 i = 0; i < settings["debug"].size(); i++) {
-    std::string componentName = settings["debug"][i].asString();
+    std::string componentName = settings["debug"][i].get<std::string>();
     Component::addDebugName(componentName);
   }
 
@@ -89,7 +88,7 @@ s32 main(s32 _argc, char** _argv) {
   gSim->initialize();
 
   // run the simulation!
-  if (!settings.isMember("no_sim") || settings["no_sim"].asBool() == false) {
+  if (!settings.contains("no_sim") || settings["no_sim"].get<bool>() == false) {
     printf("Simulation beginning\n");
     gSim->simulate();
     printf("Simulation complete\n");

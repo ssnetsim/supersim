@@ -15,18 +15,17 @@
 #ifndef CONGESTION_NULLSENSOR_H_
 #define CONGESTION_NULLSENSOR_H_
 
-#include <json/json.h>
-#include <prim/prim.h>
-
 #include <string>
 #include <vector>
 
 #include "congestion/CongestionSensor.h"
+#include "nlohmann/json.hpp"
+#include "prim/prim.h"
 
 class NullSensor : public CongestionSensor {
  public:
   NullSensor(const std::string& _name, const Component* _parent,
-             PortedDevice* _device, Json::Value _settings);
+             PortedDevice* _device, nlohmann::json _settings);
   ~NullSensor();
 
   // CreditWatcher interface

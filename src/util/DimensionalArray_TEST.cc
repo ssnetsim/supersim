@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <prim/prim.h>
+#include "util/DimensionalArray.h"
 
 #include <vector>
-#include "util/DimensionalArray.h"
-#include "util/DimensionIterator.h"
 
 #include "gtest/gtest.h"
+#include "prim/prim.h"
+#include "util/DimensionIterator.h"
 
 TEST(DimensionalArray, index) {
   DimensionalArray<u64>* da = new DimensionalArray<u64>();
