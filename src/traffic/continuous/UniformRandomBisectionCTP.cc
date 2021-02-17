@@ -15,15 +15,16 @@
 #include "traffic/continuous/UniformRandomBisectionCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-UniformRandomBisectionCTP::UniformRandomBisectionCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+UniformRandomBisectionCTP::UniformRandomBisectionCTP(const std::string& _name,
+                                                     const Component* _parent,
+                                                     u32 _numTerminals,
+                                                     u32 _self,
+                                                     nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -45,7 +46,7 @@ UniformRandomBisectionCTP::UniformRandomBisectionCTP(
   std::vector<bool> dimMask(dimensions, false);
   if (_settings.contains("enabled_dimensions") &&
       _settings["enabled_dimensions"].is_array()) {
-    for (u32 dim = 0;  dim < dimensions; ++dim) {
+    for (u32 dim = 0; dim < dimensions; ++dim) {
       dimMask.at(dim) = _settings["enabled_dimensions"][dim].get<bool>();
     }
   } else {
@@ -94,6 +95,6 @@ u32 UniformRandomBisectionCTP::nextDestination() {
   return dstVect_.at(gSim->rnd.nextU64(0, dstVect_.size() - 1));
 }
 
-registerWithObjectFactory(
-    "uniform_random_bisection", ContinuousTrafficPattern,
-    UniformRandomBisectionCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("uniform_random_bisection", ContinuousTrafficPattern,
+                          UniformRandomBisectionCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

@@ -28,9 +28,8 @@
 
 class Crossbar : public Component {
  public:
-  Crossbar(const std::string& _name, const Component* _parent,
-           u32 _numInputs, u32 _numOutputs, Simulator::Clock _clock,
-           nlohmann::json _settings);
+  Crossbar(const std::string& _name, const Component* _parent, u32 _numInputs,
+           u32 _numOutputs, Simulator::Clock _clock, nlohmann::json _settings);
   ~Crossbar();
   u32 numInputs() const;
   u32 numOutputs() const;
@@ -44,9 +43,9 @@ class Crossbar : public Component {
   const u64 latency_;
   const u32 numInputs_;
   const u32 numOutputs_;
-  std::vector<std::pair<u32, FlitReceiver*> > receivers_;
+  std::vector<std::pair<u32, FlitReceiver*>> receivers_;
   u64 nextTime_;
-  std::list<std::vector<Flit*> > destMaps_;
+  std::list<std::vector<Flit*>> destMaps_;
 };
 
 #endif  // ARCHITECTURE_CROSSBAR_H_

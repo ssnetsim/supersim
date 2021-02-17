@@ -23,15 +23,14 @@
 
 class GroupAttackCTP : public ContinuousTrafficPattern {
  public:
-  GroupAttackCTP(
-      const std::string& _name, const Component* _parent,
-      u32 _numTerminals, u32 _self, nlohmann::json _settings);
+  GroupAttackCTP(const std::string& _name, const Component* _parent,
+                 u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~GroupAttackCTP();
 
   u32 nextDestination() override;
 
  private:
-  enum class DestinationMode {kPeer, kRandom, kComplement};
+  enum class DestinationMode { kPeer, kRandom, kComplement };
 
   u32 groupCount_;
   u32 groupSize_;

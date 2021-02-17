@@ -65,7 +65,7 @@ class Router : public ::Router {
                        u32 _outputVc) const override;
 
  private:
-  enum class CongestionMode {kOutput, kDownstream};
+  enum class CongestionMode { kOutput, kDownstream };
 
   static CongestionMode parseCongestionMode(const std::string& _mode);
 

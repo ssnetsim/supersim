@@ -23,9 +23,8 @@
 
 class RandomExchangeCTP : public ContinuousTrafficPattern {
  public:
-  RandomExchangeCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  RandomExchangeCTP(const std::string& _name, const Component* _parent,
+                    u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~RandomExchangeCTP();
   u32 nextDestination() override;
 };

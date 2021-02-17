@@ -28,7 +28,7 @@ TEST(LocalRandomRemoteAttackCTP, full) {
   const u32 TESTS = 10000000;
   const bool DEBUG = false;
 
-  std::vector<std::tuple<u32, u32, u32, f64> > setups;
+  std::vector<std::tuple<u32, u32, u32, f64>> setups;
   setups.push_back(std::make_tuple(10, 2, 6, 0.89));
   setups.push_back(std::make_tuple(50, 10, 47, 0.45));
 
@@ -38,8 +38,7 @@ TEST(LocalRandomRemoteAttackCTP, full) {
     const u32 ME = std::get<2>(t);
     const f64 PROB = std::get<3>(t);
     if (DEBUG) {
-      printf("NSIZE=%u BSIZE=%u ME=%u PROB=%f\n",
-             NSIZE, BSIZE, ME, PROB);
+      printf("NSIZE=%u BSIZE=%u ME=%u PROB=%f\n", NSIZE, BSIZE, ME, PROB);
     }
 
     assert(NSIZE % BSIZE == 0);
@@ -53,8 +52,8 @@ TEST(LocalRandomRemoteAttackCTP, full) {
     settings["local_probability"] = PROB;
     settings["remote_mode"] = 2;
 
-    LocalRandomRemoteAttackCTP* tp = new LocalRandomRemoteAttackCTP(
-        "TP", nullptr, NSIZE, ME, settings);
+    LocalRandomRemoteAttackCTP* tp =
+        new LocalRandomRemoteAttackCTP("TP", nullptr, NSIZE, ME, settings);
 
     std::vector<u32> counts(NSIZE, 0);
     for (u32 test = 0; test < TESTS; test++) {

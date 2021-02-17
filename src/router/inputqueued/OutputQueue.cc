@@ -14,9 +14,8 @@
  */
 #include "router/inputqueued/OutputQueue.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 #include <queue>
 #include <string>
 
@@ -28,12 +27,15 @@
 
 namespace InputQueued {
 
-OutputQueue::OutputQueue(
-    const std::string& _name, const Component* _parent, Router* _router,
-    u32 _depth, u32 _port, CreditWatcher* _creditWatcher,
-    bool _incrCreditWatcher)
-    : Component(_name, _parent), depth_(_depth), port_(_port), router_(_router),
-      creditWatcher_(_creditWatcher), incrCreditWatcher_(_incrCreditWatcher),
+OutputQueue::OutputQueue(const std::string& _name, const Component* _parent,
+                         Router* _router, u32 _depth, u32 _port,
+                         CreditWatcher* _creditWatcher, bool _incrCreditWatcher)
+    : Component(_name, _parent),
+      depth_(_depth),
+      port_(_port),
+      router_(_router),
+      creditWatcher_(_creditWatcher),
+      incrCreditWatcher_(_incrCreditWatcher),
       lastReceivedTime_(U64_MAX) {
   // ensure the buffer is empty
   assert(buffer_.size() == 0);
@@ -51,8 +53,7 @@ void OutputQueue::receiveFlit(u32 _port, Flit* _flit) {
   assert(_port == 0);
 
   // we can only receive one flit per cycle
-  assert((lastReceivedTime_ == U64_MAX) ||
-         (lastReceivedTime_ < gSim->time()));
+  assert((lastReceivedTime_ == U64_MAX) || (lastReceivedTime_ < gSim->time()));
   lastReceivedTime_ = gSim->time();
 
   // push flit into corresponding buffer

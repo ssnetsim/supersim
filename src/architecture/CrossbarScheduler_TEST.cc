@@ -33,12 +33,16 @@ class CrossbarSchedulerTestClient : public CrossbarScheduler::Client,
   static const s32 GiveBackCreditEvent = 456;
   enum class Fsm : u8 { REQUESTING = 1, WAITING = 2, DONE = 3 };
 
-  CrossbarSchedulerTestClient(
-      u32 _id, CrossbarScheduler* _xbarSch, u32 _totalVcs, u32 _crossbarPorts,
-      Simulator::Clock _clock, u32 _allocs)
+  CrossbarSchedulerTestClient(u32 _id, CrossbarScheduler* _xbarSch,
+                              u32 _totalVcs, u32 _crossbarPorts,
+                              Simulator::Clock _clock, u32 _allocs)
       : Component("TestClient_" + std::to_string(_id), nullptr),
-        id_(_id), xbarSch_(_xbarSch), totalVcs_(_totalVcs),
-        crossbarPorts_(_crossbarPorts), clock_(_clock), fsm_(Fsm::REQUESTING),
+        id_(_id),
+        xbarSch_(_xbarSch),
+        totalVcs_(_totalVcs),
+        crossbarPorts_(_crossbarPorts),
+        clock_(_clock),
+        fsm_(Fsm::REQUESTING),
         request_(std::make_tuple(U32_MAX, U32_MAX, nullptr)),
         remaining_(_allocs) {
     debug_ = !true;
@@ -148,15 +152,14 @@ TEST(CrossbarScheduler, basic) {
   const u32 ALLOCS_PER_CLIENT = 100;
 
   std::vector<std::tuple<bool, bool, bool>> styles = {
-    // packet-buffer flow control
-    std::make_tuple(true, true, false),
-    // flit-buffer flow control
-    std::make_tuple(false, false, false),
-    // flit-buffer flow control with winner take all
-    std::make_tuple(false, true, true),
-    // packet-buffer flow control with packet interleaving
-    std::make_tuple(true, false, false)
-  };
+      // packet-buffer flow control
+      std::make_tuple(true, true, false),
+      // flit-buffer flow control
+      std::make_tuple(false, false, false),
+      // flit-buffer flow control with winner take all
+      std::make_tuple(false, true, true),
+      // packet-buffer flow control with packet interleaving
+      std::make_tuple(true, false, false)};
 
   for (auto style : styles) {
     for (u32 C = 1; C < 16; C++) {
@@ -178,9 +181,8 @@ TEST(CrossbarScheduler, basic) {
           schSettings["packet_lock"] = std::get<1>(style);
           schSettings["idle_unlock"] = std::get<2>(style);
           CrossbarScheduler* xbarSch =
-              new CrossbarScheduler(
-                  "XbarSch", nullptr, C, V, P, 0, Simulator::Clock::ROUTER,
-                  schSettings);
+              new CrossbarScheduler("XbarSch", nullptr, C, V, P, 0,
+                                    Simulator::Clock::ROUTER, schSettings);
           assert(xbarSch->numClients() == C);
           assert(xbarSch->totalVcs() == V);
           assert(xbarSch->crossbarPorts() == P);

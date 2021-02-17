@@ -39,8 +39,8 @@ TEST(UniformRandomCTP, evenSpread) {
   settings["send_to_self"] = true;
   std::vector<UniformRandomCTP*> tps(TPS);
   for (u32 idx = 0; idx < TPS; idx++) {
-    tps.at(idx) = new UniformRandomCTP(
-        "TP_"+std::to_string(idx), nullptr, TPS, idx, settings);
+    tps.at(idx) = new UniformRandomCTP("TP_" + std::to_string(idx), nullptr,
+                                       TPS, idx, settings);
   }
 
   std::vector<std::vector<u32>> vals(TPS, std::vector<u32>(TPS, 0u));

@@ -18,16 +18,16 @@
 
 #include "factory/ObjectFactory.h"
 
-GroupAttackCTP::GroupAttackCTP(
-    const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, nlohmann::json _settings)
+GroupAttackCTP::GroupAttackCTP(const std::string& _name,
+                               const Component* _parent, u32 _numTerminals,
+                               u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // verify settings exist
-  assert(_settings.contains("group_size"));  // num routers per group
-  assert(_settings.contains("concentration"));  // num terminals per router
+  assert(_settings.contains("group_size"));        // num routers per group
+  assert(_settings.contains("concentration"));     // num terminals per router
   assert(_settings.contains("destination_mode"));  // within destination
-  assert(_settings.contains("group_mode"));  // group to group
+  assert(_settings.contains("group_mode"));        // group to group
 
   // compute fixed values
   groupSize_ = _settings["group_size"].get<u32>();
@@ -65,8 +65,8 @@ GroupAttackCTP::GroupAttackCTP(
     s32 offset = _settings["group_mode"].get<s32>();
     // don't rely on loop around
     assert((u32)abs(offset) < groupCount_);
-    s32 destGroup = ((s32)selfGroup_ +
-                     ((s32)groupCount_ + offset)) % (s32)groupCount_;
+    s32 destGroup =
+        ((s32)selfGroup_ + ((s32)groupCount_ + offset)) % (s32)groupCount_;
     if (destGroup < 0) {
       destGroup += groupCount_;
     }
@@ -103,8 +103,7 @@ u32 GroupAttackCTP::nextDestination() {
 
   // reconstruct dest id
   return ((destGroup_ * groupSize_ * concentration_) +
-          (destLocal * concentration_) +
-          (destConc));
+          (destLocal * concentration_) + (destConc));
 }
 
 registerWithObjectFactory("group_attack", ContinuousTrafficPattern,

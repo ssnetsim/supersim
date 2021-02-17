@@ -15,7 +15,6 @@
 #include "traffic/continuous/MatrixCTP.h"
 
 #include <cassert>
-
 #include <unordered_map>
 
 #include "factory/ObjectFactory.h"
@@ -26,7 +25,7 @@
 namespace {
 
 // this holds cummulative distributions
-std::unordered_map<std::string, std::vector<std::vector<f64> > > cdistMap;
+std::unordered_map<std::string, std::vector<std::vector<f64>>> cdistMap;
 bool cleared = false;
 
 // this retrieves cummulative distributions, loads them only when needed
@@ -38,7 +37,7 @@ const std::vector<f64>& retrieveCummulativeDistribution(
   if (cdistMap.count(_filename) == 0) {
     // create a new entry
     cdistMap[_filename];
-    std::vector<std::vector<f64> >& cdists = cdistMap.at(_filename);
+    std::vector<std::vector<f64>>& cdists = cdistMap.at(_filename);
 
     // parse the file
     fio::InFile inf(_filename);
@@ -82,8 +81,8 @@ const std::vector<f64>& retrieveCummulativeDistribution(
       }
     }
     if (lineNum != _numTerminals) {
-      fprintf(stderr, "expected %u lines, processed %u lines\n",
-              _numTerminals, lineNum);
+      fprintf(stderr, "expected %u lines, processed %u lines\n", _numTerminals,
+              lineNum);
       assert(false);
     }
   }
@@ -102,9 +101,8 @@ void clearCummulativeDistributions() {
 
 }  // namespace
 
-MatrixCTP::MatrixCTP(
-    const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, nlohmann::json _settings)
+MatrixCTP::MatrixCTP(const std::string& _name, const Component* _parent,
+                     u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   assert(_settings.contains("file") && _settings["file"].is_string());
@@ -120,5 +118,5 @@ u32 MatrixCTP::nextDestination() {
   return mut::searchCumulativeDistribution(cumulativeDistribution_, rnd);
 }
 
-registerWithObjectFactory("matrix", ContinuousTrafficPattern,
-                          MatrixCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("matrix", ContinuousTrafficPattern, MatrixCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

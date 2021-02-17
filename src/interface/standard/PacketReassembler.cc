@@ -24,9 +24,9 @@ namespace Standard {
 PacketReassembler::PacketReassembler(const std::string& _name,
                                      const Component* _parent)
     : Component(_name, _parent) {
-  expSourceId_  = U32_MAX;
-  expPacketId_  = U32_MAX;
-  expFlitId_    = 0;
+  expSourceId_ = U32_MAX;
+  expPacketId_ = U32_MAX;
+  expFlitId_ = 0;
 }
 
 PacketReassembler::~PacketReassembler() {}
@@ -35,10 +35,9 @@ Packet* PacketReassembler::receiveFlit(Flit* _flit) {
   Packet* packet = nullptr;
   u32 sourceId = _flit->packet()->message()->getSourceId();
   u32 packetId = _flit->packet()->id();
-  u32 flitId   = _flit->id();
+  u32 flitId = _flit->id();
 
-  dbgprintf("src=%u pkt=%u flit=%u/%u",
-            sourceId, packetId, flitId,
+  dbgprintf("src=%u pkt=%u flit=%u/%u", sourceId, packetId, flitId,
             _flit->packet()->numFlits());
 
   // if expected packet id isn't yet set, set it
@@ -67,7 +66,7 @@ Packet* PacketReassembler::receiveFlit(Flit* _flit) {
   if (flitId == (_flit->packet()->numFlits() - 1)) {
     expSourceId_ = U32_MAX;  // clear expected source id
     expPacketId_ = U32_MAX;  // clear expected packet id
-    expFlitId_ = 0;  // expect flit 0 on the next packet
+    expFlitId_ = 0;          // expect flit 0 on the next packet
     packet = _flit->packet();
   } else {
     expFlitId_ = flitId + 1;

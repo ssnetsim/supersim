@@ -20,8 +20,11 @@
 #include "types/Message.h"
 
 Packet::Packet(u32 _id, u32 _numFlits, Message* _message)
-    : id_(_id), message_(_message), hopCount_(0),
-      metadata_(U64_MAX), routingExtension_(nullptr) {
+    : id_(_id),
+      message_(_message),
+      hopCount_(0),
+      metadata_(U64_MAX),
+      routingExtension_(nullptr) {
   flits_.resize(_numFlits);
 }
 

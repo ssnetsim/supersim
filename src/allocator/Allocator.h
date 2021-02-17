@@ -23,13 +23,13 @@
 #include "nlohmann/json.hpp"
 #include "prim/prim.h"
 
-#define ALLOCATOR_ARGS const std::string&, const Component*, u32, u32,  \
-    nlohmann::json
+#define ALLOCATOR_ARGS \
+  const std::string&, const Component*, u32, u32, nlohmann::json
 
 class Allocator : public Component {
  public:
-  Allocator(const std::string& _name, const Component* _parent,
-            u32 _numClients, u32 _numResources, nlohmann::json _settings);
+  Allocator(const std::string& _name, const Component* _parent, u32 _numClients,
+            u32 _numResources, nlohmann::json _settings);
   virtual ~Allocator();
 
   // this is the factory for allocators

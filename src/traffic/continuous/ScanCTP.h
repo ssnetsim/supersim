@@ -24,8 +24,8 @@
 
 class ScanCTP : public ContinuousTrafficPattern {
  public:
-  ScanCTP(const std::string& _name, const Component* _parent,
-          u32 _numTerminals, u32 _self, nlohmann::json _settings);
+  ScanCTP(const std::string& _name, const Component* _parent, u32 _numTerminals,
+          u32 _self, nlohmann::json _settings);
   ~ScanCTP();
   u32 nextDestination() override;
 

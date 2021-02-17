@@ -146,7 +146,6 @@ TEST(ScanCTP, ascend_noself_321) {
   settings["initial"] = 321;
   ScanCTP tp("TP", nullptr, TOTAL, ME, settings);
 
-
   u32 last = 321 - 1;
   for (u32 idx = 0; idx < ROUNDS; idx++) {
     u32 num = tp.nextDestination();

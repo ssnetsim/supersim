@@ -21,9 +21,11 @@
 Crossbar::Crossbar(const std::string& _name, const Component* _parent,
                    u32 _numInputs, u32 _numOutputs, Simulator::Clock _clock,
                    nlohmann::json _settings)
-    : Component(_name, _parent), clock_(_clock),
+    : Component(_name, _parent),
+      clock_(_clock),
       latency_(_settings["latency"].get<u32>()),
-      numInputs_(_numInputs), numOutputs_(_numOutputs) {
+      numInputs_(_numInputs),
+      numOutputs_(_numOutputs) {
   assert(latency_ > 0);
 
   std::pair<u32, FlitReceiver*> def(U32_MAX, nullptr);
@@ -43,7 +45,7 @@ u32 Crossbar::numOutputs() const {
 
 void Crossbar::setReceiver(u32 _destId, FlitReceiver* _receiver,
                            u32 _destPort) {
-  receivers_.at(_destId).first  = _destPort;
+  receivers_.at(_destId).first = _destPort;
   receivers_.at(_destId).second = _receiver;
 }
 

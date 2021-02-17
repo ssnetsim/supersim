@@ -18,9 +18,8 @@
 
 #include "factory/ObjectFactory.h"
 
-LoopbackCTP::LoopbackCTP(
-    const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, nlohmann::json _settings)
+LoopbackCTP::LoopbackCTP(const std::string& _name, const Component* _parent,
+                         u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {}
 
@@ -30,5 +29,5 @@ u32 LoopbackCTP::nextDestination() {
   return self_;
 }
 
-registerWithObjectFactory("loopback", ContinuousTrafficPattern,
-                          LoopbackCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("loopback", ContinuousTrafficPattern, LoopbackCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

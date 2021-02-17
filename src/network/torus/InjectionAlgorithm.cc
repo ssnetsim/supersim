@@ -18,9 +18,11 @@
 
 namespace Torus {
 
-InjectionAlgorithm::InjectionAlgorithm(
-    const std::string& _name, const Component* _parent, Interface* _interface,
-    u32 _baseVc, u32 _numVcs, u32 _inputPc, nlohmann::json _settings)
+InjectionAlgorithm::InjectionAlgorithm(const std::string& _name,
+                                       const Component* _parent,
+                                       Interface* _interface, u32 _baseVc,
+                                       u32 _numVcs, u32 _inputPc,
+                                       nlohmann::json _settings)
     : ::InjectionAlgorithm(_name, _parent, _interface, _baseVc, _numVcs,
                            _inputPc, _settings) {}
 
@@ -33,10 +35,16 @@ InjectionAlgorithm* InjectionAlgorithm::create(
   const std::string& algorithm = _settings["algorithm"].get<std::string>();
 
   // attempt to create the injection algorithm
-  InjectionAlgorithm* ia = factory::ObjectFactory<
-    InjectionAlgorithm, TORUS_INJECTIONALGORITHM_ARGS>::create(
-        algorithm, _name, _parent, _interface, _baseVc, _numVcs, _inputPc,
-        _settings);
+  InjectionAlgorithm* ia =
+      factory::ObjectFactory<InjectionAlgorithm,
+                             TORUS_INJECTIONALGORITHM_ARGS>::create(algorithm,
+                                                                    _name,
+                                                                    _parent,
+                                                                    _interface,
+                                                                    _baseVc,
+                                                                    _numVcs,
+                                                                    _inputPc,
+                                                                    _settings);
 
   // check that the factory had this type
   if (ia == nullptr) {

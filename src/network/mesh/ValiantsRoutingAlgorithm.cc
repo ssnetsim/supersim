@@ -15,7 +15,6 @@
 #include "network/mesh/ValiantsRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <unordered_set>
 
@@ -30,8 +29,8 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
+    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
                        _concentration, _interfacePorts, _settings),
@@ -104,7 +103,7 @@ void ValiantsRoutingAlgorithm::processRequest(
   u32 iDimWeight = U32_MAX;
   for (iDim = 0; iDim < routerAddress.size(); iDim++) {
     iDimWeight = dimensionWeights_.at(iDim);
-    if (routerAddress.at(iDim) != intermediateAddress->at(iDim+1)) {
+    if (routerAddress.at(iDim) != intermediateAddress->at(iDim + 1)) {
       break;
     }
     iPortBase += 2 * iDimWeight;
@@ -117,7 +116,7 @@ void ValiantsRoutingAlgorithm::processRequest(
   u32 dDimWeight = U32_MAX;
   for (dDim = 0; dDim < numDimensions; dDim++) {
     dDimWeight = dimensionWeights_.at(dDim);
-    if (routerAddress.at(dDim) != destinationAddress->at(dDim+1)) {
+    if (routerAddress.at(dDim) != destinationAddress->at(dDim + 1)) {
       break;
     }
     dPortBase += 2 * dDimWeight;
@@ -153,7 +152,6 @@ void ValiantsRoutingAlgorithm::processRequest(
     routingTo = destinationAddress;
   }
 
-
   // create a temporary router address with a dummy concentration for use with
   //  'util.h' 'computeMinimalHops() frunction'
   std::vector<u32> tempRA = std::vector<u32>(1 + routerAddress.size());
@@ -163,8 +161,8 @@ void ValiantsRoutingAlgorithm::processRequest(
   }
 
   // determine minimum number of hops to destination for reduction algorithm
-  u32 hops = computeMinimalHops(&tempRA, routingTo, numDimensions,
-                                dimensionWidths_);
+  u32 hops =
+      computeMinimalHops(&tempRA, routingTo, numDimensions, dimensionWidths_);
 
   // the output port is now determined, now figure out which VC set to use
   u32 vcSet = (_flit->getVc() - baseVc_) % 2;
@@ -227,7 +225,7 @@ void ValiantsRoutingAlgorithm::processRequest(
   }
 
   // reduction phase
-  const std::unordered_set<std::tuple<u32, u32> >* outputs =
+  const std::unordered_set<std::tuple<u32, u32>>* outputs =
       reduction_->reduce(nullptr);
   for (const auto& t : *outputs) {
     u32 port = std::get<0>(t);

@@ -75,9 +75,13 @@ class TestRouter : public Router {
   }
   ~TestRouter() {}
   void setInputChannel(u32 _port, Channel* _channel) override {}
-  Channel* getInputChannel(u32 _port) const override { return nullptr; }
+  Channel* getInputChannel(u32 _port) const override {
+    return nullptr;
+  }
   void setOutputChannel(u32 port, Channel* _channel) override {}
-  Channel* getOutputChannel(u32 _port) const override { return nullptr; }
+  Channel* getOutputChannel(u32 _port) const override {
+    return nullptr;
+  }
   void sendCredit(u32 _port, u32 _vc) override {}
   void receiveCredit(u32 _port, Credit* _credit) override {}
   void sendFlit(u32 _port, Flit* _flit) override {}
@@ -95,17 +99,15 @@ class TestRouter : public Router {
   std::unordered_map<u32, f64> congStatus_;
 };
 
-void intNodeTestCongestion(
-    const std::vector<u32>& _sourceRouter,
-    const std::vector<u32>* _destinationTerminal,
-    const std::vector<u32>& _dimWidths,
-    const std::vector<u32>& _dimWeights,
-    u32 _conc, u32 _interfacePorts,
-    u32 _vcSet, u32 _numVcSets, u32 _numVcs,
-    u32 _refNumBuckets,
-    const std::unordered_set<u32>& _idSet,
-    const std::unordered_map<u32, f64> _congStatus,
-    HyperX::IntNodeAlgFunc _intNodeAlgFunc) {
+void intNodeTestCongestion(const std::vector<u32>& _sourceRouter,
+                           const std::vector<u32>* _destinationTerminal,
+                           const std::vector<u32>& _dimWidths,
+                           const std::vector<u32>& _dimWeights, u32 _conc,
+                           u32 _interfacePorts, u32 _vcSet, u32 _numVcSets,
+                           u32 _numVcs, u32 _refNumBuckets,
+                           const std::unordered_set<u32>& _idSet,
+                           const std::unordered_map<u32, f64> _congStatus,
+                           HyperX::IntNodeAlgFunc _intNodeAlgFunc) {
   std::vector<u32> addr;
   u32 numBuckets;
   u32 nonZeroBuckets = 0;
@@ -131,8 +133,8 @@ void intNodeTestCongestion(
     _intNodeAlgFunc(router, 0, 0, _sourceRouter, _destinationTerminal,
                     _dimWidths, _dimWeights, _conc, _interfacePorts, _vcSet,
                     _numVcSets, _numVcs, &addr);
-    u32 id = Cube::translateInterfaceAddressToId(
-        &addr, _dimWidths, _conc, _interfacePorts);
+    u32 id = Cube::translateInterfaceAddressToId(&addr, _dimWidths, _conc,
+                                                 _interfacePorts);
     if (_idSet.find(id) == _idSet.end()) {
       printf("bad id = %u\n", id);
     }
@@ -168,15 +170,14 @@ void intNodeTestCongestion(
 
 void intNodeTest(const std::vector<u32>& _sourceRouter,
                  const std::vector<u32>* _destinationTerminal,
-                 const std::vector<u32>& _dimWidths,
-                 u32 _refNumBuckets,
+                 const std::vector<u32>& _dimWidths, u32 _refNumBuckets,
                  const std::unordered_set<u32>& _idSet,
                  HyperX::IntNodeAlgFunc _intNodeAlgFunc) {
   std::vector<u32> weights(_dimWidths.size(), 1u);
   std::unordered_map<u32, f64> congStatus;
-  intNodeTestCongestion(
-      _sourceRouter, _destinationTerminal, _dimWidths, weights,
-      1, 1, 0, 1, 1, _refNumBuckets, _idSet, congStatus, _intNodeAlgFunc);
+  intNodeTestCongestion(_sourceRouter, _destinationTerminal, _dimWidths,
+                        weights, 1, 1, 0, 1, 1, _refNumBuckets, _idSet,
+                        congStatus, _intNodeAlgFunc);
 }
 
 void distRoutingTest(
@@ -185,13 +186,13 @@ void distRoutingTest(
     const std::vector<u32>& _widths, const std::vector<u32>& _weights,
     u32 _conc, u32 _interfacePorts, u32 _vcSet, u32 _numVcSets, u32 _numVcs,
     bool _shortCut, u32 _maxOutputs,
-    const std::unordered_set< std::tuple<u32, u32> > _refOutputPorts,
+    const std::unordered_set<std::tuple<u32, u32>> _refOutputPorts,
     u32 numOutputs, bool _vcOutput,
     const std::unordered_map<u32, f64>& _congStatus,
     HyperX::MinRoutingAlgFunc _routingAlgFunc,
     HyperX::FirstHopRoutingAlgFunc _firstHopAlgFunc) {
-  std::unordered_set< std::tuple<u32, u32, f64> > vcPool;
-  std::unordered_set< std::tuple<u32, u32, f64> > outputPorts;
+  std::unordered_set<std::tuple<u32, u32, f64>> vcPool;
+  std::unordered_set<std::tuple<u32, u32, f64>> outputPorts;
   TestRouter* router;
   u32 numPorts;
   numPorts = _conc;
@@ -237,8 +238,8 @@ void distRoutingTest(
       u32 vc = std::get<1>(it);
       std::tuple<u32, u32> t(port, vc);
       u32 vcIdx = router->vcIndex(port, vc);
-      const std::unordered_set< std::tuple<u32, u32> >::const_iterator got
-          = _refOutputPorts.find(t);
+      const std::unordered_set<std::tuple<u32, u32>>::const_iterator got =
+          _refOutputPorts.find(t);
       ASSERT_FALSE(got == _refOutputPorts.end());
       buckets.at(vcIdx)++;
     }
@@ -283,7 +284,11 @@ TEST(HyperXUtil, isDestinationRouter) {
   u32 conc, numVcs;
   std::unordered_map<u32, f64> congStatus;
 
-  conc = 2; numVcs = 1; src = {0}; widths = {2}; weights = {1};
+  conc = 2;
+  numVcs = 1;
+  src = {0};
+  widths = {2};
+  weights = {1};
   TestRouter* router;
   u32 numPorts;
   numPorts = conc;
@@ -314,7 +319,11 @@ TEST(HyperXUtil, hopsLeft) {
   u32 conc, numVcs;
   std::unordered_map<u32, f64> congStatus;
 
-  conc = 2; numVcs = 1; src = {0}; widths = {2}; weights = {1};
+  conc = 2;
+  numVcs = 1;
+  src = {0};
+  widths = {2};
+  weights = {1};
   TestRouter* router;
   u32 numPorts;
   numPorts = conc;
@@ -337,7 +346,10 @@ TEST(HyperXUtil, hopsLeft) {
 
   delete router;
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2}; weights = {1, 1};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
+  weights = {1, 1};
   numPorts = conc;
   for (u32 dim = 0; dim < widths.size(); dim++) {
     numPorts += widths.at(dim) * weights.at(dim);
@@ -363,56 +375,76 @@ TEST(HyperXUtil, intNodeMoveUnaligned) {
   std::vector<u32> widths;
   std::unordered_set<u32> idSet;
 
-  src = {0}; dst = {0, 1}; widths = {2};
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
   idSet = {0, 1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {0}; dst = {0, 2}; widths = {3};
+  src = {0};
+  dst = {0, 2};
+  widths = {3};
   idSet = {0, 1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {1}; dst = {0, 2}; widths = {4};
+  src = {1};
+  dst = {0, 2};
+  widths = {4};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
   idSet = {0, 1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {0, 0, 0}; dst = {0, 1, 0, 0}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 0, 0};
+  widths = {2, 2, 2};
   idSet = {0, 1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {0, 0, 0}; dst = {0, 1, 1, 1}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 1, 1};
+  widths = {2, 2, 2};
   idSet = {0, 1, 2, 3, 4, 5, 6, 7};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {1, 1}; dst = {0, 3, 2}; widths = {5, 4};
+  src = {1, 1};
+  dst = {0, 3, 2};
+  widths = {5, 4};
   for (u32 ind = 0; ind < 20; ind++) {
     idSet.insert(ind);
   }
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   for (u32 ind = 0; ind < 20; ind++) {
     idSet.insert(ind);
   }
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
 
-  src = {3, 1}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 1};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {5, 6, 7, 8, 9};
   intNodeTest(src, &dst, widths, idSet.size(), idSet,
               HyperX::intNodeMoveUnaligned);
@@ -425,47 +457,67 @@ TEST(HyperXUtil, intNodeReg) {
   std::vector<u32> widths;
   std::unordered_set<u32> idSet;
 
-  src = {0}; dst = {0, 1}; widths = {2};
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
   idSet = {0, 1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {0}; dst = {0, 2}; widths = {3};
+  src = {0};
+  dst = {0, 2};
+  widths = {3};
   idSet = {0, 1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {1}; dst = {0, 2}; widths = {4};
+  src = {1};
+  dst = {0, 2};
+  widths = {4};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {0, 0, 0}; dst = {0, 1, 0, 0}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 0, 0};
+  widths = {2, 2, 2};
   idSet = {0, 1, 2, 3, 4, 5, 6, 7};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {0, 0, 0}; dst = {0, 1, 1, 1}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 1, 1};
+  widths = {2, 2, 2};
   idSet = {0, 1, 2, 3, 4, 5, 6, 7};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {1, 1}; dst = {0, 3, 2}; widths = {5, 4};
+  src = {1, 1};
+  dst = {0, 3, 2};
+  widths = {5, 4};
   for (u32 ind = 0; ind < 20; ind++) {
     idSet.insert(ind);
   }
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   for (u32 ind = 0; ind < 20; ind++) {
     idSet.insert(ind);
   }
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeReg);
 
-  src = {3, 1}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 1};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   for (u32 ind = 0; ind < 20; ind++) {
     idSet.insert(ind);
   }
@@ -479,43 +531,63 @@ TEST(HyperXUtil, intNodeSrc) {
   std::vector<u32> widths;
   std::unordered_set<u32> idSet;
 
-  src = {0}; dst = {0, 1}; widths = {2};
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
   idSet = {0, 1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {0}; dst = {0, 2}; widths = {3};
+  src = {0};
+  dst = {0, 2};
+  widths = {3};
   idSet = {0, 1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {1}; dst = {0, 2}; widths = {4};
+  src = {1};
+  dst = {0, 2};
+  widths = {4};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
   idSet = {0, 1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
   idSet = {0, 1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {0, 0, 0}; dst = {0, 1, 0, 0}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 0, 0};
+  widths = {2, 2, 2};
   idSet = {0, 1, 2, 4};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {0, 0, 0}; dst = {0, 1, 1, 1}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 1, 1};
+  widths = {2, 2, 2};
   idSet = {0, 1, 2, 4};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {1, 1}; dst = {0, 3, 2}; widths = {5, 4};
+  src = {1, 1};
+  dst = {0, 3, 2};
+  widths = {5, 4};
   idSet = {1, 5, 6, 7, 8, 9, 11, 16};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {3, 8, 10, 11, 12, 13, 14, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 
-  src = {3, 1}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 1};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {3, 5, 6, 7, 8, 9, 13, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrc);
 }
@@ -527,43 +599,63 @@ TEST(HyperXUtil, intNodeDst) {
   std::vector<u32> widths;
   std::unordered_set<u32> idSet;
 
-  src = {0}; dst = {0, 1}; widths = {2};
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
   idSet = {0, 1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {0}; dst = {0, 2}; widths = {3};
+  src = {0};
+  dst = {0, 2};
+  widths = {3};
   idSet = {0, 1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {1}; dst = {0, 2}; widths = {4};
+  src = {1};
+  dst = {0, 2};
+  widths = {4};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
   idSet = {0, 1, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
   idSet = {1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {0, 0, 0}; dst = {0, 1, 0, 0}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 0, 0};
+  widths = {2, 2, 2};
   idSet = {0, 1, 3, 5};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {0, 0, 0}; dst = {0, 1, 1, 1}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 1, 1};
+  widths = {2, 2, 2};
   idSet = {3, 5, 6, 7};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {1, 1}; dst = {0, 3, 2}; widths = {5, 4};
+  src = {1, 1};
+  dst = {0, 3, 2};
+  widths = {5, 4};
   idSet = {3, 8, 10, 11, 12, 13, 14, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {1, 5, 6, 7, 8, 9, 11, 16};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 
-  src = {3, 1}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 1};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {1, 5, 6, 7, 8, 9, 11, 16};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeDst);
 }
@@ -575,43 +667,63 @@ TEST(HyperXUtil, intNodeSrcDst) {
   std::vector<u32> widths;
   std::unordered_set<u32> idSet;
 
-  src = {0}; dst = {0, 1}; widths = {2};
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
   idSet = {0, 1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {0}; dst = {0, 2}; widths = {3};
+  src = {0};
+  dst = {0, 2};
+  widths = {3};
   idSet = {0, 1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {1}; dst = {0, 2}; widths = {4};
+  src = {1};
+  dst = {0, 2};
+  widths = {4};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
   idSet = {0, 1, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {0, 0, 0}; dst = {0, 1, 0, 0}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 0, 0};
+  widths = {2, 2, 2};
   idSet = {0, 1, 2, 3, 4, 5};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {0, 0, 0}; dst = {0, 1, 1, 1}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 1, 1};
+  widths = {2, 2, 2};
   idSet = {0, 1, 2, 3, 4, 5, 6, 7};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {1, 1}; dst = {0, 3, 2}; widths = {5, 4};
+  src = {1, 1};
+  dst = {0, 3, 2};
+  widths = {5, 4};
   idSet = {1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 
-  src = {3, 1}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 1};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {1, 3, 5, 6, 7, 8, 9, 11, 13, 16, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeSrcDst);
 }
@@ -625,64 +737,105 @@ TEST(HyperXUtil, intNodeMinV) {
   std::unordered_set<u32> idSet;
   std::unordered_map<u32, f64> congStatus;
 
-  src = {0}; dst = {0, 1}; widths = {2};
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
   idSet = {1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {0}; dst = {0, 2}; widths = {3};
+  src = {0};
+  dst = {0, 2};
+  widths = {3};
   idSet = {1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {1}; dst = {0, 2}; widths = {4};
+  src = {1};
+  dst = {0, 2};
+  widths = {4};
   idSet = {0, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
   idSet = {1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
   idSet = {1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {0, 0, 0}; dst = {0, 1, 0, 0}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 0, 0};
+  widths = {2, 2, 2};
   idSet = {1, 2, 4};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {0, 0, 0}; dst = {0, 1, 1, 1}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 1, 1};
+  widths = {2, 2, 2};
   idSet = {1, 2, 4};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {1, 1}; dst = {0, 3, 2}; widths = {5, 4};
+  src = {1, 1};
+  dst = {0, 3, 2};
+  widths = {5, 4};
   idSet = {1, 5, 7, 8, 9, 11, 16};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {3, 8, 10, 11, 12, 14, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {3, 1}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 1};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {3, 5, 6, 7, 9, 13, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinV);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   congStatus = {{9, 0.1}, {11, 0.6}, {17, 0.2}, {19, 0.2}};
   idSet = {2};
   intNodeTestCongestion(src, &dst, widths, weights, conc, interfacePorts, vcSet,
                         numVcSets, numVcs, idSet.size(), idSet, congStatus,
                         HyperX::intNodeMinV);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   congStatus = {{9, 0.2}, {11, 0.2}, {17, 0.2}, {19, 0.2}};
   idSet = {2, 4};
   intNodeTestCongestion(src, &dst, widths, weights, conc, interfacePorts, vcSet,
                         numVcSets, numVcs, idSet.size(), idSet, congStatus,
                         HyperX::intNodeMinV);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   congStatus = {{16, 0.2}, {19, 0.3}, {22, 0.2}};
   idSet = {4, 8};
   intNodeTestCongestion(src, &dst, widths, weights, conc, interfacePorts, vcSet,
@@ -699,72 +852,120 @@ TEST(HyperXUtil, intNodeMinP) {
   std::unordered_set<u32> idSet;
   std::unordered_map<u32, f64> congStatus;
 
-  src = {0}; dst = {0, 1}; widths = {2};
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
   idSet = {1};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {0}; dst = {0, 2}; widths = {3};
+  src = {0};
+  dst = {0, 2};
+  widths = {3};
   idSet = {1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {1}; dst = {0, 2}; widths = {4};
+  src = {1};
+  dst = {0, 2};
+  widths = {4};
   idSet = {0, 2, 3};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
   idSet = {1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2};
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
   idSet = {1, 2};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {0, 0, 0}; dst = {0, 1, 0, 0}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 0, 0};
+  widths = {2, 2, 2};
   idSet = {1, 2, 4};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {0, 0, 0}; dst = {0, 1, 1, 1}; widths = {2, 2, 2};
+  src = {0, 0, 0};
+  dst = {0, 1, 1, 1};
+  widths = {2, 2, 2};
   idSet = {1, 2, 4};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {1, 1}; dst = {0, 3, 2}; widths = {5, 4};
+  src = {1, 1};
+  dst = {0, 3, 2};
+  widths = {5, 4};
   idSet = {1, 5, 7, 8, 9, 11, 16};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {3, 8, 10, 11, 12, 14, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {3, 1}; dst = {0, 1, 1}; widths = {5, 4};
+  src = {3, 1};
+  dst = {0, 1, 1};
+  widths = {5, 4};
   idSet = {3, 5, 6, 7, 9, 13, 18};
   intNodeTest(src, &dst, widths, idSet.size(), idSet, HyperX::intNodeMinP);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   congStatus = {{9, 0.1}, {11, 0.6}, {17, 0.2}, {19, 0.2}};
   idSet = {4};
   intNodeTestCongestion(src, &dst, widths, weights, conc, interfacePorts, vcSet,
                         numVcSets, numVcs, idSet.size(), idSet, congStatus,
                         HyperX::intNodeMinP);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   congStatus = {{9, 0.1}, {11, 0.25}, {17, 0.2}, {19, 0.2}};
   idSet = {2};
   intNodeTestCongestion(src, &dst, widths, weights, conc, interfacePorts, vcSet,
                         numVcSets, numVcs, idSet.size(), idSet, congStatus,
                         HyperX::intNodeMinP);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   congStatus = {{9, 0.1}, {11, 0.3}, {17, 0.2}, {19, 0.2}};
   idSet = {2, 4};
   intNodeTestCongestion(src, &dst, widths, weights, conc, interfacePorts, vcSet,
                         numVcSets, numVcs, idSet.size(), idSet, congStatus,
                         HyperX::intNodeMinP);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   congStatus = {{9, 0.2}, {11, 0.2}, {17, 0.2}, {19, 0.2}};
   idSet = {2, 4};
   intNodeTestCongestion(src, &dst, widths, weights, conc, interfacePorts, vcSet,
@@ -776,448 +977,707 @@ TEST(HyperXUtil, dimOrderVcRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
   u32 conc, interfacePorts, vcSet, numVcSets, numVcs, numOutputs;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 1; numVcs = 4;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 1;
+  numVcs = 4;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(1u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(3u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(3u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0}; dst = {1, 0}; widths = {2}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {0};
+  dst = {1, 0};
+  widths = {2};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 0;
   refOutputPorts = {};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {1}; dst = {1, 2}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {1};
+  dst = {1, 2};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 0u), std::tuple<u32, u32>(2u, 2u),
                     std::tuple<u32, u32>(3u, 0u), std::tuple<u32, u32>(3u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {2}; dst = {1, 1}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {2};
+  dst = {1, 1};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(6u, 0u), std::tuple<u32, u32>(6u, 2u),
                     std::tuple<u32, u32>(7u, 0u), std::tuple<u32, u32>(7u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0, 0}; dst = {0, 1, 0}; widths = {2, 2}; weights = {2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0};
+  dst = {0, 1, 0};
+  widths = {2, 2};
+  weights = {2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(3u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0, 0}; dst = {0, 0, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0};
+  dst = {0, 0, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(5u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(3u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(6u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};  weights = {1, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
+  weights = {1, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), HyperX::dimOrderVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::dimOrderVcRoutingOutput, nullptr);
 }
 
 TEST(HyperXUtil, randMinVcRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
   u32 conc, interfacePorts, vcSet, numVcSets, numVcs, numOutputs;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 1; numVcs = 4;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 1;
+  numVcs = 4;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::randMinVcRoutingOutput, nullptr);
 
-  src = {1}; dst = {1, 2}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {1};
+  dst = {1, 2};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 0u), std::tuple<u32, u32>(2u, 2u),
                     std::tuple<u32, u32>(3u, 0u), std::tuple<u32, u32>(3u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::randMinVcRoutingOutput, nullptr);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(6u, 1u),
                     std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::randMinVcRoutingOutput, nullptr);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};  weights = {1, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
+  weights = {1, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(10u, 1u),
                     std::tuple<u32, u32>(11u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::randMinVcRoutingOutput, nullptr);
 }
 
 TEST(HyperXUtil, randMinPortRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
-  u32 conc, interfacePorts, vcSet, numVcSets,
-      numVcs, numOutputs;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  u32 conc, interfacePorts, vcSet, numVcSets, numVcs, numOutputs;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 1; numVcs = 4;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 1;
+  numVcs = 4;
   numOutputs = 4;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::randMinPortRoutingOutput, nullptr);
 
-  src = {1}; dst = {1, 2}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {1};
+  dst = {1, 2};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 2;
   refOutputPorts = {std::tuple<u32, u32>(2u, 0u), std::tuple<u32, u32>(2u, 2u),
                     std::tuple<u32, u32>(3u, 0u), std::tuple<u32, u32>(3u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::randMinPortRoutingOutput, nullptr);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(6u, 1u),
                     std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::randMinPortRoutingOutput, nullptr);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};  weights = {1, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
+  weights = {1, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(10u, 1u),
                     std::tuple<u32, u32>(11u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::randMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::randMinPortRoutingOutput, nullptr);
 }
 
 TEST(HyperXUtil, adaptiveMinVcRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
   u32 conc, interfacePorts, vcSet, numVcSets, numVcs, numOutputs;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
   std::unordered_map<u32, f64> congStatus;
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 1; numVcs = 4;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 1;
+  numVcs = 4;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinVcRoutingOutput, nullptr);
 
-  src = {1}; dst = {1, 2}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {1};
+  dst = {1, 2};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 0u), std::tuple<u32, u32>(2u, 2u),
                     std::tuple<u32, u32>(3u, 0u), std::tuple<u32, u32>(3u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinVcRoutingOutput, nullptr);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(6u, 1u),
                     std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinVcRoutingOutput, nullptr);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};  weights = {1, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
+  weights = {1, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(10u, 1u),
                     std::tuple<u32, u32>(11u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinVcRoutingOutput, nullptr);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 1;
   congStatus = {{9, 0.1}, {11, 0.6}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true, congStatus,
-      HyperX::adaptiveMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  congStatus, HyperX::adaptiveMinVcRoutingOutput, nullptr);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 1;
   congStatus = {{9, 0.2}, {11, 0.2}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u),
                     std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true, congStatus,
-      HyperX::adaptiveMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  congStatus, HyperX::adaptiveMinVcRoutingOutput, nullptr);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   congStatus = {{16, 0.2}, {19, 0.3}, {22, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true, congStatus,
-      HyperX::adaptiveMinVcRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  congStatus, HyperX::adaptiveMinVcRoutingOutput, nullptr);
 }
 
 TEST(HyperXUtil, adaptiveMinPortRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
   u32 conc, interfacePorts, vcSet, numVcSets, numVcs, numOutputs;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
   std::unordered_map<u32, f64> congStatus;
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 1; numVcs = 4;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 1;
+  numVcs = 4;
   numOutputs = 4;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinPortRoutingOutput, nullptr);
 
-  src = {1}; dst = {1, 2}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {1};
+  dst = {1, 2};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 2;
   refOutputPorts = {std::tuple<u32, u32>(2u, 0u), std::tuple<u32, u32>(2u, 2u),
                     std::tuple<u32, u32>(3u, 0u), std::tuple<u32, u32>(3u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinPortRoutingOutput, nullptr);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(6u, 1u),
                     std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinPortRoutingOutput, nullptr);
 
-  src = {3, 2}; dst = {0, 1, 1}; widths = {5, 4};  weights = {1, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {3, 2};
+  dst = {0, 1, 1};
+  widths = {5, 4};
+  weights = {1, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(10u, 1u),
                     std::tuple<u32, u32>(11u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(),
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(),
+                  HyperX::adaptiveMinPortRoutingOutput, nullptr);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.1}, {11, 0.6}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, HyperX::adaptiveMinPortRoutingOutput,
+                  nullptr);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.1}, {11, 0.25}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, HyperX::adaptiveMinPortRoutingOutput,
+                  nullptr);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.1}, {11, 0.3}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u),
                     std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, HyperX::adaptiveMinPortRoutingOutput,
+                  nullptr);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.2}, {11, 0.2}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u),
                     std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, HyperX::adaptiveMinPortRoutingOutput,
+                  nullptr);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   congStatus = {{16, 0.2}, {19, 0.3}, {22, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      HyperX::adaptiveMinPortRoutingOutput, nullptr);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, HyperX::adaptiveMinPortRoutingOutput,
+                  nullptr);
 }
 
 TEST(HyperXUtil, lcqVcRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
   u32 conc, interfacePorts, vcSet, numVcSets, numVcs, numOutputs;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
   std::unordered_map<u32, f64> congStatus;
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 1; numVcs = 4;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 1;
+  numVcs = 4;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs,
-      true, std::unordered_map<u32, f64>(), nullptr,
-      HyperX::lcqVcRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(), nullptr,
+                  HyperX::lcqVcRoutingOutput);
 
-  src = {1}; dst = {1, 2}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {1};
+  dst = {1, 2};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   refOutputPorts = {std::tuple<u32, u32>(2u, 0u), std::tuple<u32, u32>(2u, 2u),
                     std::tuple<u32, u32>(3u, 0u), std::tuple<u32, u32>(3u, 2u),
@@ -1225,64 +1685,94 @@ TEST(HyperXUtil, lcqVcRoutingAlgorithm) {
                     std::tuple<u32, u32>(5u, 0u), std::tuple<u32, u32>(5u, 2u),
                     std::tuple<u32, u32>(6u, 0u), std::tuple<u32, u32>(6u, 2u),
                     std::tuple<u32, u32>(7u, 0u), std::tuple<u32, u32>(7u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true,
-      std::unordered_map<u32, f64>(), nullptr,
-      HyperX::lcqVcRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  std::unordered_map<u32, f64>(), nullptr,
+                  HyperX::lcqVcRoutingOutput);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 1;
   congStatus = {{9, 0.1}, {11, 0.6}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true, congStatus,
-      nullptr, HyperX::lcqVcRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  congStatus, nullptr, HyperX::lcqVcRoutingOutput);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 1;
   congStatus = {{9, 0.2}, {11, 0.2}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u),
                     std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true, congStatus,
-      nullptr, HyperX::lcqVcRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  congStatus, nullptr, HyperX::lcqVcRoutingOutput);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   congStatus = {{16, 0.2}, {19, 0.3}, {22, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, true, congStatus,
-      nullptr, HyperX::lcqVcRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs, true,
+                  congStatus, nullptr, HyperX::lcqVcRoutingOutput);
 }
 
 TEST(HyperXUtil, lcqPortRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
   u32 conc, interfacePorts, vcSet, numVcSets, numVcs, numOutputs;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
   std::unordered_map<u32, f64> congStatus;
 
-  src = {0}; dst = {0, 1}; widths = {2}; weights = {1};
-  conc = 1; interfacePorts = 1; vcSet = 0; numVcSets = 1; numVcs = 4;
+  src = {0};
+  dst = {0, 1};
+  widths = {2};
+  weights = {1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 1;
+  numVcs = 4;
   numOutputs = 4;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(), nullptr,
-      HyperX::lcqPortRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(), nullptr,
+                  HyperX::lcqPortRoutingOutput);
 
-  src = {1}; dst = {1, 2}; widths = {4}; weights = {2};
-  conc = 2; interfacePorts = 1; vcSet = 0; numVcSets = 2; numVcs = 3;
+  src = {1};
+  dst = {1, 2};
+  widths = {4};
+  weights = {2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 0;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 2;
   refOutputPorts = {std::tuple<u32, u32>(2u, 0u), std::tuple<u32, u32>(2u, 2u),
                     std::tuple<u32, u32>(3u, 0u), std::tuple<u32, u32>(3u, 2u),
@@ -1290,71 +1780,100 @@ TEST(HyperXUtil, lcqPortRoutingAlgorithm) {
                     std::tuple<u32, u32>(5u, 0u), std::tuple<u32, u32>(5u, 2u),
                     std::tuple<u32, u32>(6u, 0u), std::tuple<u32, u32>(6u, 2u),
                     std::tuple<u32, u32>(7u, 0u), std::tuple<u32, u32>(7u, 2u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false,
-      std::unordered_map<u32, f64>(), nullptr,
-      HyperX::lcqPortRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, std::unordered_map<u32, f64>(), nullptr,
+                  HyperX::lcqPortRoutingOutput);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.1}, {11, 0.6}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      nullptr, HyperX::lcqPortRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, nullptr, HyperX::lcqPortRoutingOutput);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.1}, {11, 0.25}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      nullptr, HyperX::lcqPortRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, nullptr, HyperX::lcqPortRoutingOutput);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.1}, {11, 0.3}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u),
                     std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      nullptr, HyperX::lcqPortRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, nullptr, HyperX::lcqPortRoutingOutput);
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {2, 2};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {2, 2};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   numOutputs = 2;
   congStatus = {{9, 0.2}, {11, 0.2}, {17, 0.2}, {19, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(2u, 1u), std::tuple<u32, u32>(2u, 3u),
                     std::tuple<u32, u32>(4u, 1u), std::tuple<u32, u32>(4u, 3u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      nullptr, HyperX::lcqPortRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, nullptr, HyperX::lcqPortRoutingOutput);
 
-  src = {0, 0, 0}; dst = {0, 0, 1, 1}; widths = {2, 2, 2}; weights = {3, 2, 1};
-  conc = 2; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 3;
+  src = {0, 0, 0};
+  dst = {0, 0, 1, 1};
+  widths = {2, 2, 2};
+  weights = {3, 2, 1};
+  conc = 2;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 3;
   numOutputs = 1;
   congStatus = {{16, 0.2}, {19, 0.3}, {22, 0.2}};
   refOutputPorts = {std::tuple<u32, u32>(5u, 1u), std::tuple<u32, u32>(7u, 1u)};
-  distRoutingTest(
-      src, &dst, widths, weights, conc, interfacePorts, vcSet, numVcSets,
-      numVcs, false, 1, refOutputPorts, numOutputs, false, congStatus,
-      nullptr, HyperX::lcqPortRoutingOutput);
+  distRoutingTest(src, &dst, widths, weights, conc, interfacePorts, vcSet,
+                  numVcSets, numVcs, false, 1, refOutputPorts, numOutputs,
+                  false, congStatus, nullptr, HyperX::lcqPortRoutingOutput);
 }
 
 TEST(HyperXUtil, valiantsRoutingAlgorithm) {
   TestSetup ts(1, 1, 1, 1, 0xBAADF00D);
   std::vector<u32> src, dst, widths, weights;
   u32 conc, interfacePorts, vcSet, numVcSets, numVcs;
-  std::unordered_set< std::tuple<u32, u32, f64> > outputPorts;
-  std::unordered_set< std::tuple<u32, u32> > refOutputPorts;
+  std::unordered_set<std::tuple<u32, u32, f64>> outputPorts;
+  std::unordered_set<std::tuple<u32, u32>> refOutputPorts;
   std::unordered_map<u32, f64> congStatus;
 
   Message* m = new Message(1, nullptr);
@@ -1365,8 +1884,15 @@ TEST(HyperXUtil, valiantsRoutingAlgorithm) {
   HyperX::IntNodeAlg intNodeAlg = HyperX::IntNodeAlg::DST;
   HyperX::BaseRoutingAlg routingAlg = HyperX::BaseRoutingAlg::DORP;
 
-  src = {0, 0}; dst = {0, 1, 1}; widths = {2, 2}; weights = {1, 1};
-  conc = 1; interfacePorts = 1; vcSet = 1; numVcSets = 2; numVcs = 4;
+  src = {0, 0};
+  dst = {0, 1, 1};
+  widths = {2, 2};
+  weights = {1, 1};
+  conc = 1;
+  interfacePorts = 1;
+  vcSet = 1;
+  numVcSets = 2;
+  numVcs = 4;
   refOutputPorts = {std::tuple<u32, u32>(1u, 0u), std::tuple<u32, u32>(1u, 1u),
                     std::tuple<u32, u32>(1u, 2u), std::tuple<u32, u32>(1u, 3u)};
 
@@ -1379,22 +1905,22 @@ TEST(HyperXUtil, valiantsRoutingAlgorithm) {
   }
   router = new TestRouter(src, numPorts, numVcs, congStatus);
 
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, false, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                false, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_NE(p->getRoutingExtension(), nullptr);
 
-  delete reinterpret_cast<const std::vector<u32>*> (p->getRoutingExtension());
+  delete reinterpret_cast<const std::vector<u32>*>(p->getRoutingExtension());
   p->setRoutingExtension(nullptr);
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, true, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                true, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_NE(p->getRoutingExtension(), nullptr);
 
   dst = {0, 0, 0};
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, true, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                true, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_EQ(p->getRoutingExtension(), nullptr);
   for (auto& it : outputPorts) {
     ASSERT_EQ(std::get<0>(it), 0u);
@@ -1404,24 +1930,24 @@ TEST(HyperXUtil, valiantsRoutingAlgorithm) {
   dst = {0, 1, 1};
   p->incrementHopCount();
   p->setRoutingExtension(false_src);
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, false, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                false, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_EQ(p->getRoutingExtension(), nullptr);
 
   false_src = new std::vector<u32>({U32_MAX, 0, 0});
   p->setRoutingExtension(false_src);
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, true, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                true, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_EQ(p->getRoutingExtension(), nullptr);
 
   false_src = new std::vector<u32>({U32_MAX, 0, 0});
   p->setRoutingExtension(false_src);
   dst = {0, 0, 0};
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, true, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                true, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_EQ(p->getRoutingExtension(), nullptr);
   for (auto& it : outputPorts) {
     ASSERT_EQ(std::get<0>(it), 0u);
@@ -1429,20 +1955,20 @@ TEST(HyperXUtil, valiantsRoutingAlgorithm) {
 
   // Test with p->getRoutingExtension() == nullptr after stage 0 to 1 transition
   dst = {0, 1, 1};
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, false, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                false, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_EQ(p->getRoutingExtension(), nullptr);
 
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, true, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                true, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_EQ(p->getRoutingExtension(), nullptr);
 
   dst = {0, 0, 0};
-  HyperX::valiantsRoutingOutput(
-      router, 0, 0, widths, weights, conc, interfacePorts, &dst, vcSet,
-      numVcSets, numVcs, true, intNodeAlg, routingAlg, f, &outputPorts);
+  HyperX::valiantsRoutingOutput(router, 0, 0, widths, weights, conc,
+                                interfacePorts, &dst, vcSet, numVcSets, numVcs,
+                                true, intNodeAlg, routingAlg, f, &outputPorts);
   ASSERT_EQ(p->getRoutingExtension(), nullptr);
   for (auto& it : outputPorts) {
     ASSERT_EQ(std::get<0>(it), 0u);

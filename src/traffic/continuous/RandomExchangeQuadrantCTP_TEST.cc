@@ -46,11 +46,11 @@ TEST(RandomExchangeQuadrantCTP, evenSpread) {
   std::vector<RandomExchangeQuadrantCTP*> tps(numTerminals);
   for (u32 idx = 0; idx < numTerminals; idx++) {
     tps.at(idx) = new RandomExchangeQuadrantCTP(
-        "TP_"+std::to_string(idx), nullptr, numTerminals, idx, settings);
+        "TP_" + std::to_string(idx), nullptr, numTerminals, idx, settings);
   }
 
-  std::vector<std::vector<u32>> vals(
-      numTerminals, std::vector<u32>(numTerminals, 0u));
+  std::vector<std::vector<u32>> vals(numTerminals,
+                                     std::vector<u32>(numTerminals, 0u));
 
   for (u32 cnt = 0; cnt < numTerminals * kRounds; cnt++) {
     for (u32 idx = 0; idx < numTerminals; idx++) {

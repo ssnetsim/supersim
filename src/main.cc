@@ -15,7 +15,6 @@
 #include <cassert>
 #include <cstdio>
 #include <cstring>
-
 #include <string>
 #include <vector>
 
@@ -50,12 +49,12 @@ s32 main(s32 _argc, char** _argv) {
   gSim = new VectorQueue(settings["simulator"]);
 
   // create a metadata handler
-  MetadataHandler* metadataHandler = MetadataHandler::create(
-      settings["metadata_handler"]);
+  MetadataHandler* metadataHandler =
+      MetadataHandler::create(settings["metadata_handler"]);
 
   // create a network
-  Network* network = Network::create(
-      "Network", nullptr, metadataHandler, settings["network"]);
+  Network* network =
+      Network::create("Network", nullptr, metadataHandler, settings["network"]);
   gSim->setNetwork(network);
   u32 numInterfaces = network->numInterfaces();
   u32 numRouters = network->numRouters();
@@ -76,8 +75,8 @@ s32 main(s32 _argc, char** _argv) {
   gSim->infoLog.logInfo("Components", std::to_string(numComponents));
 
   // create the workload
-  Workload* workload = new Workload(
-      "Workload", nullptr, metadataHandler, settings["workload"]);
+  Workload* workload =
+      new Workload("Workload", nullptr, metadataHandler, settings["workload"]);
   gSim->setWorkload(workload);
 
   // check that all debug names were authentic

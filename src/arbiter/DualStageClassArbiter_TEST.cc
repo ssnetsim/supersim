@@ -36,7 +36,7 @@ TEST(DualStageClassArbiter, full) {
         request[idx] = gSim->rnd.nextBool();
         metadata[idx] = idx + 10000;
       }
-    } while (hotCount(request, size) <= size/2);
+    } while (hotCount(request, size) <= size / 2);
 
     nlohmann::json settings;
     settings["classes"] = 2;
@@ -51,8 +51,7 @@ TEST(DualStageClassArbiter, full) {
     settings["stage2_arbiter"] = nlohmann::json();
     settings["stage2_arbiter"]["type"] = "lru";
 
-    Arbiter* arb = new DualStageClassArbiter(
-        "Arb", nullptr, size, settings);
+    Arbiter* arb = new DualStageClassArbiter("Arb", nullptr, size, settings);
     assert(arb->size() == size);
     for (u32 idx = 0; idx < size; idx++) {
       arb->setRequest(idx, &request[idx]);

@@ -14,10 +14,9 @@
  */
 #include "workload/stream/StreamTerminal.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 
 #include "network/Network.h"
 #include "stats/MessageLog.h"
@@ -28,10 +27,10 @@
 
 namespace Stream {
 
-StreamTerminal::StreamTerminal(
-    const std::string& _name, const Component* _parent, u32 _id,
-    const std::vector<u32>& _address, ::Application* _app,
-    nlohmann::json _settings)
+StreamTerminal::StreamTerminal(const std::string& _name,
+                               const Component* _parent, u32 _id,
+                               const std::vector<u32>& _address,
+                               ::Application* _app, nlohmann::json _settings)
     : Terminal(_name, _parent, _id, _address, _app) {
   // create a message size distribution
   messageSizeDistribution_ = MessageSizeDistribution::create(
@@ -162,8 +161,7 @@ void StreamTerminal::sendNextMessage() {
   // create the packets
   u32 flitsLeft = messageLength;
   for (u32 p = 0; p < numPackets; p++) {
-    u32 packetLength = flitsLeft > maxPacketSize_ ?
-                       maxPacketSize_ : flitsLeft;
+    u32 packetLength = flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
     Packet* packet = new Packet(p, packetLength, message);
     message->setPacket(p, packet);

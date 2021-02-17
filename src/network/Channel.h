@@ -29,10 +29,10 @@ class CreditReceiver;
 
 class Channel : public Component {
  public:
-  Channel(const std::string& _name, const Component* _parent,
-          u32 _numVcs, nlohmann::json _settings);
-  Channel(const std::string& _name, const Component* _parent,
-          u32 _numVcs, u32 _latency);
+  Channel(const std::string& _name, const Component* _parent, u32 _numVcs,
+          nlohmann::json _settings);
+  Channel(const std::string& _name, const Component* _parent, u32 _numVcs,
+          u32 _latency);
   ~Channel();
   u32 latency() const;
   void setSource(CreditReceiver* _source, u32 _port);
@@ -86,7 +86,7 @@ class Channel : public Component {
 
   CreditReceiver* source_;  // sends flits, receives credits
   u32 sourcePort_;
-  FlitReceiver* sink_;   // receives flits, sends credits
+  FlitReceiver* sink_;  // receives flits, sends credits
   u32 sinkPort_;
 };
 

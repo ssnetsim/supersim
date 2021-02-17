@@ -22,9 +22,9 @@
 
 namespace Common {
 
-void injection(
-    Interface* _interface, InjectionAlgorithm* _algorithm, u32 _baseVc,
-    u32 _numVcs, bool _adaptive, bool _fixedMsgVc, Message* _message);
+void injection(Interface* _interface, InjectionAlgorithm* _algorithm,
+               u32 _baseVc, u32 _numVcs, bool _adaptive, bool _fixedMsgVc,
+               Message* _message);
 
 }  // namespace Common
 

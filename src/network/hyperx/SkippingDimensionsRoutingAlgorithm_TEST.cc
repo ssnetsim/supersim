@@ -28,8 +28,8 @@ TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {
   std::vector<std::string> outputAlgs({"minimal", "random"});
   std::vector<u32> maxOutputs({0, 1, 4});
 
-  std::vector<std::string> decSchemes({
-      "monolithic_weighted", "staged_threshold", "threshold_weighted"});
+  std::vector<std::string> decSchemes(
+      {"monolithic_weighted", "staged_threshold", "threshold_weighted"});
   std::vector<std::string> hopCountModes({"absolute", "normalized"});
 
   std::vector<std::string> skipAlgs({"dimension_adaptive", "dimension_order"});
@@ -96,8 +96,7 @@ TEST(HyperX_SkippingDimensionsRoutingAlgorithm, construct) {
                             settings["skipping_algorithm"] = skipAlg;
                             settings["finishing_algorithm"] = finiAlg;
                             settings["threshold_min"] = ithresholdMin;
-                            settings["threshold_nonmin"] =
-                                ithresholdNonmin;
+                            settings["threshold_nonmin"] = ithresholdNonmin;
                             settings["num_rounds"] = skipRound;
                             settings["step"] = step;
                             RoutingAlgorithmTestRouter tr("Router", 16, 24);

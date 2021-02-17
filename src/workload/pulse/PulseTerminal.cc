@@ -14,10 +14,9 @@
  */
 #include "workload/pulse/PulseTerminal.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 #include <utility>
 
 #include "fio/InFile.h"
@@ -84,7 +83,7 @@ PulseTerminal::PulseTerminal(const std::string& _name, const Component* _parent,
   numTransactions_ = _settings["num_transactions"].get<u32>();
 
   // max packet size
-  maxPacketSize_  = _settings["max_packet_size"].get<u32>();
+  maxPacketSize_ = _settings["max_packet_size"].get<u32>();
   assert(maxPacketSize_ > 0);
 
   // transaction size
@@ -119,8 +118,7 @@ PulseTerminal::PulseTerminal(const std::string& _name, const Component* _parent,
   enableResponses_ = _settings["enable_responses"].get<bool>();
 
   // latency of request processing
-  assert(!enableResponses_ ||
-         _settings.contains("request_processing_latency"));
+  assert(!enableResponses_ || _settings.contains("request_processing_latency"));
   requestProcessingLatency_ = _settings.value("request_processing_latency", 0);
 
   // protocol class of injection of responses
@@ -311,8 +309,9 @@ void PulseTerminal::startTransaction() {
   u32 msgType = kRequestMsg;
 
   // start tracking the transaction
-  bool res = outstandingTransactions_.insert(
-      std::make_pair(transaction, transactionSize_)).second;
+  bool res = outstandingTransactions_
+                 .insert(std::make_pair(transaction, transactionSize_))
+                 .second;
   assert(res);
 
   // register the transaction for logging
@@ -347,8 +346,8 @@ void PulseTerminal::startTransaction() {
     // create the packets
     u32 flitsLeft = messageSize;
     for (u32 p = 0; p < numPackets; p++) {
-      u32 packetLength = flitsLeft > maxPacketSize_ ?
-                         maxPacketSize_ : flitsLeft;
+      u32 packetLength =
+          flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
       Packet* packet = new Packet(p, packetLength, message);
       message->setPacket(p, packet);
@@ -410,8 +409,7 @@ void PulseTerminal::sendResponse(Message* _request) {
   // create the packets
   u32 flitsLeft = messageSize;
   for (u32 p = 0; p < numPackets; p++) {
-    u32 packetLength = flitsLeft > maxPacketSize_ ?
-                       maxPacketSize_ : flitsLeft;
+    u32 packetLength = flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
     Packet* packet = new Packet(p, packetLength, message);
     message->setPacket(p, packet);

@@ -15,7 +15,6 @@
 #include "network/dragonfly/MinimalRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <unordered_set>
 #include <vector>
@@ -33,11 +32,10 @@ MinimalRoutingAlgorithm::MinimalRoutingAlgorithm(
     u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
     u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
     nlohmann::json _settings)
-    : RoutingAlgorithm(
-          _name, _parent, _router, _baseVc, _numVcs, _inputPort, _inputVc,
-          _localWidth, _localWeight, _globalWidth, _globalWeight,
-          _concentration, _interfacePorts, _routerRadix, _globalPortsPerRouter,
-          _settings),
+    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
+                       _inputVc, _localWidth, _localWeight, _globalWidth,
+                       _globalWeight, _concentration, _interfacePorts,
+                       _routerRadix, _globalPortsPerRouter, _settings),
       mode_(parseRoutingMode(_settings["mode"].get<std::string>())) {
   assert(_settings.contains("randomized_global"));
   randomizedGlobal_ = _settings["randomized_global"].get<bool>();
@@ -124,7 +122,7 @@ void MinimalRoutingAlgorithm::processRequest(
   }
 
   // reduction phase
-  const std::unordered_set<std::tuple<u32, u32> >* outputs =
+  const std::unordered_set<std::tuple<u32, u32>>* outputs =
       reduction_->reduce(nullptr);
   for (const auto& t : *outputs) {
     u32 port = std::get<0>(t);
@@ -133,7 +131,7 @@ void MinimalRoutingAlgorithm::processRequest(
       // add all VCs in the specified routing class
       u32 rc = std::get<1>(t);
       if (rc != U32_MAX) {
-        for (u32 vc = baseVc_ + rc; vc < baseVc_ + numVcs_; vc+= rcs_) {
+        for (u32 vc = baseVc_ + rc; vc < baseVc_ + numVcs_; vc += rcs_) {
           _response->add(port, vc);
         }
       } else {
@@ -166,7 +164,7 @@ void MinimalRoutingAlgorithm::addPort(u32 _port, u32 _hops, u32 _routingClass) {
     } else {
       // all all VCs in the specified routing class
       for (u32 vc = baseVc_ + _routingClass; vc < baseVc_ + numVcs_;
-           vc+= rcs_) {
+           vc += rcs_) {
         f64 cong = router_->congestionStatus(inputPort_, inputVc_, _port, vc);
         reduction_->add(_port, vc, _hops, cong);
       }
@@ -174,8 +172,9 @@ void MinimalRoutingAlgorithm::addPort(u32 _port, u32 _hops, u32 _routingClass) {
   }
 }
 
-void MinimalRoutingAlgorithm::routeToRemoteGroup(
-    u32 _globalOffset, u32 _thisRouter, u32 _Rc, bool _indirectGlobals) {
+void MinimalRoutingAlgorithm::routeToRemoteGroup(u32 _globalOffset,
+                                                 u32 _thisRouter, u32 _Rc,
+                                                 bool _indirectGlobals) {
   // route to take a global hop
   std::unordered_set<u32> setOfPorts;
   // route to attached global channel only
@@ -184,12 +183,10 @@ void MinimalRoutingAlgorithm::routeToRemoteGroup(
     // router connected to global port
     u32 localRouter;
     u32 localPort;
-    computeGlobalToRouterMap(globalPortBase_,
-                             globalPortsPerRouter_,
-                             globalWidth_, globalWeight_,
-                             localWidth_,
-                             gw, _globalOffset,
-                             &dstGlobalPort, &localRouter, &localPort);
+    computeGlobalToRouterMap(globalPortBase_, globalPortsPerRouter_,
+                             globalWidth_, globalWeight_, localWidth_, gw,
+                             _globalOffset, &dstGlobalPort, &localRouter,
+                             &localPort);
     if (localRouter == _thisRouter) {
       // only add global hops connected to this router
       if (!randomizedGlobal_) {
@@ -204,8 +201,8 @@ void MinimalRoutingAlgorithm::routeToRemoteGroup(
       // add ports to route to local router connected to global port
       u32 offset = computeOffset(_thisRouter, localRouter, localWidth_);
       for (u32 lw = 0; lw < localWeight_; lw++) {
-        u32 port = computeLocalSrcPort(localPortBase_, offset,
-                                       localWeight_, lw);
+        u32 port =
+            computeLocalSrcPort(localPortBase_, offset, localWeight_, lw);
         if (!randomizedGlobal_) {
           // not random - add all connected global ports
           addPort(port, 1, _Rc);
@@ -227,8 +224,8 @@ void MinimalRoutingAlgorithm::addPortsToLocalRouter(u32 _src, u32 _dst,
                                                     u32 _routingClass) {
   u32 offset = computeOffset(_src, _dst, localWidth_);
   for (u32 localWeight = 0; localWeight < localWeight_; localWeight++) {
-    u32 port = computeLocalSrcPort(localPortBase_, offset,
-                                   localWeight_, localWeight);
+    u32 port =
+        computeLocalSrcPort(localPortBase_, offset, localWeight_, localWeight);
     addPort(port, 1, _routingClass);
   }
 }

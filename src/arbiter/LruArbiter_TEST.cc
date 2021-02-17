@@ -76,7 +76,7 @@ TEST(LruArbiter, full) {
         request[idx] = gSim->rnd.nextBool();
         metadata[idx] = 0;
       }
-    } while (hotCount(request, size) <= size/2);
+    } while (hotCount(request, size) <= size / 2);
 
     // do more arbitrations
     const u32 ARBS = 100;

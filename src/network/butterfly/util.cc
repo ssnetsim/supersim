@@ -19,9 +19,9 @@
 
 namespace Butterfly {
 
-void translateInterfaceIdToAddress(
-    u32 _routerRadix, u32 _numStages, u32 _stageWidth,
-    u32 _interfacePorts, u32 _id, std::vector<u32>* _address) {
+void translateInterfaceIdToAddress(u32 _routerRadix, u32 _numStages,
+                                   u32 _stageWidth, u32 _interfacePorts,
+                                   u32 _id, std::vector<u32>* _address) {
   _address->resize(_numStages);
   // scale the _id for _interfacePorts
   _id *= _interfacePorts;
@@ -35,9 +35,9 @@ void translateInterfaceIdToAddress(
   _address->at(_numStages - 1) /= _interfacePorts;
 }
 
-u32 translateInterfaceAddressToId(
-    u32 _routerRadix, u32 _numStages, u32 _stageWidth, u32 _interfacePorts,
-    const std::vector<u32>* _address) {
+u32 translateInterfaceAddressToId(u32 _routerRadix, u32 _numStages,
+                                  u32 _stageWidth, u32 _interfacePorts,
+                                  const std::vector<u32>* _address) {
   u32 sum = 0;
   u32 pow = 1;
   for (u32 stage = 0; stage < _numStages; stage++) {
@@ -49,17 +49,17 @@ u32 translateInterfaceAddressToId(
   return sum;
 }
 
-void translateRouterIdToAddress(
-    u32 _routerRadix, u32 _numStages, u32 _stageWidth,
-    u32 _id, std::vector<u32>* _address) {
+void translateRouterIdToAddress(u32 _routerRadix, u32 _numStages,
+                                u32 _stageWidth, u32 _id,
+                                std::vector<u32>* _address) {
   _address->resize(2);
   _address->at(0) = _id / _stageWidth;
   _address->at(1) = _id % _stageWidth;
 }
 
-u32 translateRouterAddressToId(
-    u32 _routerRadix, u32 _numStages, u32 _stageWidth,
-    const std::vector<u32>* _address) {
+u32 translateRouterAddressToId(u32 _routerRadix, u32 _numStages,
+                               u32 _stageWidth,
+                               const std::vector<u32>* _address) {
   return _address->at(0) * _stageWidth + _address->at(1);
 }
 

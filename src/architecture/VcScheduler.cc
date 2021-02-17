@@ -29,7 +29,9 @@ VcScheduler::VcScheduler(const std::string& _name, const Component* _parent,
                          u32 _numClients, u32 _totalVcs,
                          Simulator::Clock _clock, nlohmann::json _settings)
     : Component(_name, _parent),
-      numClients_(_numClients), totalVcs_(_totalVcs), clock_(_clock) {
+      numClients_(_numClients),
+      totalVcs_(_totalVcs),
+      clock_(_clock) {
   assert(numClients_ > 0 && numClients_ != U32_MAX);
   assert(totalVcs_ > 0 && totalVcs_ != U32_MAX);
 
@@ -47,8 +49,8 @@ VcScheduler::VcScheduler(const std::string& _name, const Component* _parent,
   grants_ = new bool[totalVcs_ * numClients_];
 
   // create the allocator
-  allocator_ = Allocator::create(
-      "Allocator", this, numClients_, totalVcs_, _settings["allocator"]);
+  allocator_ = Allocator::create("Allocator", this, numClients_, totalVcs_,
+                                 _settings["allocator"]);
 
   // map inputs and outputs to allocator
   for (u32 c = 0; c < numClients_; c++) {

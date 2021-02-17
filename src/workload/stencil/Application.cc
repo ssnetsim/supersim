@@ -15,7 +15,6 @@
 #include "workload/stencil/Application.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <vector>
 
@@ -28,10 +27,10 @@
 
 namespace Stencil {
 
-Application::Application(
-    const std::string& _name, const Component* _parent, u32 _id,
-    Workload* _workload, MetadataHandler* _metadataHandler,
-    nlohmann::json _settings)
+Application::Application(const std::string& _name, const Component* _parent,
+                         u32 _id, Workload* _workload,
+                         MetadataHandler* _metadataHandler,
+                         nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings),
       termToProc_(numTerminals(), U32_MAX),
@@ -68,7 +67,7 @@ Application::Application(
          _settings["exchange_messages"].is_string());
 
   // send message matrix of {dst, size}
-  std::vector<std::vector<std::tuple<u32, u32> > > exchangeSendMessages(
+  std::vector<std::vector<std::tuple<u32, u32>>> exchangeSendMessages(
       numTerminals());
 
   // this is the recv message counts
@@ -136,12 +135,11 @@ Application::Application(
     std::string tname = "StencilTerminal_" + std::to_string(t);
     std::vector<u32> address;
     gSim->getNetwork()->translateInterfaceIdToAddress(t, &address);
-    StencilTerminal* terminal = new StencilTerminal(
-        tname, this, t, address,
-        &termToProc_, &procToTerm_,
-        exchangeSendMessages.at(termToProc_.at(t)),
-        exchangeRecvMessages.at(termToProc_.at(t)),
-        this, _settings["stencil_terminal"]);
+    StencilTerminal* terminal =
+        new StencilTerminal(tname, this, t, address, &termToProc_, &procToTerm_,
+                            exchangeSendMessages.at(termToProc_.at(t)),
+                            exchangeRecvMessages.at(termToProc_.at(t)), this,
+                            _settings["stencil_terminal"]);
     setTerminal(t, terminal);
   }
 

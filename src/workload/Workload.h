@@ -66,7 +66,7 @@ class Workload : public Component {
   void applicationDone(u32 _index);
 
  private:
-  enum class Fsm {READY, COMPLETE, DONE, KILLED};
+  enum class Fsm { READY, COMPLETE, DONE, KILLED };
 
   std::vector<Application*> applications_;
   std::vector<MessageDistributor*> distributors_;

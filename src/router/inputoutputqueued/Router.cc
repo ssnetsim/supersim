@@ -27,18 +27,18 @@
 
 namespace InputOutputQueued {
 
-Router::Router(
-    const std::string& _name, const Component* _parent, Network* _network,
-    u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, nlohmann::json _settings)
+Router::Router(const std::string& _name, const Component* _parent,
+               Network* _network, u32 _id, const std::vector<u32>& _address,
+               u32 _numPorts, u32 _numVcs, MetadataHandler* _metadataHandler,
+               nlohmann::json _settings)
     : ::Router(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
                _metadataHandler, _settings),
       congestionMode_(parseCongestionMode(
           _settings["congestion_mode"].get<std::string>())) {
   // determine the size of credits
-  creditSize_ = numVcs_ * (u32)std::ceil(
-      (f64)gSim->cycleTime(Simulator::Clock::CHANNEL) /
-      (f64)gSim->cycleTime(Simulator::Clock::ROUTER));
+  creditSize_ =
+      numVcs_ * (u32)std::ceil((f64)gSim->cycleTime(Simulator::Clock::CHANNEL) /
+                               (f64)gSim->cycleTime(Simulator::Clock::ROUTER));
 
   // queue depths
   outputQueueDepth_ = _settings["output_queue_depth"].get<u32>();
@@ -75,16 +75,16 @@ Router::Router(
   bool vcaSwaWait = _settings["vca_swa_wait"].get<bool>();
 
   // create a congestion status device
-  congestionSensor_ = CongestionSensor::create(
-      "CongestionSensor", this, this, _settings["congestion_sensor"]);
+  congestionSensor_ = CongestionSensor::create("CongestionSensor", this, this,
+                                               _settings["congestion_sensor"]);
 
   // create crossbar and schedulers
-  crossbar_ = new Crossbar(
-      "Crossbar", this, numPorts_ * numVcs_, numPorts_ * numVcs_,
-      Simulator::Clock::ROUTER, _settings["crossbar"]);
-  vcScheduler_ = new VcScheduler(
-      "VcScheduler", this, numPorts_ * numVcs_, numPorts_ * numVcs_,
-      Simulator::Clock::ROUTER, _settings["vc_scheduler"]);
+  crossbar_ =
+      new Crossbar("Crossbar", this, numPorts_ * numVcs_, numPorts_ * numVcs_,
+                   Simulator::Clock::ROUTER, _settings["crossbar"]);
+  vcScheduler_ = new VcScheduler("VcScheduler", this, numPorts_ * numVcs_,
+                                 numPorts_ * numVcs_, Simulator::Clock::ROUTER,
+                                 _settings["vc_scheduler"]);
   crossbarScheduler_ = new CrossbarScheduler(
       "CrossbarScheduler", this, numPorts_ * numVcs_, numPorts_ * numVcs_,
       numPorts_ * numVcs_, 0, Simulator::Clock::ROUTER,
@@ -108,13 +108,13 @@ Router::Router(
       u32 vcIdx = vcIndex(port, vc);
 
       // create the name suffix
-      std::string nameSuffix = "_" + std::to_string(port) + "_" +
-                               std::to_string(vc);
+      std::string nameSuffix =
+          "_" + std::to_string(port) + "_" + std::to_string(vc);
 
       // routing algorithm
       std::string rfname = "RoutingAlgorithm" + nameSuffix;
-      RoutingAlgorithm* rf = network_->createRoutingAlgorithm(
-          port, vc, rfname, this, this);
+      RoutingAlgorithm* rf =
+          network_->createRoutingAlgorithm(port, vc, rfname, this, this);
       routingAlgorithms_.at(vcIdx) = rf;
 
       // compute the client index (same for VC alloc, SW alloc, and Xbar)
@@ -154,9 +154,9 @@ Router::Router(
 
     // output crossbar
     std::string outputCrossbarName = "OutputCrossbar_" + std::to_string(port);
-    outputCrossbars_.at(port) = new Crossbar(
-        outputCrossbarName, this, numVcs_, 1, Simulator::Clock::CHANNEL,
-        _settings["output_crossbar"]);
+    outputCrossbars_.at(port) =
+        new Crossbar(outputCrossbarName, this, numVcs_, 1,
+                     Simulator::Clock::CHANNEL, _settings["output_crossbar"]);
 
     // ejector
     std::string ejName = "Ejector_" + std::to_string(port);
@@ -168,11 +168,11 @@ Router::Router(
       u32 vcIdx = vcIndex(port, vc);
 
       // create the name suffix
-      std::string nameSuffix = "_" + std::to_string(port) + "_" +
-                               std::to_string(vc);
+      std::string nameSuffix =
+          "_" + std::to_string(port) + "_" + std::to_string(vc);
 
       // compute the client indexes
-      u32 clientIndexOut = vc;  // sw alloc and output crossbar
+      u32 clientIndexOut = vc;      // sw alloc and output crossbar
       u32 clientIndexMain = vcIdx;  // main crossbar
 
       // output queue
@@ -243,11 +243,11 @@ void Router::initialize() {
     u32 queueDepth = inputQueueDepth_;
     if (inputQueueTailored_) {
       if (inputChannels_.at(port)) {
-       // compute tailored input queue depth (input channel)
+        // compute tailored input queue depth (input channel)
         u32 channelLatency = inputChannels_.at(port)->latency();
         queueDepth = computeTailoredBufferLength(
             inputQueueMult_, inputQueueMin_, inputQueueMax_, channelLatency);
-        } else {
+      } else {
         // if no channel, make no queuing and inf credits
         queueDepth = 0;
       }
@@ -266,8 +266,8 @@ void Router::initialize() {
     if (inputQueueTailored_) {
       if (outputChannels_.at(port)) {
         u32 channelLatency = outputChannels_.at(port)->latency();
-        credits = computeTailoredBufferLength(
-            inputQueueMult_, inputQueueMin_, inputQueueMax_, channelLatency);
+        credits = computeTailoredBufferLength(inputQueueMult_, inputQueueMin_,
+                                              inputQueueMax_, channelLatency);
       } else {
         // if no channel, make no queuing and inf credits
         credits = U32_MAX;
@@ -287,9 +287,9 @@ void Router::initialize() {
       } else if (congestionMode_ ==
                  Router::CongestionMode::kOutputAndDownstream) {
         congestionSensor_->initCredits(
-            vcIdx,
-            (credits == U32_MAX || outputQueueDepth_ == U32_MAX) ?
-            U32_MAX : credits + outputQueueDepth_ + 1);
+            vcIdx, (credits == U32_MAX || outputQueueDepth_ == U32_MAX)
+                       ? U32_MAX
+                       : credits + outputQueueDepth_ + 1);
       }
 
       // initialize the credit count in the OutputCrossbarScheduler
@@ -350,8 +350,8 @@ void Router::sendFlit(u32 _port, Flit* _flit) {
   }
 }
 
-f64 Router::congestionStatus(u32 _inputPort, u32 _inputVc,
-                             u32 _outputPort, u32 _outputVc) const {
+f64 Router::congestionStatus(u32 _inputPort, u32 _inputVc, u32 _outputPort,
+                             u32 _outputVc) const {
   return congestionSensor_->status(_inputPort, _inputVc, _outputPort,
                                    _outputVc);
 }

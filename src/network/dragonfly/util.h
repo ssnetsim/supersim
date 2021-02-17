@@ -28,30 +28,27 @@ u32 computeLocalDstPort(u32 _portBase, u32 _offset, u32 _localWidth,
 u32 computeGlobalPort(u32 _globalWidth, u32 _oneGlobalWeight,
                       u32 _globalOffset);
 void computeGlobalToRouterMap(u32 _routerGlobalPortBase,
-                              u32 _globalPortsPerRouter,
-                              u32 _globalWidth, u32 _globalWeight,
-                              u32 _localWidth,
+                              u32 _globalPortsPerRouter, u32 _globalWidth,
+                              u32 _globalWeight, u32 _localWidth,
                               u32 _thisGlobalWeight, u32 _thisGlobalOffset,
                               u32* _globalPort, u32* _localRouter,
                               u32* _localPort);
-void translateInterfaceIdToAddress(
-    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
-    u32 _id, std::vector<u32>* _address);
-u32 translateInterfaceAddressToId(
-    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
-    const std::vector<u32>* _address);
+void translateInterfaceIdToAddress(u32 _concentration, u32 _interfacePorts,
+                                   u32 _localWidth, u32 _id,
+                                   std::vector<u32>* _address);
+u32 translateInterfaceAddressToId(u32 _concentration, u32 _interfacePorts,
+                                  u32 _localWidth,
+                                  const std::vector<u32>* _address);
 
-void translateRouterIdToAddress(
-    u32 _localWidth, u32 _id, std::vector<u32>* _address);
-u32 translateRouterAddressToId(
-    u32 _localWidth, const std::vector<u32>* _address);
+void translateRouterIdToAddress(u32 _localWidth, u32 _id,
+                                std::vector<u32>* _address);
+u32 translateRouterAddressToId(u32 _localWidth,
+                               const std::vector<u32>* _address);
 
 u32 computeMinimalHops(const std::vector<u32>* _source,
-                       const std::vector<u32>* _destination,
-                       u32 _globalWidth, u32 _globalWeight,
-                       u32 _routerGlobalPortBase,
-                       u32 _globalPortsPerRouter,
-                       u32 _localWidth);
+                       const std::vector<u32>* _destination, u32 _globalWidth,
+                       u32 _globalWeight, u32 _routerGlobalPortBase,
+                       u32 _globalPortsPerRouter, u32 _localWidth);
 }  // namespace Dragonfly
 
 #endif  // NETWORK_DRAGONFLY_UTIL_H_

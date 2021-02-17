@@ -27,11 +27,10 @@ TEST(HyperX_ValiantsRoutingAlgorithm, construct) {
   std::vector<std::string> outputTypes({"vc", "port"});
   std::vector<std::string> outputAlgs({"minimal", "random"});
   std::vector<u32> maxOutputs({0, 1, 2, 3, 4});
-  std::vector<std::string> intNodes({
-      "regular", "source", "dest", "source_dest", "unaligned", "minimal_vc",
-          "minimal_port"});
-  std::vector<std::string> minTypes({
-      "dimension_order", "random", "adaptive"});
+  std::vector<std::string> intNodes({"regular", "source", "dest", "source_dest",
+                                     "unaligned", "minimal_vc",
+                                     "minimal_port"});
+  std::vector<std::string> minTypes({"dimension_order", "random", "adaptive"});
   std::vector<char> shortCuts({true, false});
 
   for (auto& latency : latencies) {

@@ -26,13 +26,18 @@ CrossbarScheduler::Client::Client() {}
 
 CrossbarScheduler::Client::~Client() {}
 
-CrossbarScheduler::CrossbarScheduler(
-    const std::string& _name, const Component* _parent, u32 _numClients,
-    u32 _totalVcs, u32 _crossbarPorts, u32 _globalVcOffset,
-    Simulator::Clock _clock, nlohmann::json _settings)
-    : Component(_name, _parent), numClients_(_numClients),
-      totalVcs_(_totalVcs), crossbarPorts_(_crossbarPorts),
-      globalVcOffset_(_globalVcOffset), clock_(_clock),
+CrossbarScheduler::CrossbarScheduler(const std::string& _name,
+                                     const Component* _parent, u32 _numClients,
+                                     u32 _totalVcs, u32 _crossbarPorts,
+                                     u32 _globalVcOffset,
+                                     Simulator::Clock _clock,
+                                     nlohmann::json _settings)
+    : Component(_name, _parent),
+      numClients_(_numClients),
+      totalVcs_(_totalVcs),
+      crossbarPorts_(_crossbarPorts),
+      globalVcOffset_(_globalVcOffset),
+      clock_(_clock),
       fullPacket_(_settings["full_packet"].get<bool>()),
       packetLock_(_settings["packet_lock"].get<bool>()),
       idleUnlock_(_settings["idle_unlock"].get<bool>()) {
@@ -40,10 +45,11 @@ CrossbarScheduler::CrossbarScheduler(
   assert(!_settings["packet_lock"].is_null());
   assert(!_settings["idle_unlock"].is_null());
   if (!warningIssued && !fullPacket_ && packetLock_ && !idleUnlock_) {
-    printf("**************************************************************\n"
-           "** WARNING!!!!!!! Packet-Channel Flit-Buffer Flow Control   **\n"
-           "** causes deadlock if VCs are being used to avoid deadlock. **\n"
-           "**************************************************************\n");
+    printf(
+        "**************************************************************\n"
+        "** WARNING!!!!!!! Packet-Channel Flit-Buffer Flow Control   **\n"
+        "** causes deadlock if VCs are being used to avoid deadlock. **\n"
+        "**************************************************************\n");
     warningIssued = true;
   }
   if (idleUnlock_) {
@@ -75,8 +81,8 @@ CrossbarScheduler::CrossbarScheduler(
   portLocks_.resize(crossbarPorts_, U32_MAX);
 
   // create the allocator
-  allocator_ = Allocator::create(
-      "Allocator", this, numClients_, crossbarPorts_, _settings["allocator"]);
+  allocator_ = Allocator::create("Allocator", this, numClients_, crossbarPorts_,
+                                 _settings["allocator"]);
 
   // map inputs and outputs to allocator
   for (u32 c = 0; c < numClients_; c++) {

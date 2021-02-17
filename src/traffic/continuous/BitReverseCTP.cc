@@ -19,9 +19,9 @@
 #include "bits/bits.h"
 #include "factory/ObjectFactory.h"
 
-BitReverseCTP::BitReverseCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+BitReverseCTP::BitReverseCTP(const std::string& _name, const Component* _parent,
+                             u32 _numTerminals, u32 _self,
+                             nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   assert(bits::isPow2(numTerminals_));
@@ -34,5 +34,5 @@ u32 BitReverseCTP::nextDestination() {
   return dest_;
 }
 
-registerWithObjectFactory("BitReverse", ContinuousTrafficPattern,
-                          BitReverseCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("BitReverse", ContinuousTrafficPattern, BitReverseCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

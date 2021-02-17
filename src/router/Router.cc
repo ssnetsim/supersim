@@ -21,20 +21,22 @@
 #include "types/Packet.h"
 #include "workload/Workload.h"
 
-Router::Router(
-    const std::string& _name, const Component* _parent, Network* _network,
-    u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, nlohmann::json _settings)
+Router::Router(const std::string& _name, const Component* _parent,
+               Network* _network, u32 _id, const std::vector<u32>& _address,
+               u32 _numPorts, u32 _numVcs, MetadataHandler* _metadataHandler,
+               nlohmann::json _settings)
     : Component(_name, _parent),
       PortedDevice(_id, _address, _numPorts, _numVcs),
-      network_(_network), metadataHandler_(_metadataHandler) {}
+      network_(_network),
+      metadataHandler_(_metadataHandler) {}
 
 Router::~Router() {}
 
-Router* Router::create(
-    const std::string& _name, const Component* _parent, Network* _network,
-    u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, nlohmann::json _settings) {
+Router* Router::create(const std::string& _name, const Component* _parent,
+                       Network* _network, u32 _id,
+                       const std::vector<u32>& _address, u32 _numPorts,
+                       u32 _numVcs, MetadataHandler* _metadataHandler,
+                       nlohmann::json _settings) {
   // retrieve the architecture
   const std::string& architecture =
       _settings["architecture"].get<std::string>();

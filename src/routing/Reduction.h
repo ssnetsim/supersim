@@ -26,8 +26,9 @@
 #include "prim/prim.h"
 #include "routing/mode.h"
 
-#define REDUCTION_ARGS const std::string&, const Component*,  \
-    const PortedDevice*, RoutingMode, bool, nlohmann::json
+#define REDUCTION_ARGS                                                    \
+  const std::string&, const Component*, const PortedDevice*, RoutingMode, \
+      bool, nlohmann::json
 
 class Reduction : public Component {
  public:
@@ -47,7 +48,7 @@ class Reduction : public Component {
   // compute the results
   //  'allMinimal' can be nullptr if the user doesn't care. The flag indicates
   //  if any routes are non-minimal
-  const std::unordered_set<std::tuple<u32, u32> >* reduce(bool* _allMinimal);
+  const std::unordered_set<std::tuple<u32, u32>>* reduce(bool* _allMinimal);
 
  protected:
   // subclasses must implement this function
@@ -55,9 +56,9 @@ class Reduction : public Component {
   //  _outputs = {port, vcRc}
   virtual void process(
       u32 _minHops,
-      const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _minimal,
-      const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _nonMinimal,
-      std::unordered_set<std::tuple<u32, u32> >* _outputs,
+      const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _minimal,
+      const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _nonMinimal,
+      std::unordered_set<std::tuple<u32, u32>>* _outputs,
       bool* _allMinimal) = 0;
 
  private:
@@ -67,12 +68,12 @@ class Reduction : public Component {
   const bool ignoreDuplicates_;
 
   bool start_;
-  std::unordered_set<std::tuple<u32, u32> > check_;
-  std::unordered_set<std::tuple<u32, u32, u32, f64> > minimal_;
-  std::unordered_set<std::tuple<u32, u32, u32, f64> > nonMinimal_;
+  std::unordered_set<std::tuple<u32, u32>> check_;
+  std::unordered_set<std::tuple<u32, u32, u32, f64>> minimal_;
+  std::unordered_set<std::tuple<u32, u32, u32, f64>> nonMinimal_;
   u32 minHops_;
-  std::unordered_set<std::tuple<u32, u32> > intermediate_;
-  std::unordered_set<std::tuple<u32, u32> > outputs_;
+  std::unordered_set<std::tuple<u32, u32>> intermediate_;
+  std::unordered_set<std::tuple<u32, u32>> outputs_;
   bool allMinimal_;
 };
 

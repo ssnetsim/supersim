@@ -19,9 +19,8 @@
 #include "event/Simulator.h"
 #include "factory/ObjectFactory.h"
 
-SingleMSD::SingleMSD(
-    const std::string& _name, const Component* _parent,
-    nlohmann::json _settings)
+SingleMSD::SingleMSD(const std::string& _name, const Component* _parent,
+                     nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
       messageSize_(_settings["message_size"].get<u32>()),
       doDependent_(_settings.contains("dependent_message_size")),
@@ -54,6 +53,5 @@ u32 SingleMSD::nextMessageSize(const Message* _msg) {
   }
 }
 
-registerWithObjectFactory("single", MessageSizeDistribution,
-                          SingleMSD,
+registerWithObjectFactory("single", MessageSizeDistribution, SingleMSD,
                           MESSAGESIZEDISTRIBUTION_ARGS);

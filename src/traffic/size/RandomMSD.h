@@ -24,9 +24,8 @@
 
 class RandomMSD : public MessageSizeDistribution {
  public:
-  RandomMSD(
-      const std::string& _name, const Component* _parent,
-      nlohmann::json _settings);
+  RandomMSD(const std::string& _name, const Component* _parent,
+            nlohmann::json _settings);
   virtual ~RandomMSD();
 
   // size bounds

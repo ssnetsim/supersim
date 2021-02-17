@@ -29,26 +29,26 @@ TEST(FatTree, translateInterfaceIdToAddress) {
 
   id = 0;
   exp = {0, 0, 0, 0};
-  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup,
-                                         id, &act);
+  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup, id,
+                                         &act);
   ASSERT_EQ(act, exp);
 
   id = 1;
   exp = {1, 0, 0, 0};
-  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup,
-                                         id, &act);
+  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup, id,
+                                         &act);
   ASSERT_EQ(act, exp);
 
   id = 20;
   exp = {0, 2, 1, 0};
-  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup,
-                                         id, &act);
+  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup, id,
+                                         &act);
   ASSERT_EQ(act, exp);
 
   id = 47;
   exp = {3, 2, 1, 1};
-  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup,
-                                         id, &act);
+  FatTree::translateInterfaceIdToAddress(numLevels, terminalsPerGroup, id,
+                                         &act);
   ASSERT_EQ(act, exp);
 }
 
@@ -60,23 +60,23 @@ TEST(FatTree, translateInterfaceAddressToId) {
 
   addr = {0, 0, 0, 0};
   ASSERT_EQ(0u, FatTree::translateInterfaceAddressToId(
-      numLevels, terminalsPerGroup, &addr));
+                    numLevels, terminalsPerGroup, &addr));
 
   addr = {1, 0, 0, 0};
   ASSERT_EQ(1u, FatTree::translateInterfaceAddressToId(
-      numLevels, terminalsPerGroup, &addr));
+                    numLevels, terminalsPerGroup, &addr));
 
-  addr = {0, 2, 1, 0};;
+  addr = {0, 2, 1, 0};
   ASSERT_EQ(20u, FatTree::translateInterfaceAddressToId(
-      numLevels, terminalsPerGroup, &addr));
+                     numLevels, terminalsPerGroup, &addr));
 
-  addr = {3, 2, 0, 1};;
+  addr = {3, 2, 0, 1};
   ASSERT_EQ(35u, FatTree::translateInterfaceAddressToId(
-      numLevels, terminalsPerGroup, &addr));
+                     numLevels, terminalsPerGroup, &addr));
 
   addr = {3, 2, 1, 1};
   ASSERT_EQ(47u, FatTree::translateInterfaceAddressToId(
-      numLevels, terminalsPerGroup, &addr));
+                     numLevels, terminalsPerGroup, &addr));
 }
 
 TEST(FatTree, translateRouterIdToAddress) {
@@ -85,36 +85,31 @@ TEST(FatTree, translateRouterIdToAddress) {
   u32 id;
 
   const u32 numLevels = 4;
-  const  std::vector<u32> rowRouters = {128, 64, 32, 10};
+  const std::vector<u32> rowRouters = {128, 64, 32, 10};
 
   id = 0;
   exp = {0, 0};
-  FatTree::translateRouterIdToAddress(numLevels, rowRouters,
-                                      id, &act);
+  FatTree::translateRouterIdToAddress(numLevels, rowRouters, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 1;
   exp = {0, 1};
-  FatTree::translateRouterIdToAddress(numLevels, rowRouters,
-                                      id, &act);
+  FatTree::translateRouterIdToAddress(numLevels, rowRouters, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 130;
   exp = {1, 2};
-  FatTree::translateRouterIdToAddress(numLevels, rowRouters,
-                                      id, &act);
+  FatTree::translateRouterIdToAddress(numLevels, rowRouters, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 223;
   exp = {2, 31};
-  FatTree::translateRouterIdToAddress(numLevels, rowRouters,
-                                      id, &act);
+  FatTree::translateRouterIdToAddress(numLevels, rowRouters, id, &act);
   ASSERT_EQ(act, exp);
 
   id = 230;
   exp = {3, 6};
-  FatTree::translateRouterIdToAddress(numLevels, rowRouters,
-                                      id, &act);
+  FatTree::translateRouterIdToAddress(numLevels, rowRouters, id, &act);
   ASSERT_EQ(act, exp);
 }
 
@@ -122,31 +117,31 @@ TEST(FatTree, translateRouterAddressToId) {
   std::vector<u32> addr;
 
   const u32 numLevels = 4;
-  const  std::vector<u32> rowRouters = {128, 64, 32, 10};
+  const std::vector<u32> rowRouters = {128, 64, 32, 10};
 
   addr = {0, 0};
-  ASSERT_EQ(0u, FatTree::translateRouterAddressToId(
-      numLevels, rowRouters, &addr));
+  ASSERT_EQ(0u,
+            FatTree::translateRouterAddressToId(numLevels, rowRouters, &addr));
 
   addr = {0, 1};
-  ASSERT_EQ(1u, FatTree::translateRouterAddressToId(
-      numLevels, rowRouters, &addr));
+  ASSERT_EQ(1u,
+            FatTree::translateRouterAddressToId(numLevels, rowRouters, &addr));
 
   addr = {1, 42};
-  ASSERT_EQ(170u, FatTree::translateRouterAddressToId(
-      numLevels, rowRouters, &addr));
+  ASSERT_EQ(170u,
+            FatTree::translateRouterAddressToId(numLevels, rowRouters, &addr));
 
   addr = {2, 0};
-  ASSERT_EQ(192u, FatTree::translateRouterAddressToId(
-      numLevels, rowRouters, &addr));
+  ASSERT_EQ(192u,
+            FatTree::translateRouterAddressToId(numLevels, rowRouters, &addr));
 
   addr = {2, 31};
-  ASSERT_EQ(223u, FatTree::translateRouterAddressToId(
-      numLevels, rowRouters, &addr));
+  ASSERT_EQ(223u,
+            FatTree::translateRouterAddressToId(numLevels, rowRouters, &addr));
 
   addr = {3, 1};
-  ASSERT_EQ(225u, FatTree::translateRouterAddressToId(
-      numLevels, rowRouters, &addr));
+  ASSERT_EQ(225u,
+            FatTree::translateRouterAddressToId(numLevels, rowRouters, &addr));
 }
 
 TEST(FatTree, computeMinimalHops) {
@@ -178,7 +173,6 @@ TEST(FatTree, computeMinimalHops) {
   dst = {2, 2, 2};
   exp = 5;
   ASSERT_EQ(exp, FatTree::computeMinimalHops(&src, &dst));
-
 
   src = {0, 0, 0, 0};
   dst = {2, 2, 2, 2};

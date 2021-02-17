@@ -25,8 +25,8 @@
 // last served -> lowest priority (LSLP) aka round-robin
 class LslpArbiter : public Arbiter {
  public:
-  LslpArbiter(const std::string& _name, const Component* _parent,
-              u32 _size, nlohmann::json _settings);
+  LslpArbiter(const std::string& _name, const Component* _parent, u32 _size,
+              nlohmann::json _settings);
   ~LslpArbiter();
 
   void latch() override;

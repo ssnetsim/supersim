@@ -21,21 +21,21 @@
 
 TEST(LeastCongestedMinimalReduction, vc) {
   for (u32 i = 0; i < 2; i++) {
-    TestSetup ts(1, 1, 1, 1, 12345+i);
+    TestSetup ts(1, 1, 1, 1, 12345 + i);
 
     const u32 ROUNDS = 100000;
 
     TestPortedDevice dev(4, 6);
     nlohmann::json settings;
     settings["max_outputs"] = 1;
-    LeastCongestedMinimalReduction red(
-        "Reduction", nullptr, &dev, RoutingMode::kVc, false, settings);
+    LeastCongestedMinimalReduction red("Reduction", nullptr, &dev,
+                                       RoutingMode::kVc, false, settings);
 
     s32 bias = 0;
     for (u32 cnt = 0; cnt < ROUNDS; cnt++) {
       red.add(1, 4, 7, 0.3333333);  // this
       red.add(0, 3, 7, 0.5);
-      red.add(2, 5, 7, 1.0/3.0);  // this
+      red.add(2, 5, 7, 1.0 / 3.0);  // this
       red.add(3, 1, 8, 0.0);
 
       bool allMin;

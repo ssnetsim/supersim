@@ -15,7 +15,6 @@
 #include "stats/MessageLog.h"
 
 #include <cassert>
-
 #include <sstream>
 #include <string>
 
@@ -23,8 +22,7 @@
 #include "types/Flit.h"
 #include "types/Packet.h"
 
-MessageLog::MessageLog(nlohmann::json _settings)
-    : outFile_(nullptr) {
+MessageLog::MessageLog(nlohmann::json _settings) : outFile_(nullptr) {
   if (!_settings["file"].is_null()) {
     // create file
     outFile_ = new fio::OutFile(_settings["file"].get<std::string>());
@@ -46,8 +44,8 @@ void MessageLog::logMessage(const Message* _message) {
     ss << _message->getDestinationId() << ',';
     ss << _message->getTransaction() << ',';
     ss << _message->getProtocolClass() << ',';
-    ss << _message->getMinimalHopCount()  << ',';
-    ss << _message->getOpCode()  << '\n';
+    ss << _message->getMinimalHopCount() << ',';
+    ss << _message->getOpCode() << '\n';
     for (u32 p = 0; p < _message->numPackets(); p++) {
       Packet* packet = _message->packet(p);
       ss << " +P" << ',';

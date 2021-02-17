@@ -24,7 +24,12 @@ class Router;
 /*
  * These function specify routing mode.
  */
-enum class RoutingMode : u8 {kVc = 0, kPortAve = 1, kPortMin = 2, kPortMax = 3};
+enum class RoutingMode : u8 {
+  kVc = 0,
+  kPortAve = 1,
+  kPortMin = 2,
+  kPortMax = 3
+};
 
 f64 averagePortCongestion(const Router* _router, u32 _inputPort, u32 _inputVc,
                           u32 _outputPort);

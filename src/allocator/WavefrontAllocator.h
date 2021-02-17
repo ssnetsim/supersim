@@ -36,7 +36,7 @@ class WavefrontAllocator : public Allocator {
   void allocate() override;
 
  private:
-  enum class PriorityScheme {kSequential, kRandom};
+  enum class PriorityScheme { kSequential, kRandom };
 
   void toRowCol(u32 _client, u32 _resource, u32* _row, u32* _col) const;
   u32 toIndex(u32 _row, u32 _col) const;

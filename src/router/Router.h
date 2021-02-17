@@ -31,11 +31,16 @@
 
 class Network;
 
-#define ROUTER_ARGS const std::string&, const Component*, Network*, u32, \
-    const std::vector<u32>&, u32, u32, MetadataHandler*, nlohmann::json
+#define ROUTER_ARGS                                    \
+  const std::string&, const Component*, Network*, u32, \
+      const std::vector<u32>&, u32, u32, MetadataHandler*, nlohmann::json
 
-class Router : public Component, public PortedDevice, public FlitSender,
-               public FlitReceiver, public CreditSender, public CreditReceiver {
+class Router : public Component,
+               public PortedDevice,
+               public FlitSender,
+               public FlitReceiver,
+               public CreditSender,
+               public CreditReceiver {
  public:
   Router(const std::string& _name, const Component* _parent, Network* _network,
          u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
@@ -56,8 +61,8 @@ class Router : public Component, public PortedDevice, public FlitSender,
   //  on an output port.
   void packetDeparture(u32 _port, Packet* _packet) const;
 
-  virtual f64 congestionStatus(u32 _inputPort, u32 _inputVc,
-                               u32 _outputPort, u32 _outputVc) const = 0;
+  virtual f64 congestionStatus(u32 _inputPort, u32 _inputVc, u32 _outputPort,
+                               u32 _outputVc) const = 0;
 
  protected:
   Network* network_;

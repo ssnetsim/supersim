@@ -16,7 +16,6 @@
 
 #include <cassert>
 #include <cmath>
-
 #include <tuple>
 
 #include "factory/ObjectFactory.h"
@@ -69,14 +68,13 @@ Network::Network(const std::string& _name, const Component* _parent,
     assert(_settings["channel_scalars"].size() == dimensions_);
     scalars.resize(dimensions_);
     for (u32 i = 0; i < dimensions_; i++) {
-      if ( _settings["channel_scalars"][i].get<f32>() > 0.0 ) {
+      if (_settings["channel_scalars"][i].get<f32>() > 0.0) {
         scalars.at(i) = _settings["channel_scalars"][i].get<f32>();
       } else {
         scalars.at(i) = 1.0;
       }
     }
-    dbgprintf("scalars = %s",
-              strop::vecString<f64>(scalars, ',').c_str());
+    dbgprintf("scalars = %s", strop::vecString<f64>(scalars, ',').c_str());
   }
 
   // router radix
@@ -121,8 +119,8 @@ Network::Network(const std::string& _name, const Component* _parent,
 
         // determine the destination router
         std::vector<u32> destinationAddress(sourceAddress);
-        destinationAddress.at(dim) = (sourceAddress.at(dim) + offset) %
-                                     dimWidth;
+        destinationAddress.at(dim) =
+            (sourceAddress.at(dim) + offset) % dimWidth;
 
         // determine the channel latency for current dim and offset
         if (_settings["channel_mode"].get<std::string>() == "scalar") {
@@ -156,13 +154,12 @@ Network::Network(const std::string& _name, const Component* _parent,
                     strop::vecString<u32>(sourceAddress, '-').c_str(),
                     sourcePort,
                     strop::vecString<u32>(destinationAddress, '-').c_str(),
-                    destinationPort,
-                    channelName.c_str(), channel->latency());
+                    destinationPort, channelName.c_str(), channel->latency());
 
           // link the routers from source to destination
           routers_.at(sourceAddress)->setOutputChannel(sourcePort, channel);
-          routers_.at(destinationAddress)->setInputChannel(destinationPort,
-                                                           channel);
+          routers_.at(destinationAddress)
+              ->setInputChannel(destinationPort, channel);
         }
       }
       portBase += ((dimWidth - 1) * dimWeight);
@@ -246,31 +243,33 @@ Network::~Network() {
   }
 
   // delete channels
-  for (auto it = internalChannels_.begin();
-       it != internalChannels_.end(); ++it) {
+  for (auto it = internalChannels_.begin(); it != internalChannels_.end();
+       ++it) {
     delete *it;
   }
-  for (auto it = externalChannels_.begin();
-       it != externalChannels_.end(); ++it) {
+  for (auto it = externalChannels_.begin(); it != externalChannels_.end();
+       ++it) {
     delete *it;
   }
 }
 
 ::InjectionAlgorithm* Network::createInjectionAlgorithm(
-     u32 _inputPc, const std::string& _name,
-     const Component* _parent, Interface* _interface) {
+    u32 _inputPc, const std::string& _name, const Component* _parent,
+    Interface* _interface) {
   // get the info
   const ::Network::PcSettings& settings = pcSettings(_inputPc);
 
   // call the routing algorithm factory
-  return InjectionAlgorithm::create(
-      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
-      settings.injection);
+  return InjectionAlgorithm::create(_name, _parent, _interface, settings.baseVc,
+                                    settings.numVcs, _inputPc,
+                                    settings.injection);
 }
 
-::RoutingAlgorithm* Network::createRoutingAlgorithm(
-     u32 _inputPort, u32 _inputVc, const std::string& _name,
-     const Component* _parent, Router* _router) {
+::RoutingAlgorithm* Network::createRoutingAlgorithm(u32 _inputPort,
+                                                    u32 _inputVc,
+                                                    const std::string& _name,
+                                                    const Component* _parent,
+                                                    Router* _router) {
   // get the info
   u32 pc = vcToPc(_inputVc);
   const ::Network::PcSettings& settings = pcSettings(pc);
@@ -298,20 +297,20 @@ Interface* Network::getInterface(u32 _id) const {
   return interfaces_.at(_id);
 }
 
-void Network::translateInterfaceIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
-  Cube::translateInterfaceIdToAddress(
-      _id, dimensionWidths_, concentration_, interfacePorts_, _address);
+void Network::translateInterfaceIdToAddress(u32 _id,
+                                            std::vector<u32>* _address) const {
+  Cube::translateInterfaceIdToAddress(_id, dimensionWidths_, concentration_,
+                                      interfacePorts_, _address);
 }
 
 u32 Network::translateInterfaceAddressToId(
     const std::vector<u32>* _address) const {
-  return Cube::translateInterfaceAddressToId(
-      _address, dimensionWidths_, concentration_, interfacePorts_);
+  return Cube::translateInterfaceAddressToId(_address, dimensionWidths_,
+                                             concentration_, interfacePorts_);
 }
 
-void Network::translateRouterIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
+void Network::translateRouterIdToAddress(u32 _id,
+                                         std::vector<u32>* _address) const {
   Cube::translateRouterIdToAddress(_id, dimensionWidths_, _address);
 }
 
@@ -326,17 +325,16 @@ u32 Network::computeMinimalHops(const std::vector<u32>* _source,
 }
 
 void Network::collectChannels(std::vector<Channel*>* _channels) {
-  for (auto it = externalChannels_.begin();
-       it != externalChannels_.end(); ++it) {
+  for (auto it = externalChannels_.begin(); it != externalChannels_.end();
+       ++it) {
     _channels->push_back(*it);
   }
-  for (auto it = internalChannels_.begin();
-       it != internalChannels_.end(); ++it) {
+  for (auto it = internalChannels_.begin(); it != internalChannels_.end();
+       ++it) {
     _channels->push_back(*it);
   }
 }
 
 }  // namespace HyperX
 
-registerWithObjectFactory("hyperx", ::Network,
-                          HyperX::Network, NETWORK_ARGS);
+registerWithObjectFactory("hyperx", ::Network, HyperX::Network, NETWORK_ARGS);

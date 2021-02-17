@@ -19,9 +19,8 @@
 #include "event/Simulator.h"
 #include "factory/ObjectFactory.h"
 
-RandomMSD::RandomMSD(
-    const std::string& _name, const Component* _parent,
-    nlohmann::json _settings)
+RandomMSD::RandomMSD(const std::string& _name, const Component* _parent,
+                     nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
       minMessageSize_(_settings["min_message_size"].get<u32>()),
       maxMessageSize_(_settings["max_message_size"].get<u32>()),
@@ -64,6 +63,5 @@ u32 RandomMSD::nextMessageSize(const Message* _msg) {
   }
 }
 
-registerWithObjectFactory("random", MessageSizeDistribution,
-                          RandomMSD,
+registerWithObjectFactory("random", MessageSizeDistribution, RandomMSD,
                           MESSAGESIZEDISTRIBUTION_ARGS);

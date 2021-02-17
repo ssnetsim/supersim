@@ -27,17 +27,16 @@
 
 class WeightedReduction : public Reduction {
  public:
-  WeightedReduction(
-      const std::string& _name, const Component* _parent,
-      const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-      nlohmann::json _settings);
+  WeightedReduction(const std::string& _name, const Component* _parent,
+                    const PortedDevice* _device, RoutingMode _mode,
+                    bool _ignoreDuplicates, nlohmann::json _settings);
   ~WeightedReduction();
 
   void process(
       u32 _minHops,
-      const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _minimal,
-      const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _nonMinimal,
-      std::unordered_set<std::tuple<u32, u32> >* _outputs,
+      const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _minimal,
+      const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _nonMinimal,
+      std::unordered_set<std::tuple<u32, u32>>* _outputs,
       bool* _allMinimal) override;
 
  private:

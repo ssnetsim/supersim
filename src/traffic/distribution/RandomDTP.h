@@ -24,9 +24,8 @@
 
 class RandomDTP : public DistributionTrafficPattern {
  public:
-  RandomDTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  RandomDTP(const std::string& _name, const Component* _parent,
+            u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~RandomDTP();
 
   u32 size() const override;

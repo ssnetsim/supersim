@@ -23,9 +23,9 @@
 
 class DimComplementReverseCTP : public ContinuousTrafficPattern {
  public:
-  DimComplementReverseCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  DimComplementReverseCTP(const std::string& _name, const Component* _parent,
+                          u32 _numTerminals, u32 _self,
+                          nlohmann::json _settings);
   ~DimComplementReverseCTP();
 
   u32 nextDestination() override;

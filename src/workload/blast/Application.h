@@ -50,7 +50,7 @@ class Application : public ::Application {
   // LOGGING = sending messages marked to be logged
   // BLABBING = sending messages not marked to be logged
   // DRAINING = not sending messages
-  enum class Fsm {WARMING, LOGGING, BLABBING, DRAINING};
+  enum class Fsm { WARMING, LOGGING, BLABBING, DRAINING };
 
   const bool killOnSaturation_;
   const bool logDuringSaturation_;

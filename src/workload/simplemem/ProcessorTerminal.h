@@ -29,9 +29,9 @@ namespace SimpleMem {
 
 class ProcessorTerminal : public Terminal {
  public:
-  ProcessorTerminal(const std::string& _name, const Component* _parent,
-                    u32 _id, const std::vector<u32>& _address,
-                    ::Application* _app, nlohmann::json _settings);
+  ProcessorTerminal(const std::string& _name, const Component* _parent, u32 _id,
+                    const std::vector<u32>& _address, ::Application* _app,
+                    nlohmann::json _settings);
   ~ProcessorTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;
@@ -43,8 +43,12 @@ class ProcessorTerminal : public Terminal {
   void handleReceivedMessage(Message* _message) override;
 
  private:
-  enum class eState {kProcessing, kWaitingForReadResp, kWaitingForWriteResp,
-      kDone};
+  enum class eState {
+    kProcessing,
+    kWaitingForReadResp,
+    kWaitingForWriteResp,
+    kDone
+  };
 
   void continueProcessing();
   void startNextMemoryAccess();

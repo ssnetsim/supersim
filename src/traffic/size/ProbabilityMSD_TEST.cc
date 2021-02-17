@@ -37,8 +37,8 @@ TEST(ProbabilityMSD, simple) {
     }
   }
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   std::unordered_map<u32, u32> counts;
   const u32 ROUNDS = 10000000;
@@ -77,8 +77,8 @@ TEST(ProbabilityMSD, simple_over1) {
     }
   }
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   std::unordered_map<u32, u32> counts;
   const u32 ROUNDS = 10000000;
@@ -129,8 +129,8 @@ TEST(ProbabilityMSD, dependent) {
     }
   }
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   std::unordered_map<u32, u32> counts;
   const u32 ROUNDS = 10000000;

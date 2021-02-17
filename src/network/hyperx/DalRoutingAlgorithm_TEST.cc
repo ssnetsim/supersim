@@ -28,10 +28,10 @@ TEST(HyperX_DalRoutingAlgorithm, construct) {
   std::vector<std::string> outputAlgs({"minimal", "random"});
   std::vector<u32> maxOutputs({0, 1, 2, 3, 4});
 
-  std::vector<std::string> adTypes({
-      "dimension_adaptive", "dimension_order", "variable"});
-  std::vector<std::string> decSchemes({
-      "monolithic_weighted", "staged_threshold", "threshold_weighted"});
+  std::vector<std::string> adTypes(
+      {"dimension_adaptive", "dimension_order", "variable"});
+  std::vector<std::string> decSchemes(
+      {"monolithic_weighted", "staged_threshold", "threshold_weighted"});
   std::vector<u32> maxDeroutes({0, 1, 2, 3, 4});
   std::vector<std::string> hopCountModes({"absolute", "normalized"});
 

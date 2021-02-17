@@ -23,9 +23,8 @@
 
 class DimTransposeCTP : public ContinuousTrafficPattern {
  public:
-  DimTransposeCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  DimTransposeCTP(const std::string& _name, const Component* _parent,
+                  u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~DimTransposeCTP();
 
   u32 nextDestination() override;

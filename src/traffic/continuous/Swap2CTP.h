@@ -23,9 +23,8 @@
 
 class Swap2CTP : public ContinuousTrafficPattern {
  public:
-  Swap2CTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  Swap2CTP(const std::string& _name, const Component* _parent,
+           u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~Swap2CTP();
 
   u32 nextDestination() override;

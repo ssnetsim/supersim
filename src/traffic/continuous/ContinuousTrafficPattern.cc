@@ -18,9 +18,10 @@
 
 #include "factory/ObjectFactory.h"
 
-ContinuousTrafficPattern::ContinuousTrafficPattern(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+ContinuousTrafficPattern::ContinuousTrafficPattern(const std::string& _name,
+                                                   const Component* _parent,
+                                                   u32 _numTerminals, u32 _self,
+                                                   nlohmann::json _settings)
     : Component(_name, _parent), numTerminals_(_numTerminals), self_(_self) {
   assert(numTerminals_ > 0);
   assert(self_ < numTerminals_);
@@ -36,8 +37,9 @@ ContinuousTrafficPattern* ContinuousTrafficPattern::create(
 
   // try to construct a traffic pattern
   ContinuousTrafficPattern* tp = factory::ObjectFactory<
-    ContinuousTrafficPattern, CONTINUOUSTRAFFICPATTERN_ARGS>::create(
-        type, _name, _parent, _numTerminals, _self, _settings);
+      ContinuousTrafficPattern,
+      CONTINUOUSTRAFFICPATTERN_ARGS>::create(type, _name, _parent,
+                                             _numTerminals, _self, _settings);
 
   // check that the factory had an entry for that type
   if (tp == nullptr) {

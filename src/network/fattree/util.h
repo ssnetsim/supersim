@@ -23,18 +23,18 @@ namespace FatTree {
 
 u32 leastCommonAncestor(const std::vector<u32>* _source,
                         const std::vector<u32>* _destination);
-void translateInterfaceIdToAddress(
-    u32 _numLevels, const std::vector<u32>& _interfacesPerGroup, u32 _id,
-    std::vector<u32>* _address);
-u32 translateInterfaceAddressToId(
-    u32 _numLevels, const std::vector<u32>& _interfacesPerGroup,
-    const std::vector<u32>* _address);
-void translateRouterIdToAddress(
-    u32 _numLevels, const std::vector<u32>& _routersPerRow,
-    u32 _id, std::vector<u32>* _address);
-u32 translateRouterAddressToId(
-    u32 _numLevels, const std::vector<u32>& _routersPerRow,
-    const std::vector<u32>* _address);
+void translateInterfaceIdToAddress(u32 _numLevels,
+                                   const std::vector<u32>& _interfacesPerGroup,
+                                   u32 _id, std::vector<u32>* _address);
+u32 translateInterfaceAddressToId(u32 _numLevels,
+                                  const std::vector<u32>& _interfacesPerGroup,
+                                  const std::vector<u32>* _address);
+void translateRouterIdToAddress(u32 _numLevels,
+                                const std::vector<u32>& _routersPerRow, u32 _id,
+                                std::vector<u32>* _address);
+u32 translateRouterAddressToId(u32 _numLevels,
+                               const std::vector<u32>& _routersPerRow,
+                               const std::vector<u32>* _address);
 u32 computeMinimalHops(const std::vector<u32>* _source,
                        const std::vector<u32>* _destination);
 

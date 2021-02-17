@@ -38,7 +38,7 @@ class DualStageClassArbiter : public Arbiter {
   u32 arbitrate() override;
 
  private:
-  enum class MetadataFunc {NONE, MIN, MAX};
+  enum class MetadataFunc { NONE, MIN, MAX };
 
   MetadataFunc metadataFunc_;
   u32 numClasses_;

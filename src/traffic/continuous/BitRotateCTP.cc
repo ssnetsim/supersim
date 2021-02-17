@@ -19,9 +19,9 @@
 #include "bits/bits.h"
 #include "factory/ObjectFactory.h"
 
-BitRotateCTP::BitRotateCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+BitRotateCTP::BitRotateCTP(const std::string& _name, const Component* _parent,
+                           u32 _numTerminals, u32 _self,
+                           nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   assert(bits::isPow2(numTerminals_));
@@ -44,5 +44,5 @@ u32 BitRotateCTP::nextDestination() {
   return dest_;
 }
 
-registerWithObjectFactory("bit_rotate", ContinuousTrafficPattern,
-                          BitRotateCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("bit_rotate", ContinuousTrafficPattern, BitRotateCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

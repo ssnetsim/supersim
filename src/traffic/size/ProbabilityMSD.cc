@@ -19,9 +19,9 @@
 #include "factory/ObjectFactory.h"
 #include "mut/mut.h"
 
-ProbabilityMSD::ProbabilityMSD(
-    const std::string& _name, const Component* _parent,
-    nlohmann::json _settings)
+ProbabilityMSD::ProbabilityMSD(const std::string& _name,
+                               const Component* _parent,
+                               nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
       doDependent_(_settings.contains("dependent_message_sizes") &&
                    _settings.contains("dependent_size_probabilities")) {
@@ -104,8 +104,8 @@ u32 ProbabilityMSD::nextMessageSize() {
 u32 ProbabilityMSD::nextMessageSize(const Message* _msg) {
   if (doDependent_) {
     f64 rnd = gSim->rnd.nextF64();
-    u32 idx = mut::searchCumulativeDistribution(
-        depCumulativeDistribution_, rnd);
+    u32 idx =
+        mut::searchCumulativeDistribution(depCumulativeDistribution_, rnd);
     return depMessageSizes_.at(idx);
   } else {
     return nextMessageSize();
@@ -113,5 +113,4 @@ u32 ProbabilityMSD::nextMessageSize(const Message* _msg) {
 }
 
 registerWithObjectFactory("probability", MessageSizeDistribution,
-                          ProbabilityMSD,
-                          MESSAGESIZEDISTRIBUTION_ARGS);
+                          ProbabilityMSD, MESSAGESIZEDISTRIBUTION_ARGS);

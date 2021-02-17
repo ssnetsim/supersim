@@ -29,8 +29,7 @@ namespace OutputQueued {
 
 class Router;
 
-class OutputQueue : public Component,
-                    public CrossbarScheduler::Client {
+class OutputQueue : public Component, public CrossbarScheduler::Client {
  public:
   OutputQueue(const std::string& _name, const Component* _parent,
               Router* _router, u32 _depth, u32 _port, u32 _vc,
@@ -78,8 +77,12 @@ class OutputQueue : public Component,
   const bool decrCreditWatcher_;
 
   // state machine to represent a generic pipeline stage
-  enum class ePipelineFsm { kEmpty, kWaitingToRequest, kWaitingForResponse,
-      kReadyToAdvance };
+  enum class ePipelineFsm {
+    kEmpty,
+    kWaitingToRequest,
+    kWaitingForResponse,
+    kReadyToAdvance
+  };
 
   // remembers if an event is set to process the pipeline
   u64 eventTime_;

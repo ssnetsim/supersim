@@ -25,11 +25,13 @@
 
 namespace Standard {
 
-OutputQueue::OutputQueue(
-    const std::string& _name, Interface* _interface,
-    CrossbarScheduler* _crossbarScheduler, u32 _crossbarSchedulerIndex,
-    Crossbar* _crossbar, u32 _crossbarIndex, u32 _port, u32 _vc)
-    : Component(_name, _interface), port_(_port), vc_(_vc),
+OutputQueue::OutputQueue(const std::string& _name, Interface* _interface,
+                         CrossbarScheduler* _crossbarScheduler,
+                         u32 _crossbarSchedulerIndex, Crossbar* _crossbar,
+                         u32 _crossbarIndex, u32 _port, u32 _vc)
+    : Component(_name, _interface),
+      port_(_port),
+      vc_(_vc),
       crossbarScheduler_(_crossbarScheduler),
       crossbarSchedulerIndex_(_crossbarSchedulerIndex),
       crossbar_(_crossbar),
@@ -64,8 +66,8 @@ void OutputQueue::receiveFlit(u32 _port, Flit* _flit) {
   // only do this if the time received is different than before
   u64 now = gSim->time();
   if (now != lastReceivedTime_) {
-    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, 1),
-             1, nullptr, INJECTED_FLIT);
+    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, 1), 1, nullptr,
+             INJECTED_FLIT);
     lastReceivedTime_ = now;
   }
 }
@@ -103,7 +105,6 @@ void OutputQueue::crossbarSchedulerResponse(u32 _port, u32 _vc) {
   // ensure an event is set to process the pipeline
   setPipelineEvent();
 }
-
 
 void OutputQueue::setPipelineEvent() {
   if (eventTime_ == U64_MAX) {
@@ -159,8 +160,7 @@ void OutputQueue::processPipeline() {
    */
   if (swa_.fsm == ePipelineFsm::kWaitingToRequest) {
     swa_.fsm = ePipelineFsm::kWaitingForResponse;
-    crossbarScheduler_->request(crossbarSchedulerIndex_, 0, vc_,
-                                swa_.flit);
+    crossbarScheduler_->request(crossbarSchedulerIndex_, 0, vc_, swa_.flit);
   }
 
   // clear the eventTime_ variable to indicate no more events are set
@@ -173,7 +173,7 @@ void OutputQueue::processPipeline() {
    * if any of these cases are true, create and expect an event the next cycle
    */
   if ((swa_.fsm == ePipelineFsm::kWaitingToRequest) ||  // no credits
-      (buffer_.size() > 0)) {   // more flits in buffer
+      (buffer_.size() > 0)) {                           // more flits in buffer
     // set a pipeline event for the next cycle
     eventTime_ = gSim->futureCycle(Simulator::Clock::CHANNEL, 1);
     addEvent(eventTime_, 2, nullptr, PROCESS_PIPELINE);

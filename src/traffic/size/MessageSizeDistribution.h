@@ -22,8 +22,8 @@
 #include "prim/prim.h"
 #include "types/Message.h"
 
-#define MESSAGESIZEDISTRIBUTION_ARGS const std::string&, const Component*, \
-    nlohmann::json
+#define MESSAGESIZEDISTRIBUTION_ARGS \
+  const std::string&, const Component*, nlohmann::json
 
 class MessageSizeDistribution : public Component {
  public:

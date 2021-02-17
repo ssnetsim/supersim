@@ -18,9 +18,11 @@
 
 namespace ParkingLot {
 
-InjectionAlgorithm::InjectionAlgorithm(
-    const std::string& _name, const Component* _parent, Interface* _interface,
-    u32 _baseVc, u32 _numVcs, u32 _inputPc, nlohmann::json _settings)
+InjectionAlgorithm::InjectionAlgorithm(const std::string& _name,
+                                       const Component* _parent,
+                                       Interface* _interface, u32 _baseVc,
+                                       u32 _numVcs, u32 _inputPc,
+                                       nlohmann::json _settings)
     : ::InjectionAlgorithm(_name, _parent, _interface, _baseVc, _numVcs,
                            _inputPc, _settings) {}
 
@@ -34,9 +36,10 @@ InjectionAlgorithm* InjectionAlgorithm::create(
 
   // attempt to create the injection algorithm
   InjectionAlgorithm* ia = factory::ObjectFactory<
-    InjectionAlgorithm, PARKINGLOT_INJECTIONALGORITHM_ARGS>::create(
-        algorithm, _name, _parent, _interface, _baseVc, _numVcs, _inputPc,
-        _settings);
+      InjectionAlgorithm,
+      PARKINGLOT_INJECTIONALGORITHM_ARGS>::create(algorithm, _name, _parent,
+                                                  _interface, _baseVc, _numVcs,
+                                                  _inputPc, _settings);
 
   // check that the factory had this type
   if (ia == nullptr) {

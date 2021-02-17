@@ -14,10 +14,9 @@
  */
 #include "congestion/BufferOccupancy.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 
 #include "factory/ObjectFactory.h"
 
@@ -27,9 +26,10 @@ const s32 DECR = 0xAF;
 const s32 PHANTOM = 0x87;
 }  // namespace
 
-BufferOccupancy::BufferOccupancy(
-    const std::string& _name, const Component* _parent, PortedDevice* _device,
-    nlohmann::json _settings)
+BufferOccupancy::BufferOccupancy(const std::string& _name,
+                                 const Component* _parent,
+                                 PortedDevice* _device,
+                                 nlohmann::json _settings)
     : CongestionSensor(_name, _parent, _device, _settings),
       latency_(_settings["latency"].get<u32>()),
       mode_(parseMode(_settings["mode"].get<std::string>())) {
@@ -142,8 +142,8 @@ CongestionSensor::Resolution BufferOccupancy::resolution() const {
   }
 }
 
-f64 BufferOccupancy::computeStatus(
-    u32 _inputPort, u32 _inputVc, u32 _outputPort, u32 _outputVc) const {
+f64 BufferOccupancy::computeStatus(u32 _inputPort, u32 _inputVc,
+                                   u32 _outputPort, u32 _outputVc) const {
   switch (mode_) {
     case BufferOccupancy::Mode::kVcNorm: {
       return vcStatus(_outputPort, _outputVc, true);
@@ -193,19 +193,19 @@ BufferOccupancy::Mode BufferOccupancy::parseMode(const std::string& _mode) {
   if (_mode == "normalized_vc") {
     return BufferOccupancy::Mode::kVcNorm;
   } else if (_mode == "absolute_vc") {
-    return  BufferOccupancy::Mode::kVcAbs;
+    return BufferOccupancy::Mode::kVcAbs;
   } else if (_mode == "normalized_port") {
-    return  BufferOccupancy::Mode::kPortNorm;
+    return BufferOccupancy::Mode::kPortNorm;
   } else if (_mode == "absolute_port") {
-    return  BufferOccupancy::Mode::kPortAbs;
+    return BufferOccupancy::Mode::kPortAbs;
   } else if (_mode == "normalized_min") {
-    return  BufferOccupancy::Mode::kMinNorm;
+    return BufferOccupancy::Mode::kMinNorm;
   } else if (_mode == "absolute_min") {
-    return  BufferOccupancy::Mode::kMinAbs;
+    return BufferOccupancy::Mode::kMinAbs;
   } else if (_mode == "normalized_max") {
-    return  BufferOccupancy::Mode::kMaxNorm;
+    return BufferOccupancy::Mode::kMaxNorm;
   } else if (_mode == "absolute_max") {
-    return  BufferOccupancy::Mode::kMaxAbs;
+    return BufferOccupancy::Mode::kMaxAbs;
   } else {
     assert(false);
   }
@@ -213,8 +213,9 @@ BufferOccupancy::Mode BufferOccupancy::parseMode(const std::string& _mode) {
 
 void BufferOccupancy::createEvent(u32 _vcIdx, s32 _type) {
   assert(gSim->epsilon() > 0);
-  u64 time = latency_ == 1 ? gSim->time() :
-             gSim->futureCycle(Simulator::Clock::ROUTER, latency_ - 1);
+  u64 time = latency_ == 1
+                 ? gSim->time()
+                 : gSim->futureCycle(Simulator::Clock::ROUTER, latency_ - 1);
   addEvent(time, gSim->epsilon() + 1, reinterpret_cast<void*>(_vcIdx), _type);
 }
 
@@ -242,8 +243,8 @@ void BufferOccupancy::performDecrementWindow(u32 _vcIdx) {
   windows_.at(_vcIdx)--;
 }
 
-f64 BufferOccupancy::vcStatus(
-    u32 _outputPort, u32 _outputVc, bool _normalize) const {
+f64 BufferOccupancy::vcStatus(u32 _outputPort, u32 _outputVc,
+                              bool _normalize) const {
   // return this VC's status
   u32 vcIdx = device_->vcIndex(_outputPort, _outputVc);
   f64 status = outstandingFlits_.at(vcIdx);
@@ -266,5 +267,5 @@ f64 BufferOccupancy::portAverageStatus(u32 _outputPort, bool _normalize) const {
   return status / numVcs_;
 }
 
-registerWithObjectFactory("buffer_occupancy", CongestionSensor,
-                          BufferOccupancy, CONGESTIONSENSOR_ARGS);
+registerWithObjectFactory("buffer_occupancy", CongestionSensor, BufferOccupancy,
+                          CONGESTIONSENSOR_ARGS);

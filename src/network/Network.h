@@ -32,8 +32,8 @@
 #include "stats/ChannelLog.h"
 #include "stats/TrafficLog.h"
 
-#define NETWORK_ARGS const std::string&, const Component*, MetadataHandler*, \
-    nlohmann::json
+#define NETWORK_ARGS \
+  const std::string&, const Component*, MetadataHandler*, nlohmann::json
 
 class Network : public Component {
  public:
@@ -50,9 +50,10 @@ class Network : public Component {
       Interface* _interface) = 0;
 
   // this is a routing algorithm factory definition
-  virtual RoutingAlgorithm* createRoutingAlgorithm(
-      u32 _inputPort, u32 _inputVc, const std::string& _name,
-      const Component* _parent, Router* _router) = 0;
+  virtual RoutingAlgorithm* createRoutingAlgorithm(u32 _inputPort, u32 _inputVc,
+                                                   const std::string& _name,
+                                                   const Component* _parent,
+                                                   Router* _router) = 0;
 
   virtual u32 numRouters() const = 0;
   virtual u32 numInterfaces() const = 0;
@@ -62,8 +63,8 @@ class Network : public Component {
       u32 _id, std::vector<u32>* _address) const = 0;
   virtual u32 translateInterfaceAddressToId(
       const std::vector<u32>* _address) const = 0;
-  virtual void translateRouterIdToAddress(
-      u32 _id, std::vector<u32>* _address) const = 0;
+  virtual void translateRouterIdToAddress(u32 _id,
+                                          std::vector<u32>* _address) const = 0;
   virtual u32 translateRouterAddressToId(
       const std::vector<u32>* _address) const = 0;
   virtual u32 computeMinimalHops(

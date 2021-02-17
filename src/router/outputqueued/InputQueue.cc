@@ -14,9 +14,8 @@
  */
 #include "router/outputqueued/InputQueue.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 
 #include "network/Network.h"
 #include "router/outputqueued/Router.h"
@@ -28,12 +27,17 @@
 
 namespace OutputQueued {
 
-InputQueue::InputQueue(
-    const std::string& _name, const Component* _parent, Router* _router,
-    u32 _depth, u32 _port, u32 _numVcs, u32 _vc, bool _storeAndForward,
-    RoutingAlgorithm* _routingAlgorithm)
-    : Component(_name, _parent), depth_(0), port_(_port), numVcs_(_numVcs),
-      vc_(_vc), storeAndForward_(_storeAndForward), router_(_router),
+InputQueue::InputQueue(const std::string& _name, const Component* _parent,
+                       Router* _router, u32 _depth, u32 _port, u32 _numVcs,
+                       u32 _vc, bool _storeAndForward,
+                       RoutingAlgorithm* _routingAlgorithm)
+    : Component(_name, _parent),
+      depth_(0),
+      port_(_port),
+      numVcs_(_numVcs),
+      vc_(_vc),
+      storeAndForward_(_storeAndForward),
+      router_(_router),
       routingAlgorithm_(_routingAlgorithm) {
   // ensure the buffer is empty
   assert(buffer_.size() == 0);
@@ -73,8 +77,8 @@ void InputQueue::receiveFlit(u32 _port, Flit* _flit) {
   if (gSim->isCycle(Simulator::Clock::ROUTER)) {
     setPipelineEvent();
   } else {
-    addEvent(gSim->futureCycle(Simulator::Clock::ROUTER, 1),
-             1, nullptr, INJECTED_FLIT);
+    addEvent(gSim->futureCycle(Simulator::Clock::ROUTER, 1), 1, nullptr,
+             INJECTED_FLIT);
   }
 }
 
@@ -110,9 +114,8 @@ void InputQueue::routingAlgorithmResponse(
   routingAlgorithm_->vcScheduled(rfe_.flit, outputPort, outputVc);
 
   // log traffic
-  router_->network()->logTraffic(
-      router_, port_, vc_, outputPort, outputVc,
-      rfe_.flit->packet()->numFlits());
+  router_->network()->logTraffic(router_, port_, vc_, outputPort, outputVc,
+                                 rfe_.flit->packet()->numFlits());
 
   // tell the router that this packet wants to access the output queue
   router_->registerPacket(port_, vc_, rfe_.flit, outputPort, outputVc);
@@ -227,9 +230,9 @@ void InputQueue::processPipeline() {
    *  2. more flits in the queue, need to pull one out
    * if any of these cases are true, create an event to handle the next cycle
    */
-  if ((rfe_.fsm == ePipelineFsm::kReadyToAdvance) ||    // body flit
-      ((buffer_.size() > 0) &&    // more flits in buffer
-       (rfe_.fsm == ePipelineFsm::kEmpty))) {  // RFE empty
+  if ((rfe_.fsm == ePipelineFsm::kReadyToAdvance) ||  // body flit
+      ((buffer_.size() > 0) &&                        // more flits in buffer
+       (rfe_.fsm == ePipelineFsm::kEmpty))) {         // RFE empty
     // set a pipeline event for the next cycle
     eventTime_ = gSim->futureCycle(Simulator::Clock::ROUTER, 1);
     addEvent(eventTime_, 3, nullptr, PROCESS_PIPELINE);

@@ -30,8 +30,8 @@ namespace SimpleMem {
 
 class MemoryTerminal : public Terminal {
  public:
-  MemoryTerminal(const std::string& _name, const Component* _parent,
-                 u32 _id, const std::vector<u32>& _address, u32 _memorySlice,
+  MemoryTerminal(const std::string& _name, const Component* _parent, u32 _id,
+                 const std::vector<u32>& _address, u32 _memorySlice,
                  ::Application* _app, nlohmann::json _settings);
   ~MemoryTerminal();
   void processEvent(void* _event, s32 _type) override;
@@ -41,7 +41,7 @@ class MemoryTerminal : public Terminal {
   void handleReceivedMessage(Message* _message) override;
 
  private:
-  enum class eState {kWaiting, kAccessing};
+  enum class eState { kWaiting, kAccessing };
 
   void startMemoryAccess();
   void sendMemoryResponse();

@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "test/TestSetup_TESTLIB.h"
+
 #include <string>
 
 #include "event/Component.h"
@@ -19,28 +21,23 @@
 #include "event/VectorQueue.h"
 #include "nlohmann/json.hpp"
 #include "settings/settings.h"
-#include "test/TestSetup_TESTLIB.h"
 
 TestSetup::TestSetup(u64 _channelCycleTime, u64 _routerCycleTime,
                      u64 _interfaceCycleTime, u64 _terminalCycleTime,
                      u64 _randomSeed) {
   std::string str =
-      std::string("{\n") +
-      "  \"simulator\": {\n" +
+      std::string("{\n") + "  \"simulator\": {\n" +
       "     \"channel_cycle_time\": " + std::to_string(_channelCycleTime) +
       ",\n" +
-      "     \"router_cycle_time\": " +
-      std::to_string(_routerCycleTime) + ",\n" +
-      "     \"interface_cycle_time\": " +
-      std::to_string(_interfaceCycleTime) + ",\n" +
-      "     \"terminal_cycle_time\": " +
-      std::to_string(_terminalCycleTime) + ",\n" +
-      "     \"print_progress\": false,\n" +
+      "     \"router_cycle_time\": " + std::to_string(_routerCycleTime) +
+      ",\n" +
+      "     \"interface_cycle_time\": " + std::to_string(_interfaceCycleTime) +
+      ",\n" +
+      "     \"terminal_cycle_time\": " + std::to_string(_terminalCycleTime) +
+      ",\n" + "     \"print_progress\": false,\n" +
       "     \"print_interval\": 1.0,\n" +
-      "     \"random_seed\": " + std::to_string(_randomSeed) + "\n" +
-      "  }\n" +
-      "}\n" +
-      std::string();
+      "     \"random_seed\": " + std::to_string(_randomSeed) + "\n" + "  }\n" +
+      "}\n" + std::string();
 
   nlohmann::json settings;
   settings::initString(str.c_str(), &settings);

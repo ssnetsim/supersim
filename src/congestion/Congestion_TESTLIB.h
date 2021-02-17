@@ -32,10 +32,11 @@
 //  tests
 class CongestionTestRouter : public Router {
  public:
-  CongestionTestRouter(
-      const std::string& _name, const Component* _parent, Network* _network,
-      u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-      MetadataHandler* _metadataHandler, nlohmann::json _settings);
+  CongestionTestRouter(const std::string& _name, const Component* _parent,
+                       Network* _network, u32 _id,
+                       const std::vector<u32>& _address, u32 _numPorts,
+                       u32 _numVcs, MetadataHandler* _metadataHandler,
+                       nlohmann::json _settings);
   ~CongestionTestRouter();
 
   void setCongestionSensor(CongestionSensor* _congestionSensor);
@@ -62,7 +63,7 @@ class CongestionTestRouter : public Router {
 // this is a test class for altering the congestion status module under test
 class CreditHandler : public Component {
  public:
-  enum class Type {INCR, DECR};
+  enum class Type { INCR, DECR };
 
   CreditHandler(const std::string& _name, const Component* _parent,
                 CongestionSensor* _congestionSensor, PortedDevice* _device);
@@ -122,8 +123,8 @@ class CongestionTestSensor : public CongestionSensor {
   Resolution resolution() const override;
 
  protected:
-  f64 computeStatus(u32 _inputPort, u32 _inputVc,
-                    u32 _outputPort, u32 _outputVc) const override;
+  f64 computeStatus(u32 _inputPort, u32 _inputVc, u32 _outputPort,
+                    u32 _outputVc) const override;
 
  private:
   const std::vector<f64>* congestion_;

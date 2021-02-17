@@ -14,10 +14,9 @@
  */
 #include "workload/stencil/StencilTerminal.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 
 #include "bits/bits.h"
 #include "mut/mut.h"
@@ -28,8 +27,8 @@
 #include "workload/stencil/Application.h"
 #include "workload/util.h"
 
-#define kFinishComputeEvt  (0xF8)
-#define kTransitionFsmEvt  (0xA1)
+#define kFinishComputeEvt (0xF8)
+#define kTransitionFsmEvt (0xA1)
 #define kReceiveMessageEvt (0x3C)
 
 namespace Stencil {
@@ -38,12 +37,13 @@ StencilTerminal::StencilTerminal(
     const std::string& _name, const Component* _parent, u32 _id,
     const std::vector<u32>& _address, const std::vector<u32>* _termToProc,
     const std::vector<u32>* _procToTerm,
-    const std::vector<std::tuple<u32, u32> >& _exchangeSendMessages,
+    const std::vector<std::tuple<u32, u32>>& _exchangeSendMessages,
     u32 _exchangeRecvMessages, ::Application* _app, nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app),
       numIterations_(_settings["num_iterations"].get<u32>()),
       maxPacketSize_(_settings["max_packet_size"].get<u32>()),
-      termToProc_(_termToProc), procToTerm_(_procToTerm),
+      termToProc_(_termToProc),
+      procToTerm_(_procToTerm),
       exchangeSendMessages_(_exchangeSendMessages),
       exchangeRecvMessages_(_exchangeRecvMessages),
       collectiveSize_(_settings["collective_size"].get<u32>()),
@@ -260,9 +260,8 @@ void StencilTerminal::startCollective() {
   // send the first offset
   collectiveOffset_ = 1;
   u32 destProc = collectiveDestination(collectiveOffset_);
-  generateMessage(procToTerm_->at(destProc),
-                  collectiveSize_, collectiveProtocolClass_,
-                  encodeOp(fsm_, iteration_));
+  generateMessage(procToTerm_->at(destProc), collectiveSize_,
+                  collectiveProtocolClass_, encodeOp(fsm_, iteration_));
 
   // if something has already been received, trigger handling
   handleCollectiveMessage(nullptr);
@@ -299,9 +298,8 @@ void StencilTerminal::handleCollectiveMessage(Message* _message) {
 
         // send next message
         u32 dstProc = collectiveDestination(collectiveOffset_);
-        generateMessage(procToTerm_->at(dstProc),
-                        collectiveSize_, collectiveProtocolClass_,
-                        encodeOp(fsm_, iteration_));
+        generateMessage(procToTerm_->at(dstProc), collectiveSize_,
+                        collectiveProtocolClass_, encodeOp(fsm_, iteration_));
       } else {
         // not yet received, break now and wait
         break;
@@ -347,8 +345,7 @@ void StencilTerminal::generateMessage(u32 _destTerminal, u32 _size,
   // create the packets
   u32 flitsLeft = messageSize;
   for (u32 p = 0; p < numPackets; p++) {
-    u32 packetLength = flitsLeft > maxPacketSize_ ?
-                       maxPacketSize_ : flitsLeft;
+    u32 packetLength = flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
     Packet* packet = new Packet(p, packetLength, message);
     message->setPacket(p, packet);

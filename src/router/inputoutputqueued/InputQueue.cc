@@ -14,9 +14,8 @@
  */
 #include "router/inputoutputqueued/InputQueue.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 
 #include "network/Network.h"
 #include "router/inputoutputqueued/Router.h"
@@ -28,22 +27,32 @@
 
 namespace InputOutputQueued {
 
-InputQueue::InputQueue(
-    const std::string& _name, const Component* _parent, Router* _router,
-    u32 _depth, u32 _port, u32 _numVcs, u32 _vc, bool _vcaSwaWait,
-    bool _storeAndForward, RoutingAlgorithm* _routingAlgorithm,
-    VcScheduler* _vcScheduler, u32 _vcSchedulerIndex,
-    CrossbarScheduler* _crossbarScheduler, u32 _crossbarSchedulerIndex,
-    Crossbar* _crossbar, u32 _crossbarIndex, CreditWatcher* _creditWatcher,
-    bool _decrCreditWatcher)
-    : Component(_name, _parent), depth_(0), port_(_port), numVcs_(_numVcs),
-      vc_(_vc), vcaSwaWait_(_vcaSwaWait), storeAndForward_(_storeAndForward),
-      router_(_router), routingAlgorithm_(_routingAlgorithm),
-      vcScheduler_(_vcScheduler), vcSchedulerIndex_(_vcSchedulerIndex),
+InputQueue::InputQueue(const std::string& _name, const Component* _parent,
+                       Router* _router, u32 _depth, u32 _port, u32 _numVcs,
+                       u32 _vc, bool _vcaSwaWait, bool _storeAndForward,
+                       RoutingAlgorithm* _routingAlgorithm,
+                       VcScheduler* _vcScheduler, u32 _vcSchedulerIndex,
+                       CrossbarScheduler* _crossbarScheduler,
+                       u32 _crossbarSchedulerIndex, Crossbar* _crossbar,
+                       u32 _crossbarIndex, CreditWatcher* _creditWatcher,
+                       bool _decrCreditWatcher)
+    : Component(_name, _parent),
+      depth_(0),
+      port_(_port),
+      numVcs_(_numVcs),
+      vc_(_vc),
+      vcaSwaWait_(_vcaSwaWait),
+      storeAndForward_(_storeAndForward),
+      router_(_router),
+      routingAlgorithm_(_routingAlgorithm),
+      vcScheduler_(_vcScheduler),
+      vcSchedulerIndex_(_vcSchedulerIndex),
       crossbarScheduler_(_crossbarScheduler),
       crossbarSchedulerIndex_(_crossbarSchedulerIndex),
-      crossbar_(_crossbar), crossbarIndex_(_crossbarIndex),
-      creditWatcher_(_creditWatcher), decrCreditWatcher_(_decrCreditWatcher),
+      crossbar_(_crossbar),
+      crossbarIndex_(_crossbarIndex),
+      creditWatcher_(_creditWatcher),
+      decrCreditWatcher_(_decrCreditWatcher),
       lastReceivedTime_(U64_MAX) {
   // ensure the buffer is empty
   assert(buffer_.size() == 0);
@@ -87,8 +96,7 @@ void InputQueue::receiveFlit(u32 _port, Flit* _flit) {
   assert(_flit->getVc() == vc_);
 
   // we can only receive one flit per cycle
-  assert((lastReceivedTime_ == U64_MAX) ||
-         (lastReceivedTime_ < gSim->time()));
+  assert((lastReceivedTime_ == U64_MAX) || (lastReceivedTime_ < gSim->time()));
   lastReceivedTime_ = gSim->time();
 
   // push flit into corresponding buffer
@@ -100,8 +108,8 @@ void InputQueue::receiveFlit(u32 _port, Flit* _flit) {
   if (gSim->isCycle(Simulator::Clock::ROUTER)) {
     setPipelineEvent();
   } else {
-    addEvent(gSim->futureCycle(Simulator::Clock::ROUTER, 1),
-             1, nullptr, INJECTED_FLIT);
+    addEvent(gSim->futureCycle(Simulator::Clock::ROUTER, 1), 1, nullptr,
+             INJECTED_FLIT);
   }
 }
 
@@ -144,9 +152,9 @@ void InputQueue::vcSchedulerResponse(u32 _vcIdx) {
                                    vca_.allocatedVc);
 
     // log traffic
-    router_->network()->logTraffic(
-        router_, port_, vc_, vca_.allocatedPort, vca_.allocatedVc,
-        vca_.flit->packet()->numFlits());
+    router_->network()->logTraffic(router_, port_, vc_, vca_.allocatedPort,
+                                   vca_.allocatedVc,
+                                   vca_.flit->packet()->numFlits());
   } else {
     // denied
     vca_.fsm = ePipelineFsm::kWaitingToRequest;
@@ -245,9 +253,8 @@ void InputQueue::processPipeline() {
    * Attempt to submit a SWA request
    */
   if (swa_.fsm == ePipelineFsm::kWaitingToRequest) {
-    crossbarScheduler_->request(
-        crossbarSchedulerIndex_, swa_.allocatedPort, swa_.allocatedVcIdx,
-        swa_.flit);
+    crossbarScheduler_->request(crossbarSchedulerIndex_, swa_.allocatedPort,
+                                swa_.allocatedVcIdx, swa_.flit);
     swa_.fsm = ePipelineFsm::kWaitingForResponse;
   }
 
@@ -391,9 +398,9 @@ void InputQueue::processPipeline() {
    *  3. more flits in the queue, need to pull one out
    * if any of these cases are true, create an event to handle the next cycle
    */
-  if ((vca_.fsm == ePipelineFsm::kReadyToAdvance) ||     // body flit
-      (rfe_.fsm == ePipelineFsm::kReadyToAdvance) ||    // body flit
-      (buffer_.size() > 0)) {   // more flits in buffer
+  if ((vca_.fsm == ePipelineFsm::kReadyToAdvance) ||  // body flit
+      (rfe_.fsm == ePipelineFsm::kReadyToAdvance) ||  // body flit
+      (buffer_.size() > 0)) {                         // more flits in buffer
     // set a pipeline event for the next cycle
     eventTime_ = gSim->futureCycle(Simulator::Clock::ROUTER, 1);
     addEvent(eventTime_, 2, nullptr, PROCESS_PIPELINE);

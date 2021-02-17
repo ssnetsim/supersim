@@ -23,20 +23,18 @@ TEST(RoutingMode, portAveMinMax) {
 
   u32 numPorts = 2;
   u32 numVcs = 3;
-  std::vector<f64> congestion = {0.5, 0.4, 0.1,
-                                 0.2, 0.5, 0.9};
+  std::vector<f64> congestion = {0.5, 0.4, 0.1, 0.2, 0.5, 0.9};
 
   nlohmann::json routerSettings;
-  CongestionTestRouter router(
-      "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      nullptr, routerSettings);
+  CongestionTestRouter router("Router", nullptr, nullptr, 0, std::vector<u32>(),
+                              numPorts, numVcs, nullptr, routerSettings);
 
   nlohmann::json sensorSettings;
   sensorSettings["granularity"] = 0;
   sensorSettings["minimum"] = 0;
   sensorSettings["offset"] = 0;
-  CongestionTestSensor sensor(
-      "Sensor", &router, &router, sensorSettings, &congestion);
+  CongestionTestSensor sensor("Sensor", &router, &router, sensorSettings,
+                              &congestion);
 
   router.setCongestionSensor(&sensor);
 
@@ -49,20 +47,16 @@ TEST(RoutingMode, portAveMinMax) {
   ASSERT_EQ(maximumPortCongestion(&router, 0, 0, 0), 0.5);
   ASSERT_EQ(maximumPortCongestion(&router, 0, 0, 1), 0.9);
 
-  ASSERT_EQ(portCongestion(RoutingMode::kPortAve,
-                           &router, 0, 0, 0), (0.5 + 0.4 + 0.1) / 3.0);
-  ASSERT_EQ(portCongestion(RoutingMode::kPortAve,
-                           &router, 0, 0, 1), (0.2 + 0.5 + 0.9) / 3.0);
+  ASSERT_EQ(portCongestion(RoutingMode::kPortAve, &router, 0, 0, 0),
+            (0.5 + 0.4 + 0.1) / 3.0);
+  ASSERT_EQ(portCongestion(RoutingMode::kPortAve, &router, 0, 0, 1),
+            (0.2 + 0.5 + 0.9) / 3.0);
 
-  ASSERT_EQ(portCongestion(RoutingMode::kPortMin,
-                           &router, 0, 0, 0), 0.1);
-  ASSERT_EQ(portCongestion(RoutingMode::kPortMin,
-                           &router, 0, 0, 1), 0.2);
+  ASSERT_EQ(portCongestion(RoutingMode::kPortMin, &router, 0, 0, 0), 0.1);
+  ASSERT_EQ(portCongestion(RoutingMode::kPortMin, &router, 0, 0, 1), 0.2);
 
-  ASSERT_EQ(portCongestion(RoutingMode::kPortMax,
-                           &router, 0, 0, 0), 0.5);
-  ASSERT_EQ(portCongestion(RoutingMode::kPortMax,
-                           &router, 0, 0, 1), 0.9);
+  ASSERT_EQ(portCongestion(RoutingMode::kPortMax, &router, 0, 0, 0), 0.5);
+  ASSERT_EQ(portCongestion(RoutingMode::kPortMax, &router, 0, 0, 1), 0.9);
 }
 
 TEST(RoutingMode, modeOrdering) {

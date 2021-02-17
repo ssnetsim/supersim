@@ -35,12 +35,17 @@
 class PacketReassembler;
 class MessageReassembler;
 
-#define INTERFACE_ARGS const std::string&, const Component*, Network*, u32,  \
-    const std::vector<u32>&, u32, u32, MetadataHandler*, nlohmann::json
+#define INTERFACE_ARGS                                 \
+  const std::string&, const Component*, Network*, u32, \
+      const std::vector<u32>&, u32, u32, MetadataHandler*, nlohmann::json
 
-class Interface : public Component, public PortedDevice, public FlitSender,
-                  public FlitReceiver, public CreditSender,
-                  public CreditReceiver, public MessageReceiver {
+class Interface : public Component,
+                  public PortedDevice,
+                  public FlitSender,
+                  public FlitReceiver,
+                  public CreditSender,
+                  public CreditReceiver,
+                  public MessageReceiver {
  public:
   Interface(const std::string& _name, const Component* _parent,
             Network* _network, u32 _id, const std::vector<u32>& _address,

@@ -25,10 +25,11 @@
 
 namespace SimpleMem {
 
-ProcessorTerminal::ProcessorTerminal(
-    const std::string& _name, const Component* _parent, u32 _id,
-    const std::vector<u32>& _address, ::Application* _app,
-    nlohmann::json _settings)
+ProcessorTerminal::ProcessorTerminal(const std::string& _name,
+                                     const Component* _parent, u32 _id,
+                                     const std::vector<u32>& _address,
+                                     ::Application* _app,
+                                     nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app) {
   // protocol class of injection
   assert(_settings.contains("protocol_class"));
@@ -44,8 +45,7 @@ ProcessorTerminal::ProcessorTerminal(
   fsm_ = eState::kDone;
 }
 
-ProcessorTerminal::~ProcessorTerminal() {
-}
+ProcessorTerminal::~ProcessorTerminal() {}
 
 void ProcessorTerminal::processEvent(void* _event, s32 _type) {
   startNextMemoryAccess();
@@ -64,8 +64,8 @@ void ProcessorTerminal::start() {
 void ProcessorTerminal::continueProcessing() {
   if (remainingAccesses_ > 0) {
     dbgprintf("starting processing");
-    addEvent(gSim->futureCycle(Simulator::Clock::TERMINAL, latency_),
-             0, nullptr, 0);
+    addEvent(gSim->futureCycle(Simulator::Clock::TERMINAL, latency_), 0,
+             nullptr, 0);
     fsm_ = eState::kProcessing;
   } else {
     Application* app = reinterpret_cast<Application*>(application());
@@ -121,8 +121,8 @@ void ProcessorTerminal::startNextMemoryAccess() {
   // generate a memory request
   u32 address = gSim->rnd.nextU64(0, totalMemory - 1);
   address &= ~(blockSize - 1);  // align to blockSize
-  MemoryOp::eOp op = gSim->rnd.nextBool() ?
-                     MemoryOp::eOp::kReadReq : MemoryOp::eOp::kWriteReq;
+  MemoryOp::eOp op =
+      gSim->rnd.nextBool() ? MemoryOp::eOp::kReadReq : MemoryOp::eOp::kWriteReq;
   MemoryOp* memOp = new MemoryOp(op, address, blockSize);
   if (op == MemoryOp::eOp::kWriteReq) {
     u8* block = memOp->block();
@@ -170,8 +170,8 @@ void ProcessorTerminal::startNextMemoryAccess() {
 
   // send the request to the memory terminal
   dbgprintf("sending %s request to %u (address %u)",
-            (op == MemoryOp::eOp::kWriteReq) ?
-            "write" : "read", memoryTerminalId, address);
+            (op == MemoryOp::eOp::kWriteReq) ? "write" : "read",
+            memoryTerminalId, address);
   sendMessage(message, memoryTerminalId);
 }
 

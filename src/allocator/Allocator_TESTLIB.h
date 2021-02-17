@@ -18,9 +18,9 @@
 #include "nlohmann/json.hpp"
 #include "prim/prim.h"
 
-typedef void(*AllocatorVerifier)(u32 _numClients, u32 _numResources,
-                                 const bool* _request, const u64* _metadata,
-                                 const bool* _grant);
+typedef void (*AllocatorVerifier)(u32 _numClients, u32 _numResources,
+                                  const bool* _request, const u64* _metadata,
+                                  const bool* _grant);
 
 u64 AllocatorIndex(u64 _numClients, u64 _client, u64 _resource);
 

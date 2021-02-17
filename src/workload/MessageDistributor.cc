@@ -18,16 +18,16 @@
 
 #include "workload/util.h"
 
-MessageDistributor::MessageDistributor(
-    const std::string& _name, const Component* _parent, u32 _numApps)
+MessageDistributor::MessageDistributor(const std::string& _name,
+                                       const Component* _parent, u32 _numApps)
     : Component(_name, _parent) {
   receivers_.resize(_numApps, nullptr);
 }
 
 MessageDistributor::~MessageDistributor() {}
 
-void MessageDistributor::setMessageReceiver(
-    u32 _appId, MessageReceiver* _receiver) {
+void MessageDistributor::setMessageReceiver(u32 _appId,
+                                            MessageReceiver* _receiver) {
   assert(receivers_.at(_appId) == nullptr);
   receivers_.at(_appId) = _receiver;
 }

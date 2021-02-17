@@ -37,42 +37,17 @@ TEST(DimComplementReverseCTP, simple) {
 
   numTerminals = 4 * 3 * 3 * 3 * 1;
 
-  pairs = {
-    {0, 26},
-    {1, 17},
-    {2, 8},
-    {3, 23},
-    {4, 14},
-    {5, 5},
-    {6, 20},
-    {7, 11},
-    {8, 2},
-    {9, 25},
-    {10, 16},
-    {11, 7},
-    {12, 22},
-    {13, 13},
-    {14, 4},
-    {15, 19},
-    {16, 10},
-    {17, 1},
-    {18, 24},
-    {19, 15},
-    {20, 6},
-    {21, 21},
-    {22, 12},
-    {23, 3},
-    {24, 18},
-    {25, 9},
-    {26, 0}
-  };
+  pairs = {{0, 26},  {1, 17},  {2, 8},   {3, 23},  {4, 14},  {5, 5},   {6, 20},
+           {7, 11},  {8, 2},   {9, 25},  {10, 16}, {11, 7},  {12, 22}, {13, 13},
+           {14, 4},  {15, 19}, {16, 10}, {17, 1},  {18, 24}, {19, 15}, {20, 6},
+           {21, 21}, {22, 12}, {23, 3},  {24, 18}, {25, 9},  {26, 0}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first * 4 + iface;
       dst = p.second * 4 + iface;
-      tp = new DimComplementReverseCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new DimComplementReverseCTP("TP", nullptr, numTerminals, src,
+                                       settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);

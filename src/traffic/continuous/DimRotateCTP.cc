@@ -15,15 +15,14 @@
 #include "traffic/continuous/DimRotateCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-DimRotateCTP::DimRotateCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+DimRotateCTP::DimRotateCTP(const std::string& _name, const Component* _parent,
+                           u32 _numTerminals, u32 _self,
+                           nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -41,7 +40,7 @@ DimRotateCTP::DimRotateCTP(
   const u32 concentration = _settings["concentration"].get<u32>();
   const u32 interfacePorts = _settings["interface_ports"].get<u32>();
 
-  for (u32 i = 1; i < dimensions/2; i++) {
+  for (u32 i = 1; i < dimensions / 2; i++) {
     assert(widths.at(i) == widths.at(dimensions - i - 1));
   }
 
@@ -82,5 +81,5 @@ u32 DimRotateCTP::nextDestination() {
   return dest_;
 }
 
-registerWithObjectFactory("dim_rotate", ContinuousTrafficPattern,
-                          DimRotateCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("dim_rotate", ContinuousTrafficPattern, DimRotateCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

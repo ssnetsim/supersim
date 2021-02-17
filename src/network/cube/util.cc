@@ -35,9 +35,9 @@ u32 computeNumRouters(const std::vector<u32>& _widths) {
   return num;
 }
 
-void translateInterfaceIdToAddress(
-    u32 _id, const std::vector<u32>& _widths, u32 _concentration,
-    u32 _interfacePorts, std::vector<u32>* _address) {
+void translateInterfaceIdToAddress(u32 _id, const std::vector<u32>& _widths,
+                                   u32 _concentration, u32 _interfacePorts,
+                                   std::vector<u32>* _address) {
   assert(_id < computeNumInterfaces(_widths, _concentration, _interfacePorts));
 
   u32 dimensions = _widths.size();
@@ -57,9 +57,9 @@ void translateInterfaceIdToAddress(
   }
 }
 
-u32 translateInterfaceAddressToId(
-    const std::vector<u32>* _address, const std::vector<u32>& _widths,
-    u32 _concentration, u32 _interfacePorts) {
+u32 translateInterfaceAddressToId(const std::vector<u32>* _address,
+                                  const std::vector<u32>& _widths,
+                                  u32 _concentration, u32 _interfacePorts) {
   u32 dimensions = _widths.size();
   std::vector<u32> coeff(dimensions + 1);
 
@@ -86,9 +86,8 @@ u32 translateInterfaceAddressToId(
   return sum;
 }
 
-void translateRouterIdToAddress(
-    const u32 _id, const std::vector<u32>& _widths,
-    std::vector<u32>* _address) {
+void translateRouterIdToAddress(const u32 _id, const std::vector<u32>& _widths,
+                                std::vector<u32>* _address) {
   assert(_id < computeNumRouters(_widths));
 
   u32 dimensions = _widths.size();
@@ -105,8 +104,8 @@ void translateRouterIdToAddress(
   }
 }
 
-u32 translateRouterAddressToId(
-    const std::vector<u32>* _address, const std::vector<u32>& _widths) {
+u32 translateRouterAddressToId(const std::vector<u32>* _address,
+                               const std::vector<u32>& _widths) {
   u32 dimensions = _widths.size();
   std::vector<u32> coeff(dimensions);
 

@@ -37,31 +37,32 @@ class Network : public ::Network {
 
   // this is the injection algorithm factory for this network
   ::InjectionAlgorithm* createInjectionAlgorithm(
-       u32 _inputPc, const std::string& _name,
-       const Component* _parent, Interface* _interface) override;
+      u32 _inputPc, const std::string& _name, const Component* _parent,
+      Interface* _interface) override;
 
   // this is the routing algorithm factory for this network
-  ::RoutingAlgorithm* createRoutingAlgorithm(
-       u32 _inputPort, u32 _inputVc, const std::string& _name,
-       const Component* _parent, Router* _router) override;
+  ::RoutingAlgorithm* createRoutingAlgorithm(u32 _inputPort, u32 _inputVc,
+                                             const std::string& _name,
+                                             const Component* _parent,
+                                             Router* _router) override;
 
   u32 numRouters() const override;
   u32 numInterfaces() const override;
   Router* getRouter(u32 _id) const override;
   Interface* getInterface(u32 _id) const override;
-  void translateInterfaceIdToAddress(
-      u32 _id, std::vector<u32>* _address) const override;
+  void translateInterfaceIdToAddress(u32 _id,
+                                     std::vector<u32>* _address) const override;
   u32 translateInterfaceAddressToId(
       const std::vector<u32>* _address) const override;
-  void translateRouterIdToAddress(
-      u32 _id, std::vector<u32>* _address) const override;
+  void translateRouterIdToAddress(u32 _id,
+                                  std::vector<u32>* _address) const override;
   u32 translateRouterAddressToId(
       const std::vector<u32>* _address) const override;
   u32 computeMinimalHops(const std::vector<u32>* _source,
                          const std::vector<u32>* _destination) const override;
   void computeGlobalToRouterMap(u32 _thisGlobalWeight, u32 _thisGlobalOffset,
-                                u32* _globalPort,
-                                u32* _localRouter, u32* _localPort);
+                                u32* _globalPort, u32* _localRouter,
+                                u32* _localPort);
 
   u32 computeLocalSrcPort(u32 _portBase, u32 _offset, u32 _weight);
   u32 computeLocalDstPort(u32 _portBase, u32 _offset, u32 _weight);
@@ -82,7 +83,7 @@ class Network : public ::Network {
   u32 globalPortsPerRouter_;
   u32 routerGlobalPortBase_;
 
-  std::vector<std::vector<Router*> > routers_;
+  std::vector<std::vector<Router*>> routers_;
   DimensionalArray<Interface*> interfaces_;
   std::vector<Channel*> globalChannels_;
   std::vector<Channel*> localChannels_;

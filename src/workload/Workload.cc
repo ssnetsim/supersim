@@ -21,8 +21,12 @@
 
 Workload::Workload(const std::string& _name, const Component* _parent,
                    MetadataHandler* _metadataHandler, nlohmann::json _settings)
-    : Component(_name, _parent), fsm_(Workload::Fsm::READY),
-      readyCount_(0), completeCount_(0), doneCount_(0), monitoring_(false) {
+    : Component(_name, _parent),
+      fsm_(Workload::Fsm::READY),
+      readyCount_(0),
+      completeCount_(0),
+      doneCount_(0),
+      monitoring_(false) {
   // determine the number of applications in the workload
   assert(_settings.contains("applications") &&
          _settings["applications"].is_array());
@@ -46,8 +50,8 @@ Workload::Workload(const std::string& _name, const Component* _parent,
   applications_.resize(numApps, nullptr);
   for (u32 app = 0; app < numApps; app++) {
     applications_.at(app) = Application::create(
-        "Application_" +  std::to_string(app), this, app, this,
-        _metadataHandler, _settings["applications"][app]);
+        "Application_" + std::to_string(app), this, app, this, _metadataHandler,
+        _settings["applications"][app]);
   }
 
   // create a MessageLog

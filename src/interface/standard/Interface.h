@@ -97,7 +97,7 @@ class Interface : public ::Interface {
   MessageReassembler* messageReassembler_;
 
   // this holds temporary injection information
-  std::unordered_map<Packet*, std::tuple<u32, u32> > injectionInfo_;
+  std::unordered_map<Packet*, std::tuple<u32, u32>> injectionInfo_;
 };
 
 }  // namespace Standard

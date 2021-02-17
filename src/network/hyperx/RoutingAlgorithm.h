@@ -24,20 +24,21 @@
 #include "router/Router.h"
 #include "routing/RoutingAlgorithm.h"
 
-#define HYPERX_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
-    Router*, u32, u32, u32, u32, const std::vector<u32>&,               \
-    const std::vector<u32>&, u32, u32, nlohmann::json
+#define HYPERX_ROUTINGALGORITHM_ARGS                                 \
+  const std::string&, const Component*, Router*, u32, u32, u32, u32, \
+      const std::vector<u32>&, const std::vector<u32>&, u32, u32,    \
+      nlohmann::json
 
 namespace HyperX {
 
 class RoutingAlgorithm : public ::RoutingAlgorithm {
  public:
-  RoutingAlgorithm(
-      const std::string& _name, const Component* _parent, Router* _router,
-      u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-      const std::vector<u32>& _dimensionWidths,
-      const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, u32 _interfacePorts, nlohmann::json _settings);
+  RoutingAlgorithm(const std::string& _name, const Component* _parent,
+                   Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort,
+                   u32 _inputVc, const std::vector<u32>& _dimensionWidths,
+                   const std::vector<u32>& _dimensionWeights,
+                   u32 _concentration, u32 _interfacePorts,
+                   nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the hyperx topology

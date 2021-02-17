@@ -37,5 +37,4 @@ class ComparingArbiter : public Arbiter {
   std::vector<u32> temp_;
 };
 
-
 #endif  // ARBITER_COMPARINGARBITER_H_

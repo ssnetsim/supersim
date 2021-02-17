@@ -16,7 +16,10 @@
 
 RateMonitor::RateMonitor(const std::string& _name, const Component* _parent)
     : Component(_name, _parent),
-      flitCount_(0), startTime_(U64_MAX), endTime_(U64_MAX), running_(false) {}
+      flitCount_(0),
+      startTime_(U64_MAX),
+      endTime_(U64_MAX),
+      running_(false) {}
 
 RateMonitor::~RateMonitor() {}
 

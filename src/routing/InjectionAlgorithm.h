@@ -27,8 +27,9 @@
 
 class Interface;
 
-#define INJECTIONALGORITHM_ARGS const std::string&, const Component*, \
-    Interface*, u32, u32, u32, nlohmann::json
+#define INJECTIONALGORITHM_ARGS                                    \
+  const std::string&, const Component*, Interface*, u32, u32, u32, \
+      nlohmann::json
 
 class InjectionAlgorithm : public Component {
  public:
@@ -36,9 +37,9 @@ class InjectionAlgorithm : public Component {
    * This defines the InjectionAlgorithm interface. Specific implementations
    *  must override the processMessage() function.
    */
-  InjectionAlgorithm(
-      const std::string& _name, const Component* _parent, Interface* _interface,
-      u32 _baseVc, u32 _numVcs, u32 _inputPc, nlohmann::json _settings);
+  InjectionAlgorithm(const std::string& _name, const Component* _parent,
+                     Interface* _interface, u32 _baseVc, u32 _numVcs,
+                     u32 _inputPc, nlohmann::json _settings);
   virtual ~InjectionAlgorithm();
   u32 baseVc() const;
   u32 numVcs() const;

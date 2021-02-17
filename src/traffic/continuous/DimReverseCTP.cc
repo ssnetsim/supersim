@@ -15,15 +15,14 @@
 #include "traffic/continuous/DimReverseCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-DimReverseCTP::DimReverseCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+DimReverseCTP::DimReverseCTP(const std::string& _name, const Component* _parent,
+                             u32 _numTerminals, u32 _self,
+                             nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -41,7 +40,7 @@ DimReverseCTP::DimReverseCTP(
   const u32 concentration = _settings["concentration"].get<u32>();
   const u32 interfacePorts = _settings["interface_ports"].get<u32>();
 
-  for (u32 i = 1; i < dimensions/2; i++) {
+  for (u32 i = 1; i < dimensions / 2; i++) {
     assert(widths.at(i) == widths.at(dimensions - i - 1));
   }
 
@@ -50,7 +49,7 @@ DimReverseCTP::DimReverseCTP(
   Cube::translateInterfaceIdToAddress(self_, widths, concentration,
                                       interfacePorts, &addr);
 
-  for (u32 dim = 0; dim < dimensions/2; dim++) {
+  for (u32 dim = 0; dim < dimensions / 2; dim++) {
     u32 tmp = addr.at(dim + 1);
     addr.at(dim + 1) = addr.at(dimensions - dim);
     addr.at(dimensions - dim) = tmp;

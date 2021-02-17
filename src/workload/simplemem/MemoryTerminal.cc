@@ -26,12 +26,12 @@
 
 namespace SimpleMem {
 
-MemoryTerminal::MemoryTerminal(
-    const std::string& _name, const Component* _parent, u32 _id,
-    const std::vector<u32>& _address, u32 _memorySlice, ::Application* _app,
-    nlohmann::json _settings)
-    : ::Terminal(_name, _parent, _id, _address, _app),
-      fsm_(eState::kWaiting) {
+MemoryTerminal::MemoryTerminal(const std::string& _name,
+                               const Component* _parent, u32 _id,
+                               const std::vector<u32>& _address,
+                               u32 _memorySlice, ::Application* _app,
+                               nlohmann::json _settings)
+    : ::Terminal(_name, _parent, _id, _address, _app), fsm_(eState::kWaiting) {
   // protocol class of injection
   assert(_settings.contains("protocol_class"));
   protocolClass_ = _settings["protocol_class"].get<u32>();
@@ -44,7 +44,7 @@ MemoryTerminal::MemoryTerminal(
 }
 
 MemoryTerminal::~MemoryTerminal() {
-  delete [] memory_;
+  delete[] memory_;
 }
 
 void MemoryTerminal::processEvent(void* _event, s32 _type) {
@@ -52,8 +52,8 @@ void MemoryTerminal::processEvent(void* _event, s32 _type) {
 }
 
 void MemoryTerminal::startMemoryAccess() {
-  addEvent(gSim->futureCycle(Simulator::Clock::TERMINAL, latency_),
-           0, nullptr, 0);
+  addEvent(gSim->futureCycle(Simulator::Clock::TERMINAL, latency_), 0, nullptr,
+           0);
   fsm_ = eState::kAccessing;
 }
 
@@ -112,11 +112,11 @@ void MemoryTerminal::sendMemoryResponse() {
   u8* memoryData = memory_ + (address - memoryOffset_);
 
   // create the response
-  MemoryOp::eOp respOp = reqOp == MemoryOp::eOp::kReadReq ?
-                         MemoryOp::eOp::kReadResp : MemoryOp::eOp::kWriteResp;
-  MemoryOp* memOpResp = new MemoryOp(respOp, address,
-                                     (reqOp == MemoryOp::eOp::kReadReq ?
-                                      blockSize : 0));
+  MemoryOp::eOp respOp = reqOp == MemoryOp::eOp::kReadReq
+                             ? MemoryOp::eOp::kReadResp
+                             : MemoryOp::eOp::kWriteResp;
+  MemoryOp* memOpResp = new MemoryOp(
+      respOp, address, (reqOp == MemoryOp::eOp::kReadReq ? blockSize : 0));
 
   // determine the message length
   //  perform memory operation
@@ -157,8 +157,8 @@ void MemoryTerminal::sendMemoryResponse() {
   u32 requesterId = request->getSourceId();
   assert((requesterId & 0x1) == 1);
   dbgprintf("sending %s response to %u (address %u)",
-            (respOp == MemoryOp::eOp::kWriteResp) ?
-            "write" : "read", requesterId, address);
+            (respOp == MemoryOp::eOp::kWriteResp) ? "write" : "read",
+            requesterId, address);
   sendMessage(response, requesterId);
 
   // delete the request

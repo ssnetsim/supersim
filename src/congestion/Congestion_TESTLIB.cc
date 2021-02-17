@@ -12,10 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "congestion/Congestion_TESTLIB.h"
+
 #include <queue>
 #include <tuple>
 
-#include "congestion/Congestion_TESTLIB.h"
 #include "event/Component.h"
 #include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
@@ -71,18 +72,20 @@ void CongestionTestRouter::sendFlit(u32 _port, Flit* _flit) {
   assert(false);
 }
 
-f64 CongestionTestRouter::congestionStatus(
-    u32 _inputPort, u32 _inputVc, u32 _outputPort, u32 _outputVc) const {
-  return congestionSensor_->status(_inputPort, _inputVc,
-                                   _outputPort, _outputVc);
+f64 CongestionTestRouter::congestionStatus(u32 _inputPort, u32 _inputVc,
+                                           u32 _outputPort,
+                                           u32 _outputVc) const {
+  return congestionSensor_->status(_inputPort, _inputVc, _outputPort,
+                                   _outputVc);
 }
 
 /************************* CreditHandler utility class ************************/
 
-CreditHandler::CreditHandler(
-    const std::string& _name, const Component* _parent,
-    CongestionSensor* _congestionSensor, PortedDevice* _device)
-    : Component(_name, _parent), congestionSensor_(_congestionSensor),
+CreditHandler::CreditHandler(const std::string& _name, const Component* _parent,
+                             CongestionSensor* _congestionSensor,
+                             PortedDevice* _device)
+    : Component(_name, _parent),
+      congestionSensor_(_congestionSensor),
       device_(_device) {}
 
 CreditHandler::~CreditHandler() {}
@@ -141,9 +144,11 @@ void StatusCheck::processEvent(void* _event, s32 _type) {
 
 /*********************** CongestionTestSensor class ***************************/
 
-CongestionTestSensor::CongestionTestSensor(
-    const std::string& _name, const Component* _parent, PortedDevice* _device,
-    nlohmann::json _settings, const std::vector<f64>* _congestion)
+CongestionTestSensor::CongestionTestSensor(const std::string& _name,
+                                           const Component* _parent,
+                                           PortedDevice* _device,
+                                           nlohmann::json _settings,
+                                           const std::vector<f64>* _congestion)
     : CongestionSensor(_name, _parent, _device, _settings),
       congestion_(_congestion) {}
 
@@ -169,10 +174,10 @@ CongestionSensor::Resolution CongestionTestSensor::resolution() const {
   return CongestionSensor::Resolution::kVc;
 }
 
-f64 CongestionTestSensor::computeStatus(
-    u32 _inputPort, u32 _inputVc, u32 _outputPort, u32 _outputVc) const {
+f64 CongestionTestSensor::computeStatus(u32 _inputPort, u32 _inputVc,
+                                        u32 _outputPort, u32 _outputVc) const {
   (void)_inputPort;  // unused
-  (void)_inputVc;  // unused
+  (void)_inputVc;    // unused
   u32 vcIdx = device_->vcIndex(_outputPort, _outputVc);
   assert(vcIdx < congestion_->size());
   return congestion_->at(vcIdx);

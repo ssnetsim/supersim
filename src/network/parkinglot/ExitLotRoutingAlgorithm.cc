@@ -15,7 +15,6 @@
 #include "network/parkinglot/ExitLotRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
@@ -24,10 +23,12 @@
 
 namespace ParkingLot {
 
-ExitLotRoutingAlgorithm::ExitLotRoutingAlgorithm(
-    const std::string& _name, const Component* _parent, Router* _router,
-    u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _outputPort,
-    nlohmann::json _settings)
+ExitLotRoutingAlgorithm::ExitLotRoutingAlgorithm(const std::string& _name,
+                                                 const Component* _parent,
+                                                 Router* _router, u32 _baseVc,
+                                                 u32 _numVcs, u32 _inputPort,
+                                                 u32 _inputVc, u32 _outputPort,
+                                                 nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _outputPort, _settings),
       adaptive_(_settings["adaptive"].get<bool>()) {
@@ -48,8 +49,8 @@ void ExitLotRoutingAlgorithm::processRequest(
     std::vector<u32> minCongVcs;
     f64 minCong = F64_POS_INF;
     for (u32 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
-      f64 cong = router_->congestionStatus(inputPort_, inputVc_, outputPort_,
-                                           vc);
+      f64 cong =
+          router_->congestionStatus(inputPort_, inputVc_, outputPort_, vc);
       if (cong < minCong) {
         minCong = cong;
         minCongVcs.clear();

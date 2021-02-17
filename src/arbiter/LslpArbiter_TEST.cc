@@ -36,7 +36,7 @@ TEST(LslpArbiter, full) {
         request[idx] = gSim->rnd.nextBool();
         metadata[idx] = 0;
       }
-    } while (hotCount(request, size) <= size/2);
+    } while (hotCount(request, size) <= size / 2);
 
     Arbiter* arb = new LslpArbiter("Arb", nullptr, size, nlohmann::json());
     assert(arb->size() == size);

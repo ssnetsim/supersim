@@ -35,40 +35,15 @@ TEST(Swap2CTP, no_enabled_dims) {
   settings["interface_ports"] = nlohmann::json(1);
 
   numTerminals = 2 * 3 * 4;
-  swap1 = {
-    {0, 4},
-    {2, 6},
-    {4, 0},
-    {6, 2},
-    {8, 12},
-    {10, 14},
-    {12, 8},
-    {14, 10},
-    {16, 20},
-    {18, 22},
-    {20, 16},
-    {22, 18}
-  };
-  swap2 = {
-    {1, 17},
-    {3, 19},
-    {5, 21},
-    {7, 23},
-    {9, 9},
-    {11, 11},
-    {13, 13},
-    {15, 15},
-    {17, 1},
-    {19, 3},
-    {21, 5},
-    {23, 7}
-  };
+  swap1 = {{0, 4},  {2, 6},   {4, 0},   {6, 2},   {8, 12},  {10, 14},
+           {12, 8}, {14, 10}, {16, 20}, {18, 22}, {20, 16}, {22, 18}};
+  swap2 = {{1, 17},  {3, 19},  {5, 21}, {7, 23}, {9, 9},  {11, 11},
+           {13, 13}, {15, 15}, {17, 1}, {19, 3}, {21, 5}, {23, 7}};
 
   for (const auto& p : swap1) {
     src = p.first;
     dst = p.second;
-    tp = new Swap2CTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new Swap2CTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);
@@ -79,8 +54,7 @@ TEST(Swap2CTP, no_enabled_dims) {
   for (const auto& p : swap2) {
     src = p.first;
     dst = p.second;
-    tp = new Swap2CTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new Swap2CTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);
@@ -105,40 +79,15 @@ TEST(Swap2CTP, enabled_dims_0_1) {
   settings["enabled_dimensions"][1] = true;
 
   numTerminals = 2 * 3 * 4;
-  swap1 = {
-    {0, 4},
-    {2, 6},
-    {4, 0},
-    {6, 2},
-    {8, 12},
-    {10, 14},
-    {12, 8},
-    {14, 10},
-    {16, 20},
-    {18, 22},
-    {20, 16},
-    {22, 18}
-  };
-  swap2 = {
-    {1, 17},
-    {3, 19},
-    {5, 21},
-    {7, 23},
-    {9, 9},
-    {11, 11},
-    {13, 13},
-    {15, 15},
-    {17, 1},
-    {19, 3},
-    {21, 5},
-    {23, 7}
-  };
+  swap1 = {{0, 4},  {2, 6},   {4, 0},   {6, 2},   {8, 12},  {10, 14},
+           {12, 8}, {14, 10}, {16, 20}, {18, 22}, {20, 16}, {22, 18}};
+  swap2 = {{1, 17},  {3, 19},  {5, 21}, {7, 23}, {9, 9},  {11, 11},
+           {13, 13}, {15, 15}, {17, 1}, {19, 3}, {21, 5}, {23, 7}};
 
   for (const auto& p : swap1) {
     src = p.first;
     dst = p.second;
-    tp = new Swap2CTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new Swap2CTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);
@@ -149,8 +98,7 @@ TEST(Swap2CTP, enabled_dims_0_1) {
   for (const auto& p : swap2) {
     src = p.first;
     dst = p.second;
-    tp = new Swap2CTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new Swap2CTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);
@@ -177,40 +125,15 @@ TEST(Swap2CTP, enabled_dims_1_0_3d) {
   settings["enabled_dimensions"][2] = false;
 
   numTerminals = 2 * 3 * 4;
-  swap1 = {
-    {0, 4},
-    {2, 6},
-    {4, 0},
-    {6, 2},
-    {8, 12},
-    {10, 14},
-    {12, 8},
-    {14, 10},
-    {16, 20},
-    {18, 22},
-    {20, 16},
-    {22, 18}
-  };
-  swap2 = {
-    {1, 17},
-    {3, 19},
-    {5, 21},
-    {7, 23},
-    {9, 9},
-    {11, 11},
-    {13, 13},
-    {15, 15},
-    {17, 1},
-    {19, 3},
-    {21, 5},
-    {23, 7}
-  };
+  swap1 = {{0, 4},  {2, 6},   {4, 0},   {6, 2},   {8, 12},  {10, 14},
+           {12, 8}, {14, 10}, {16, 20}, {18, 22}, {20, 16}, {22, 18}};
+  swap2 = {{1, 17},  {3, 19},  {5, 21}, {7, 23}, {9, 9},  {11, 11},
+           {13, 13}, {15, 15}, {17, 1}, {19, 3}, {21, 5}, {23, 7}};
 
   for (const auto& p : swap1) {
     src = p.first;
     dst = p.second;
-    tp = new Swap2CTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new Swap2CTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);
@@ -221,8 +144,7 @@ TEST(Swap2CTP, enabled_dims_1_0_3d) {
   for (const auto& p : swap2) {
     src = p.first;
     dst = p.second;
-    tp = new Swap2CTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new Swap2CTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);

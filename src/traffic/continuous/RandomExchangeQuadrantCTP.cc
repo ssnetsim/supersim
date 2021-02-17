@@ -15,16 +15,16 @@
 #include "traffic/continuous/RandomExchangeQuadrantCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-RandomExchangeQuadrantCTP::
-RandomExchangeQuadrantCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+RandomExchangeQuadrantCTP::RandomExchangeQuadrantCTP(const std::string& _name,
+                                                     const Component* _parent,
+                                                     u32 _numTerminals,
+                                                     u32 _self,
+                                                     nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -77,13 +77,12 @@ RandomExchangeQuadrantCTP(
   }
 }
 
-RandomExchangeQuadrantCTP::
-~RandomExchangeQuadrantCTP() {}
+RandomExchangeQuadrantCTP::~RandomExchangeQuadrantCTP() {}
 
 u32 RandomExchangeQuadrantCTP::nextDestination() {
   return dstVect_.at(gSim->rnd.nextU64(0, dstVect_.size() - 1));
 }
 
-registerWithObjectFactory(
-    "random_exchange_quadrant", ContinuousTrafficPattern,
-    RandomExchangeQuadrantCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("random_exchange_quadrant", ContinuousTrafficPattern,
+                          RandomExchangeQuadrantCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

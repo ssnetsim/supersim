@@ -20,10 +20,11 @@
 #include "factory/FunctionFactory.h"
 #include "factory/ObjectFactory.h"
 
-WeightedReduction::WeightedReduction(
-    const std::string& _name, const Component* _parent,
-    const PortedDevice* _device, RoutingMode _mode, bool _ignoreDuplicates,
-    nlohmann::json _settings)
+WeightedReduction::WeightedReduction(const std::string& _name,
+                                     const Component* _parent,
+                                     const PortedDevice* _device,
+                                     RoutingMode _mode, bool _ignoreDuplicates,
+                                     nlohmann::json _settings)
     : Reduction(_name, _parent, _device, _mode, _ignoreDuplicates, _settings),
       congestionBias_(_settings["congestion_bias"].get<f64>()),
       independentBias_(_settings["independent_bias"].get<f64>()),
@@ -39,10 +40,9 @@ WeightedReduction::~WeightedReduction() {}
 
 void WeightedReduction::process(
     u32 _minHops,
-    const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _minimal,
-    const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _nonMinimal,
-    std::unordered_set<std::tuple<u32, u32> >* _outputs,
-    bool* _allMinimal) {
+    const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _minimal,
+    const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _nonMinimal,
+    std::unordered_set<std::tuple<u32, u32>>* _outputs, bool* _allMinimal) {
   // find the minimally weighted options
   f64 minWeight = F64_MAX;
 
@@ -66,9 +66,9 @@ void WeightedReduction::process(
   // now search non-minimal
   f64 nonMin = false;
   for (const auto& t : _nonMinimal) {
-    f64 weight = nonMinWeightFunc_(
-        _minHops, std::get<2>(t), minCongestion, std::get<3>(t),
-        congestionBias_, independentBias_);
+    f64 weight =
+        nonMinWeightFunc_(_minHops, std::get<2>(t), minCongestion,
+                          std::get<3>(t), congestionBias_, independentBias_);
 
     if (congestionLessThan(weight, minWeight)) {
       // new lowest weight
@@ -86,5 +86,5 @@ void WeightedReduction::process(
   *_allMinimal = !nonMin;
 }
 
-registerWithObjectFactory("weighted", Reduction,
-                          WeightedReduction, REDUCTION_ARGS);
+registerWithObjectFactory("weighted", Reduction, WeightedReduction,
+                          REDUCTION_ARGS);

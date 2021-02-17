@@ -16,7 +16,6 @@
 
 #include <cassert>
 #include <cmath>
-
 #include <tuple>
 
 #include "factory/ObjectFactory.h"
@@ -46,30 +45,30 @@ Network::Network(const std::string& _name, const Component* _parent,
   loadProtocolClassInfo(_settings["protocol_classes"]);
 
   // create the router
-  router_ = Router::create(
-      "Router", this, this, 0, std::vector<u32>(), routerRadix, numVcs_,
-      _metadataHandler, _settings["router"]);
+  router_ =
+      Router::create("Router", this, this, 0, std::vector<u32>(), routerRadix,
+                     numVcs_, _metadataHandler, _settings["router"]);
 
   // create the interfaces and external channels
   interfaces_.resize(numInterfaces(), nullptr);
   for (u32 id = 0; id < numInterfaces(); id++) {
     // create the interface
     std::string interfaceName = "Interface_" + std::to_string(id);
-    Interface* interface = Interface::create(
-        interfaceName, this, this, id, {id}, interfacePorts_, numVcs_,
-        _metadataHandler, _settings["interface"]);
+    Interface* interface =
+        Interface::create(interfaceName, this, this, id, {id}, interfacePorts_,
+                          numVcs_, _metadataHandler, _settings["interface"]);
     interfaces_.at(id) = interface;
 
     // create and link channels
     for (u32 ch = 0; ch < interfacePorts_; ch++) {
       // create the channels
-      std::string inChannelName = "InChannel_" + std::to_string(id) + "_" +
-                                  std::to_string(ch);
+      std::string inChannelName =
+          "InChannel_" + std::to_string(id) + "_" + std::to_string(ch);
       Channel* inChannel = new Channel(inChannelName, this, numVcs_,
                                        _settings["external_channel"]);
       externalChannels_.push_back(inChannel);
-      std::string outChannelName = "OutChannel_" + std::to_string(id) + "_" +
-                                   std::to_string(ch);
+      std::string outChannelName =
+          "OutChannel_" + std::to_string(id) + "_" + std::to_string(ch);
       Channel* outChannel = new Channel(outChannelName, this, numVcs_,
                                         _settings["external_channel"]);
       externalChannels_.push_back(outChannel);
@@ -101,20 +100,22 @@ Network::~Network() {
 }
 
 ::InjectionAlgorithm* Network::createInjectionAlgorithm(
-     u32 _inputPc, const std::string& _name,
-     const Component* _parent, Interface* _interface) {
+    u32 _inputPc, const std::string& _name, const Component* _parent,
+    Interface* _interface) {
   // get the info
   const ::Network::PcSettings& settings = pcSettings(_inputPc);
 
   // call the routing algorithm factory
-  return InjectionAlgorithm::create(
-      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
-      settings.injection);
+  return InjectionAlgorithm::create(_name, _parent, _interface, settings.baseVc,
+                                    settings.numVcs, _inputPc,
+                                    settings.injection);
 }
 
-::RoutingAlgorithm* Network::createRoutingAlgorithm(
-     u32 _inputPort, u32 _inputVc, const std::string& _name,
-     const Component* _parent, Router* _router) {
+::RoutingAlgorithm* Network::createRoutingAlgorithm(u32 _inputPort,
+                                                    u32 _inputVc,
+                                                    const std::string& _name,
+                                                    const Component* _parent,
+                                                    Router* _router) {
   // get the info
   u32 pc = vcToPc(_inputVc);
   const ::Network::PcSettings& settings = pcSettings(pc);
@@ -142,8 +143,8 @@ Interface* Network::getInterface(u32 _id) const {
   return interfaces_.at(_id);
 }
 
-void Network::translateInterfaceIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
+void Network::translateInterfaceIdToAddress(u32 _id,
+                                            std::vector<u32>* _address) const {
   _address->resize(1);
   _address->at(0) = _id;
 }
@@ -153,8 +154,8 @@ u32 Network::translateInterfaceAddressToId(
   return _address->at(0);
 }
 
-void Network::translateRouterIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
+void Network::translateRouterIdToAddress(u32 _id,
+                                         std::vector<u32>* _address) const {
   _address->resize(1);
   _address->at(0) = 0;
 }
@@ -179,5 +180,5 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
 
 }  // namespace SingleRouter
 
-registerWithObjectFactory("single_router", ::Network,
-                          SingleRouter::Network, NETWORK_ARGS);
+registerWithObjectFactory("single_router", ::Network, SingleRouter::Network,
+                          NETWORK_ARGS);

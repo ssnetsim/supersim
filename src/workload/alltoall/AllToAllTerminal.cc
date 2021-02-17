@@ -14,10 +14,9 @@
  */
 #include "workload/alltoall/AllToAllTerminal.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 #include <utility>
 
 #include "mut/mut.h"
@@ -45,10 +44,11 @@ struct RequestData {
 
 namespace AllToAll {
 
-AllToAllTerminal::AllToAllTerminal(
-    const std::string& _name, const Component* _parent, u32 _id,
-    const std::vector<u32>& _address, ::Application* _app,
-    nlohmann::json _settings)
+AllToAllTerminal::AllToAllTerminal(const std::string& _name,
+                                   const Component* _parent, u32 _id,
+                                   const std::vector<u32>& _address,
+                                   ::Application* _app,
+                                   nlohmann::json _settings)
     : ::Terminal(_name, _parent, _id, _address, _app) {
   // get the injection rate
   assert(_settings.contains("request_injection_rate") &&
@@ -65,7 +65,7 @@ AllToAllTerminal::AllToAllTerminal(
   inBarrier_ = false;
 
   // max packet size
-  maxPacketSize_  = _settings["max_packet_size"].get<u32>();
+  maxPacketSize_ = _settings["max_packet_size"].get<u32>();
   assert(maxPacketSize_ > 0);
 
   // transaction size
@@ -91,8 +91,7 @@ AllToAllTerminal::AllToAllTerminal(
   enableResponses_ = _settings["enable_responses"].get<bool>();
 
   // latency of request processing
-  assert(!enableResponses_ ||
-         _settings.contains("request_processing_latency"));
+  assert(!enableResponses_ || _settings.contains("request_processing_latency"));
   requestProcessingLatency_ =
       _settings["request_processing_latency"].get<u32>();
 
@@ -421,8 +420,9 @@ void AllToAllTerminal::startTransaction() {
     }
 
     // start tracking the transaction
-    bool res = outstandingTransactions_.insert(
-        std::make_pair(transaction, transactionSize_)).second;
+    bool res = outstandingTransactions_
+                   .insert(std::make_pair(transaction, transactionSize_))
+                   .second;
     assert(res);
 
     // register the transaction for logging
@@ -452,8 +452,8 @@ void AllToAllTerminal::startTransaction() {
       // create the packets
       u32 flitsLeft = messageSize;
       for (u32 p = 0; p < numPackets; p++) {
-        u32 packetLength = flitsLeft > maxPacketSize_ ?
-                           maxPacketSize_ : flitsLeft;
+        u32 packetLength =
+            flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
         Packet* packet = new Packet(p, packetLength, message);
         message->setPacket(p, packet);
@@ -517,8 +517,7 @@ void AllToAllTerminal::sendResponse(Message* _request) {
   // create the packets
   u32 flitsLeft = messageSize;
   for (u32 p = 0; p < numPackets; p++) {
-    u32 packetLength = flitsLeft > maxPacketSize_ ?
-                       maxPacketSize_ : flitsLeft;
+    u32 packetLength = flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
     Packet* packet = new Packet(p, packetLength, message);
     message->setPacket(p, packet);

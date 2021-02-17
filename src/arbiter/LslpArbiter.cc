@@ -43,5 +43,4 @@ u32 LslpArbiter::arbitrate() {
   return winner;
 }
 
-registerWithObjectFactory("lslp", Arbiter,
-                          LslpArbiter, ARBITER_ARGS);
+registerWithObjectFactory("lslp", Arbiter, LslpArbiter, ARBITER_ARGS);

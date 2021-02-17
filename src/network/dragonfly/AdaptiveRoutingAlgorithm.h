@@ -30,29 +30,30 @@ namespace Dragonfly {
 
 class AdaptiveRoutingAlgorithm : public RoutingAlgorithm {
  public:
-  AdaptiveRoutingAlgorithm(
-      const std::string& _name, const Component* _parent, Router* _router,
-      u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
-      u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
-      u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
-      nlohmann::json _settings);
+  AdaptiveRoutingAlgorithm(const std::string& _name, const Component* _parent,
+                           Router* _router, u32 _baseVc, u32 _numVcs,
+                           u32 _inputPort, u32 _inputVc, u32 _localWidth,
+                           u32 _localWeight, u32 _globalWidth,
+                           u32 _globalWeight, u32 _concentration,
+                           u32 _interfacePorts, u32 _routerRadix,
+                           u32 _globalPortsPerRouter, nlohmann::json _settings);
   ~AdaptiveRoutingAlgorithm();
 
  protected:
-  void processRequest(
-      Flit* _flit, RoutingAlgorithm::Response* _response) override;
+  void processRequest(Flit* _flit,
+                      RoutingAlgorithm::Response* _response) override;
 
  private:
   static std::vector<u32> createRoutingClasses(nlohmann::json _settings);
   void addPort(u32 _port, u32 _hops, u32 _routingClass);
 
-  void addPortsToLocalRouter(u32 _src, u32 _dst, bool _minimalOnly,
-                             u32 _minRc, u32 _nonminRc);
+  void addPortsToLocalRouter(u32 _src, u32 _dst, bool _minimalOnly, u32 _minRc,
+                             u32 _nonminRc);
 
   void addGlobalPorts(u32 _thisRouter, bool _attachedMin, bool _attachedNonMin,
                       bool _peerMin, bool _peerNonMin, u32 _dstGlobalOffset,
-                      u32 _minGlobalRc, u32 _nonminGlobalRc,
-                      u32 _minLocalRc, u32 _nonminLocalRc);
+                      u32 _minGlobalRc, u32 _nonminGlobalRc, u32 _minLocalRc,
+                      u32 _nonminLocalRc);
 
   bool progressiveAdaptive_;
   bool valiantNode_;

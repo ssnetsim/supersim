@@ -16,9 +16,10 @@
 
 #include "factory/ObjectFactory.h"
 
-RandomPriorityArbiter::RandomPriorityArbiter(
-    const std::string& _name, const Component* _parent, u32 _size,
-    nlohmann::json _settings)
+RandomPriorityArbiter::RandomPriorityArbiter(const std::string& _name,
+                                             const Component* _parent,
+                                             u32 _size,
+                                             nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {}
 
 RandomPriorityArbiter::~RandomPriorityArbiter() {}
@@ -37,5 +38,5 @@ u32 RandomPriorityArbiter::arbitrate() {
   return winner;
 }
 
-registerWithObjectFactory("random_priority", Arbiter,
-                          RandomPriorityArbiter, ARBITER_ARGS);
+registerWithObjectFactory("random_priority", Arbiter, RandomPriorityArbiter,
+                          ARBITER_ARGS);

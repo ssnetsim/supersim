@@ -16,16 +16,16 @@
 #include "prim/prim.h"
 #include "routing/NonMinimalWeightFunc.h"
 
-f64 regularNonMinimalWeightFunc(
-    u32 _minimalHops, u32 _nonMinimalHops,
-    f64 _minimalCongestion, f64 _nonMinimalCongestion,
-    f64 _congestionBias, f64 _independentBias) {
-  (void)_minimalHops;  // unused
+f64 regularNonMinimalWeightFunc(u32 _minimalHops, u32 _nonMinimalHops,
+                                f64 _minimalCongestion,
+                                f64 _nonMinimalCongestion, f64 _congestionBias,
+                                f64 _independentBias) {
+  (void)_minimalHops;        // unused
   (void)_minimalCongestion;  // unused
   return (_nonMinimalCongestion + _congestionBias) * _nonMinimalHops +
-      _independentBias;
+         _independentBias;
 }
 
-registerWithFunctionFactory(
-    "regular", regularNonMinimalWeightFunc,
-    NONMINIMALWEIGHTFUNC_RET, NONMINIMALWEIGHTFUNC_ARGS);
+registerWithFunctionFactory("regular", regularNonMinimalWeightFunc,
+                            NONMINIMALWEIGHTFUNC_RET,
+                            NONMINIMALWEIGHTFUNC_ARGS);

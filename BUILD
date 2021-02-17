@@ -138,9 +138,28 @@ genrule(
       --extensions=cc,h,tcc \
       --quiet $(SRCS) > $@
     echo // $$(date) > $@
-  """,
+    """,
     tools = [
         "@cpplint",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "format_check",
+    srcs = glob([
+        "src/**/*.cc",
+        "src/**/*.h",
+        "src/**/*.tcc",
+    ]),
+    outs = ["format_checked"],
+    cmd = """
+    cp $(location @clang_format//file) .clang-format
+    clang-format --style=file --dry-run --Werror src/main.cc
+    echo // $$(date) > $@
+    """,
+    tools = [
+        "@clang_format//file",
     ],
     visibility = ["//visibility:public"],
 )

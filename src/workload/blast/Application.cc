@@ -15,7 +15,6 @@
 #include "workload/blast/Application.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "event/Simulator.h"
@@ -23,15 +22,15 @@
 #include "network/Network.h"
 #include "workload/blast/BlastTerminal.h"
 
-#define kForceWarmed   (0x123)
+#define kForceWarmed (0x123)
 #define kMaxSaturation (0x456)
 
 namespace Blast {
 
-Application::Application(
-    const std::string& _name, const Component* _parent, u32 _id,
-    Workload* _workload, MetadataHandler* _metadataHandler,
-    nlohmann::json _settings)
+Application::Application(const std::string& _name, const Component* _parent,
+                         u32 _id, Workload* _workload,
+                         MetadataHandler* _metadataHandler,
+                         nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings),
       killOnSaturation_(_settings["kill_on_saturation"].get<bool>()),
@@ -153,8 +152,8 @@ void Application::terminalSaturated(u32 _id) {
   dbgprintf("Terminal %u is saturated (%u of %u)", _id, saturatedTerminals_,
             activeTerminals_);
   assert(saturatedTerminals_ <= activeTerminals_);
-  f64 percentSaturated = saturatedTerminals_ /
-                         static_cast<f64>(activeTerminals_);
+  f64 percentSaturated =
+      saturatedTerminals_ / static_cast<f64>(activeTerminals_);
   if (percentSaturated > (1.0 - warmupThreshold_)) {
     // the network is saturated
     if (killOnSaturation_) {
@@ -175,14 +174,13 @@ void Application::terminalSaturated(u32 _id) {
       workload_->applicationReady(id_);
 
       // set the maximum number of cycles to stay within the logging phase
-      u64 timeout = gSim->futureCycle(Simulator::Clock::TERMINAL,
-                                      maxSaturationCycles_);
+      u64 timeout =
+          gSim->futureCycle(Simulator::Clock::TERMINAL, maxSaturationCycles_);
       dbgprintf("setting timeout from %lu to %lu", gSim->time(), timeout);
       addEvent(timeout, 0, nullptr, kMaxSaturation);
     } else {
       // drain all the packets from the network
-      dbgprintf("Saturation threshold %f reached",
-                1.0 - warmupThreshold_);
+      dbgprintf("Saturation threshold %f reached", 1.0 - warmupThreshold_);
       fsm_ = Application::Fsm::DRAINING;
       doLogging_ = false;
       for (u32 idx = 0; idx < numTerminals(); idx++) {
@@ -196,8 +194,8 @@ void Application::terminalSaturated(u32 _id) {
 
 void Application::terminalComplete(u32 _id) {
   completedTerminals_++;
-  dbgprintf("Terminal %u is done logging (%u of %u)",
-            _id, completedTerminals_, activeTerminals_);
+  dbgprintf("Terminal %u is done logging (%u of %u)", _id, completedTerminals_,
+            activeTerminals_);
   assert(completedTerminals_ <= activeTerminals_);
   if ((completedTerminals_ == activeTerminals_) &&
       (fsm_ == Application::Fsm::LOGGING)) {
@@ -218,7 +216,6 @@ void Application::terminalDone(u32 _id) {
     workload_->applicationDone(id_);
   }
 }
-
 
 void Application::processEvent(void* _event, s32 _type) {
   switch (_type) {

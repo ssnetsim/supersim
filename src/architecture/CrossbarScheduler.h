@@ -92,7 +92,7 @@ class CrossbarScheduler : public Component, public CreditWatcher {
   bool* grants_;
 
   std::vector<bool> anyRequests_;  // someone has requested port
-  std::vector<u32> portLocks_;  // output port locks
+  std::vector<u32> portLocks_;     // output port locks
 
   Allocator* allocator_;
 

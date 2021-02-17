@@ -15,7 +15,6 @@
 #include "network/dragonfly/ValiantsRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <unordered_set>
 #include <vector>
@@ -35,11 +34,10 @@ ValiantsRoutingAlgorithm::ValiantsRoutingAlgorithm(
     u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
     u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
     nlohmann::json _settings)
-    : RoutingAlgorithm(
-          _name, _parent, _router, _baseVc, _numVcs, _inputPort, _inputVc,
-          _localWidth, _localWeight, _globalWidth, _globalWeight,
-          _concentration, _interfacePorts, _routerRadix, _globalPortsPerRouter,
-          _settings),
+    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
+                       _inputVc, _localWidth, _localWeight, _globalWidth,
+                       _globalWeight, _concentration, _interfacePorts,
+                       _routerRadix, _globalPortsPerRouter, _settings),
       mode_(parseRoutingMode(_settings["mode"].get<std::string>())) {
   assert(_settings.contains("smart_intermediate_node"));
   smartIntermediateNode_ = _settings["smart_intermediate_node"].get<bool>();
@@ -61,7 +59,6 @@ ValiantsRoutingAlgorithm::~ValiantsRoutingAlgorithm() {
 
 void ValiantsRoutingAlgorithm::processRequest(
     Flit* _flit, RoutingAlgorithm::Response* _response) {
-
   // addresses
   const std::vector<u32>* sourceAddress =
       _flit->packet()->message()->getSourceAddress();
@@ -139,11 +136,11 @@ void ValiantsRoutingAlgorithm::processRequest(
 
   // check if at routingTo destination
   // Exit stage or network
-  bool atDestination = ((thisGroup == destinationGroup) &&
-                        (thisRouter == destinationRouter));
+  bool atDestination =
+      ((thisGroup == destinationGroup) && (thisRouter == destinationRouter));
 
-  bool atIntermediate  = ((thisGroup == intermediateAddress->at(1)) &&
-                          (thisRouter == intermediateAddress->at(0)));
+  bool atIntermediate = ((thisGroup == intermediateAddress->at(1)) &&
+                         (thisRouter == intermediateAddress->at(0)));
 
   // set stage
   if (stage == 0 && (atDestination || atIntermediate)) {
@@ -154,8 +151,8 @@ void ValiantsRoutingAlgorithm::processRequest(
     routingToRouter = destinationAddress->at(1);
     routingToTerminal = destinationAddress->at(0);
     // if chose int = dst, at dst again
-    atDestination = ((thisGroup == destinationGroup) &&
-                     (thisRouter == destinationRouter));
+    atDestination =
+        ((thisGroup == destinationGroup) && (thisRouter == destinationRouter));
   }
 
   if (atDestination) {
@@ -172,8 +169,7 @@ void ValiantsRoutingAlgorithm::processRequest(
   } else {
     // moving to intermediate node or destination
     assert(newStage == atIntermediate);
-    u32 globalOffset = computeOffset(thisGroup, routingToGroup,
-                                     globalWidth_);
+    u32 globalOffset = computeOffset(thisGroup, routingToGroup, globalWidth_);
 
     if (inputPort_ < localPortBase_) {
       // in Terminal
@@ -220,7 +216,7 @@ void ValiantsRoutingAlgorithm::processRequest(
   }
 
   // reduction phase
-  const std::unordered_set<std::tuple<u32, u32> >* outputs =
+  const std::unordered_set<std::tuple<u32, u32>>* outputs =
       reduction_->reduce(nullptr);
   for (const auto& t : *outputs) {
     u32 port = std::get<0>(t);
@@ -271,32 +267,31 @@ void ValiantsRoutingAlgorithm::addPort(u32 _port, u32 _hops,
   }
 }
 
-void ValiantsRoutingAlgorithm::routeToRemoteGroup(
-    u32 _globalOffset, u32 _stage, bool _newStage, u32 _thisRouter,
-    u32 _directRc, u32 _indirectRc) {
+void ValiantsRoutingAlgorithm::routeToRemoteGroup(u32 _globalOffset, u32 _stage,
+                                                  bool _newStage,
+                                                  u32 _thisRouter,
+                                                  u32 _directRc,
+                                                  u32 _indirectRc) {
   for (u32 gw = 0; gw < globalWeight_; gw++) {
     // add ports to all global weights - all global ports are considered equal
     u32 dstGlobalPort;
     // router connected to global port
     u32 localRouter;
     u32 localRouterPort;
-    computeGlobalToRouterMap(globalPortBase_,
-                             globalPortsPerRouter_,
-                             globalWidth_, globalWeight_,
-                             localWidth_,
-                             gw, _globalOffset,
-                             &dstGlobalPort, &localRouter, &localRouterPort);
+    computeGlobalToRouterMap(globalPortBase_, globalPortsPerRouter_,
+                             globalWidth_, globalWeight_, localWidth_, gw,
+                             _globalOffset, &dstGlobalPort, &localRouter,
+                             &localRouterPort);
     u32 rcToUse = (_stage == 0) ? _directRc : _indirectRc;
     if (localRouter == _thisRouter) {
       // this router is connected to global port
       addPort(localRouterPort, 1, rcToUse);
     } else if (_stage == 0 || (_stage == 1 && _newStage)) {
       // add ports to route to local router connected to global port
-      u32 localOffset = computeOffset(_thisRouter, localRouter,
-                                      localWidth_);
+      u32 localOffset = computeOffset(_thisRouter, localRouter, localWidth_);
       for (u32 lw = 0; lw < localWeight_; lw++) {
-        u32 port = computeLocalSrcPort(localPortBase_, localOffset,
-                                       localWeight_, lw);
+        u32 port =
+            computeLocalSrcPort(localPortBase_, localOffset, localWeight_, lw);
         addPort(port, 1, rcToUse);
       }
     } else {
@@ -309,8 +304,8 @@ void ValiantsRoutingAlgorithm::addPortsToLocalRouter(u32 _src, u32 _dst,
                                                      u32 _routingClass) {
   u32 offset = computeOffset(_src, _dst, localWidth_);
   for (u32 localWeight = 0; localWeight < localWeight_; localWeight++) {
-    u32 port = computeLocalSrcPort(localPortBase_, offset,
-                                   localWeight_, localWeight);
+    u32 port =
+        computeLocalSrcPort(localPortBase_, offset, localWeight_, localWeight);
     addPort(port, 1, _routingClass);
   }
 }

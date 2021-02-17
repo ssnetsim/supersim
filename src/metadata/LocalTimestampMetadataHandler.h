@@ -28,10 +28,10 @@ class LocalTimestampMetadataHandler : public MetadataHandler {
   explicit LocalTimestampMetadataHandler(nlohmann::json _settings);
   ~LocalTimestampMetadataHandler();
 
-  void packetInterfaceArrival(
-      const Interface* _iface, Packet* _packet) override;
-  void packetRouterArrival(
-      const Router* _router, u32 _port, Packet* _packet) override;
+  void packetInterfaceArrival(const Interface* _iface,
+                              Packet* _packet) override;
+  void packetRouterArrival(const Router* _router, u32 _port,
+                           Packet* _packet) override;
 };
 
 #endif  // METADATA_LOCALTIMESTAMPMETADATAHANDLER_H_

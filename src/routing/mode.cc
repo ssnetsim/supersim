@@ -14,9 +14,8 @@
  */
 #include "routing/mode.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 
 #include "router/Router.h"
 

@@ -23,9 +23,8 @@
 
 class BitReverseCTP : public ContinuousTrafficPattern {
  public:
-  BitReverseCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  BitReverseCTP(const std::string& _name, const Component* _parent,
+                u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~BitReverseCTP();
 
   u32 nextDestination() override;

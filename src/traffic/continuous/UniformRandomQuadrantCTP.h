@@ -24,9 +24,9 @@
 
 class UniformRandomQuadrantCTP : public ContinuousTrafficPattern {
  public:
-  UniformRandomQuadrantCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  UniformRandomQuadrantCTP(const std::string& _name, const Component* _parent,
+                           u32 _numTerminals, u32 _self,
+                           nlohmann::json _settings);
 
   ~UniformRandomQuadrantCTP();
 

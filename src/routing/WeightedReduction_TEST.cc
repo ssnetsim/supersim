@@ -21,7 +21,7 @@
 
 TEST(WeightedReduction, vc) {
   for (u32 i = 0; i < 2; i++) {
-    TestSetup ts(1, 1, 1, 1, 12345+i);
+    TestSetup ts(1, 1, 1, 1, 12345 + i);
 
     TestPortedDevice dev(4, 6);
     nlohmann::json settings;
@@ -29,8 +29,8 @@ TEST(WeightedReduction, vc) {
     settings["congestion_bias"] = 0.0;
     settings["independent_bias"] = 0.0;
     settings["non_minimal_weight_func"] = "regular";
-    WeightedReduction red(
-        "Reduction", nullptr, &dev, RoutingMode::kVc, false, settings);
+    WeightedReduction red("Reduction", nullptr, &dev, RoutingMode::kVc, false,
+                          settings);
 
     {
       red.add(1, 4, 4, 0.666666);  // winner

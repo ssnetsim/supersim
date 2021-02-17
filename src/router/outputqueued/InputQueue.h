@@ -29,7 +29,8 @@ namespace OutputQueued {
 
 class Router;
 
-class InputQueue : public Component, public FlitReceiver,
+class InputQueue : public Component,
+                   public FlitReceiver,
                    public RoutingAlgorithm::Client {
  public:
   InputQueue(const std::string& _name, const Component* _parent,
@@ -69,8 +70,13 @@ class InputQueue : public Component, public FlitReceiver,
   RoutingAlgorithm* routingAlgorithm_;
 
   // state machine to represent the single RFE stage
-  enum class ePipelineFsm { kEmpty, kWaitingToRequest, kWaitingForResponse,
-      kWaitingForTransfer, kReadyToAdvance };
+  enum class ePipelineFsm {
+    kEmpty,
+    kWaitingToRequest,
+    kWaitingForResponse,
+    kWaitingForTransfer,
+    kReadyToAdvance
+  };
 
   // remembers if an event is set to process the pipeline
   u64 eventTime_;

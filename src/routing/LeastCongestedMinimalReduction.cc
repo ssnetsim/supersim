@@ -27,10 +27,9 @@ LeastCongestedMinimalReduction::~LeastCongestedMinimalReduction() {}
 
 void LeastCongestedMinimalReduction::process(
     u32 _minHops,
-    const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _minimal,
-    const std::unordered_set<std::tuple<u32, u32, u32, f64> >& _nonMinimal,
-    std::unordered_set<std::tuple<u32, u32> >* _outputs,
-    bool* _allMinimal) {
+    const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _minimal,
+    const std::unordered_set<std::tuple<u32, u32, u32, f64>>& _nonMinimal,
+    std::unordered_set<std::tuple<u32, u32>>* _outputs, bool* _allMinimal) {
   f64 minCong = F64_POS_INF;
   for (const auto& t : _minimal) {
     f64 cong = std::get<3>(t);

@@ -31,7 +31,7 @@ class CreationTimestampMetadataHandler : public MetadataHandler {
   void packetInjection(const Application* _app, Packet* _packet) override;
 
  private:
-  enum class Algorithm {kMessage, kTransaction};
+  enum class Algorithm { kMessage, kTransaction };
 
   u64 delay_;
   Algorithm alg_;

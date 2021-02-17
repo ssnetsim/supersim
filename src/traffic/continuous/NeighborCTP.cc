@@ -15,15 +15,13 @@
 #include "traffic/continuous/NeighborCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-NeighborCTP::NeighborCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+NeighborCTP::NeighborCTP(const std::string& _name, const Component* _parent,
+                         u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -45,7 +43,7 @@ NeighborCTP::NeighborCTP(
   if (_settings.contains("enabled_dimensions")) {
     assert(_settings["enabled_dimensions"].is_array());
     assert(_settings["enabled_dimensions"].size() == dimensions);
-    for (u32 dim = 0;  dim < dimensions; ++dim) {
+    for (u32 dim = 0; dim < dimensions; ++dim) {
       dimMask.at(dim) = _settings["enabled_dimensions"][dim].get<bool>();
     }
   } else {
@@ -90,5 +88,5 @@ u32 NeighborCTP::nextDestination() {
   return dest_;
 }
 
-registerWithObjectFactory("neighbor", ContinuousTrafficPattern,
-                          NeighborCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("neighbor", ContinuousTrafficPattern, NeighborCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);
