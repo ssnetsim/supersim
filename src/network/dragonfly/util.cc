@@ -41,33 +41,32 @@ u32 computeLocalDstPort(u32 _portBase, u32 _offset, u32 _localWidth,
                         u32 _localWeight, u32 _weight) {
   // compure dst port of local router for given offset
   return _portBase + ((_localWidth - 1) * _localWeight) -
-      (_offset * _localWeight) + _weight;
+         (_offset * _localWeight) + _weight;
 }
 
 void computeGlobalToRouterMap(u32 _routerGlobalPortBase,
-                              u32 _globalPortsPerRouter,
-                              u32 _globalWidth, u32 _globalWeight,
-                              u32 _localWidth,
+                              u32 _globalPortsPerRouter, u32 _globalWidth,
+                              u32 _globalWeight, u32 _localWidth,
                               u32 _thisGlobalWeight, u32 _thisGlobalOffset,
                               u32* _globalPort, u32* _localRouter,
                               u32* _localPort) {
   // compute router and port connected to a given group global port
   assert(_globalPort);
-  *_globalPort = ((_thisGlobalWeight * (_globalWidth - 1)) +
-                  (_thisGlobalOffset - 1));
+  *_globalPort =
+      ((_thisGlobalWeight * (_globalWidth - 1)) + (_thisGlobalOffset - 1));
 
   if (_localRouter) {
     *_localRouter = *_globalPort / _globalPortsPerRouter;
   }
   if (_localPort) {
-    *_localPort = ((*_globalPort % _globalPortsPerRouter)
-                   + _routerGlobalPortBase);
+    *_localPort =
+        ((*_globalPort % _globalPortsPerRouter) + _routerGlobalPortBase);
   }
 }
 
-void translateInterfaceIdToAddress(
-    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
-    u32 _id, std::vector<u32>* _address) {
+void translateInterfaceIdToAddress(u32 _concentration, u32 _interfacePorts,
+                                   u32 _localWidth, u32 _id,
+                                   std::vector<u32>* _address) {
   _address->resize(3);
   u32 interfacesPerRouter = _concentration / _interfacePorts;
   u32 interfacesPerGroup = _localWidth * interfacesPerRouter;
@@ -82,9 +81,9 @@ void translateInterfaceIdToAddress(
   _address->at(2) = group;
 }
 
-u32 translateInterfaceAddressToId(
-    u32 _concentration, u32 _interfacePorts, u32 _localWidth,
-    const std::vector<u32>* _address) {
+u32 translateInterfaceAddressToId(u32 _concentration, u32 _interfacePorts,
+                                  u32 _localWidth,
+                                  const std::vector<u32>* _address) {
   u32 interfacesPerRouter = _concentration / _interfacePorts;
   u32 interfacesPerGroup = _localWidth * interfacesPerRouter;
 
@@ -95,28 +94,25 @@ u32 translateInterfaceAddressToId(
   return g * interfacesPerGroup + r * interfacesPerRouter + t;
 }
 
-void translateRouterIdToAddress(
-    u32 _localWidth,
-    u32 _id, std::vector<u32>* _address) {
+void translateRouterIdToAddress(u32 _localWidth, u32 _id,
+                                std::vector<u32>* _address) {
   _address->resize(2);
   _address->at(0) = _id % _localWidth;  // router
   _address->at(1) = _id / _localWidth;  // group
 }
 
-u32 translateRouterAddressToId(
-    u32 _localWidth,
-    const std::vector<u32>* _address) {
+u32 translateRouterAddressToId(u32 _localWidth,
+                               const std::vector<u32>* _address) {
   u32 r = _address->at(0);
   u32 group = _address->at(1);
   u32 base = group * _localWidth;
   return base + r;
 }
 
-u32 computeMinimalHops(
-    const std::vector<u32>* _source, const std::vector<u32>* _destination,
-    u32 _globalWidth, u32 _globalWeight, u32 _routerGlobalPortBase,
-    u32 _globalPortsPerRouter,
-    u32 _localWidth) {
+u32 computeMinimalHops(const std::vector<u32>* _source,
+                       const std::vector<u32>* _destination, u32 _globalWidth,
+                       u32 _globalWeight, u32 _routerGlobalPortBase,
+                       u32 _globalPortsPerRouter, u32 _localWidth) {
   assert(_source->size() == 3);
   assert(_destination->size() == 3);
   // same group
@@ -128,8 +124,8 @@ u32 computeMinimalHops(
     }
   } else {
     // different groups
-    u32 forwardOffset = computeOffset(_source->at(2), _destination->at(2),
-                                      _globalWidth);
+    u32 forwardOffset =
+        computeOffset(_source->at(2), _destination->at(2), _globalWidth);
     u32 reverseOffset = _globalWidth - forwardOffset;
     u32 minHops = U32_MAX;
     for (u32 weight = 0; weight < _globalWeight; weight++) {
@@ -138,17 +134,15 @@ u32 computeMinimalHops(
 
       // router to exit src group
       u32 srcGroupGlobalRouter;
-      computeGlobalToRouterMap(_routerGlobalPortBase,
-                               _globalPortsPerRouter,
-                               _globalWidth, _globalWeight, _localWidth,
-                               weight, forwardOffset, &srcGlobalPort,
+      computeGlobalToRouterMap(_routerGlobalPortBase, _globalPortsPerRouter,
+                               _globalWidth, _globalWeight, _localWidth, weight,
+                               forwardOffset, &srcGlobalPort,
                                &srcGroupGlobalRouter, nullptr);
       // router to enter dst group
       u32 dstGroupGlobalRouter;
-      computeGlobalToRouterMap(_routerGlobalPortBase,
-                               _globalPortsPerRouter,
-                               _globalWidth, _globalWeight, _localWidth,
-                               weight, reverseOffset, &dstGlobalPort,
+      computeGlobalToRouterMap(_routerGlobalPortBase, _globalPortsPerRouter,
+                               _globalWidth, _globalWeight, _localWidth, weight,
+                               reverseOffset, &dstGlobalPort,
                                &dstGroupGlobalRouter, nullptr);
 
       u32 hops = 2;

@@ -36,10 +36,10 @@ TEST(RandomPriorityArbiter, full) {
         request[idx] = gSim->rnd.nextBool();
         metadata[idx] = 0;
       }
-    } while (hotCount(request, size) <= size/2);
+    } while (hotCount(request, size) <= size / 2);
 
-    Arbiter* arb = new RandomPriorityArbiter(
-        "Arb", nullptr, size, nlohmann::json());
+    Arbiter* arb =
+        new RandomPriorityArbiter("Arb", nullptr, size, nlohmann::json());
     assert(arb->size() == size);
     for (u32 idx = 0; idx < size; idx++) {
       arb->setRequest(idx, &request[idx]);

@@ -35,9 +35,9 @@ class Application;
 
 class PulseTerminal : public Terminal {
  public:
-  PulseTerminal(const std::string& _name, const Component* _parent,
-                u32 _id, const std::vector<u32>& _address,
-                ::Application* _app, nlohmann::json _settings);
+  PulseTerminal(const std::string& _name, const Component* _parent, u32 _id,
+                const std::vector<u32>& _address, ::Application* _app,
+                nlohmann::json _settings);
   ~PulseTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;
@@ -57,7 +57,7 @@ class PulseTerminal : public Terminal {
   // traffic generation
   f64 requestInjectionRate_;
   u32 numTransactions_;
-  u32 maxPacketSize_;  // flits
+  u32 maxPacketSize_;    // flits
   u32 transactionSize_;  // requests
   bool multiDestinationTransactions_;
   ContinuousTrafficPattern* trafficPattern_;

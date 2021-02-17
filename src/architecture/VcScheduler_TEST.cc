@@ -36,10 +36,17 @@ class VcSchedulerTestClient : public VcScheduler::Client, public Component {
                         const std::unordered_set<u32>& _fixedRequests,
                         std::unordered_map<u32, u32>* _holdingCount)
       : Component("TestClient_" + std::to_string(_id), nullptr),
-        id_(_id), vcSch_(_vcSch), totalVcs_(_totalVcs), clock_(_clock),
-        fsm_(Fsm::REQUESTING), numRequests_(_numRequests),
-        fixedRequests_(_fixedRequests), grantedVc_(U32_MAX),
-        remaining_(_allocs), totalGrants_(0), holdingCount_(_holdingCount) {
+        id_(_id),
+        vcSch_(_vcSch),
+        totalVcs_(_totalVcs),
+        clock_(_clock),
+        fsm_(Fsm::REQUESTING),
+        numRequests_(_numRequests),
+        fixedRequests_(_fixedRequests),
+        grantedVc_(U32_MAX),
+        remaining_(_allocs),
+        totalGrants_(0),
+        holdingCount_(_holdingCount) {
     vcSch_->setClient(id_, this);
     addEvent(gSim->time(), 1, nullptr, RequestVcsEvent);
   }

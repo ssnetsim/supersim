@@ -35,9 +35,9 @@ class Application;
 
 class BlastTerminal : public Terminal {
  public:
-  BlastTerminal(const std::string& _name, const Component* _parent,
-                u32 _id, const std::vector<u32>& _address,
-                ::Application* _app, nlohmann::json _settings);
+  BlastTerminal(const std::string& _name, const Component* _parent, u32 _id,
+                const std::vector<u32>& _address, ::Application* _app,
+                nlohmann::json _settings);
   ~BlastTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;
@@ -56,8 +56,13 @@ class BlastTerminal : public Terminal {
   // LOGGING = sending messages marked to be logged
   // BLABBING = sending messages not marked to be logged
   // DRAINING = not sending messages
-  enum class Fsm : u8 {WARMING = 0, WARM_BLABBING = 1, LOGGING = 2,
-      LOG_BLABBING = 3, DRAINING = 4};
+  enum class Fsm : u8 {
+    WARMING = 0,
+    WARM_BLABBING = 1,
+    LOGGING = 2,
+    LOG_BLABBING = 3,
+    DRAINING = 4
+  };
 
   void warmDetector(Message* _message);
   void warm(bool _saturated);
@@ -75,7 +80,7 @@ class BlastTerminal : public Terminal {
   // traffic generation
   f64 requestInjectionRate_;
   u32 numTransactions_;
-  u32 maxPacketSize_;  // flits
+  u32 maxPacketSize_;    // flits
   u32 transactionSize_;  // requests
   bool multiDestinationTransactions_;
   ContinuousTrafficPattern* trafficPattern_;

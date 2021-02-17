@@ -32,12 +32,12 @@ namespace HyperX {
 
 class MinRoutingAlgorithm : public RoutingAlgorithm {
  public:
-  MinRoutingAlgorithm(
-      const std::string& _name, const Component* _parent, Router* _router,
-      u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-      const std::vector<u32>& _dimensionWidths,
-      const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, u32 _interfacePorts, nlohmann::json _settings);
+  MinRoutingAlgorithm(const std::string& _name, const Component* _parent,
+                      Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort,
+                      u32 _inputVc, const std::vector<u32>& _dimensionWidths,
+                      const std::vector<u32>& _dimensionWeights,
+                      u32 _concentration, u32 _interfacePorts,
+                      nlohmann::json _settings);
   ~MinRoutingAlgorithm();
 
  protected:

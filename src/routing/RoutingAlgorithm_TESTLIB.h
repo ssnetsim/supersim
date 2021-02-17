@@ -27,8 +27,8 @@
  */
 class RoutingAlgorithmTestRouter : public Router {
  public:
-  RoutingAlgorithmTestRouter(
-      const std::string& _name, u32 _numPorts, u32 _numVcs);
+  RoutingAlgorithmTestRouter(const std::string& _name, u32 _numPorts,
+                             u32 _numVcs);
   ~RoutingAlgorithmTestRouter();
 
   void setInputChannel(u32 _port, Channel* _channel) override;

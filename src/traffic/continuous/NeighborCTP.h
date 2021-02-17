@@ -23,9 +23,8 @@
 
 class NeighborCTP : public ContinuousTrafficPattern {
  public:
-  NeighborCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  NeighborCTP(const std::string& _name, const Component* _parent,
+              u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~NeighborCTP();
 
   u32 nextDestination() override;

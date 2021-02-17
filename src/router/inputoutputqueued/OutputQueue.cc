@@ -14,9 +14,8 @@
  */
 #include "router/inputoutputqueued/OutputQueue.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 #include <queue>
 #include <string>
 
@@ -29,16 +28,22 @@
 
 namespace InputOutputQueued {
 
-OutputQueue::OutputQueue(
-    const std::string& _name, const Component* _parent, u32 _depth, u32 _port,
-    u32 _vc, CrossbarScheduler* _outputCrossbarScheduler,
-    u32 _crossbarSchedulerIndex, Crossbar* _crossbar, u32 _crossbarIndex,
-    CrossbarScheduler* _mainCrossbarScheduler, u32 _mainCrossbarSchedulerVcId,
-    CreditWatcher* _creditWatcher, u32 _creditWatcherVcId,
-    bool _incrCreditWatcher, bool _decrCreditWatcher)
-    : Component(_name, _parent), depth_(_depth), port_(_port), vc_(_vc),
+OutputQueue::OutputQueue(const std::string& _name, const Component* _parent,
+                         u32 _depth, u32 _port, u32 _vc,
+                         CrossbarScheduler* _outputCrossbarScheduler,
+                         u32 _crossbarSchedulerIndex, Crossbar* _crossbar,
+                         u32 _crossbarIndex,
+                         CrossbarScheduler* _mainCrossbarScheduler,
+                         u32 _mainCrossbarSchedulerVcId,
+                         CreditWatcher* _creditWatcher, u32 _creditWatcherVcId,
+                         bool _incrCreditWatcher, bool _decrCreditWatcher)
+    : Component(_name, _parent),
+      depth_(_depth),
+      port_(_port),
+      vc_(_vc),
       outputCrossbarScheduler_(_outputCrossbarScheduler),
-      crossbarSchedulerIndex_(_crossbarSchedulerIndex), crossbar_(_crossbar),
+      crossbarSchedulerIndex_(_crossbarSchedulerIndex),
+      crossbar_(_crossbar),
       crossbarIndex_(_crossbarIndex),
       mainCrossbarScheduler_(_mainCrossbarScheduler),
       mainCrossbarSchedulerVcId_(_mainCrossbarSchedulerVcId),
@@ -70,8 +75,7 @@ void OutputQueue::receiveFlit(u32 _port, Flit* _flit) {
   assert(_flit->getVc() == vc_);
 
   // we can only receive one flit per cycle
-  assert((lastReceivedTime_ == U64_MAX) ||
-         (lastReceivedTime_ < gSim->time()));
+  assert((lastReceivedTime_ == U64_MAX) || (lastReceivedTime_ < gSim->time()));
   lastReceivedTime_ = gSim->time();
 
   // push flit into corresponding buffer
@@ -83,8 +87,8 @@ void OutputQueue::receiveFlit(u32 _port, Flit* _flit) {
   if (gSim->isCycle(Simulator::Clock::CHANNEL)) {
     setPipelineEvent();
   } else {
-    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, 1),
-             1, nullptr, INJECTED_FLIT);
+    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, 1), 1, nullptr,
+             INJECTED_FLIT);
   }
 }
 
@@ -194,7 +198,7 @@ void OutputQueue::processPipeline() {
    * if any of these cases are true, create and expect an event the next cycle
    */
   if ((swa_.fsm == ePipelineFsm::kWaitingToRequest) ||  // no credits
-      (buffer_.size() > 0)) {   // more flits in buffer
+      (buffer_.size() > 0)) {                           // more flits in buffer
     // set a pipeline event for the next cycle
     eventTime_ = gSim->futureCycle(Simulator::Clock::CHANNEL, 1);
     addEvent(eventTime_, 2, nullptr, PROCESS_PIPELINE);

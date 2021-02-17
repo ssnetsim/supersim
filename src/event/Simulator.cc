@@ -15,10 +15,9 @@
 #include "event/Simulator.h"
 
 #include <cassert>
+#include <chrono>  // NOLINT
 #include <cstdio>
 #include <ctime>
-
-#include <chrono>  // NOLINT
 #include <string>
 #include <utility>
 
@@ -30,12 +29,17 @@ Simulator::Simulator(nlohmann::json _settings)
     : infoLog(_settings["info_log"]),
       printProgress_(_settings["print_progress"].get<bool>()),
       printInterval_(_settings["print_interval"].get<f64>()),
-      time_(0), epsilon_(0), quit_(false),
+      time_(0),
+      epsilon_(0),
+      quit_(false),
       channelCycleTime_(_settings["channel_cycle_time"].get<u64>()),
       routerCycleTime_(_settings["router_cycle_time"].get<u64>()),
       interfaceCycleTime_(_settings["interface_cycle_time"].get<u64>()),
       terminalCycleTime_(_settings["terminal_cycle_time"].get<u64>()),
-      initial_(true), initialized_(false), running_(false), net_(nullptr),
+      initial_(true),
+      initialized_(false),
+      running_(false),
+      net_(nullptr),
       workload_(nullptr) {
   assert(!_settings["print_progress"].is_null());
   assert(!_settings["print_interval"].is_null());
@@ -86,8 +90,8 @@ void Simulator::simulate() {
       std::chrono::steady_clock::time_point realTime =
           std::chrono::steady_clock::now();
       std::chrono::duration<f64> totalElapsedRealTime =
-          std::chrono::duration_cast<std::chrono::duration<f64> >
-          (realTime - startTime);
+          std::chrono::duration_cast<std::chrono::duration<f64>>(realTime -
+                                                                 startTime);
       f64 runTime = totalElapsedRealTime.count();
       f64 ftime = static_cast<f64>(time_);
 
@@ -95,16 +99,12 @@ void Simulator::simulate() {
       f64 eventsPerUnit = totalEvents / ftime;
       f64 unitsPerSecond = ftime / runTime;
 
-      infoLog.logInfo("Total event count",
-                      std::to_string(totalEvents));
-      infoLog.logInfo("Total sim units",
-                      std::to_string(time_));
-      infoLog.logInfo("Total real seconds",
-                      std::to_string(runTime));
+      infoLog.logInfo("Total event count", std::to_string(totalEvents));
+      infoLog.logInfo("Total sim units", std::to_string(time_));
+      infoLog.logInfo("Total real seconds", std::to_string(runTime));
       infoLog.logInfo("Events per real second",
                       std::to_string(eventsPerSecond));
-      infoLog.logInfo("Events per sim unit",
-                      std::to_string(eventsPerUnit));
+      infoLog.logInfo("Events per sim unit", std::to_string(eventsPerUnit));
       infoLog.logInfo("Sim units per real second",
                       std::to_string(unitsPerSecond));
       break;
@@ -121,8 +121,9 @@ void Simulator::simulate() {
         std::chrono::steady_clock::time_point realTime =
             std::chrono::steady_clock::now();
         f64 elapsedRealTime =
-            std::chrono::duration_cast<std::chrono::duration<f64> >
-            (realTime - lastRealTime).count();
+            std::chrono::duration_cast<std::chrono::duration<f64>>(realTime -
+                                                                   lastRealTime)
+                .count();
 
         if (elapsedRealTime > printInterval_) {
           lastSimTime = time_;
@@ -133,8 +134,9 @@ void Simulator::simulate() {
 
           // compute the human readable time
           f64 totalRealTime =
-              std::chrono::duration_cast<std::chrono::duration<f64> >
-              (realTime - startTime).count();
+              std::chrono::duration_cast<std::chrono::duration<f64>>(realTime -
+                                                                     startTime)
+                  .count();
           u64 milliseconds = static_cast<u32>(totalRealTime * 1000);
           const u64 dayFactor = 24 * 60 * 60 * 1000;
           u64 days = milliseconds / dayFactor;
@@ -150,8 +152,8 @@ void Simulator::simulate() {
           milliseconds %= secondFactor;
 
           // print the time
-          cnt = snprintf(buf + cnt, 256 - cnt, "%lu:%02lu:%02lu:%02lu [",
-                         days, hours, minutes, seconds);
+          cnt = snprintf(buf + cnt, 256 - cnt, "%lu:%02lu:%02lu:%02lu [", days,
+                         hours, minutes, seconds);
 
           // print the applications' progress
           u32 numApps = workload_->numApplications();
@@ -167,11 +169,12 @@ void Simulator::simulate() {
 
           // print the simulation performance
           f64 eventsPerSecond = intervalEvents / elapsedRealTime;
-          f64 unitsPerSecond = elapsedSimTime /
-                               static_cast<f64>(elapsedRealTime);
-          snprintf(buf + cnt, 256 - cnt, "%lu events : %lu units : "
-                   "%.2f events/sec : %.2f units/sec\n", totalEvents, time_,
-                   eventsPerSecond, unitsPerSecond);
+          f64 unitsPerSecond =
+              elapsedSimTime / static_cast<f64>(elapsedRealTime);
+          snprintf(buf + cnt, 256 - cnt,
+                   "%lu events : %lu units : "
+                   "%.2f events/sec : %.2f units/sec\n",
+                   totalEvents, time_, eventsPerSecond, unitsPerSecond);
 
           // now print the entire buffer to stdout
           printf("%s", buf);
@@ -254,7 +257,6 @@ void Simulator::setWorkload(Workload* _workload) {
 Workload* Simulator::getWorkload() const {
   return workload_;
 }
-
 
 /* globals */
 Simulator* gSim;

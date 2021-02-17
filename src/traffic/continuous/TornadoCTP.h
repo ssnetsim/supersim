@@ -23,9 +23,8 @@
 
 class TornadoCTP : public ContinuousTrafficPattern {
  public:
-  TornadoCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  TornadoCTP(const std::string& _name, const Component* _parent,
+             u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~TornadoCTP();
 
   u32 nextDestination() override;

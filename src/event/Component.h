@@ -46,8 +46,8 @@ class Component {
 
  protected:
   void addEvent(u64 _time, u8 _epsilon, void* _event, s32 _type);
-  s32 debugPrint(const char* _func, s32 _line, const char* _name,
-                 u64 _time, u8 _epsilon, const char* _format, ...) const;
+  s32 debugPrint(const char* _func, s32 _line, const char* _name, u64 _time,
+                 u8 _epsilon, const char* _format, ...) const;
   bool debug_;
 
  private:
@@ -60,13 +60,10 @@ class Component {
   static std::unordered_set<std::string> toBeDebugged_;
 };
 
-#define dbgprintf(...) (                        \
-    (this->debug_) ?                            \
-    (this->debugPrint(__func__,                 \
-                      __LINE__,                 \
-                      this->fullName().c_str(), \
-                      gSim->time(),             \
-                      gSim->epsilon(),          \
-                      __VA_ARGS__)) : (0))
+#define dbgprintf(...)                                                   \
+  ((this->debug_)                                                        \
+       ? (this->debugPrint(__func__, __LINE__, this->fullName().c_str(), \
+                           gSim->time(), gSim->epsilon(), __VA_ARGS__))  \
+       : (0))
 
 #endif  // EVENT_COMPONENT_H_

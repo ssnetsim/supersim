@@ -32,9 +32,7 @@ Channel::Channel(const std::string& _name, const Component* _parent,
 
 Channel::Channel(const std::string& _name, const Component* _parent,
                  u32 _numVcs, u32 _latency)
-    : Component(_name, _parent),
-      latency_(_latency),
-      numVcs_(_numVcs) {
+    : Component(_name, _parent), latency_(_latency), numVcs_(_numVcs) {
   assert(latency_ > 0);
   assert(numVcs_ > 0);
 
@@ -91,25 +89,21 @@ f64 Channel::utilization(u32 _vc) const {
     assert(_vc < numVcs_);
     count = monitorCounts_.at(_vc);
   }
-  return (f64)count / ((f64)monitorTime_ / gSim->cycleTime(
-      Simulator::Clock::CHANNEL));
+  return (f64)count /
+         ((f64)monitorTime_ / gSim->cycleTime(Simulator::Clock::CHANNEL));
 }
 
 void Channel::processEvent(void* _event, s32 _type) {
   assert(gSim->epsilon() == 1);
   switch (_type) {
-    case FLIT:
-      {
-        Flit* flit = reinterpret_cast<Flit*>(_event);
-        sink_->receiveFlit(sinkPort_, flit);
-      }
-      break;
-    case CRDT:
-      {
-        Credit* credit = reinterpret_cast<Credit*>(_event);
-        source_->receiveCredit(sourcePort_, credit);
-      }
-      break;
+    case FLIT: {
+      Flit* flit = reinterpret_cast<Flit*>(_event);
+      sink_->receiveFlit(sinkPort_, flit);
+    } break;
+    case CRDT: {
+      Credit* credit = reinterpret_cast<Credit*>(_event);
+      source_->receiveCredit(sourcePort_, credit);
+    } break;
     default:
       assert(false);
   }

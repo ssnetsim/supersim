@@ -19,6 +19,6 @@
 NonMinimalWeightFunc retrieveNonMinimalWeightFunc(
     const std::string& _algorithm) {
   return factory::FunctionFactory<
-    NONMINIMALWEIGHTFUNC_RET, NONMINIMALWEIGHTFUNC_ARGS>::retrieve(
-        _algorithm);
+      NONMINIMALWEIGHTFUNC_RET,
+      NONMINIMALWEIGHTFUNC_ARGS>::retrieve(_algorithm);
 }

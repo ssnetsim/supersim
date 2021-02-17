@@ -23,17 +23,17 @@
 #include "router/Router.h"
 #include "routing/RoutingAlgorithm.h"
 
-#define PARKINGLOT_ROUTINGALGORITHM_ARGS const std::string&, const Component*, \
-    Router*, u32, u32, u32, u32, u32, nlohmann::json
+#define PARKINGLOT_ROUTINGALGORITHM_ARGS                                  \
+  const std::string&, const Component*, Router*, u32, u32, u32, u32, u32, \
+      nlohmann::json
 
 namespace ParkingLot {
 
 class RoutingAlgorithm : public ::RoutingAlgorithm {
  public:
   RoutingAlgorithm(const std::string& _name, const Component* _parent,
-                   Router* _router, u32 _baseVc, u32 _numVcs,
-                   u32 _inputPort, u32 _inputVc, u32 _outputPort,
-                   nlohmann::json _settings);
+                   Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort,
+                   u32 _inputVc, u32 _outputPort, nlohmann::json _settings);
   virtual ~RoutingAlgorithm();
 
   // this is a routing algorithm factory for the parking lot topology

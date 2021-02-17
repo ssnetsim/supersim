@@ -32,14 +32,14 @@ u32 leastCommonAncestor(const std::vector<u32>* _source,
   return 0;
 }
 
-void translateInterfaceIdToAddress(
-    u32 _numLevels, const std::vector<u32>& _interfacesPerGroup, u32 _id,
-    std::vector<u32>* _address) {
+void translateInterfaceIdToAddress(u32 _numLevels,
+                                   const std::vector<u32>& _interfacesPerGroup,
+                                   u32 _id, std::vector<u32>* _address) {
   _address->resize(_numLevels);
   // work in reverse for little endian format
   for (s32 level = _numLevels - 1; level >= 0; level--) {
     if (level > 0) {
-      u32 subGroupSize = _interfacesPerGroup.at(level-1);
+      u32 subGroupSize = _interfacesPerGroup.at(level - 1);
       _address->at(level) = _id / subGroupSize;
       _id %= subGroupSize;
     } else {
@@ -48,13 +48,13 @@ void translateInterfaceIdToAddress(
   }
 }
 
-u32 translateInterfaceAddressToId(
-    u32 _numLevels, const std::vector<u32>& _interfacesPerGroup,
-    const std::vector<u32>* _address) {
+u32 translateInterfaceAddressToId(u32 _numLevels,
+                                  const std::vector<u32>& _interfacesPerGroup,
+                                  const std::vector<u32>* _address) {
   u32 sum = 0;
   for (s32 level = _numLevels - 1; level >= 0; level--) {
     if (level > 0) {
-      u32 subGroupSize = _interfacesPerGroup.at(level-1);
+      u32 subGroupSize = _interfacesPerGroup.at(level - 1);
       sum += _address->at(level) * subGroupSize;
     } else {
       sum += _address->at(level);
@@ -63,9 +63,9 @@ u32 translateInterfaceAddressToId(
   return sum;
 }
 
-void translateRouterIdToAddress(
-    u32 _numLevels, const std::vector<u32>& _routersPerRow,
-    u32 _id, std::vector<u32>* _address) {
+void translateRouterIdToAddress(u32 _numLevels,
+                                const std::vector<u32>& _routersPerRow, u32 _id,
+                                std::vector<u32>* _address) {
   _address->resize(2);
   for (u32 l = 0; l < _numLevels; l++) {
     u32 rowRouters = _routersPerRow.at(l);
@@ -79,9 +79,9 @@ void translateRouterIdToAddress(
   }
 }
 
-u32 translateRouterAddressToId(
-    u32 _numLevels, const std::vector<u32>& _routersPerRow,
-    const std::vector<u32>* _address) {
+u32 translateRouterAddressToId(u32 _numLevels,
+                               const std::vector<u32>& _routersPerRow,
+                               const std::vector<u32>* _address) {
   u32 level = _address->at(0);
   u32 prev = 0;
   for (u32 l = 0; l < level; l++) {
@@ -95,7 +95,7 @@ u32 computeMinimalHops(const std::vector<u32>* _source,
   u32 travLevels;
   assert(_source->size() == _destination->size());
   for (travLevels = _source->size(); travLevels > 0; travLevels--) {
-    if (_source->at(travLevels-1) != _destination->at(travLevels-1) ||
+    if (_source->at(travLevels - 1) != _destination->at(travLevels - 1) ||
         travLevels == 1) {
       break;
     }

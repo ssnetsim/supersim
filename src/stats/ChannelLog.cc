@@ -15,7 +15,6 @@
 #include "stats/ChannelLog.h"
 
 #include <cassert>
-
 #include <string>
 
 ChannelLog::ChannelLog(u32 _numVcs, nlohmann::json _settings)

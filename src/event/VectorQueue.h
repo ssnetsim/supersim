@@ -52,7 +52,8 @@ class VectorQueue : public Simulator {
   };
 
   std::priority_queue<EventBundle, std::vector<EventBundle>,
-                      EventBundleComparator> eventQueue_;
+                      EventBundleComparator>
+      eventQueue_;
 };
 
 #endif  // EVENT_VECTORQUEUE_H_

@@ -23,9 +23,8 @@
 
 class DimRotateCTP : public ContinuousTrafficPattern {
  public:
-  DimRotateCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  DimRotateCTP(const std::string& _name, const Component* _parent,
+               u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~DimRotateCTP();
 
   u32 nextDestination() override;

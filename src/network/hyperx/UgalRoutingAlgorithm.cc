@@ -26,12 +26,11 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
-    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
-                       _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _interfacePorts,
-                       _settings) {
+    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    u32 _interfacePorts, nlohmann::json _settings)
+    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
+                       _inputVc, _dimensionWidths, _dimensionWeights,
+                       _concentration, _interfacePorts, _settings) {
   // VC set mapping:
   //  0 = injection from terminal port, to intermediate destination
   //  1 = switching dimension increments VC count
@@ -178,7 +177,7 @@ UgalRoutingAlgorithm::UgalRoutingAlgorithm(
     } else if (_settings["bias_mode"].get<std::string>() == "differential") {
       biasMode_ = BiasScheme::DIFFERENTIAL;
     } else if (_settings["bias_mode"].get<std::string>() ==
-        "proportional_differential") {
+               "proportional_differential") {
       biasMode_ = BiasScheme::PROPORTIONALDIF;
     } else {
       fprintf(stderr, "Unknown weighting scheme:");
@@ -267,11 +266,11 @@ void UgalRoutingAlgorithm::processRequest(
     }
   }
 
-  ugalRoutingOutput(
-      router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-      concentration_, interfacePorts_, vcSet, numVcSets, baseVc_ + numVcs_,
-      shortCut_, minAllVcSets_, intNodeAlg_, routingAlg_, nonMinimalAlg_,
-      _flit, &weightReg, &weightVal, &vcPoolReg_, &vcPoolVal_);
+  ugalRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                    dimensionWeights_, concentration_, interfacePorts_, vcSet,
+                    numVcSets, baseVc_ + numVcs_, shortCut_, minAllVcSets_,
+                    intNodeAlg_, routingAlg_, nonMinimalAlg_, _flit, &weightReg,
+                    &weightVal, &vcPoolReg_, &vcPoolVal_);
 
   const std::vector<u32>* intermediateAddress =
       reinterpret_cast<const std::vector<u32>*>(packet->getRoutingExtension());
@@ -391,16 +390,13 @@ void UgalRoutingAlgorithm::processRequest(
     assert(hopsReg > 0);
     bool nonMin = false;
     if (decisionScheme_ == DecisionScheme::MW) {
-      monolithicWeighted(vcPoolReg_, vcPoolVal_,
-                         hopsReg, hopIncr, iBias_, cBias_, biasMode_,
-                         &vcPool_, &nonMin);
+      monolithicWeighted(vcPoolReg_, vcPoolVal_, hopsReg, hopIncr, iBias_,
+                         cBias_, biasMode_, &vcPool_, &nonMin);
     } else if (decisionScheme_ == DecisionScheme::ST) {
-      stagedThreshold(vcPoolReg_, vcPoolVal_,
-                      thresholdMin_, thresholdNonMin_,
+      stagedThreshold(vcPoolReg_, vcPoolVal_, thresholdMin_, thresholdNonMin_,
                       &vcPool_, &nonMin);
     } else if (decisionScheme_ == DecisionScheme::TW) {
-      thresholdWeighted(vcPoolReg_, vcPoolVal_,
-                        hopsReg, hopIncr, threshold_,
+      thresholdWeighted(vcPoolReg_, vcPoolVal_, hopsReg, hopIncr, threshold_,
                         &vcPool_, &nonMin);
     } else {
       fprintf(stderr, "Unknown decision scheme\n");
@@ -473,5 +469,5 @@ void UgalRoutingAlgorithm::processRequest(
 }  // namespace HyperX
 
 registerWithObjectFactory("ugal", HyperX::RoutingAlgorithm,
-                    HyperX::UgalRoutingAlgorithm,
-                    HYPERX_ROUTINGALGORITHM_ARGS);
+                          HyperX::UgalRoutingAlgorithm,
+                          HYPERX_ROUTINGALGORITHM_ARGS);

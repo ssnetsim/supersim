@@ -15,15 +15,13 @@
 #include "router/inputoutputqueued/Ejector.h"
 
 #include <cassert>
-
 #include <string>
 
 #include "router/inputoutputqueued/Router.h"
 
 namespace InputOutputQueued {
 
-Ejector::Ejector(
-    std::string _name, Router* _router, u32 _portId)
+Ejector::Ejector(std::string _name, Router* _router, u32 _portId)
     : Component(_name, _router), router_(_router), portId_(_portId) {
   lastSetTime_ = U32_MAX;
 }

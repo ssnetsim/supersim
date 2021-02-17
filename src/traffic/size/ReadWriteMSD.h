@@ -24,9 +24,8 @@
 
 class ReadWriteMSD : public MessageSizeDistribution {
  public:
-  ReadWriteMSD(
-      const std::string& _name, const Component* _parent,
-      nlohmann::json _settings);
+  ReadWriteMSD(const std::string& _name, const Component* _parent,
+               nlohmann::json _settings);
   virtual ~ReadWriteMSD();
 
   // size bounds

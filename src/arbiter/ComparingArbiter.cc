@@ -16,9 +16,9 @@
 
 #include "factory/ObjectFactory.h"
 
-ComparingArbiter::ComparingArbiter(
-    const std::string& _name, const Component* _parent,
-    u32 _size, nlohmann::json _settings)
+ComparingArbiter::ComparingArbiter(const std::string& _name,
+                                   const Component* _parent, u32 _size,
+                                   nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {
   assert(_settings.contains("greater") && _settings["greater"].is_boolean());
   greater_ = _settings["greater"].get<bool>();
@@ -40,8 +40,7 @@ u32 ComparingArbiter::arbitrate() {
         temp_.push_back(client);
       } else {
         // handle remaining
-        if (((greater_) && (cmeta > best)) ||
-            ((!greater_) && (cmeta < best))) {
+        if (((greater_) && (cmeta > best)) || ((!greater_) && (cmeta < best))) {
           // new best
           best = cmeta;
           temp_.clear();
@@ -65,5 +64,4 @@ u32 ComparingArbiter::arbitrate() {
   return winner;
 }
 
-registerWithObjectFactory("comparing", Arbiter,
-                          ComparingArbiter, ARBITER_ARGS);
+registerWithObjectFactory("comparing", Arbiter, ComparingArbiter, ARBITER_ARGS);

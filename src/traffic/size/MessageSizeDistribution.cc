@@ -16,9 +16,9 @@
 
 #include "factory/ObjectFactory.h"
 
-MessageSizeDistribution::MessageSizeDistribution(
-    const std::string& _name, const Component* _parent,
-    nlohmann::json _settings)
+MessageSizeDistribution::MessageSizeDistribution(const std::string& _name,
+                                                 const Component* _parent,
+                                                 nlohmann::json _settings)
     : Component(_name, _parent) {}
 
 MessageSizeDistribution::~MessageSizeDistribution() {}
@@ -30,9 +30,11 @@ MessageSizeDistribution* MessageSizeDistribution::create(
   const std::string& type = _settings["type"].get<std::string>();
 
   // attempt to build the message size distribution
-  MessageSizeDistribution* msg = factory::ObjectFactory<
-    MessageSizeDistribution, MESSAGESIZEDISTRIBUTION_ARGS>::create(
-        type, _name, _parent, _settings);
+  MessageSizeDistribution* msg =
+      factory::ObjectFactory<MessageSizeDistribution,
+                             MESSAGESIZEDISTRIBUTION_ARGS>::create(type, _name,
+                                                                   _parent,
+                                                                   _settings);
 
   // check that the factory had this type
   if (msg == nullptr) {

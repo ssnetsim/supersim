@@ -24,9 +24,8 @@
 
 class MatrixCTP : public ContinuousTrafficPattern {
  public:
-  MatrixCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  MatrixCTP(const std::string& _name, const Component* _parent,
+            u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~MatrixCTP();
   u32 nextDestination() override;
 

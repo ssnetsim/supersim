@@ -35,21 +35,14 @@ TEST(TornadoCTP, no_dimMask) {
   settings["interface_ports"] = nlohmann::json(1);
 
   numTerminals = 4 * 4 * 5 * 1;
-  pairs = {
-    {0, 8},
-    {4, 12},
-    {8, 16},
-    {12, 0},
-    {16, 4}
-  };
+  pairs = {{0, 8}, {4, 12}, {8, 16}, {12, 0}, {16, 4}};
 
   for (u32 off = 0; off < 4; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * 5 * off + iface;
         dst = p.second + 4 * 5 * off + iface;
-        tp = new TornadoCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new TornadoCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -76,21 +69,14 @@ TEST(TornadoCTP, dimension_0) {
   settings["enabled_dimensions"][1] = false;
 
   numTerminals = 4 * 4 * 5 * 1;
-  pairs = {
-    {0, 8},
-    {4, 12},
-    {8, 16},
-    {12, 0},
-    {16, 4}
-  };
+  pairs = {{0, 8}, {4, 12}, {8, 16}, {12, 0}, {16, 4}};
 
   for (u32 off = 0; off < 4; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * 5 * off + iface;
         dst = p.second + 4 * 5 * off + iface;
-        tp = new TornadoCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new TornadoCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -117,20 +103,14 @@ TEST(TornadoCTP, dimension_1) {
   settings["enabled_dimensions"][1] = true;
 
   numTerminals = 4 * 4 * 5 * 1;
-  pairs = {
-    {0, 20},
-    {20, 40},
-    {40, 60},
-    {60, 0}
-  };
+  pairs = {{0, 20}, {20, 40}, {40, 60}, {60, 0}};
 
   for (u32 off = 0; off < 5; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * off + iface;
         dst = p.second + 4 * off + iface;
-        tp = new TornadoCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new TornadoCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -159,20 +139,14 @@ TEST(TornadoCTP, dimension_1_3d) {
   settings["enabled_dimensions"][2] = false;
 
   numTerminals = 3 * 4 * 4 * 5 * 1;
-  pairs = {
-    {0, 20},
-    {20, 40},
-    {40, 60},
-    {60, 0}
-  };
+  pairs = {{0, 20}, {20, 40}, {40, 60}, {60, 0}};
 
   for (u32 off = 0; off < 5; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * off + iface;
         dst = p.second + 4 * off + iface;
-        tp = new TornadoCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new TornadoCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -199,20 +173,14 @@ TEST(TornadoCTP, dimension_1_3d_1) {
   settings["enabled_dimensions"] = {false, true, false};
 
   numTerminals = 3 * 4 * 4 * 5 * 1;
-  pairs = {
-    {0, 20},
-    {20, 40},
-    {40, 60},
-    {60, 0}
-  };
+  pairs = {{0, 20}, {20, 40}, {40, 60}, {60, 0}};
 
   for (u32 off = 0; off < 5; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * off + iface + 4 * 4 * 5;
         dst = p.second + 4 * off + iface + 4 * 4 * 5;
-        tp = new TornadoCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new TornadoCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -239,35 +207,15 @@ TEST(TornadoCTP, 2d) {
   settings["enabled_dimensions"][1] = true;
 
   numTerminals = 4 * 4 * 5 * 1;
-  pairs = {
-    {0, 28},
-    {4, 32},
-    {8, 36},
-    {12, 20},
-    {16, 24},
-    {20, 48},
-    {24, 52},
-    {28, 56},
-    {32, 40},
-    {36, 44},
-    {40, 68},
-    {44, 72},
-    {48, 76},
-    {52, 60},
-    {56, 64},
-    {60, 8},
-    {64, 12},
-    {68, 16},
-    {72, 0},
-    {76, 4}
-  };
+  pairs = {{0, 28},  {4, 32},  {8, 36},  {12, 20}, {16, 24}, {20, 48}, {24, 52},
+           {28, 56}, {32, 40}, {36, 44}, {40, 68}, {44, 72}, {48, 76}, {52, 60},
+           {56, 64}, {60, 8},  {64, 12}, {68, 16}, {72, 0},  {76, 4}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first + iface;
       dst = p.second + iface;
-      tp = new TornadoCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new TornadoCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);
@@ -295,35 +243,15 @@ TEST(TornadoCTP, 3d) {
   settings["enabled_dimensions"][2] = true;
 
   numTerminals = 3 * 4 * 4 * 5 * 1;
-  pairs = {
-    {0, 28},
-    {4, 32},
-    {8, 36},
-    {12, 20},
-    {16, 24},
-    {20, 48},
-    {24, 52},
-    {28, 56},
-    {32, 40},
-    {36, 44},
-    {40, 68},
-    {44, 72},
-    {48, 76},
-    {52, 60},
-    {56, 64},
-    {60, 8},
-    {64, 12},
-    {68, 16},
-    {72, 0},
-    {76, 4}
-  };
+  pairs = {{0, 28},  {4, 32},  {8, 36},  {12, 20}, {16, 24}, {20, 48}, {24, 52},
+           {28, 56}, {32, 40}, {36, 44}, {40, 68}, {44, 72}, {48, 76}, {52, 60},
+           {56, 64}, {60, 8},  {64, 12}, {68, 16}, {72, 0},  {76, 4}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first + iface + 4 * 4 * 5;
       dst = p.second + iface + 2 * 4 * 4 * 5;
-      tp = new TornadoCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new TornadoCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);

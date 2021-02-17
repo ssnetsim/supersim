@@ -35,9 +35,9 @@ class Application;
 
 class AllToAllTerminal : public Terminal {
  public:
-  AllToAllTerminal(const std::string& _name, const Component* _parent,
-                   u32 _id, const std::vector<u32>& _address,
-                   ::Application* _app, nlohmann::json _settings);
+  AllToAllTerminal(const std::string& _name, const Component* _parent, u32 _id,
+                   const std::vector<u32>& _address, ::Application* _app,
+                   nlohmann::json _settings);
   ~AllToAllTerminal();
   void processEvent(void* _event, s32 _type) override;
   f64 percentComplete() const;
@@ -59,7 +59,7 @@ class AllToAllTerminal : public Terminal {
   // traffic generation
   f64 requestInjectionRate_;
   u32 numIterations_;
-  u32 maxPacketSize_;  // flits
+  u32 maxPacketSize_;    // flits
   u32 transactionSize_;  // requests
   DistributionTrafficPattern* trafficPattern_;
   MessageSizeDistribution* messageSizeDistribution_;
@@ -83,7 +83,7 @@ class AllToAllTerminal : public Terminal {
   // these track the state of the iterations
   u32 sendIteration_;
   u32 recvIteration_;
-  std::unordered_map<u32, std::unordered_map<u32, u32> > iterationReceived_;
+  std::unordered_map<u32, std::unordered_map<u32, u32>> iterationReceived_;
   bool sendWaitingForRecv_;
   bool performBarriers_;
   bool inBarrier_;

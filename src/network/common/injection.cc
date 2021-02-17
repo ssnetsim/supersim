@@ -15,15 +15,14 @@
 #include "network/common/injection.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <vector>
 
 namespace Common {
 
-void injection(
-    Interface* _interface, InjectionAlgorithm* _algorithm, u32 _baseVc,
-    u32 _numVcs, bool _adaptive, bool _fixedMsgVc, Message* _message) {
+void injection(Interface* _interface, InjectionAlgorithm* _algorithm,
+               u32 _baseVc, u32 _numVcs, bool _adaptive, bool _fixedMsgVc,
+               Message* _message) {
   // use the protocol class to set the injection VC(s)
   u32 pktPort = U32_MAX;
   u32 pktVc = U32_MAX;
@@ -35,7 +34,7 @@ void injection(
       // choose VC
       if (_adaptive) {
         // find all minimally congested VCs within the protocol class
-        std::vector<std::tuple<u32, u32> > minOutputs;
+        std::vector<std::tuple<u32, u32>> minOutputs;
         u32 minOccupancy = U32_MAX;
         for (u32 port = 0; port < _interface->numPorts(); port++) {
           for (u32 vc = _baseVc; vc < _baseVc + _numVcs; vc++) {

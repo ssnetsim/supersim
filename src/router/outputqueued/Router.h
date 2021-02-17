@@ -76,7 +76,7 @@ class Router : public ::Router {
   void processEvent(void* _event, s32 _type) override;
 
  private:
-  enum class CongestionMode {kOutput, kDownstream, kOutputAndDownstream};
+  enum class CongestionMode { kOutput, kDownstream, kOutputAndDownstream };
 
   static CongestionMode parseCongestionMode(const std::string& _mode);
 
@@ -121,7 +121,7 @@ class Router : public ::Router {
   std::vector<Channel*> outputChannels_;
 
   // this is used to solve any starvation issues
-  std::vector<std::queue<std::tuple<u32, u32, Flit*, u32, u32> > > waiting_;
+  std::vector<std::queue<std::tuple<u32, u32, Flit*, u32, u32>>> waiting_;
 };
 
 }  // namespace OutputQueued

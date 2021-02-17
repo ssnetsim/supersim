@@ -26,12 +26,11 @@ LeastCongestedQueueRoutingAlgorithm::LeastCongestedQueueRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
-    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
-                       _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _interfacePorts,
-                       _settings) {
+    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    u32 _interfacePorts, nlohmann::json _settings)
+    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
+                       _inputVc, _dimensionWidths, _dimensionWeights,
+                       _concentration, _interfacePorts, _settings) {
   // VC set mapping:
   //  0 = injection from terminal port, to intermediate destination
   //  1 = first hop from intermediate to final destination
@@ -146,26 +145,26 @@ void LeastCongestedQueueRoutingAlgorithm::processRequest(
 
   if (packet->getHopCount() == 0) {
     if (outputTypePort_) {
-      lcqPortRoutingOutput(
-          router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, interfacePorts_, destinationAddress, vcSet, numVcSets,
-          baseVc_ + numVcs_, shortCut_, &vcPool_);
+      lcqPortRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                           dimensionWeights_, concentration_, interfacePorts_,
+                           destinationAddress, vcSet, numVcSets,
+                           baseVc_ + numVcs_, shortCut_, &vcPool_);
       makeOutputPortSet(&vcPool_, {vcSet}, numVcSets, baseVc_ + numVcs_,
                         maxOutputs_, outputAlg_, &outputPorts_);
     } else {
-      lcqVcRoutingOutput(
-          router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, interfacePorts_, destinationAddress, vcSet, numVcSets,
-          baseVc_ + numVcs_, shortCut_, &vcPool_);
+      lcqVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                         dimensionWeights_, concentration_, interfacePorts_,
+                         destinationAddress, vcSet, numVcSets,
+                         baseVc_ + numVcs_, shortCut_, &vcPool_);
       makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
     }
   } else {
     switch (routingAlg_) {
       case BaseRoutingAlg::DORV: {
-        dimOrderVcRoutingOutput(
-            router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-            concentration_, interfacePorts_, destinationAddress, {vcSet},
-            numVcSets, baseVc_ + numVcs_, &vcPool_);
+        dimOrderVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                                dimensionWeights_, concentration_,
+                                interfacePorts_, destinationAddress, {vcSet},
+                                numVcSets, baseVc_ + numVcs_, &vcPool_);
         makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
         break;
       }
@@ -179,10 +178,10 @@ void LeastCongestedQueueRoutingAlgorithm::processRequest(
         break;
       }
       case BaseRoutingAlg::RMINV: {
-        randMinVcRoutingOutput(
-            router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-            concentration_, interfacePorts_, destinationAddress, {vcSet},
-            numVcSets, baseVc_ + numVcs_, &vcPool_);
+        randMinVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                               dimensionWeights_, concentration_,
+                               interfacePorts_, destinationAddress, {vcSet},
+                               numVcSets, baseVc_ + numVcs_, &vcPool_);
         makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
         break;
       }
@@ -238,5 +237,5 @@ void LeastCongestedQueueRoutingAlgorithm::processRequest(
 }  // namespace HyperX
 
 registerWithObjectFactory("least_congested_queue", HyperX::RoutingAlgorithm,
-                    HyperX::LeastCongestedQueueRoutingAlgorithm,
-                    HYPERX_ROUTINGALGORITHM_ARGS);
+                          HyperX::LeastCongestedQueueRoutingAlgorithm,
+                          HYPERX_ROUTINGALGORITHM_ARGS);

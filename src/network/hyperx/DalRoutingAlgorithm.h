@@ -32,12 +32,12 @@ namespace HyperX {
 
 class DalRoutingAlgorithm : public RoutingAlgorithm {
  public:
-  DalRoutingAlgorithm(
-      const std::string& _name, const Component* _parent, Router* _router,
-      u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-      const std::vector<u32>& _dimensionWidths,
-      const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, u32 _interfacePorts, nlohmann::json _settings);
+  DalRoutingAlgorithm(const std::string& _name, const Component* _parent,
+                      Router* _router, u32 _baseVc, u32 _numVcs, u32 _inputPort,
+                      u32 _inputVc, const std::vector<u32>& _dimensionWidths,
+                      const std::vector<u32>& _dimensionWeights,
+                      u32 _concentration, u32 _interfacePorts,
+                      nlohmann::json _settings);
   ~DalRoutingAlgorithm();
 
   void vcScheduled(Flit* _flit, u32 _port, u32 _vc);
@@ -61,7 +61,7 @@ class DalRoutingAlgorithm : public RoutingAlgorithm {
   bool outputTypePort_;
   AdaptiveRoutingAlg adaptivityType_;
   DecisionScheme decisionScheme_;
-  bool multiDeroute_;  // VDAL only
+  bool multiDeroute_;       // VDAL only
   u32 maxDeroutesAllowed_;  // VDAL only
 
   std::unordered_set<std::tuple<u32, u32, f64>> outputVcsMin_;

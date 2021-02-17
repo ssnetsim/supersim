@@ -28,29 +28,13 @@ TEST(BitTransposeCTP, simple) {
   BitTransposeCTP* tp;
   u32 numTerminals = 16;
   std::map<u32, u32> pairs = {
-    {0, 0},
-    {1, 4},
-    {2, 8},
-    {3, 12},
-    {4, 1},
-    {5, 5},
-    {6, 9},
-    {7, 13},
-    {8, 2},
-    {9, 6},
-    {10, 10},
-    {11, 14},
-    {12, 3},
-    {13, 7},
-    {14, 11},
-    {15, 15}
-  };
+      {0, 0}, {1, 4}, {2, 8},   {3, 12},  {4, 1},  {5, 5},  {6, 9},   {7, 13},
+      {8, 2}, {9, 6}, {10, 10}, {11, 14}, {12, 3}, {13, 7}, {14, 11}, {15, 15}};
 
   for (const auto& p : pairs) {
     src = p.first;
     dst = p.second;
-    tp = new BitTransposeCTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new BitTransposeCTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);

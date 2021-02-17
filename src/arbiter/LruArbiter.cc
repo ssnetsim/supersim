@@ -57,5 +57,4 @@ u32 LruArbiter::arbitrate() {
   return winner;
 }
 
-registerWithObjectFactory("lru", Arbiter,
-                          LruArbiter, ARBITER_ARGS);
+registerWithObjectFactory("lru", Arbiter, LruArbiter, ARBITER_ARGS);

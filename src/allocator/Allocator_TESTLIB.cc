@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "allocator/Allocator_TESTLIB.h"
+
 #include <sstream>
 #include <string>
 #include <unordered_set>
 
 #include "allocator/Allocator.h"
-#include "allocator/Allocator_TESTLIB.h"
 #include "gtest/gtest.h"
 #include "test/TestSetup_TESTLIB.h"
 
@@ -50,8 +51,7 @@ void AllocatorTest(nlohmann::json _settings, AllocatorVerifier _verifier,
       bool* grant = new bool[C * R];
 
       // create the allocator
-      Allocator* alloc = Allocator::create(
-          "Alloc", nullptr, C, R, _settings);
+      Allocator* alloc = Allocator::create("Alloc", nullptr, C, R, _settings);
 
       // map I/O to the allocator
       for (u32 c = 0; c < C; c++) {
@@ -83,7 +83,7 @@ void AllocatorTest(nlohmann::json _settings, AllocatorVerifier _verifier,
                 reqCount++;
               }
             }
-          } while (!_singleRequest && reqCount <= R/3);
+          } while (!_singleRequest && reqCount <= R / 3);
         }
 
         // clear the grants
@@ -95,11 +95,11 @@ void AllocatorTest(nlohmann::json _settings, AllocatorVerifier _verifier,
 
         // allocate
         if (false) {
-          printf("r %s\n", ppp(request, C*R).c_str());
+          printf("r %s\n", ppp(request, C * R).c_str());
         }
         alloc->allocate();
         if (false) {
-          printf("g %s\n", ppp(grant, C*R).c_str());
+          printf("g %s\n", ppp(grant, C * R).c_str());
         }
 
         // verify that if something was granted, it was requested
@@ -152,8 +152,7 @@ void AllocatorLoadBalanceTest(nlohmann::json _settings) {
   u32* clientGrantCounts = new u32[C];
 
   // create the allocator
-  Allocator* alloc = Allocator::create(
-      "Alloc", nullptr, C, R, _settings);
+  Allocator* alloc = Allocator::create("Alloc", nullptr, C, R, _settings);
 
   // map I/O to the allocator
   for (u32 c = 0; c < C; c++) {
@@ -184,7 +183,7 @@ void AllocatorLoadBalanceTest(nlohmann::json _settings) {
     for (u32 r = 0; r < reqsPerClient; r++) {
       u32 rnd = U32_MAX;
       do {
-        rnd = gSim->rnd.nextU64(0, R-1);
+        rnd = gSim->rnd.nextU64(0, R - 1);
       } while (rndRes.count(rnd) > 0);
       bool res = rndRes.insert(rnd).second;
       assert(res);
@@ -219,11 +218,11 @@ void AllocatorLoadBalanceTest(nlohmann::json _settings) {
 
       // allocate
       if (DBG) {
-        printf("r %s\n", ppp(request, C*R).c_str());
+        printf("r %s\n", ppp(request, C * R).c_str());
       }
       alloc->allocate();
       if (DBG) {
-        printf("g %s\n", ppp(grant, C*R).c_str());
+        printf("g %s\n", ppp(grant, C * R).c_str());
       }
 
       // verify that if something was granted, it was requested

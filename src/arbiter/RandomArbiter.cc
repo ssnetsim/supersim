@@ -16,9 +16,8 @@
 
 #include "factory/ObjectFactory.h"
 
-RandomArbiter::RandomArbiter(
-    const std::string& _name, const Component* _parent, u32 _size,
-    nlohmann::json _settings)
+RandomArbiter::RandomArbiter(const std::string& _name, const Component* _parent,
+                             u32 _size, nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {
   temp_.reserve(size_);
 }
@@ -41,5 +40,4 @@ u32 RandomArbiter::arbitrate() {
   return winner;
 }
 
-registerWithObjectFactory("random", Arbiter,
-                          RandomArbiter, ARBITER_ARGS);
+registerWithObjectFactory("random", Arbiter, RandomArbiter, ARBITER_ARGS);

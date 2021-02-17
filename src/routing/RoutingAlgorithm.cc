@@ -43,7 +43,7 @@ u32 RoutingAlgorithm::Response::size() const {
 void RoutingAlgorithm::Response::get(u32 _index, u32* _port, u32* _vc) const {
   const std::pair<u32, u32>& val = response_.at(_index);
   *_port = val.first;
-  *_vc   = val.second;
+  *_vc = val.second;
 }
 
 void RoutingAlgorithm::Response::link(const RoutingAlgorithm* _algorithm) {
@@ -58,12 +58,16 @@ RoutingAlgorithm::Client::~Client() {}
 
 /* RoutingAlgorithm class */
 
-RoutingAlgorithm::RoutingAlgorithm(
-    const std::string& _name, const Component* _parent, Router* _router,
-    u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-    nlohmann::json _settings)
-    : Component(_name, _parent), router_(_router), baseVc_(_baseVc),
-      numVcs_(_numVcs), inputPort_(_inputPort), inputVc_(_inputVc),
+RoutingAlgorithm::RoutingAlgorithm(const std::string& _name,
+                                   const Component* _parent, Router* _router,
+                                   u32 _baseVc, u32 _numVcs, u32 _inputPort,
+                                   u32 _inputVc, nlohmann::json _settings)
+    : Component(_name, _parent),
+      router_(_router),
+      baseVc_(_baseVc),
+      numVcs_(_numVcs),
+      inputPort_(_inputPort),
+      inputVc_(_inputVc),
       latency_(_settings["latency"].get<u32>()) {
   assert(router_ != nullptr);
   assert(latency_ > 0);

@@ -46,11 +46,11 @@ TEST(RandomExchangeNeighborCTP, evenSpread_1d) {
   std::vector<RandomExchangeNeighborCTP*> tps(numTerminals);
   for (u32 idx = 0; idx < numTerminals; idx++) {
     tps.at(idx) = new RandomExchangeNeighborCTP(
-        "TP_"+std::to_string(idx), nullptr, numTerminals, idx, settings);
+        "TP_" + std::to_string(idx), nullptr, numTerminals, idx, settings);
   }
 
-  std::vector<std::vector<u32>> vals(
-      numTerminals, std::vector<u32>(numTerminals, 0u));
+  std::vector<std::vector<u32>> vals(numTerminals,
+                                     std::vector<u32>(numTerminals, 0u));
 
   for (u32 cnt = 0; cnt < kRounds * 2; cnt++) {
     for (u32 idx = 0; idx < numTerminals; idx++) {
@@ -125,11 +125,11 @@ TEST(RandomExchangeNeighborCTP, evenSpread_1d_all_terminals) {
   std::vector<RandomExchangeNeighborCTP*> tps(numTerminals);
   for (u32 idx = 0; idx < numTerminals; idx++) {
     tps.at(idx) = new RandomExchangeNeighborCTP(
-        "TP_"+std::to_string(idx), nullptr, numTerminals, idx, settings);
+        "TP_" + std::to_string(idx), nullptr, numTerminals, idx, settings);
   }
 
-  std::vector<std::vector<u32>> vals(
-      numTerminals, std::vector<u32>(numTerminals, 0u));
+  std::vector<std::vector<u32>> vals(numTerminals,
+                                     std::vector<u32>(numTerminals, 0u));
 
   for (u32 cnt = 0; cnt < kRounds * 8; cnt++) {
     for (u32 idx = 0; idx < numTerminals; idx++) {
@@ -205,11 +205,11 @@ TEST(RandomExchangeNeighborCTP, evenSpread_2d_all_terminals) {
   std::vector<RandomExchangeNeighborCTP*> tps(numTerminals);
   for (u32 idx = 0; idx < numTerminals; idx++) {
     tps.at(idx) = new RandomExchangeNeighborCTP(
-        "TP_"+std::to_string(idx), nullptr, numTerminals, idx, settings);
+        "TP_" + std::to_string(idx), nullptr, numTerminals, idx, settings);
   }
 
-  std::vector<std::vector<u32>> vals(
-      numTerminals, std::vector<u32>(numTerminals, 0u));
+  std::vector<std::vector<u32>> vals(numTerminals,
+                                     std::vector<u32>(numTerminals, 0u));
 
   for (u32 cnt = 0; cnt < kRounds * 16; cnt++) {
     for (u32 idx = 0; idx < numTerminals; idx++) {

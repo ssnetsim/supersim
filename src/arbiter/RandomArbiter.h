@@ -26,8 +26,8 @@
 // choose random request
 class RandomArbiter : public Arbiter {
  public:
-  RandomArbiter(const std::string& _name, const Component* _parent,
-                u32 _size, nlohmann::json _settings);
+  RandomArbiter(const std::string& _name, const Component* _parent, u32 _size,
+                nlohmann::json _settings);
   ~RandomArbiter();
 
   u32 arbitrate() override;
@@ -35,6 +35,5 @@ class RandomArbiter : public Arbiter {
  private:
   std::vector<u32> temp_;
 };
-
 
 #endif  // ARBITER_RANDOMARBITER_H_

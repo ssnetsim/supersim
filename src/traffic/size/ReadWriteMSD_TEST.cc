@@ -31,7 +31,6 @@ TEST(ReadWriteMSD, simple) {
   const u32 WS = 1;
   const f64 RP = 0.75;
 
-
   nlohmann::json settings;
   settings["type"] = "read_write";
   settings["read_request_size"] = RQ;
@@ -40,8 +39,8 @@ TEST(ReadWriteMSD, simple) {
   settings["write_response_size"] = WS;
   settings["read_probability"] = RP;
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   std::unordered_map<u32, u32> sizes;
   const u32 ROUNDS = 10000000;
@@ -93,7 +92,6 @@ TEST(ReadWriteMSD, simple) {
 
     ASSERT_NEAR(act, exp, 0.001);
   }
-
 
   delete msd;
 }

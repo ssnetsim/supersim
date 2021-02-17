@@ -15,7 +15,6 @@
 #include "network/dragonfly/AdaptiveRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <unordered_set>
 #include <vector>
@@ -60,13 +59,12 @@ AdaptiveRoutingAlgorithm::AdaptiveRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc, u32 _localWidth,
     u32 _localWeight, u32 _globalWidth, u32 _globalWeight, u32 _concentration,
-    u32 _interfacePorts,  u32 _routerRadix, u32 _globalPortsPerRouter,
+    u32 _interfacePorts, u32 _routerRadix, u32 _globalPortsPerRouter,
     nlohmann::json _settings)
-    : RoutingAlgorithm(
-          _name, _parent, _router, _baseVc, _numVcs, _inputPort, _inputVc,
-          _localWidth, _localWeight, _globalWidth, _globalWeight,
-          _concentration, _interfacePorts, _routerRadix, _globalPortsPerRouter,
-          _settings),
+    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
+                       _inputVc, _localWidth, _localWeight, _globalWidth,
+                       _globalWeight, _concentration, _interfacePorts,
+                       _routerRadix, _globalPortsPerRouter, _settings),
       progressiveAdaptive_(_settings["progressive_adaptive"].get<bool>()),
       valiantNode_(_settings["valiant_node"].get<bool>()),
       routingClasses_(createRoutingClasses(_settings)),
@@ -92,7 +90,6 @@ AdaptiveRoutingAlgorithm::~AdaptiveRoutingAlgorithm() {
 
 void AdaptiveRoutingAlgorithm::processRequest(
     Flit* _flit, RoutingAlgorithm::Response* _response) {
-
   // addresses
   const std::vector<u32>* sourceAddress =
       _flit->packet()->message()->getSourceAddress();
@@ -110,8 +107,8 @@ void AdaptiveRoutingAlgorithm::processRequest(
   u32 destinationGroup = destinationAddress->at(2);
   u32 destinationTerminal = destinationAddress->at(0);
 
-  u32 destinationGlobalOffset = computeOffset(thisGroup, destinationGroup,
-                                              globalWidth_);
+  u32 destinationGlobalOffset =
+      computeOffset(thisGroup, destinationGroup, globalWidth_);
 
   u32 rc = vcToRc(baseVc_, numVcs_, inputVc_, rcs_);
 
@@ -123,12 +120,12 @@ void AdaptiveRoutingAlgorithm::processRequest(
       // at src group
       if (progressiveAdaptive_) {
         addGlobalPorts(thisRouter, true, true, true, true,
-                       destinationGlobalOffset,
-                       kGlobalMin, kGlobalNonMin, kSrc1, kSrc1);
+                       destinationGlobalOffset, kGlobalMin, kGlobalNonMin,
+                       kSrc1, kSrc1);
       } else {
         addGlobalPorts(thisRouter, true, true, true, true,
-                       destinationGlobalOffset,
-                       kGlobalMin, kGlobalNonMin, kSrc2, kSrc2);
+                       destinationGlobalOffset, kGlobalMin, kGlobalNonMin,
+                       kSrc2, kSrc2);
       }
     } else if (thisGroup == destinationGroup) {
       // LOCAL - routing only - no global routing
@@ -141,8 +138,8 @@ void AdaptiveRoutingAlgorithm::processRequest(
         }
       } else {
         // add all local ports aimed to destination router (min/nonmin)
-        addPortsToLocalRouter(thisRouter, destinationRouter,
-                              false, kDst1, kSrc2);
+        addPortsToLocalRouter(thisRouter, destinationRouter, false, kDst1,
+                              kSrc2);
       }
     } else {
       // can't come in through terminal at intermediate group
@@ -159,15 +156,15 @@ void AdaptiveRoutingAlgorithm::processRequest(
         assert(progressiveAdaptive_);
         // can use attached or peer attached global ports
         addGlobalPorts(thisRouter, true, true, true, true,
-                       destinationGlobalOffset,
-                       kGlobalMin, kGlobalNonMin, kSrc2, kSrc2);
+                       destinationGlobalOffset, kGlobalMin, kGlobalNonMin,
+                       kSrc2, kSrc2);
       } else {
         // in with S2
         // already used PAR or not PAR active
         // can ONLY use attached global ports
         addGlobalPorts(thisRouter, true, true, false, false,
-                       destinationGlobalOffset,
-                       kGlobalMin, kGlobalNonMin, U32_MAX, U32_MAX);
+                       destinationGlobalOffset, kGlobalMin, kGlobalNonMin,
+                       U32_MAX, U32_MAX);
       }
     } else if (thisGroup != sourceGroup && thisGroup != destinationGroup) {
       // at intermediate group
@@ -176,14 +173,14 @@ void AdaptiveRoutingAlgorithm::processRequest(
         // in with I1
         // (int direct) add all local ports aimed to all minimal globals
         addGlobalPorts(thisRouter, true, false, true, false,
-                       destinationGlobalOffset,
-                       kGlobalMin, U32_MAX, kInter2, U32_MAX);
+                       destinationGlobalOffset, kGlobalMin, U32_MAX, kInter2,
+                       U32_MAX);
       } else if (rc == routingClasses_.at(kInter2)) {
         // in with I2
         // add all connected minimal globals as min - use global minimal
         addGlobalPorts(thisRouter, true, false, false, false,
-                       destinationGlobalOffset,
-                       kGlobalMin, U32_MAX, U32_MAX, U32_MAX);
+                       destinationGlobalOffset, kGlobalMin, U32_MAX, U32_MAX,
+                       U32_MAX);
       } else {
         assert(false);
       }
@@ -196,8 +193,8 @@ void AdaptiveRoutingAlgorithm::processRequest(
       // src group == dst group
       if (rc == routingClasses_.at(kSrc2)) {
         // in with S2 route to dst with dst 1
-        addPortsToLocalRouter(thisRouter, destinationRouter,
-                              true, kDst1, U32_MAX);
+        addPortsToLocalRouter(thisRouter, destinationRouter, true, kDst1,
+                              U32_MAX);
       } else if (rc == routingClasses_.at(kDst1)) {
         // in Dst1 exit
         assert(thisRouter == destinationRouter);
@@ -221,14 +218,14 @@ void AdaptiveRoutingAlgorithm::processRequest(
         // WE AREN'T HANDLING SHORT CUT
         // lie to the function to use all local peers
         addGlobalPorts(thisRouter, true, false, true, true,
-                       destinationGlobalOffset,
-                       kGlobalMin, U32_MAX, kInter1, kInter1);
+                       destinationGlobalOffset, kGlobalMin, U32_MAX, kInter1,
+                       kInter1);
       } else {
         // not valn
         // int direct add all local ports aimed to all minimal globals
         addGlobalPorts(thisRouter, true, false, true, false,
-                       destinationGlobalOffset,
-                       kGlobalMin, U32_MAX, kInter2, U32_MAX);
+                       destinationGlobalOffset, kGlobalMin, U32_MAX, kInter2,
+                       U32_MAX);
       }
     } else if (thisGroup == destinationGroup) {
       // at destination group - in global minimal
@@ -241,8 +238,8 @@ void AdaptiveRoutingAlgorithm::processRequest(
         }
       } else {
         // add all local ports aimed to dst router
-        addPortsToLocalRouter(thisRouter, destinationRouter,
-                              true, kDst1, U32_MAX);
+        addPortsToLocalRouter(thisRouter, destinationRouter, true, kDst1,
+                              U32_MAX);
       }
     } else {
       // should not be at src group after global hop
@@ -254,7 +251,7 @@ void AdaptiveRoutingAlgorithm::processRequest(
   }
 
   // reduction phase
-  const std::unordered_set<std::tuple<u32, u32> >* outputs =
+  const std::unordered_set<std::tuple<u32, u32>>* outputs =
       reduction_->reduce(nullptr);
   for (const auto& t : *outputs) {
     u32 port = std::get<0>(t);
@@ -280,8 +277,8 @@ void AdaptiveRoutingAlgorithm::processRequest(
   }
 }
 
-void AdaptiveRoutingAlgorithm::addPort(
-    u32 _port, u32 _hops, u32 _routingClass) {
+void AdaptiveRoutingAlgorithm::addPort(u32 _port, u32 _hops,
+                                       u32 _routingClass) {
   // add port for reduction function
   if (routingModeIsPort(mode_)) {
     f64 cong = portCongestion(mode_, router_, inputPort_, inputVc_, _port);
@@ -305,8 +302,10 @@ void AdaptiveRoutingAlgorithm::addPort(
 }
 
 // LOCAL
-void AdaptiveRoutingAlgorithm::addPortsToLocalRouter(
-    u32 _src, u32 _dst, bool _minimalOnly, u32 _minRc, u32 _nonminRc) {
+void AdaptiveRoutingAlgorithm::addPortsToLocalRouter(u32 _src, u32 _dst,
+                                                     bool _minimalOnly,
+                                                     u32 _minRc,
+                                                     u32 _nonminRc) {
   // ports to local router [minimalOnly = true] only add minimal routes
   u32 minOffset = computeOffset(_src, _dst, localWidth_);
 
@@ -316,8 +315,8 @@ void AdaptiveRoutingAlgorithm::addPortsToLocalRouter(
   for (u32 lOffset = offsetStart; lOffset < offsetStop; lOffset++) {
     bool isMinimal = lOffset == minOffset;
     for (u32 lWeight = 0; lWeight < localWeight_; lWeight++) {
-      u32 port = computeLocalSrcPort(localPortBase_, lOffset,
-                                     localWeight_, lWeight);
+      u32 port =
+          computeLocalSrcPort(localPortBase_, lOffset, localWeight_, lWeight);
 
       u32 rc = isMinimal ? _minRc : _nonminRc;
       u32 hops = isMinimal ? 1 : 2;
@@ -328,10 +327,9 @@ void AdaptiveRoutingAlgorithm::addPortsToLocalRouter(
 
 // GLOBAL
 void AdaptiveRoutingAlgorithm::addGlobalPorts(
-    u32 _thisRouter, bool _attachedMin, bool _attachedNonMin,
-    bool _peerMin, bool _peerNonMin, u32 _dstGlobalOffset,
-    u32 _minGlobalRc, u32 _nonminGlobalRc,
-    u32 _minLocalRc, u32 _nonminLocalRc) {
+    u32 _thisRouter, bool _attachedMin, bool _attachedNonMin, bool _peerMin,
+    bool _peerNonMin, u32 _dstGlobalOffset, u32 _minGlobalRc,
+    u32 _nonminGlobalRc, u32 _minLocalRc, u32 _nonminLocalRc) {
   // add all global ports (as ports of this routers)
   // options: attached min or attached nonmin | peer min and peer nonmin
 
@@ -347,9 +345,9 @@ void AdaptiveRoutingAlgorithm::addGlobalPorts(
       u32 thisLocalPort;
       u32 thisGlobalPort;
       computeGlobalToRouterMap(globalPortBase_, globalPortsPerRouter_,
-                               globalWidth_, globalWeight_,
-                               localWidth_, gWeight, gOffset, &thisGlobalPort,
-                               &localRouter, &thisLocalPort);
+                               globalWidth_, globalWeight_, localWidth_,
+                               gWeight, gOffset, &thisGlobalPort, &localRouter,
+                               &thisLocalPort);
 
       if (localRouter == _thisRouter) {
         if ((isMinimal && _attachedMin) || (!isMinimal && _attachedNonMin)) {

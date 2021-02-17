@@ -28,8 +28,7 @@ u32 computeInputPortDim(const std::vector<u32>& _dimensionWidths,
                         u32 _concentration, u32 _inputPort);
 
 u32 computeMinimalHops(const std::vector<u32>* _source,
-                       const std::vector<u32>* _destination,
-                       u32 _dimensions,
+                       const std::vector<u32>* _destination, u32 _dimensions,
                        const std::vector<u32>& _dimensionWidths);
 }  // namespace Torus
 

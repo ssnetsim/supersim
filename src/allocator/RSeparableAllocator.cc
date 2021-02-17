@@ -19,9 +19,10 @@
 #include "arbiter/Arbiter.h"
 #include "factory/ObjectFactory.h"
 
-RSeparableAllocator::RSeparableAllocator(
-    const std::string& _name, const Component* _parent,
-    u32 _numClients, u32 _numResources, nlohmann::json _settings)
+RSeparableAllocator::RSeparableAllocator(const std::string& _name,
+                                         const Component* _parent,
+                                         u32 _numClients, u32 _numResources,
+                                         nlohmann::json _settings)
     : Allocator(_name, _parent, _numClients, _numResources, _settings) {
   // pointer arrays
   requests_.resize(numClients_ * numResources_, nullptr);
@@ -34,8 +35,8 @@ RSeparableAllocator::RSeparableAllocator(
   // instantiate the resource arbiters
   for (u32 r = 0; r < numResources_; r++) {
     std::string name = "ArbiterR" + std::to_string(r);
-    resourceArbiters_[r] = Arbiter::create(
-        name, this, numClients_, _settings["resource_arbiter"]);
+    resourceArbiters_[r] =
+        Arbiter::create(name, this, numClients_, _settings["resource_arbiter"]);
   }
 
   // parse settings

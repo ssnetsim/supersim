@@ -26,8 +26,9 @@
 
 class Router;
 
-#define ROUTINGALGORITHM_ARGS const std::string&, const Component*, Router*, \
-    u32, u32, u32, u32, nlohmann::json
+#define ROUTINGALGORITHM_ARGS                                        \
+  const std::string&, const Component*, Router*, u32, u32, u32, u32, \
+      nlohmann::json
 
 class RoutingAlgorithm : public Component {
  public:
@@ -47,7 +48,7 @@ class RoutingAlgorithm : public Component {
     void link(const RoutingAlgorithm* _algorithm);
 
    private:
-    std::vector<std::pair<u32, u32> > response_;
+    std::vector<std::pair<u32, u32>> response_;
     const RoutingAlgorithm* algorithm_;
   };
 

@@ -15,15 +15,13 @@
 #include "traffic/continuous/Swap2CTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-Swap2CTP::Swap2CTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+Swap2CTP::Swap2CTP(const std::string& _name, const Component* _parent,
+                   u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -48,7 +46,7 @@ Swap2CTP::Swap2CTP(
     assert(_settings["enabled_dimensions"].is_array());
     assert(_settings["enabled_dimensions"].size() == dimensions);
     u32 trueCntr = 0;
-    for (u32 dim = 0;  dim < dimensions; ++dim) {
+    for (u32 dim = 0; dim < dimensions; ++dim) {
       dimMask.at(dim) = _settings["enabled_dimensions"][dim].get<bool>();
       if (dimMask.at(dim) == true) {
         trueCntr++;
@@ -61,7 +59,7 @@ Swap2CTP::Swap2CTP(
   }
 
   u32 index = 0;
-  for (u32 dim = 0;  dim < dimensions; ++dim) {
+  for (u32 dim = 0; dim < dimensions; ++dim) {
     if (dimMask.at(dim) == true) {
       workingDims.at(index) = dim;
       index++;
@@ -101,5 +99,5 @@ u32 Swap2CTP::nextDestination() {
   return dest_;
 }
 
-registerWithObjectFactory("swap2", ContinuousTrafficPattern,
-                          Swap2CTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("swap2", ContinuousTrafficPattern, Swap2CTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

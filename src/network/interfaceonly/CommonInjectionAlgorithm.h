@@ -33,7 +33,7 @@ class CommonInjectionAlgorithm : public InjectionAlgorithm {
   void processMessage(Message* _message) override;
 
  private:
-  bool adaptive_;  // choose injection VC adaptively
+  bool adaptive_;    // choose injection VC adaptively
   bool fixedMsgVc_;  // all pkts of a msg have same VC
 };
 

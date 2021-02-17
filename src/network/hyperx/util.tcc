@@ -45,8 +45,8 @@ bool tupleComp2(const std::tuple<T1, T2, T3>& tL,
 
 template <typename T1, typename T2, typename T3>
 const std::tuple<T1, T2, T3>* uSetMinCong(
-    const std::unordered_set<std::tuple<T1, T2, T3>>& uSet) {
-  typename std::unordered_set<std::tuple<T1, T2, T3>>::const_iterator it =
+    const std::unordered_set<std::tuple<T1, T2, T3> >& uSet) {
+  typename std::unordered_set<std::tuple<T1, T2, T3> >::const_iterator it =
       min_element(uSet.begin(), uSet.end(), tupleComp2<T1, T2, T3>);
   return &(*it);
 }

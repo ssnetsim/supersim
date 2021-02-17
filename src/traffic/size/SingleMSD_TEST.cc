@@ -28,8 +28,8 @@ TEST(SingleMSD, simple) {
   settings["type"] = "single";
   settings["message_size"] = SIZE;
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   const u32 ROUNDS = 10000000;
   for (u32 round = 0; round < ROUNDS; round++) {
@@ -48,10 +48,10 @@ TEST(SingleMSD, dependent) {
   nlohmann::json settings;
   settings["type"] = "single";
   settings["message_size"] = SIZE;
-  settings["dependent_message_size"] = SIZE+1;
+  settings["dependent_message_size"] = SIZE + 1;
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   const u32 ROUNDS = 5000000;
   for (u32 round = 0; round < ROUNDS; round++) {
@@ -59,7 +59,7 @@ TEST(SingleMSD, dependent) {
     size = msd->nextMessageSize();
     ASSERT_EQ(size, SIZE);
     size = msd->nextMessageSize(nullptr);
-    ASSERT_EQ(size, SIZE+1);
+    ASSERT_EQ(size, SIZE + 1);
   }
 
   delete msd;

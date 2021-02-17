@@ -30,8 +30,8 @@ TEST(RandomMSD, simple) {
   settings["min_message_size"] = MIN;
   settings["max_message_size"] = MAX;
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   std::vector<u32> counts(MAX - MIN + 1, 0);
   const u32 ROUNDS = 10000000;
@@ -66,8 +66,8 @@ TEST(RandomMSD, dependent) {
   settings["dependent_min_message_size"] = MIN;
   settings["dependent_max_message_size"] = MAX;
 
-  MessageSizeDistribution* msd = MessageSizeDistribution::create(
-      "msd", nullptr, settings);
+  MessageSizeDistribution* msd =
+      MessageSizeDistribution::create("msd", nullptr, settings);
 
   std::vector<u32> counts(MAX - MIN + 1, 0);
   const u32 ROUNDS = 10000000;

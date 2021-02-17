@@ -27,5 +27,4 @@ bool congestionEqualTo(f64 _cong1, f64 _cong2);
 bool congestionLessThan(f64 _cong1, f64 _cong2);
 bool congestionGreaterThan(f64 _cong1, f64 _cong2);
 
-
 #endif  // CONGESTION_UTIL_H_

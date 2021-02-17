@@ -15,7 +15,6 @@
 #include "network/hyperx/MinRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <utility>  // std::pair
 
 #include "factory/ObjectFactory.h"
@@ -28,12 +27,11 @@ MinRoutingAlgorithm::MinRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
-    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
-                       _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _interfacePorts,
-                       _settings) {
+    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    u32 _interfacePorts, nlohmann::json _settings)
+    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
+                       _inputVc, _dimensionWidths, _dimensionWeights,
+                       _concentration, _interfacePorts, _settings) {
   // VC set mapping:
   //  0 = injection from terminal port
   //  1 = switching dimension increments VC count
@@ -113,18 +111,18 @@ void MinRoutingAlgorithm::processRequest(
 
   switch (routingAlg_) {
     case MinRoutingAlg::RMINV: {
-      randMinVcRoutingOutput(
-          router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, interfacePorts_, destinationAddress, {vcSet},
-          numVcSets, baseVc_ + numVcs_, &vcPool_);
+      randMinVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                             dimensionWeights_, concentration_, interfacePorts_,
+                             destinationAddress, {vcSet}, numVcSets,
+                             baseVc_ + numVcs_, &vcPool_);
       makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
       break;
     }
     case MinRoutingAlg::RMINP: {
-      randMinPortRoutingOutput(
-          router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-          concentration_, interfacePorts_, destinationAddress, {vcSet},
-          numVcSets, baseVc_ + numVcs_, &vcPool_);
+      randMinPortRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                               dimensionWeights_, concentration_,
+                               interfacePorts_, destinationAddress, {vcSet},
+                               numVcSets, baseVc_ + numVcs_, &vcPool_);
       makeOutputPortSet(&vcPool_, {vcSet}, numVcSets, baseVc_ + numVcs_,
                         maxOutputs_, outputAlg_, &outputPorts_);
       break;
@@ -174,5 +172,5 @@ void MinRoutingAlgorithm::processRequest(
 }  // namespace HyperX
 
 registerWithObjectFactory("minimal", HyperX::RoutingAlgorithm,
-                    HyperX::MinRoutingAlgorithm,
-                    HYPERX_ROUTINGALGORITHM_ARGS);
+                          HyperX::MinRoutingAlgorithm,
+                          HYPERX_ROUTINGALGORITHM_ARGS);

@@ -36,20 +36,14 @@ TEST(NeighborCTP, no_dimMask) {
   settings["direction"] = "right";
 
   numTerminals = 4 * 3 * 4 * 1;
-  pairs = {
-    {0, 4},
-    {4, 8},
-    {8, 12},
-    {12, 0}
-  };
+  pairs = {{0, 4}, {4, 8}, {8, 12}, {12, 0}};
 
   for (u32 off = 0; off < 3; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * 4 * off + iface;
         dst = p.second + 4 * 4 * off + iface;
-        tp = new NeighborCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -76,20 +70,14 @@ TEST(NeighborCTP, dimension_0_right) {
   settings["enabled_dimensions"] = {true, false};
 
   numTerminals = 4 * 3 * 4 * 1;
-  pairs = {
-    {0, 4},
-    {4, 8},
-    {8, 12},
-    {12, 0}
-  };
+  pairs = {{0, 4}, {4, 8}, {8, 12}, {12, 0}};
 
   for (u32 off = 0; off < 3; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * 4 * off + iface;
         dst = p.second + 4 * 4 * off + iface;
-        tp = new NeighborCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -116,20 +104,14 @@ TEST(NeighborCTP, dimension_0_left) {
   settings["enabled_dimensions"] = {true, false};
 
   numTerminals = 4 * 3 * 4;
-  pairs = {
-    {0, 12},
-    {4, 0},
-    {8, 4},
-    {12, 8}
-  };
+  pairs = {{0, 12}, {4, 0}, {8, 4}, {12, 8}};
 
   for (u32 off = 0; off < 3; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * 4 * off + iface;
         dst = p.second + 4 * 4 * off + iface;
-        tp = new NeighborCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -156,19 +138,14 @@ TEST(NeighborCTP, dimension_1_left) {
   settings["enabled_dimensions"] = {false, true};
 
   numTerminals = 4 * 3 * 4;
-  pairs = {
-    {0, 32},
-    {16, 0},
-    {32, 16}
-  };
+  pairs = {{0, 32}, {16, 0}, {32, 16}};
 
   for (u32 off = 0; off < 4; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * off + iface;
         dst = p.second + 4 * off + iface;
-        tp = new NeighborCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -196,19 +173,14 @@ TEST(NeighborCTP, dimension_1_left_3d) {
   settings["enabled_dimensions"] = {false, true, false};
 
   numTerminals = 3 * 3 * 4 * 4;
-  pairs = {
-    {0, 32},
-    {16, 0},
-    {32, 16}
-  };
+  pairs = {{0, 32}, {16, 0}, {32, 16}};
 
   for (u32 off = 0; off < 4; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * off + iface;
         dst = p.second + 4 * off + iface;
-        tp = new NeighborCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -236,19 +208,14 @@ TEST(NeighborCTP, dimension_1_left_3d_1) {
   settings["enabled_dimensions"] = {false, true, false};
 
   numTerminals = 3 * 3 * 4 * 4;
-  pairs = {
-    {0, 32},
-    {16, 0},
-    {32, 16}
-  };
+  pairs = {{0, 32}, {16, 0}, {32, 16}};
 
   for (u32 off = 0; off < 4; ++off) {
     for (u32 iface = 0; iface < 4; ++iface) {
       for (const auto& p : pairs) {
         src = p.first + 4 * off + iface + 3 * 4 * 4;
         dst = p.second + 4 * off + iface + 3 * 4 * 4;
-        tp = new NeighborCTP(
-            "TP", nullptr, numTerminals, src, settings);
+        tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
         for (u32 idx = 0; idx < 100; ++idx) {
           u32 next = tp->nextDestination();
           ASSERT_LT(next, numTerminals);
@@ -276,27 +243,14 @@ TEST(NeighborCTP, 2d_left) {
   settings["direction"] = "left";
 
   numTerminals = 4 * 3 * 4;
-  pairs = {
-    {0, 44},
-    {4, 32},
-    {8, 36},
-    {12, 40},
-    {16, 12},
-    {20, 0},
-    {24, 4},
-    {28, 8},
-    {32, 28},
-    {36, 16},
-    {40, 20},
-    {44, 24}
-  };
+  pairs = {{0, 44}, {4, 32}, {8, 36},  {12, 40}, {16, 12}, {20, 0},
+           {24, 4}, {28, 8}, {32, 28}, {36, 16}, {40, 20}, {44, 24}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first + iface;
       dst = p.second + iface;
-      tp = new NeighborCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);
@@ -323,27 +277,14 @@ TEST(NeighborCTP, 2d_right) {
   settings["direction"] = "right";
 
   numTerminals = 4 * 3 * 4;
-  pairs = {
-    {0, 20},
-    {4, 24},
-    {8, 28},
-    {12, 16},
-    {16, 36},
-    {20, 40},
-    {24, 44},
-    {28, 32},
-    {32, 4},
-    {36, 8},
-    {40, 12},
-    {44, 0}
-  };
+  pairs = {{0, 20},  {4, 24},  {8, 28}, {12, 16}, {16, 36}, {20, 40},
+           {24, 44}, {28, 32}, {32, 4}, {36, 8},  {40, 12}, {44, 0}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first + iface;
       dst = p.second + iface;
-      tp = new NeighborCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);
@@ -372,27 +313,14 @@ TEST(NeighborCTP, 3d_right) {
   settings["direction"] = "right";
 
   numTerminals = 3 * 3 * 4 * 4;
-  pairs = {
-    {0, 20},
-    {4, 24},
-    {8, 28},
-    {12, 16},
-    {16, 36},
-    {20, 40},
-    {24, 44},
-    {28, 32},
-    {32, 4},
-    {36, 8},
-    {40, 12},
-    {44, 0}
-  };
+  pairs = {{0, 20},  {4, 24},  {8, 28}, {12, 16}, {16, 36}, {20, 40},
+           {24, 44}, {28, 32}, {32, 4}, {36, 8},  {40, 12}, {44, 0}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first + iface + 4 * 3 * 4;
       dst = p.second + iface + 2 * 4 * 3 * 4;
-      tp = new NeighborCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new NeighborCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);

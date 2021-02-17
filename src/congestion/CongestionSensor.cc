@@ -14,19 +14,21 @@
  */
 #include "congestion/CongestionSensor.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 
 #include "factory/ObjectFactory.h"
 #include "router/Router.h"
 
-CongestionSensor::CongestionSensor(
-    const std::string& _name, const Component* _parent, PortedDevice* _device,
-    nlohmann::json _settings)
-    : Component(_name, _parent), device_(_device),
-      numPorts_(device_->numPorts()), numVcs_(device_->numVcs()),
+CongestionSensor::CongestionSensor(const std::string& _name,
+                                   const Component* _parent,
+                                   PortedDevice* _device,
+                                   nlohmann::json _settings)
+    : Component(_name, _parent),
+      device_(_device),
+      numPorts_(device_->numPorts()),
+      numVcs_(device_->numVcs()),
       granularity_(_settings["granularity"].get<u32>()),
       minimum_(_settings["minimum"].get<f64>()),
       offset_(_settings["offset"].get<f64>()) {
@@ -39,16 +41,17 @@ CongestionSensor::CongestionSensor(
 
 CongestionSensor::~CongestionSensor() {}
 
-CongestionSensor* CongestionSensor::create(
-    const std::string& _name, const Component* _parent, PortedDevice* _device,
-    nlohmann::json _settings) {
+CongestionSensor* CongestionSensor::create(const std::string& _name,
+                                           const Component* _parent,
+                                           PortedDevice* _device,
+                                           nlohmann::json _settings) {
   // retrieve the algorithm
   const std::string& algorithm = _settings["algorithm"].get<std::string>();
 
   // attempt to build the congestion status
-  CongestionSensor* cs = factory::ObjectFactory<
-    CongestionSensor, CONGESTIONSENSOR_ARGS>::create(
-        algorithm, _name, _parent, _device, _settings);
+  CongestionSensor* cs =
+      factory::ObjectFactory<CongestionSensor, CONGESTIONSENSOR_ARGS>::create(
+          algorithm, _name, _parent, _device, _settings);
 
   // check that the algorithm exists within the factory
   if (cs == nullptr) {
@@ -59,8 +62,8 @@ CongestionSensor* CongestionSensor::create(
   return cs;
 }
 
-f64 CongestionSensor::status(
-    u32 _inputPort, u32 _inputVc, u32 _outputPort, u32 _outputVc) const {
+f64 CongestionSensor::status(u32 _inputPort, u32 _inputVc, u32 _outputPort,
+                             u32 _outputVc) const {
   assert(gSim->epsilon() == 0);
 
   // gather value from subclass

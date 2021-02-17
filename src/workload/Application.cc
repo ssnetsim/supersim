@@ -16,7 +16,6 @@
 
 #include <cassert>
 #include <cmath>
-
 #include <utility>
 
 #include "factory/ObjectFactory.h"
@@ -25,11 +24,13 @@
 #include "workload/Workload.h"
 #include "workload/util.h"
 
-Application::Application(
-    const std::string& _name, const Component* _parent, u32 _id,
-    Workload* _workload, MetadataHandler* _metadataHandler,
-    nlohmann::json _settings)
-    : Component(_name, _parent), id_(_id), workload_(_workload),
+Application::Application(const std::string& _name, const Component* _parent,
+                         u32 _id, Workload* _workload,
+                         MetadataHandler* _metadataHandler,
+                         nlohmann::json _settings)
+    : Component(_name, _parent),
+      id_(_id),
+      workload_(_workload),
       metadataHandler_(_metadataHandler) {
   Network* network = gSim->getNetwork();
 
@@ -47,7 +48,7 @@ Application::Application(
 
   // create the rate log
   rateLog_ = new RateLog(_settings["rate_log"]);
-      }
+}
 
 Application::~Application() {
   for (u32 idx = 0; idx < terminals_.size(); idx++) {
@@ -56,17 +57,18 @@ Application::~Application() {
   delete rateLog_;
 }
 
-Application* Application::create(
-    const std::string& _name, const Component* _parent, u32 _id,
-    Workload* _workload, MetadataHandler* _metadataHandler,
-    nlohmann::json _settings) {
+Application* Application::create(const std::string& _name,
+                                 const Component* _parent, u32 _id,
+                                 Workload* _workload,
+                                 MetadataHandler* _metadataHandler,
+                                 nlohmann::json _settings) {
   // retrieve the application type
   const std::string& type = _settings["type"].get<std::string>();
 
   // attempt to create the application
-  Application* app = factory::ObjectFactory<
-    Application, APPLICATION_ARGS>::create(
-        type, _name, _parent, _id, _workload, _metadataHandler, _settings);
+  Application* app =
+      factory::ObjectFactory<Application, APPLICATION_ARGS>::create(
+          type, _name, _parent, _id, _workload, _metadataHandler, _settings);
 
   // check that the factory has this type of application
   if (app == nullptr) {

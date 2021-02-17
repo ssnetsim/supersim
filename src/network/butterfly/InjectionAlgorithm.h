@@ -23,8 +23,9 @@
 #include "prim/prim.h"
 #include "routing/InjectionAlgorithm.h"
 
-#define BUTTERFLY_INJECTIONALGORITHM_ARGS const std::string&, \
-    const Component*, Interface*, u32, u32, u32, nlohmann::json
+#define BUTTERFLY_INJECTIONALGORITHM_ARGS                          \
+  const std::string&, const Component*, Interface*, u32, u32, u32, \
+      nlohmann::json
 
 namespace Butterfly {
 

@@ -18,9 +18,8 @@
 
 #include "factory/ObjectFactory.h"
 
-RandomDTP::RandomDTP(
-    const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, nlohmann::json _settings)
+RandomDTP::RandomDTP(const std::string& _name, const Component* _parent,
+                     u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : DistributionTrafficPattern(_name, _parent, _numTerminals, _self,
                                  _settings) {
   assert(_settings.contains("send_to_self"));
@@ -60,5 +59,5 @@ void RandomDTP::reset() {
   gSim->rnd.shuffle(&destinations_);
 }
 
-registerWithObjectFactory("random", DistributionTrafficPattern,
-                          RandomDTP, DISTRIBUTIONTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("random", DistributionTrafficPattern, RandomDTP,
+                          DISTRIBUTIONTRAFFICPATTERN_ARGS);

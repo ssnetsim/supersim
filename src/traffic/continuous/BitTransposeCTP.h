@@ -23,9 +23,8 @@
 
 class BitTransposeCTP : public ContinuousTrafficPattern {
  public:
-  BitTransposeCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  BitTransposeCTP(const std::string& _name, const Component* _parent,
+                  u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~BitTransposeCTP();
 
   u32 nextDestination() override;

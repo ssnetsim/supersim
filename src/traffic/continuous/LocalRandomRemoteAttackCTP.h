@@ -23,9 +23,9 @@
 
 class LocalRandomRemoteAttackCTP : public ContinuousTrafficPattern {
  public:
-  LocalRandomRemoteAttackCTP(
-      const std::string& _name, const Component* _parent,
-      u32 _numTerminals, u32 _self, nlohmann::json _settings);
+  LocalRandomRemoteAttackCTP(const std::string& _name, const Component* _parent,
+                             u32 _numTerminals, u32 _self,
+                             nlohmann::json _settings);
   ~LocalRandomRemoteAttackCTP();
 
   u32 nextDestination() override;

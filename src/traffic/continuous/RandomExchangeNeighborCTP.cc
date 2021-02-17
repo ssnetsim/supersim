@@ -15,15 +15,16 @@
 #include "traffic/continuous/RandomExchangeNeighborCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-RandomExchangeNeighborCTP::RandomExchangeNeighborCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+RandomExchangeNeighborCTP::RandomExchangeNeighborCTP(const std::string& _name,
+                                                     const Component* _parent,
+                                                     u32 _numTerminals,
+                                                     u32 _self,
+                                                     nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -47,7 +48,7 @@ RandomExchangeNeighborCTP::RandomExchangeNeighborCTP(
   if (_settings.contains("enabled_dimensions")) {
     assert(_settings["enabled_dimensions"].is_array());
     assert(_settings["enabled_dimensions"].size() == dimensions);
-    for (u32 dim = 0;  dim < dimensions; ++dim) {
+    for (u32 dim = 0; dim < dimensions; ++dim) {
       dimMask.at(dim) = _settings["enabled_dimensions"][dim].get<bool>();
     }
   } else {
@@ -66,8 +67,8 @@ RandomExchangeNeighborCTP::RandomExchangeNeighborCTP(
       // get self as a vector address
       Cube::translateInterfaceIdToAddress(self_, widths, concentration,
                                           interfacePorts, &addr);
-      addr.at(dim + 1) = (addr.at(dim + 1) + widths.at(dim) - 1)
-                         % widths.at(dim);
+      addr.at(dim + 1) =
+          (addr.at(dim + 1) + widths.at(dim) - 1) % widths.at(dim);
       if (allInterfaces) {
         for (u32 iface = 0; iface < interfacesPerRouter; ++iface) {
           addr.at(0) = iface;
@@ -97,13 +98,12 @@ RandomExchangeNeighborCTP::RandomExchangeNeighborCTP(
   }
 }
 
-RandomExchangeNeighborCTP::
-~RandomExchangeNeighborCTP() {}
+RandomExchangeNeighborCTP::~RandomExchangeNeighborCTP() {}
 
 u32 RandomExchangeNeighborCTP::nextDestination() {
   return dstVect_.at(gSim->rnd.nextU64(0, dstVect_.size() - 1));
 }
 
-registerWithObjectFactory(
-    "random_exchange_neighbor", ContinuousTrafficPattern,
-    RandomExchangeNeighborCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("random_exchange_neighbor", ContinuousTrafficPattern,
+                          RandomExchangeNeighborCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

@@ -19,9 +19,10 @@
 #include "event/Simulator.h"
 #include "factory/ObjectFactory.h"
 
-WavefrontAllocator::WavefrontAllocator(
-    const std::string& _name, const Component* _parent,
-    u32 _numClients, u32 _numResources, nlohmann::json _settings)
+WavefrontAllocator::WavefrontAllocator(const std::string& _name,
+                                       const Component* _parent,
+                                       u32 _numClients, u32 _numResources,
+                                       nlohmann::json _settings)
     : Allocator(_name, _parent, _numClients, _numResources, _settings) {
   // pointer vectors
   requests_.resize(numClients_ * numResources_, nullptr);
@@ -120,8 +121,8 @@ void WavefrontAllocator::allocate() {
   }
 }
 
-void WavefrontAllocator::toRowCol(u32 _client, u32 _resource,
-                                  u32* _row, u32* _col) const {
+void WavefrontAllocator::toRowCol(u32 _client, u32 _resource, u32* _row,
+                                  u32* _col) const {
   if (numClients_ > numResources_) {
     *_row = _client;
     *_col = _resource;
@@ -140,9 +141,7 @@ u32 WavefrontAllocator::toIndex(u32 _row, u32 _col) const {
 }
 
 u32 WavefrontAllocator::toRow(u32 _line, u32 _col) const {
-  u32 row = (_col > _line) ?
-            (_line + rows_ - _col) :
-            (_line - _col);
+  u32 row = (_col > _line) ? (_line + rows_ - _col) : (_line - _col);
   assert(row < rows_);  // REMOVE ME
   return row;
 }

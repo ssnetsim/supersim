@@ -26,8 +26,8 @@
 // least receeived used (LRU)
 class LruArbiter : public Arbiter {
  public:
-  LruArbiter(const std::string& _name, const Component* _parent,
-             u32 _size, nlohmann::json _settings);
+  LruArbiter(const std::string& _name, const Component* _parent, u32 _size,
+             nlohmann::json _settings);
   ~LruArbiter();
 
   void latch() override;

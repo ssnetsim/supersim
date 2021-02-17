@@ -21,14 +21,14 @@
 #include "nlohmann/json.hpp"
 #include "prim/prim.h"
 
-#define CONTINUOUSTRAFFICPATTERN_ARGS const std::string&, const Component*, \
-    u32, u32, nlohmann::json
+#define CONTINUOUSTRAFFICPATTERN_ARGS \
+  const std::string&, const Component*, u32, u32, nlohmann::json
 
 class ContinuousTrafficPattern : public Component {
  public:
-  ContinuousTrafficPattern(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  ContinuousTrafficPattern(const std::string& _name, const Component* _parent,
+                           u32 _numTerminals, u32 _self,
+                           nlohmann::json _settings);
   virtual ~ContinuousTrafficPattern();
 
   // this is the factory for continuous traffic patterns

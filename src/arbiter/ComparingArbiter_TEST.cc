@@ -39,7 +39,7 @@ TEST(ComparingArbiter, full) {
           request[idx] = gSim->rnd.nextBool();
           metadata[idx] = 10000 + idx;
         }
-      } while (hotCount(request, size) <= size/2);
+      } while (hotCount(request, size) <= size / 2);
 
       nlohmann::json asettings;
       asettings["greater"] = greater;

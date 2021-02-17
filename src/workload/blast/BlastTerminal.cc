@@ -14,10 +14,9 @@
  */
 #include "workload/blast/BlastTerminal.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 #include <utility>
 
 #include "fio/InFile.h"
@@ -84,7 +83,7 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
   numTransactions_ = _settings["num_transactions"].get<u32>();
 
   // max packet size
-  maxPacketSize_  = _settings["max_packet_size"].get<u32>();
+  maxPacketSize_ = _settings["max_packet_size"].get<u32>();
   assert(maxPacketSize_ > 0);
 
   // transaction size
@@ -122,8 +121,7 @@ BlastTerminal::BlastTerminal(const std::string& _name, const Component* _parent,
   enableResponses_ = _settings["enable_responses"].get<bool>();
 
   // latency of request processing
-  assert(!enableResponses_ ||
-         _settings.contains("request_processing_latency"));
+  assert(!enableResponses_ || _settings.contains("request_processing_latency"));
   requestProcessingLatency_ = _settings.value("request_processing_latency", 0);
 
   // protocol class of injection of responses
@@ -354,10 +352,9 @@ void BlastTerminal::warmDetector(Message* _message) {
     //  a sliding window linear regression
     if (enrouteSampleTimes_.size() == warmupWindow_) {
       warmupAttempts_++;
-      dbgprintf("warmup attempt %u of %u",
-                warmupAttempts_, maxWarmupAttempts_);
-      f64 growthRate = mut::slope<u64>(enrouteSampleTimes_,
-                                       enrouteSampleValues_);
+      dbgprintf("warmup attempt %u of %u", warmupAttempts_, maxWarmupAttempts_);
+      f64 growthRate =
+          mut::slope<u64>(enrouteSampleTimes_, enrouteSampleValues_);
       dbgprintf("growthRate: %e", growthRate);
       if (growthRate <= 0.0) {
         warmed = true;
@@ -455,8 +452,9 @@ void BlastTerminal::startTransaction() {
   u32 msgType = kRequestMsg;
 
   // start tracking the transaction
-  bool res = outstandingTransactions_.insert(
-      std::make_pair(transaction, transactionSize_)).second;
+  bool res = outstandingTransactions_
+                 .insert(std::make_pair(transaction, transactionSize_))
+                 .second;
   assert(res);
 
   // if in logging phase, register the transaction for logging
@@ -493,8 +491,8 @@ void BlastTerminal::startTransaction() {
     // create the packets
     u32 flitsLeft = messageSize;
     for (u32 p = 0; p < numPackets; p++) {
-      u32 packetLength = flitsLeft > maxPacketSize_ ?
-                         maxPacketSize_ : flitsLeft;
+      u32 packetLength =
+          flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
       Packet* packet = new Packet(p, packetLength, message);
       message->setPacket(p, packet);
@@ -554,8 +552,7 @@ void BlastTerminal::sendResponse(Message* _request) {
   // create the packets
   u32 flitsLeft = messageSize;
   for (u32 p = 0; p < numPackets; p++) {
-    u32 packetLength = flitsLeft > maxPacketSize_ ?
-                       maxPacketSize_ : flitsLeft;
+    u32 packetLength = flitsLeft > maxPacketSize_ ? maxPacketSize_ : flitsLeft;
 
     Packet* packet = new Packet(p, packetLength, message);
     message->setPacket(p, packet);

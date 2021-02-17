@@ -15,7 +15,6 @@
 #include "workload/alltoall/Application.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "event/Simulator.h"
@@ -25,10 +24,10 @@
 
 namespace AllToAll {
 
-Application::Application(
-    const std::string& _name, const Component* _parent, u32 _id,
-    Workload* _workload, MetadataHandler* _metadataHandler,
-    nlohmann::json _settings)
+Application::Application(const std::string& _name, const Component* _parent,
+                         u32 _id, Workload* _workload,
+                         MetadataHandler* _metadataHandler,
+                         nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings) {
   // all terminals are the same
@@ -89,8 +88,8 @@ void Application::terminalAtBarrier(u32 _id) {
   assert(atBarrierTerminals_ <= activeTerminals_);
   if (atBarrierTerminals_ == activeTerminals_) {
     for (u32 idx = 0; idx < numTerminals(); idx++) {
-      AllToAllTerminal* t = reinterpret_cast<AllToAllTerminal*>(
-          getTerminal(idx));
+      AllToAllTerminal* t =
+          reinterpret_cast<AllToAllTerminal*>(getTerminal(idx));
       if (t->requestInjectionRate() > 0.0) {
         t->exitBarrier();
       }

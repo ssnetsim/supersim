@@ -15,15 +15,14 @@
 #include "traffic/continuous/DimTransposeCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-DimTransposeCTP::DimTransposeCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+DimTransposeCTP::DimTransposeCTP(const std::string& _name,
+                                 const Component* _parent, u32 _numTerminals,
+                                 u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -48,7 +47,7 @@ DimTransposeCTP::DimTransposeCTP(
     assert(_settings["enabled_dimensions"].is_array());
     assert(_settings["enabled_dimensions"].size() == dimensions);
     u32 trueCntr = 0;
-    for (u32 dim = 0;  dim < dimensions; ++dim) {
+    for (u32 dim = 0; dim < dimensions; ++dim) {
       dimMask.at(dim) = _settings["enabled_dimensions"][dim].get<bool>();
       if (dimMask.at(dim) == true) {
         trueCntr++;
@@ -61,7 +60,7 @@ DimTransposeCTP::DimTransposeCTP(
   }
 
   u32 idx = 0;
-  for (u32 dim = 0;  dim < dimensions; ++dim) {
+  for (u32 dim = 0; dim < dimensions; ++dim) {
     if (dimMask.at(dim) == true) {
       workingDims.at(idx) = dim;
       idx++;

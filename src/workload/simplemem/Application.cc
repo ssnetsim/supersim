@@ -15,7 +15,6 @@
 #include "workload/simplemem/Application.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "bits/bits.h"
@@ -54,9 +53,9 @@ Application::Application(const std::string& _name, const Component* _parent,
     if ((t & 0x1) == 0) {
       // even terminals are memory terminals
       std::string tname = "MemoryTerminal_" + idStr;
-      MemoryTerminal* terminal = new MemoryTerminal(
-          tname, this, t, address, memorySlice_, this,
-          _settings["memory_terminal"]);
+      MemoryTerminal* terminal =
+          new MemoryTerminal(tname, this, t, address, memorySlice_, this,
+                             _settings["memory_terminal"]);
       setTerminal(t, terminal);
     } else {
       // odd terminals are processor terminals
@@ -79,8 +78,8 @@ f64 Application::percentComplete() const {
   u32 processorCount = 0;
   // odd terminals are processor terminals
   for (u32 idx = 1; idx < numTerminals(); idx += 2) {
-    ProcessorTerminal* pt = reinterpret_cast<ProcessorTerminal*>(
-        getTerminal(idx));
+    ProcessorTerminal* pt =
+        reinterpret_cast<ProcessorTerminal*>(getTerminal(idx));
     percentSum += pt->percentComplete();
     processorCount++;
   }
@@ -90,8 +89,8 @@ f64 Application::percentComplete() const {
 void Application::start() {
   // tell the processor terminals to start
   for (u32 idx = 1; idx < numTerminals(); idx += 2) {
-    ProcessorTerminal* pt = reinterpret_cast<ProcessorTerminal*>(
-        getTerminal(idx));
+    ProcessorTerminal* pt =
+        reinterpret_cast<ProcessorTerminal*>(getTerminal(idx));
     pt->start();
   }
 }

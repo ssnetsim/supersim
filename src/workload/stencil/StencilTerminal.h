@@ -38,7 +38,7 @@ class StencilTerminal : public Terminal {
       const std::string& _name, const Component* _parent, u32 _id,
       const std::vector<u32>& _address, const std::vector<u32>* _termToProc,
       const std::vector<u32>* _procToTerm,
-      const std::vector<std::tuple<u32, u32> >& _exchangeSendMessages,
+      const std::vector<std::tuple<u32, u32>>& _exchangeSendMessages,
       u32 _exchangeRecvMessages, ::Application* _app, nlohmann::json _settings);
   ~StencilTerminal();
   void processEvent(void* _event, s32 _type) override;
@@ -55,10 +55,15 @@ class StencilTerminal : public Terminal {
   // kExchange = exchanging information in halo
   // kCollective = performance collective operation
   // kDone = done with all iterations
-  enum class Fsm : s32 {kWaiting = 0, kCompute = 1, kExchange = 2,
-      kCollective = 3, kDone = 4};
+  enum class Fsm : s32 {
+    kWaiting = 0,
+    kCompute = 1,
+    kExchange = 2,
+    kCollective = 3,
+    kDone = 4
+  };
 
-  void advanceFsm();  // enqueue event to perform transition
+  void advanceFsm();     // enqueue event to perform transition
   void transitionFsm();  // called by processEvent
   void processReceivedMessage(Message* _message);  // called by processEvent
 
@@ -84,10 +89,10 @@ class StencilTerminal : public Terminal {
 
   // traffic generation
   const u32 numIterations_;
-  const u32 maxPacketSize_;  // flits
+  const u32 maxPacketSize_;             // flits
   const std::vector<u32>* termToProc_;  // [term]->proc
   const std::vector<u32>* procToTerm_;  // [proc]->term
-  const std::vector<std::tuple<u32, u32> > exchangeSendMessages_;  // {dst,size}
+  const std::vector<std::tuple<u32, u32>> exchangeSendMessages_;  // {dst,size}
   const u32 exchangeRecvMessages_;
   const u32 collectiveSize_;
 
@@ -102,7 +107,7 @@ class StencilTerminal : public Terminal {
   u32 iteration_;
   Fsm fsm_;
   std::unordered_map<u32, u32> exchangeRecvCount_;  // [iter]=count
-  std::unordered_map<u32, std::unordered_set<u32> > collectiveRecv_;  // [iter]
+  std::unordered_map<u32, std::unordered_set<u32>> collectiveRecv_;  // [iter]
   u32 collectiveOffset_;
 };
 

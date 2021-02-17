@@ -26,12 +26,11 @@ DalRoutingAlgorithm::DalRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts, nlohmann::json _settings)
-    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs,
-                       _inputPort, _inputVc, _dimensionWidths,
-                       _dimensionWeights, _concentration, _interfacePorts,
-                       _settings) {
+    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    u32 _interfacePorts, nlohmann::json _settings)
+    : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
+                       _inputVc, _dimensionWidths, _dimensionWeights,
+                       _concentration, _interfacePorts, _settings) {
   assert(_settings.contains("adaptivity_type") &&
          _settings["adaptivity_type"].is_string());
   assert(_settings.contains("output_type") &&
@@ -253,17 +252,17 @@ void DalRoutingAlgorithm::processRequest(
         concentration_, interfacePorts_, destinationAddress, vcSet, numVcSets_,
         baseVc_ + numVcs_, _flit, &outputVcsMin_, &outputVcsDer_);
   } else if (adaptivityType_ == AdaptiveRoutingAlg::VDALP) {
-    vdalPortRoutingOutput(
-        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-        concentration_, interfacePorts_, destinationAddress, baseVc_, vcSet,
-        numVcSets_, baseVc_ + numVcs_, _flit, multiDeroute_, &outputVcsMin_,
-        &outputVcsDer_);
+    vdalPortRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                          dimensionWeights_, concentration_, interfacePorts_,
+                          destinationAddress, baseVc_, vcSet, numVcSets_,
+                          baseVc_ + numVcs_, _flit, multiDeroute_,
+                          &outputVcsMin_, &outputVcsDer_);
   } else if (adaptivityType_ == AdaptiveRoutingAlg::VDALV) {
-    vdalVcRoutingOutput(
-        router_, inputPort_, inputVc_, dimensionWidths_, dimensionWeights_,
-        concentration_, interfacePorts_, destinationAddress, baseVc_, vcSet,
-        numVcSets_, baseVc_ + numVcs_, _flit, multiDeroute_, &outputVcsMin_,
-        &outputVcsDer_);
+    vdalVcRoutingOutput(router_, inputPort_, inputVc_, dimensionWidths_,
+                        dimensionWeights_, concentration_, interfacePorts_,
+                        destinationAddress, baseVc_, vcSet, numVcSets_,
+                        baseVc_ + numVcs_, _flit, multiDeroute_, &outputVcsMin_,
+                        &outputVcsDer_);
   } else {
     fprintf(stderr, "Unknown adaptive algorithm\n");
     assert(false);
@@ -279,9 +278,8 @@ void DalRoutingAlgorithm::processRequest(
 
   bool takingDeroute = false;
   if (decisionScheme_ == DecisionScheme::MW) {
-    monolithicWeighted(outputVcsMin_, outputVcsDer_,
-                       hops, hopIncr, iBias_, cBias_, biasMode_,
-                       &vcPool_, &takingDeroute);
+    monolithicWeighted(outputVcsMin_, outputVcsDer_, hops, hopIncr, iBias_,
+                       cBias_, biasMode_, &vcPool_, &takingDeroute);
     if (outputTypePort_) {
       makeOutputPortSet(&vcPool_, {vcSet}, numVcSets_, baseVc_ + numVcs_,
                         maxOutputs_, outputAlg_, &outputPorts_);
@@ -289,9 +287,8 @@ void DalRoutingAlgorithm::processRequest(
       makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
     }
   } else if (decisionScheme_ == DecisionScheme::ST) {
-    stagedThreshold(outputVcsMin_, outputVcsDer_,
-                    thresholdMin_, thresholdNonMin_,
-                    &vcPool_, &takingDeroute);
+    stagedThreshold(outputVcsMin_, outputVcsDer_, thresholdMin_,
+                    thresholdNonMin_, &vcPool_, &takingDeroute);
     if (outputTypePort_) {
       makeOutputPortSet(&vcPool_, {vcSet}, numVcSets_, baseVc_ + numVcs_,
                         maxOutputs_, outputAlg_, &outputPorts_);
@@ -299,10 +296,9 @@ void DalRoutingAlgorithm::processRequest(
       makeOutputVcSet(&vcPool_, maxOutputs_, outputAlg_, &outputPorts_);
     }
   } else if (decisionScheme_ == DecisionScheme::TW) {
-      thresholdWeighted(outputVcsMin_, outputVcsDer_,
-                        hops, hopIncr, threshold_,
-                        &vcPool_, &takingDeroute);
-      if (outputTypePort_) {
+    thresholdWeighted(outputVcsMin_, outputVcsDer_, hops, hopIncr, threshold_,
+                      &vcPool_, &takingDeroute);
+    if (outputTypePort_) {
       makeOutputPortSet(&vcPool_, {vcSet}, numVcSets_, baseVc_ + numVcs_,
                         maxOutputs_, outputAlg_, &outputPorts_);
     } else {
@@ -376,7 +372,6 @@ void DalRoutingAlgorithm::vcScheduled(Flit* _flit, u32 _port, u32 _vc) {
     derouted = false;
   }
 
-
   // mark deroute
   std::vector<u32>* deroutedDims =
       reinterpret_cast<std::vector<u32>*>(packet->getRoutingExtension());
@@ -389,5 +384,5 @@ void DalRoutingAlgorithm::vcScheduled(Flit* _flit, u32 _port, u32 _vc) {
 }  // namespace HyperX
 
 registerWithObjectFactory("dal", HyperX::RoutingAlgorithm,
-                    HyperX::DalRoutingAlgorithm,
-                    HYPERX_ROUTINGALGORITHM_ARGS);
+                          HyperX::DalRoutingAlgorithm,
+                          HYPERX_ROUTINGALGORITHM_ARGS);

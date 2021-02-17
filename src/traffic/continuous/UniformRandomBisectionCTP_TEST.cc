@@ -26,7 +26,8 @@
 #include "test/TestSetup_TESTLIB.h"
 
 TEST(UniformRandomBisectionCTP, PLEASE_LOVE_ME) {
-  printf("\n*****\n"
-         "I wish someone loved me enough to give me a unit test :(\n"
-         "*****\n\n");
+  printf(
+      "\n*****\n"
+      "I wish someone loved me enough to give me a unit test :(\n"
+      "*****\n\n");
 }

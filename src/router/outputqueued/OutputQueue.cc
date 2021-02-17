@@ -14,9 +14,8 @@
  */
 #include "router/outputqueued/OutputQueue.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 #include <queue>
 #include <string>
 
@@ -29,18 +28,24 @@
 
 namespace OutputQueued {
 
-OutputQueue::OutputQueue(
-    const std::string& _name, const Component* _parent, Router* _router,
-    u32 _depth, u32 _port, u32 _vc,
-    CrossbarScheduler* _outputCrossbarScheduler,
-    u32 _crossbarSchedulerIndex, Crossbar* _crossbar, u32 _crossbarIndex,
-    CreditWatcher* _creditWatcher, u32 _creditWatcherVcId,
-    bool _incrCreditWatcher, bool _decrCreditWatcher)
-    : Component(_name, _parent), depth_(_depth), occupancy_(0),
-      port_(_port), vc_(_vc), router_(_router),
+OutputQueue::OutputQueue(const std::string& _name, const Component* _parent,
+                         Router* _router, u32 _depth, u32 _port, u32 _vc,
+                         CrossbarScheduler* _outputCrossbarScheduler,
+                         u32 _crossbarSchedulerIndex, Crossbar* _crossbar,
+                         u32 _crossbarIndex, CreditWatcher* _creditWatcher,
+                         u32 _creditWatcherVcId, bool _incrCreditWatcher,
+                         bool _decrCreditWatcher)
+    : Component(_name, _parent),
+      depth_(_depth),
+      occupancy_(0),
+      port_(_port),
+      vc_(_vc),
+      router_(_router),
       outputCrossbarScheduler_(_outputCrossbarScheduler),
-      crossbarSchedulerIndex_(_crossbarSchedulerIndex), crossbar_(_crossbar),
-      crossbarIndex_(_crossbarIndex), creditWatcher_(_creditWatcher),
+      crossbarSchedulerIndex_(_crossbarSchedulerIndex),
+      crossbar_(_crossbar),
+      crossbarIndex_(_crossbarIndex),
+      creditWatcher_(_creditWatcher),
       creditWatcherVcId_(_creditWatcherVcId),
       incrCreditWatcher_(_incrCreditWatcher),
       decrCreditWatcher_(_decrCreditWatcher) {
@@ -82,8 +87,8 @@ void OutputQueue::receivePacket(Packet* _packet) {
   if (gSim->isCycle(Simulator::Clock::CHANNEL)) {
     setPipelineEvent();
   } else {
-    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, 1),
-             1, nullptr, INJECTED_PACKET);
+    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, 1), 1, nullptr,
+             INJECTED_PACKET);
   }
 }
 
@@ -209,7 +214,7 @@ void OutputQueue::processPipeline() {
    * if any of these cases are true, create and expect an event the next cycle
    */
   if ((swa_.fsm == ePipelineFsm::kWaitingToRequest) ||  // no credits
-      (buffer_.size() > 0)) {   // more flits in buffer
+      (buffer_.size() > 0)) {                           // more flits in buffer
     // set a pipeline event for the next cycle
     eventTime_ = gSim->futureCycle(Simulator::Clock::CHANNEL, 1);
     addEvent(eventTime_, 2, nullptr, PROCESS_PIPELINE);

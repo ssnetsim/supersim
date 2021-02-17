@@ -15,7 +15,6 @@
 #include "workload/pulse/Application.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "event/Simulator.h"
@@ -25,10 +24,10 @@
 
 namespace Pulse {
 
-Application::Application(
-    const std::string& _name, const Component* _parent, u32 _id,
-    Workload* _workload, MetadataHandler* _metadataHandler,
-    nlohmann::json _settings)
+Application::Application(const std::string& _name, const Component* _parent,
+                         u32 _id, Workload* _workload,
+                         MetadataHandler* _metadataHandler,
+                         nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings) {
   // all terminals are the same

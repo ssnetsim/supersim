@@ -15,7 +15,6 @@
 #include "workload/stream/Application.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "event/Simulator.h"
@@ -26,10 +25,10 @@
 
 namespace Stream {
 
-Application::Application(
-    const std::string& _name, const Component* _parent, u32 _id,
-    Workload* _workload, MetadataHandler* _metadataHandler,
-    nlohmann::json _settings)
+Application::Application(const std::string& _name, const Component* _parent,
+                         u32 _id, Workload* _workload,
+                         MetadataHandler* _metadataHandler,
+                         nlohmann::json _settings)
     : ::Application(_name, _parent, _id, _workload, _metadataHandler,
                     _settings),
       doMonitoring_(true) {
@@ -82,20 +81,20 @@ u32 Application::getDestination() const {
 }
 
 f64 Application::percentComplete() const {
-  StreamTerminal* t = reinterpret_cast<StreamTerminal*>(
-      getTerminal(destinationTerminal_));
+  StreamTerminal* t =
+      reinterpret_cast<StreamTerminal*>(getTerminal(destinationTerminal_));
   return t->percentComplete();
 }
 
 void Application::start() {
-  StreamTerminal* t = reinterpret_cast<StreamTerminal*>(
-      getTerminal(destinationTerminal_));
+  StreamTerminal* t =
+      reinterpret_cast<StreamTerminal*>(getTerminal(destinationTerminal_));
   t->start();
 }
 
 void Application::stop() {
-  StreamTerminal* t = reinterpret_cast<StreamTerminal*>(
-      getTerminal(sourceTerminal_));
+  StreamTerminal* t =
+      reinterpret_cast<StreamTerminal*>(getTerminal(sourceTerminal_));
   t->stop();
   workload_->applicationDone(id_);
 }

@@ -23,10 +23,10 @@ ZeroMetadataHandler::ZeroMetadataHandler(nlohmann::json _settings)
 
 ZeroMetadataHandler::~ZeroMetadataHandler() {}
 
-void ZeroMetadataHandler::packetInjection(
-    const Application* _app, Packet* _packet) {
+void ZeroMetadataHandler::packetInjection(const Application* _app,
+                                          Packet* _packet) {
   _packet->setMetadata(0);
 }
 
-registerWithObjectFactory("zero", MetadataHandler,
-                          ZeroMetadataHandler, METADATAHANDLER_ARGS);
+registerWithObjectFactory("zero", MetadataHandler, ZeroMetadataHandler,
+                          METADATAHANDLER_ARGS);

@@ -15,7 +15,6 @@
 #include "metadata/LocalTimestampMetadataHandler.h"
 
 #include <cassert>
-
 #include <string>
 
 #include "event/Simulator.h"
@@ -34,8 +33,9 @@ void LocalTimestampMetadataHandler::packetInterfaceArrival(
   _packet->setMetadata(gSim->time());
 }
 
-void LocalTimestampMetadataHandler::packetRouterArrival(
-    const Router* _router, u32 _port, Packet* _packet) {
+void LocalTimestampMetadataHandler::packetRouterArrival(const Router* _router,
+                                                        u32 _port,
+                                                        Packet* _packet) {
   _packet->setMetadata(gSim->time());
 }
 

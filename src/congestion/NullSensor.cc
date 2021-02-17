@@ -18,9 +18,8 @@
 
 #include "factory/ObjectFactory.h"
 
-NullSensor::NullSensor(
-    const std::string& _name, const Component* _parent, PortedDevice* _device,
-    nlohmann::json _settings)
+NullSensor::NullSensor(const std::string& _name, const Component* _parent,
+                       PortedDevice* _device, nlohmann::json _settings)
     : CongestionSensor(_name, _parent, _device, _settings) {}
 
 NullSensor::~NullSensor() {}
@@ -39,12 +38,12 @@ CongestionSensor::Resolution NullSensor::resolution() const {
   return CongestionSensor::Resolution::kNull;
 }
 
-f64 NullSensor::computeStatus(
-    u32 _inputPort, u32 _inputVc, u32 _outputPort, u32 _outputVc) const {
+f64 NullSensor::computeStatus(u32 _inputPort, u32 _inputVc, u32 _outputPort,
+                              u32 _outputVc) const {
   // asserting false caused problems with least-congested minimal and weighted
   //  reductions, returning 0.0 instead
   return 0.0;
 }
 
-registerWithObjectFactory("null_sensor", CongestionSensor,
-                          NullSensor, CONGESTIONSENSOR_ARGS);
+registerWithObjectFactory("null_sensor", CongestionSensor, NullSensor,
+                          CONGESTIONSENSOR_ARGS);

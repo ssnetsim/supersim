@@ -12,15 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <cassert>
+#include "routing/RoutingAlgorithm_TESTLIB.h"
 
+#include <cassert>
 #include <tuple>
 #include <vector>
 
-#include "routing/RoutingAlgorithm_TESTLIB.h"
-
-RoutingAlgorithmTestRouter::RoutingAlgorithmTestRouter(
-    const std::string& _name, u32 _numPorts, u32 _numVcs)
+RoutingAlgorithmTestRouter::RoutingAlgorithmTestRouter(const std::string& _name,
+                                                       u32 _numPorts,
+                                                       u32 _numVcs)
     : Router(_name, nullptr, nullptr, 0, std::vector<u32>(), _numPorts, _numVcs,
              nullptr, nlohmann::json()) {}
 
@@ -34,8 +34,8 @@ Channel* RoutingAlgorithmTestRouter::getInputChannel(u32 _port) const {
   assert(false);
 }
 
-void RoutingAlgorithmTestRouter::setOutputChannel(
-    u32 _port, Channel* _channel) {
+void RoutingAlgorithmTestRouter::setOutputChannel(u32 _port,
+                                                  Channel* _channel) {
   assert(false);
 }
 
@@ -59,7 +59,8 @@ void RoutingAlgorithmTestRouter::sendFlit(u32 _port, Flit* _flit) {
   assert(false);
 }
 
-f64 RoutingAlgorithmTestRouter::congestionStatus(
-    u32 _inputPort, u32 _inputVc, u32 _outputPort, u32 _outputVc) const {
+f64 RoutingAlgorithmTestRouter::congestionStatus(u32 _inputPort, u32 _inputVc,
+                                                 u32 _outputPort,
+                                                 u32 _outputVc) const {
   assert(false);
 }

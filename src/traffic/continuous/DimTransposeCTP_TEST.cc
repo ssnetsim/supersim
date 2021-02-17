@@ -36,42 +36,16 @@ TEST(DimTransposeCTP, no_enabled_dims) {
   settings["interface_ports"] = nlohmann::json(1);
 
   numTerminals = 4 * 3 * 3 * 3 * 1;
-  pairs = {
-    {0, 0},
-    {1, 3},
-    {2, 6},
-    {3, 1},
-    {4, 4},
-    {5, 7},
-    {6, 2},
-    {7, 5},
-    {8, 8},
-    {9, 9},
-    {10, 12},
-    {11, 15},
-    {12, 10},
-    {13, 13},
-    {14, 16},
-    {15, 11},
-    {16, 14},
-    {17, 17},
-    {18, 18},
-    {19, 21},
-    {20, 24},
-    {21, 19},
-    {22, 22},
-    {23, 25},
-    {24, 20},
-    {25, 23},
-    {26, 26}
-  };
+  pairs = {{0, 0},   {1, 3},   {2, 6},   {3, 1},   {4, 4},   {5, 7},   {6, 2},
+           {7, 5},   {8, 8},   {9, 9},   {10, 12}, {11, 15}, {12, 10}, {13, 13},
+           {14, 16}, {15, 11}, {16, 14}, {17, 17}, {18, 18}, {19, 21}, {20, 24},
+           {21, 19}, {22, 22}, {23, 25}, {24, 20}, {25, 23}, {26, 26}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first * 4 + iface;
       dst = p.second * 4 + iface;
-      tp = new DimTransposeCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new DimTransposeCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);
@@ -99,42 +73,16 @@ TEST(DimTransposeCTP, enabled_dims_0_1) {
   settings["enabled_dimensions"][2] = false;
 
   numTerminals = 4 * 3 * 3 * 3 * 1;
-  pairs = {
-    {0, 0},
-    {1, 3},
-    {2, 6},
-    {3, 1},
-    {4, 4},
-    {5, 7},
-    {6, 2},
-    {7, 5},
-    {8, 8},
-    {9, 9},
-    {10, 12},
-    {11, 15},
-    {12, 10},
-    {13, 13},
-    {14, 16},
-    {15, 11},
-    {16, 14},
-    {17, 17},
-    {18, 18},
-    {19, 21},
-    {20, 24},
-    {21, 19},
-    {22, 22},
-    {23, 25},
-    {24, 20},
-    {25, 23},
-    {26, 26}
-  };
+  pairs = {{0, 0},   {1, 3},   {2, 6},   {3, 1},   {4, 4},   {5, 7},   {6, 2},
+           {7, 5},   {8, 8},   {9, 9},   {10, 12}, {11, 15}, {12, 10}, {13, 13},
+           {14, 16}, {15, 11}, {16, 14}, {17, 17}, {18, 18}, {19, 21}, {20, 24},
+           {21, 19}, {22, 22}, {23, 25}, {24, 20}, {25, 23}, {26, 26}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first * 4 + iface;
       dst = p.second * 4 + iface;
-      tp = new DimTransposeCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new DimTransposeCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);
@@ -162,42 +110,16 @@ TEST(DimTransposeCTP, enabled_dims_0_2) {
   settings["enabled_dimensions"][2] = true;
 
   numTerminals = 4 * 3 * 3 * 3 * 1;
-  pairs = {
-    {0, 0},
-    {1, 9},
-    {2, 18},
-    {3, 3},
-    {4, 12},
-    {5, 21},
-    {6, 6},
-    {7, 15},
-    {8, 24},
-    {9, 1},
-    {10, 10},
-    {11, 19},
-    {12, 4},
-    {13, 13},
-    {14, 22},
-    {15, 7},
-    {16, 16},
-    {17, 25},
-    {18, 2},
-    {19, 11},
-    {20, 20},
-    {21, 5},
-    {22, 14},
-    {23, 23},
-    {24, 8},
-    {25, 17},
-    {26, 26}
-  };
+  pairs = {{0, 0},   {1, 9},   {2, 18},  {3, 3},   {4, 12},  {5, 21},  {6, 6},
+           {7, 15},  {8, 24},  {9, 1},   {10, 10}, {11, 19}, {12, 4},  {13, 13},
+           {14, 22}, {15, 7},  {16, 16}, {17, 25}, {18, 2},  {19, 11}, {20, 20},
+           {21, 5},  {22, 14}, {23, 23}, {24, 8},  {25, 17}, {26, 26}};
 
   for (u32 iface = 0; iface < 4; ++iface) {
     for (const auto& p : pairs) {
       src = p.first * 4 + iface;
       dst = p.second * 4 + iface;
-      tp = new DimTransposeCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp = new DimTransposeCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);

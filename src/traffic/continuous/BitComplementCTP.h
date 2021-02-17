@@ -23,9 +23,8 @@
 
 class BitComplementCTP : public ContinuousTrafficPattern {
  public:
-  BitComplementCTP(
-      const std::string& _name, const Component* _parent, u32 _numTerminals,
-      u32 _self, nlohmann::json _settings);
+  BitComplementCTP(const std::string& _name, const Component* _parent,
+                   u32 _numTerminals, u32 _self, nlohmann::json _settings);
   ~BitComplementCTP();
 
   u32 nextDestination() override;

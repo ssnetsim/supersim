@@ -18,9 +18,10 @@
 
 #include "factory/ObjectFactory.h"
 
-LocalRemoteRandomCTP::LocalRemoteRandomCTP(
-    const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, nlohmann::json _settings)
+LocalRemoteRandomCTP::LocalRemoteRandomCTP(const std::string& _name,
+                                           const Component* _parent,
+                                           u32 _numTerminals, u32 _self,
+                                           nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // verify settings exist

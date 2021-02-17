@@ -22,8 +22,8 @@ namespace Mesh {
 CommonInjectionAlgorithm::CommonInjectionAlgorithm(
     const std::string& _name, const Component* _parent, Interface* _interface,
     u32 _baseVc, u32 _numVcs, u32 _inputPc, nlohmann::json _settings)
-    : InjectionAlgorithm(_name, _parent, _interface, _baseVc, _numVcs,
-                           _inputPc, _settings) {
+    : InjectionAlgorithm(_name, _parent, _interface, _baseVc, _numVcs, _inputPc,
+                         _settings) {
   assert(_settings.contains("adaptive"));
   adaptive_ = _settings["adaptive"].get<bool>();
 
@@ -40,7 +40,6 @@ void CommonInjectionAlgorithm::processMessage(Message* _message) {
 
 }  // namespace Mesh
 
-registerWithObjectFactory(
-    "common", Mesh::InjectionAlgorithm,
-    Mesh::CommonInjectionAlgorithm,
-    MESH_INJECTIONALGORITHM_ARGS);
+registerWithObjectFactory("common", Mesh::InjectionAlgorithm,
+                          Mesh::CommonInjectionAlgorithm,
+                          MESH_INJECTIONALGORITHM_ARGS);

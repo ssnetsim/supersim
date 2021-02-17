@@ -15,7 +15,6 @@
 #include "interface/standard/Interface.h"
 
 #include <cassert>
-
 #include <utility>
 
 #include "architecture/util.h"
@@ -33,10 +32,11 @@
 
 namespace Standard {
 
-Interface::Interface(
-    const std::string& _name, const Component* _parent, Network* _network,
-    u32 _id, const std::vector<u32>& _address, u32 _numPorts, u32 _numVcs,
-    MetadataHandler* _metadataHandler, nlohmann::json _settings)
+Interface::Interface(const std::string& _name, const Component* _parent,
+                     Network* _network, u32 _id,
+                     const std::vector<u32>& _address, u32 _numPorts,
+                     u32 _numVcs, MetadataHandler* _metadataHandler,
+                     nlohmann::json _settings)
     : ::Interface(_name, _parent, _network, _id, _address, _numPorts, _numVcs,
                   _metadataHandler, _settings) {
   // init credits
@@ -71,8 +71,8 @@ Interface::Interface(
   injectionAlgorithms_.resize(numPcs, nullptr);
   for (u32 pc = 0; pc < numPcs; pc++) {
     std::string injName = "InjectionAlgorithm_" + std::to_string(pc);
-    injectionAlgorithms_.at(pc) = network_->createInjectionAlgorithm(
-        pc, injName, this, this);
+    injectionAlgorithms_.at(pc) =
+        network_->createInjectionAlgorithm(pc, injName, this, this);
   }
 
   // create the queues, crossbars, schedulers, ejectors, and packet reassemblers
@@ -92,9 +92,9 @@ Interface::Interface(
 
     // crossbar
     std::string crossbarName = "Crossbar_" + std::to_string(port);
-    crossbars_.at(port) = new Crossbar(
-        crossbarName, this, numVcs_, 1, Simulator::Clock::CHANNEL,
-        _settings["crossbar"]);
+    crossbars_.at(port) =
+        new Crossbar(crossbarName, this, numVcs_, 1, Simulator::Clock::CHANNEL,
+                     _settings["crossbar"]);
 
     // ejector
     std::string ejectorName = "Ejector_" + std::to_string(port);
@@ -106,21 +106,21 @@ Interface::Interface(
       u32 vcIdx = vcIndex(port, vc);
 
       // queue
-      std::string queueName = "OutputQueue_" + std::to_string(port) + "_" +
-                              std::to_string(vc);
-      outputQueues_.at(vcIdx) = new OutputQueue(
-          queueName, this, crossbarSchedulers_.at(port), vc,
-          crossbars_.at(port), vc, port, vc);
+      std::string queueName =
+          "OutputQueue_" + std::to_string(port) + "_" + std::to_string(vc);
+      outputQueues_.at(vcIdx) =
+          new OutputQueue(queueName, this, crossbarSchedulers_.at(port), vc,
+                          crossbars_.at(port), vc, port, vc);
 
       // link queue to scheduler
       crossbarSchedulers_.at(port)->setClient(vc, outputQueues_.at(vcIdx));
 
       // packet reassembler
-      std::string packetReassemblerName =
-          "PacketReassembler_" + std::to_string(port) + "_" +
-          std::to_string(vc);
-      packetReassemblers_.at(vcIdx) = new PacketReassembler(
-          packetReassemblerName, this);
+      std::string packetReassemblerName = "PacketReassembler_" +
+                                          std::to_string(port) + "_" +
+                                          std::to_string(vc);
+      packetReassemblers_.at(vcIdx) =
+          new PacketReassembler(packetReassemblerName, this);
     }
   }
 
@@ -179,8 +179,8 @@ void Interface::initialize() {
     u32 credits = initCredits_;
     u32 channelLatency = outputChannels_.at(ch)->latency();
     if (inputQueueTailored_) {
-      credits = computeTailoredBufferLength(
-          inputQueueMult_, inputQueueMin_, inputQueueMax_, channelLatency);
+      credits = computeTailoredBufferLength(inputQueueMult_, inputQueueMin_,
+                                            inputQueueMax_, channelLatency);
     }
     for (u32 vc = 0; vc < numVcs_; vc++) {
       // initialize the credit count in the CrossbarScheduler
@@ -351,5 +351,5 @@ void Interface::injectMessage(Message* _message) {
 
 }  // namespace Standard
 
-registerWithObjectFactory("standard", ::Interface,
-                          Standard::Interface, INTERFACE_ARGS);
+registerWithObjectFactory("standard", ::Interface, Standard::Interface,
+                          INTERFACE_ARGS);

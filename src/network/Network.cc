@@ -15,7 +15,6 @@
 #include "network/Network.h"
 
 #include <cassert>
-
 #include <utility>
 
 #include "factory/ObjectFactory.h"
@@ -52,9 +51,9 @@ Network::~Network() {
   delete trafficLog_;
 }
 
-Network* Network::create(
-    const std::string& _name, const Component* _parent,
-    MetadataHandler* _metadataHandler, nlohmann::json _settings) {
+Network* Network::create(const std::string& _name, const Component* _parent,
+                         MetadataHandler* _metadataHandler,
+                         nlohmann::json _settings) {
   // retrieve the topology
   const std::string& topology = _settings["topology"].get<std::string>();
 

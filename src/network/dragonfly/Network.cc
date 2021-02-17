@@ -16,7 +16,6 @@
 
 #include <cassert>
 #include <cmath>
-
 #include <tuple>
 
 #include "factory/ObjectFactory.h"
@@ -96,8 +95,8 @@ Network::Network(const std::string& _name, const Component* _parent,
       std::string rname = "Router_" + strop::vecString<u32>(routerAddress, '-');
       // make router
       routers_.at(group).at(r) = Router::create(
-          rname, this, this, routerId, routerAddress, routerRadix_,
-          numVcs_, _metadataHandler, _settings["router"]);
+          rname, this, this, routerId, routerAddress, routerRadix_, numVcs_,
+          _metadataHandler, _settings["router"]);
     }
   }
 
@@ -108,8 +107,8 @@ Network::Network(const std::string& _name, const Component* _parent,
       for (u32 weight = 0; weight < globalWeight_; weight++) {
         u32 reverseOffset = globalWidth_ - fwdOffset;
         u32 srcGroupPort, srcRouter, srcRouterPort;
-        computeGlobalToRouterMap(weight, fwdOffset, &srcGroupPort,
-                                 &srcRouter, &srcRouterPort);
+        computeGlobalToRouterMap(weight, fwdOffset, &srcGroupPort, &srcRouter,
+                                 &srcRouterPort);
         u32 dstGroupPort, dstRouter, dstRouterPort;
         computeGlobalToRouterMap(weight, reverseOffset, &dstGroupPort,
                                  &dstRouter, &dstRouterPort);
@@ -118,8 +117,7 @@ Network::Network(const std::string& _name, const Component* _parent,
 
         // create channels
         std::string globalChannelName =
-            "GlobalChannel_" +
-            strop::vecString<u32>(srcAddress, '-') + "-to-" +
+            "GlobalChannel_" + strop::vecString<u32>(srcAddress, '-') + "-to-" +
             strop::vecString<u32>(dstAddress, '-');
 
         // determine the global channel latency for current src dst group
@@ -131,8 +129,8 @@ Network::Network(const std::string& _name, const Component* _parent,
           _settings["global_channel"]["latency"] = channelLatency;
         }
 
-        Channel* globalChannel = new Channel(
-            globalChannelName, this, numVcs_, _settings["global_channel"]);
+        Channel* globalChannel = new Channel(globalChannelName, this, numVcs_,
+                                             _settings["global_channel"]);
         globalChannels_.push_back(globalChannel);
 
         // link the routers from source to dst
@@ -178,10 +176,8 @@ Network::Network(const std::string& _name, const Component* _parent,
           u32 dstPort = computeLocalDstPort(portBase, offset, weight);
 
           // link the routers from src to dst
-          routers_.at(group).at(srcRouter)->setOutputChannel(srcPort,
-                                                             channel);
-          routers_.at(group).at(dstRouter)->setInputChannel(dstPort,
-                                                            channel);
+          routers_.at(group).at(srcRouter)->setOutputChannel(srcPort, channel);
+          routers_.at(group).at(dstRouter)->setInputChannel(dstPort, channel);
         }
       }
       portBase += ((localWidth_ - 1) * localWeight_);
@@ -190,8 +186,8 @@ Network::Network(const std::string& _name, const Component* _parent,
 
   // create a vector of dimension widths that contains the interfaces
   u32 interfacesPerRouter = concentration_ / interfacePorts_;
-  std::vector<u32> fullDimensionWidths =
-      {interfacesPerRouter, localWidth_, globalWidth_};
+  std::vector<u32> fullDimensionWidths = {interfacesPerRouter, localWidth_,
+                                          globalWidth_};
 
   // create interfaces and link them with the routers
   interfaces_.setSize(fullDimensionWidths);
@@ -285,35 +281,35 @@ Network::~Network() {
   }
 
   // delete channels
-  for (auto it = globalChannels_.begin();
-       it != globalChannels_.end(); ++it) {
+  for (auto it = globalChannels_.begin(); it != globalChannels_.end(); ++it) {
     delete *it;
   }
-  for (auto it = localChannels_.begin();
-       it != localChannels_.end(); ++it) {
+  for (auto it = localChannels_.begin(); it != localChannels_.end(); ++it) {
     delete *it;
   }
-  for (auto it = externalChannels_.begin();
-       it != externalChannels_.end(); ++it) {
+  for (auto it = externalChannels_.begin(); it != externalChannels_.end();
+       ++it) {
     delete *it;
   }
 }
 
 ::InjectionAlgorithm* Network::createInjectionAlgorithm(
-     u32 _inputPc, const std::string& _name,
-     const Component* _parent, Interface* _interface) {
+    u32 _inputPc, const std::string& _name, const Component* _parent,
+    Interface* _interface) {
   // get the info
   const ::Network::PcSettings& settings = pcSettings(_inputPc);
 
   // call the routing algorithm factory
-  return InjectionAlgorithm::create(
-      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
-      settings.injection);
+  return InjectionAlgorithm::create(_name, _parent, _interface, settings.baseVc,
+                                    settings.numVcs, _inputPc,
+                                    settings.injection);
 }
 
-::RoutingAlgorithm* Network::createRoutingAlgorithm(
-     u32 _inputPort, u32 _inputVc, const std::string& _name,
-     const Component* _parent, Router* _router) {
+::RoutingAlgorithm* Network::createRoutingAlgorithm(u32 _inputPort,
+                                                    u32 _inputVc,
+                                                    const std::string& _name,
+                                                    const Component* _parent,
+                                                    Router* _router) {
   // get the info
   u32 pc = vcToPc(_inputVc);
   const ::Network::PcSettings& settings = pcSettings(pc);
@@ -347,10 +343,10 @@ Interface* Network::getInterface(u32 _id) const {
   return interfaces_.at(_id);
 }
 
-void Network::translateInterfaceIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
-  Dragonfly::translateInterfaceIdToAddress(
-      concentration_, interfacePorts_, localWidth_, _id, _address);
+void Network::translateInterfaceIdToAddress(u32 _id,
+                                            std::vector<u32>* _address) const {
+  Dragonfly::translateInterfaceIdToAddress(concentration_, interfacePorts_,
+                                           localWidth_, _id, _address);
 }
 
 u32 Network::translateInterfaceAddressToId(
@@ -359,38 +355,30 @@ u32 Network::translateInterfaceAddressToId(
       concentration_, interfacePorts_, localWidth_, _address);
 }
 
-void Network::translateRouterIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
-  Dragonfly::translateRouterIdToAddress(
-      localWidth_, _id, _address);
+void Network::translateRouterIdToAddress(u32 _id,
+                                         std::vector<u32>* _address) const {
+  Dragonfly::translateRouterIdToAddress(localWidth_, _id, _address);
 }
 
 u32 Network::translateRouterAddressToId(
     const std::vector<u32>* _address) const {
-  return Dragonfly::translateRouterAddressToId(
-      localWidth_, _address);
+  return Dragonfly::translateRouterAddressToId(localWidth_, _address);
 }
 
 u32 Network::computeMinimalHops(const std::vector<u32>* _source,
                                 const std::vector<u32>* _destination) const {
-  return Dragonfly::computeMinimalHops(_source, _destination,
-                                       globalWidth_, globalWeight_,
-                                       routerGlobalPortBase_,
-                                       globalPortsPerRouter_,
-                                       localWidth_);
+  return Dragonfly::computeMinimalHops(_source, _destination, globalWidth_,
+                                       globalWeight_, routerGlobalPortBase_,
+                                       globalPortsPerRouter_, localWidth_);
 }
 
 void Network::computeGlobalToRouterMap(u32 _thisGlobalWeight,
-                                       u32 _thisGlobalOffset,
-                                       u32* _globalPort,
+                                       u32 _thisGlobalOffset, u32* _globalPort,
                                        u32* _localRouter, u32* _localPort) {
-  Dragonfly::computeGlobalToRouterMap(routerGlobalPortBase_,
-                                      globalPortsPerRouter_,
-                                      globalWidth_,
-                                      globalWeight_,
-                                      localWidth_, _thisGlobalWeight,
-                                      _thisGlobalOffset, _globalPort,
-                                      _localRouter, _localPort);
+  Dragonfly::computeGlobalToRouterMap(
+      routerGlobalPortBase_, globalPortsPerRouter_, globalWidth_, globalWeight_,
+      localWidth_, _thisGlobalWeight, _thisGlobalOffset, _globalPort,
+      _localRouter, _localPort);
 }
 
 u32 Network::computeLocalSrcPort(u32 _portBase, u32 _offset, u32 _weight) {
@@ -409,8 +397,7 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
     Channel* c = *it;
     _channels->push_back(c);
   }
-  for (auto it = localChannels_.begin(); it != localChannels_.end();
-       ++it) {
+  for (auto it = localChannels_.begin(); it != localChannels_.end(); ++it) {
     Channel* c = *it;
     _channels->push_back(c);
   }
@@ -418,5 +405,5 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
 
 }  // namespace Dragonfly
 
-registerWithObjectFactory("dragonfly", ::Network,
-                          Dragonfly::Network, NETWORK_ARGS);
+registerWithObjectFactory("dragonfly", ::Network, Dragonfly::Network,
+                          NETWORK_ARGS);

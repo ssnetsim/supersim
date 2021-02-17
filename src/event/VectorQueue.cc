@@ -16,24 +16,23 @@
 
 #include <cassert>
 
-VectorQueue::VectorQueue(nlohmann::json _settings)
-    : Simulator(_settings) {}
+VectorQueue::VectorQueue(nlohmann::json _settings) : Simulator(_settings) {}
 
 VectorQueue::~VectorQueue() {}
 
 void VectorQueue::addEvent(u64 _time, u8 _epsilon, Component* _component,
                            void* _event, s32 _type) {
-  assert((_time > time_) ||  // future by time
+  assert((_time > time_) ||                              // future by time
          ((_time == time_) && (_epsilon > epsilon_)) ||  // future by epsilon
-         (initial()));  // has not yet run
+         (initial()));                                   // has not yet run
 
   // create a bundle object
   VectorQueue::EventBundle bundle;
-  bundle.time      = _time;
-  bundle.epsilon   = _epsilon;
+  bundle.time = _time;
+  bundle.epsilon = _epsilon;
   bundle.component = _component;
-  bundle.event     = _event;
-  bundle.type      = _type;
+  bundle.event = _event;
+  bundle.type = _type;
 
   // push into queue
   eventQueue_.push(bundle);
@@ -66,7 +65,6 @@ VectorQueue::EventBundleComparator::~EventBundleComparator() {}
 bool VectorQueue::EventBundleComparator::operator()(
     const VectorQueue::EventBundle _lhs,
     const VectorQueue::EventBundle _rhs) const {
-  return (_lhs.time == _rhs.time) ?
-      (_lhs.epsilon > _rhs.epsilon) :
-      (_lhs.time > _rhs.time);
+  return (_lhs.time == _rhs.time) ? (_lhs.epsilon > _rhs.epsilon)
+                                  : (_lhs.time > _rhs.time);
 }

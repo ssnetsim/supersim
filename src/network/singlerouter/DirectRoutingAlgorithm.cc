@@ -15,7 +15,6 @@
 #include "network/singlerouter/DirectRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <vector>
 
@@ -59,7 +58,7 @@ void DirectRoutingAlgorithm::processRequest(
     }
   } else {
     // select all minimally congested VCs
-    std::vector<std::tuple<u32, u32> > minCongVcs;
+    std::vector<std::tuple<u32, u32>> minCongVcs;
     f64 minCong = F64_POS_INF;
     for (u32 port : outputPorts) {
       for (u32 vc = baseVc_; vc < baseVc_ + numVcs_; vc++) {
@@ -81,6 +80,6 @@ void DirectRoutingAlgorithm::processRequest(
 
 }  // namespace SingleRouter
 
-registerWithObjectFactory(
-    "direct", SingleRouter::RoutingAlgorithm,
-    SingleRouter::DirectRoutingAlgorithm, SINGLEROUTER_ROUTINGALGORITHM_ARGS);
+registerWithObjectFactory("direct", SingleRouter::RoutingAlgorithm,
+                          SingleRouter::DirectRoutingAlgorithm,
+                          SINGLEROUTER_ROUTINGALGORITHM_ARGS);

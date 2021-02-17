@@ -43,8 +43,7 @@ TEST(GroupAttackCTP, half_permutation) {
       u32 selfConc = gSim->rnd.nextU64(0, concentration - 1);
 
       u32 self = ((selfGroup * groupSize * concentration) +
-                  (selfLocal * concentration) +
-                  (selfConc));
+                  (selfLocal * concentration) + (selfConc));
 
       GroupAttackCTP* tp = new GroupAttackCTP(
           "TP", nullptr, groupCount * groupSize * concentration, self,
@@ -54,8 +53,7 @@ TEST(GroupAttackCTP, half_permutation) {
       u32 expDestLocal = selfLocal;
       u32 expDestConc = selfConc;
       u32 expDest = ((expDestGroup * groupSize * concentration) +
-                     (expDestLocal * concentration) +
-                     (expDestConc));
+                     (expDestLocal * concentration) + (expDestConc));
 
       for (u32 cnt = 0; cnt < 100; cnt++) {
         u32 dest = tp->nextDestination();
@@ -87,8 +85,7 @@ TEST(GroupAttackCTP, opposite_permutation) {
       u32 selfConc = gSim->rnd.nextU64(0, concentration - 1);
 
       u32 self = ((selfGroup * groupSize * concentration) +
-                  (selfLocal * concentration) +
-                  (selfConc));
+                  (selfLocal * concentration) + (selfConc));
 
       GroupAttackCTP* tp = new GroupAttackCTP(
           "TP", nullptr, groupCount * groupSize * concentration, self,
@@ -98,8 +95,7 @@ TEST(GroupAttackCTP, opposite_permutation) {
       u32 expDestLocal = selfLocal;
       u32 expDestConc = selfConc;
       u32 expDest = ((expDestGroup * groupSize * concentration) +
-                     (expDestLocal * concentration) +
-                     (expDestConc));
+                     (expDestLocal * concentration) + (expDestConc));
 
       for (u32 cnt = 0; cnt < 100; cnt++) {
         u32 dest = tp->nextDestination();
@@ -111,7 +107,6 @@ TEST(GroupAttackCTP, opposite_permutation) {
   }
 }
 
-
 TEST(GroupAttackCTP, offset_permutation) {
   for (u32 net = 0; net < 100; net++) {
     TestSetup ts(1, 1, 1, 1, 0xDEAD * net + 0xBEEF);
@@ -119,7 +114,7 @@ TEST(GroupAttackCTP, offset_permutation) {
     u32 groupCount = gSim->rnd.nextU64(1, 10);
     u32 groupSize = gSim->rnd.nextU64(1, 10);
     u32 concentration = gSim->rnd.nextU64(1, 10);
-    for (s32 offset = -1; (u32)abs(offset) < groupCount; offset ++) {
+    for (s32 offset = -1; (u32)abs(offset) < groupCount; offset++) {
       for (u32 test = 0; test < 100; test++) {
         nlohmann::json settings;
         settings["group_size"] = groupSize;
@@ -132,15 +127,14 @@ TEST(GroupAttackCTP, offset_permutation) {
         u32 selfConc = gSim->rnd.nextU64(0, concentration - 1);
 
         u32 self = ((selfGroup * groupSize * concentration) +
-                    (selfLocal * concentration) +
-                    (selfConc));
+                    (selfLocal * concentration) + (selfConc));
 
         GroupAttackCTP* tp = new GroupAttackCTP(
             "TP", nullptr, groupCount * groupSize * concentration, self,
             settings);
 
-        s32 destGroup = ((s32)selfGroup +
-                         ((s32)groupCount + offset)) % (s32)groupCount;
+        s32 destGroup =
+            ((s32)selfGroup + ((s32)groupCount + offset)) % (s32)groupCount;
         if (destGroup < 0) {
           destGroup += groupCount;
         }
@@ -149,8 +143,7 @@ TEST(GroupAttackCTP, offset_permutation) {
         u32 expDestLocal = selfLocal;
         u32 expDestConc = selfConc;
         u32 expDest = ((expDestGroup * groupSize * concentration) +
-                       (expDestLocal * concentration) +
-                       (expDestConc));
+                       (expDestLocal * concentration) + (expDestConc));
 
         for (u32 cnt = 0; cnt < 100; cnt++) {
           u32 dest = tp->nextDestination();
@@ -186,8 +179,8 @@ TEST(GroupAttackCTP, random) {
     } while ((groupSize * concentration) < 5);
 
     if (DEBUG > 1) {
-      printf("config: gc=%u gs=%u c=%u\n",
-             groupCount, groupSize, concentration);
+      printf("config: gc=%u gs=%u c=%u\n", groupCount, groupSize,
+             concentration);
     }
     for (u32 test = 0; test < TESTS; test++) {
       nlohmann::json settings;
@@ -201,12 +194,11 @@ TEST(GroupAttackCTP, random) {
       u32 selfConc = gSim->rnd.nextU64(0, concentration - 1);
 
       u32 self = ((selfGroup * groupSize * concentration) +
-                  (selfLocal * concentration) +
-                  (selfConc));
+                  (selfLocal * concentration) + (selfConc));
 
       if (DEBUG > 1) {
-        printf("self: g=%u l=%u c=%u s=%u\n",
-               selfGroup, selfLocal, selfConc, self);
+        printf("self: g=%u l=%u c=%u s=%u\n", selfGroup, selfLocal, selfConc,
+               self);
       }
 
       GroupAttackCTP* tp = new GroupAttackCTP(
@@ -241,8 +233,8 @@ TEST(GroupAttackCTP, random) {
       if (relStddev > wc) {
         wc = relStddev;
         if (DEBUG > 0) {
-          printf("%f: gc=%u gs=%u c=%u\n", relStddev,
-                 groupCount, groupSize, concentration);
+          printf("%f: gc=%u gs=%u c=%u\n", relStddev, groupCount, groupSize,
+                 concentration);
         }
       }
 

@@ -24,8 +24,8 @@
 #include "nlohmann/json.hpp"
 #include "prim/prim.h"
 
-#define CONGESTIONSENSOR_ARGS const std::string&, const Component*, \
-    PortedDevice*, nlohmann::json
+#define CONGESTIONSENSOR_ARGS \
+  const std::string&, const Component*, PortedDevice*, nlohmann::json
 
 class CongestionSensor : public Component, public CreditWatcher {
  public:
@@ -61,8 +61,8 @@ class CongestionSensor : public Component, public CreditWatcher {
  protected:
   // this must be implemented by subclasses to yield the congestion status
   //  this MUST return a value >= 0.0
-  virtual f64 computeStatus(u32 _inputPort, u32 _inputVc,
-                            u32 _outputPort, u32 _outputVc) const = 0;
+  virtual f64 computeStatus(u32 _inputPort, u32 _inputVc, u32 _outputPort,
+                            u32 _outputVc) const = 0;
 
   PortedDevice* device_;
   const u32 numPorts_;

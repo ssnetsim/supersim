@@ -36,48 +36,17 @@ TEST(DimBisectionStressCTP, parity) {
   settings["mode"] = "parity";
 
   numTerminals = 2 * 4 * 4;
-  pairs_DC = {
-    {0, 30},
-    {2, 28},
-    {4, 26},
-    {6, 24},
-    {8, 22},
-    {10, 20},
-    {12, 18},
-    {14, 16},
-    {16, 14},
-    {18, 12},
-    {20, 10},
-    {22, 8},
-    {24, 6},
-    {26, 4},
-    {28, 2},
-    {30, 0}
-  };
-  pairs_HB = {
-    {1, 21},
-    {3, 23},
-    {5, 17},
-    {7, 19},
-    {9, 29},
-    {11, 31},
-    {13, 25},
-    {15, 27},
-    {17, 5},
-    {19, 7},
-    {21, 1},
-    {23, 3},
-    {25, 13},
-    {27, 15},
-    {29, 9},
-    {31, 11}
-  };
+  pairs_DC = {{0, 30},  {2, 28},  {4, 26},  {6, 24},  {8, 22},  {10, 20},
+              {12, 18}, {14, 16}, {16, 14}, {18, 12}, {20, 10}, {22, 8},
+              {24, 6},  {26, 4},  {28, 2},  {30, 0}};
+  pairs_HB = {{1, 21},  {3, 23},  {5, 17}, {7, 19}, {9, 29}, {11, 31},
+              {13, 25}, {15, 27}, {17, 5}, {19, 7}, {21, 1}, {23, 3},
+              {25, 13}, {27, 15}, {29, 9}, {31, 11}};
 
   for (const auto& p : pairs_DC) {
     src = p.first;
     dst = p.second;
-    tp = new DimBisectionStressCTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new DimBisectionStressCTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);
@@ -88,8 +57,7 @@ TEST(DimBisectionStressCTP, parity) {
   for (const auto& p : pairs_HB) {
     src = p.first;
     dst = p.second;
-    tp = new DimBisectionStressCTP(
-        "TP", nullptr, numTerminals, src, settings);
+    tp = new DimBisectionStressCTP("TP", nullptr, numTerminals, src, settings);
     for (u32 idx = 0; idx < 100; ++idx) {
       u32 next = tp->nextDestination();
       ASSERT_LT(next, numTerminals);
@@ -115,30 +83,16 @@ TEST(DimBisectionStressCTP, half) {
   numTerminals = 2 * 4 * 4;
 
   pairs = {
-    {0, 15},
-    {1, 14},
-    {2, 13},
-    {3, 12},
-    {4, 11},
-    {5, 10},
-    {6, 9},
-    {7, 8},
-    {8, 2},
-    {9, 3},
-    {10, 0},
-    {11, 1},
-    {12, 6},
-    {13, 7},
-    {14, 4},
-    {15, 5},
+      {0, 15}, {1, 14}, {2, 13}, {3, 12}, {4, 11}, {5, 10}, {6, 9},  {7, 8},
+      {8, 2},  {9, 3},  {10, 0}, {11, 1}, {12, 6}, {13, 7}, {14, 4}, {15, 5},
   };
 
   for (u32 iface = 0; iface < 2; ++iface) {
     for (const auto& p : pairs) {
       src = p.first * 2 + iface;
       dst = p.second * 2 + iface;
-      tp = new DimBisectionStressCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp =
+          new DimBisectionStressCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);
@@ -165,30 +119,16 @@ TEST(DimBisectionStressCTP, quadrant) {
   numTerminals = 2 * 4 * 4;
 
   pairs = {
-    {0, 15},
-    {1, 14},
-    {2, 8},
-    {3, 9},
-    {4, 11},
-    {5, 10},
-    {6, 12},
-    {7, 13},
-    {8, 2},
-    {9, 3},
-    {10, 5},
-    {11, 4},
-    {12, 6},
-    {13, 7},
-    {14, 1},
-    {15, 0},
+      {0, 15}, {1, 14}, {2, 8},  {3, 9},  {4, 11}, {5, 10}, {6, 12}, {7, 13},
+      {8, 2},  {9, 3},  {10, 5}, {11, 4}, {12, 6}, {13, 7}, {14, 1}, {15, 0},
   };
 
   for (u32 iface = 0; iface < 2; ++iface) {
     for (const auto& p : pairs) {
       src = p.first * 2 + iface;
       dst = p.second * 2 + iface;
-      tp = new DimBisectionStressCTP(
-          "TP", nullptr, numTerminals, src, settings);
+      tp =
+          new DimBisectionStressCTP("TP", nullptr, numTerminals, src, settings);
       for (u32 idx = 0; idx < 100; ++idx) {
         u32 next = tp->nextDestination();
         ASSERT_LT(next, numTerminals);

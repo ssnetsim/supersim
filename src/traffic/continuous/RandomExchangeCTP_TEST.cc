@@ -39,8 +39,8 @@ TEST(RandomExchangeCTP, evenSpread) {
   settings["send_to_self"] = true;
   std::vector<RandomExchangeCTP*> tps(TPS);
   for (u32 idx = 0; idx < TPS; idx++) {
-    tps.at(idx) = new RandomExchangeCTP(
-        "TP_"+std::to_string(idx), nullptr, TPS, idx, settings);
+    tps.at(idx) = new RandomExchangeCTP("TP_" + std::to_string(idx), nullptr,
+                                        TPS, idx, settings);
   }
 
   std::vector<std::vector<u32>> vals(TPS, std::vector<u32>(TPS, 0u));
@@ -61,8 +61,7 @@ TEST(RandomExchangeCTP, evenSpread) {
     std::vector<u32> val(TPS / 2, 0);
     for (u32 bkt = 0; bkt < TPS; bkt++) {
       bool thislower = bkt < (TPS / 2);
-      if ((imlower && !thislower) ||
-          (!imlower && thislower)) {
+      if ((imlower && !thislower) || (!imlower && thislower)) {
         // copy out count in valid region
         val.at(bkt % (TPS / 2)) = vals.at(idx).at(bkt);
       } else {

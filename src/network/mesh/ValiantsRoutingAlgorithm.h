@@ -29,17 +29,18 @@ namespace Mesh {
 
 class ValiantsRoutingAlgorithm : public RoutingAlgorithm {
  public:
-  ValiantsRoutingAlgorithm(
-      const std::string& _name, const Component* _parent, Router* _router,
-      u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-      const std::vector<u32>& _dimensionWidths,
-      const std::vector<u32>& _dimensionWeights,
-      u32 _concentration, u32 _interfacePorts, nlohmann::json _settings);
+  ValiantsRoutingAlgorithm(const std::string& _name, const Component* _parent,
+                           Router* _router, u32 _baseVc, u32 _numVcs,
+                           u32 _inputPort, u32 _inputVc,
+                           const std::vector<u32>& _dimensionWidths,
+                           const std::vector<u32>& _dimensionWeights,
+                           u32 _concentration, u32 _interfacePorts,
+                           nlohmann::json _settings);
   ~ValiantsRoutingAlgorithm();
 
  protected:
-  void processRequest(
-      Flit* _flit, RoutingAlgorithm::Response* _response) override;
+  void processRequest(Flit* _flit,
+                      RoutingAlgorithm::Response* _response) override;
 
  private:
   void addPort(u32 _port, u32 _hops, u32 vcSet);

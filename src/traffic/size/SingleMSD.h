@@ -24,9 +24,8 @@
 
 class SingleMSD : public MessageSizeDistribution {
  public:
-  SingleMSD(
-      const std::string& _name, const Component* _parent,
-      nlohmann::json _settings);
+  SingleMSD(const std::string& _name, const Component* _parent,
+            nlohmann::json _settings);
   virtual ~SingleMSD();
 
   // size bounds

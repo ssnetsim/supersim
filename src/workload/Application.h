@@ -28,8 +28,9 @@ class MetadataHandler;
 class Terminal;
 class Workload;
 
-#define APPLICATION_ARGS const std::string&, const Component*, u32, Workload*, \
-    MetadataHandler*, nlohmann::json
+#define APPLICATION_ARGS                                                  \
+  const std::string&, const Component*, u32, Workload*, MetadataHandler*, \
+      nlohmann::json
 
 class Application : public Component {
  public:

@@ -16,8 +16,8 @@
 
 #include <cassert>
 
-FlitDistributor::FlitDistributor(
-    const std::string& _name, const Component* _parent, u32 _outputs)
+FlitDistributor::FlitDistributor(const std::string& _name,
+                                 const Component* _parent, u32 _outputs)
     : Component(_name, _parent) {
   receivers_.resize(_outputs, nullptr);
 }

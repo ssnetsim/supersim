@@ -15,7 +15,6 @@
 #include "network/fattree/CommonAncestorRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <unordered_set>
 #include <vector>
@@ -31,8 +30,8 @@ namespace FatTree {
 CommonAncestorRoutingAlgorithm::CommonAncestorRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-    const std::vector<std::tuple<u32, u32, u32> >* _radices,
-    u32 _interfacePorts, nlohmann::json _settings)
+    const std::vector<std::tuple<u32, u32, u32>>* _radices, u32 _interfacePorts,
+    nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _radices, _interfacePorts, _settings),
       mode_(parseRoutingMode(_settings["mode"].get<std::string>())),
@@ -47,8 +46,8 @@ CommonAncestorRoutingAlgorithm::CommonAncestorRoutingAlgorithm(
   random_.seed(randomId_);
 
   // create the reduction
-  reduction_ = Reduction::create("Reduction", this, _router, mode_,
-                                 false, _settings["reduction"]);
+  reduction_ = Reduction::create("Reduction", this, _router, mode_, false,
+                                 _settings["reduction"]);
 }
 
 CommonAncestorRoutingAlgorithm::~CommonAncestorRoutingAlgorithm() {
@@ -135,7 +134,7 @@ void CommonAncestorRoutingAlgorithm::processRequest(
   }
 
   // reduction phase
-  const std::unordered_set<std::tuple<u32, u32> >* outputs =
+  const std::unordered_set<std::tuple<u32, u32>>* outputs =
       reduction_->reduce(nullptr);
   for (const auto& t : *outputs) {
     u32 port = std::get<0>(t);
@@ -192,14 +191,22 @@ u64 CommonAncestorRoutingAlgorithm::flowCache(const Flit* _flit) {
 
 // from http://burtleburtle.net/bob/c/lookup3.c
 #define rot(x, k) (((x) << (k)) | ((x) >> (32 - (k))))
-#define final(a, b, c) {                        \
-    c ^= b; c -= rot(b, 14);                    \
-    a ^= c; a -= rot(c, 11);                    \
-    b ^= a; b -= rot(a, 25);                    \
-    c ^= b; c -= rot(b, 16);                    \
-    a ^= c; a -= rot(c, 4);                     \
-    b ^= a; b -= rot(a, 14);                    \
-    c ^= b; c -= rot(b, 24);                    \
+#define final(a, b, c) \
+  {                    \
+    c ^= b;            \
+    c -= rot(b, 14);   \
+    a ^= c;            \
+    a -= rot(c, 11);   \
+    b ^= a;            \
+    b -= rot(a, 25);   \
+    c ^= b;            \
+    c -= rot(b, 16);   \
+    a ^= c;            \
+    a -= rot(c, 4);    \
+    b ^= a;            \
+    b -= rot(a, 14);   \
+    c ^= b;            \
+    c -= rot(b, 24);   \
   }
 
 u64 CommonAncestorRoutingAlgorithm::flowHash(const Flit* _flit) {

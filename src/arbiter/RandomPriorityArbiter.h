@@ -32,5 +32,4 @@ class RandomPriorityArbiter : public Arbiter {
   u32 arbitrate() override;
 };
 
-
 #endif  // ARBITER_RANDOMPRIORITYARBITER_H_

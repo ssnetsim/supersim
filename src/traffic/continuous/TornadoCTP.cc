@@ -15,15 +15,13 @@
 #include "traffic/continuous/TornadoCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-TornadoCTP::TornadoCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+TornadoCTP::TornadoCTP(const std::string& _name, const Component* _parent,
+                       u32 _numTerminals, u32 _self, nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -45,7 +43,7 @@ TornadoCTP::TornadoCTP(
   if (_settings.contains("enabled_dimensions")) {
     assert(_settings["enabled_dimensions"].is_array());
     assert(_settings["enabled_dimensions"].size() == dimensions);
-    for (u32 dim = 0;  dim < dimensions; ++dim) {
+    for (u32 dim = 0; dim < dimensions; ++dim) {
       dimMask.at(dim) = _settings["enabled_dimensions"][dim].get<bool>();
     }
   } else {
@@ -54,8 +52,8 @@ TornadoCTP::TornadoCTP(
 
   // get self as a vector address
   std::vector<u32> addr;
-  Cube::translateInterfaceIdToAddress(
-      self_, widths, concentration, interfacePorts, &addr);
+  Cube::translateInterfaceIdToAddress(self_, widths, concentration,
+                                      interfacePorts, &addr);
 
   // compute the tornado destination vector address
   for (u32 dim = 0; dim < dimensions; dim++) {
@@ -77,5 +75,5 @@ u32 TornadoCTP::nextDestination() {
   return dest_;
 }
 
-registerWithObjectFactory("tornado", ContinuousTrafficPattern,
-                          TornadoCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("tornado", ContinuousTrafficPattern, TornadoCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

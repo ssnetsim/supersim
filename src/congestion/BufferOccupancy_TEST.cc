@@ -30,9 +30,8 @@ TEST(BufferOccupancy, normVc) {
   const u32 granularity = 0;
 
   nlohmann::json routerSettings;
-  CongestionTestRouter router(
-      "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      nullptr, routerSettings);
+  CongestionTestRouter router("Router", nullptr, nullptr, 0, std::vector<u32>(),
+                              numPorts, numVcs, nullptr, routerSettings);
   router.setDebug(debug);
 
   nlohmann::json sensorSettings;
@@ -41,8 +40,7 @@ TEST(BufferOccupancy, normVc) {
   sensorSettings["mode"] = "normalized_vc";
   sensorSettings["minimum"] = 0;
   sensorSettings["offset"] = 0;
-  BufferOccupancy sensor("CongestionSensor", &router, &router,
-                         sensorSettings);
+  BufferOccupancy sensor("CongestionSensor", &router, &router, sensorSettings);
   sensor.setDebug(debug);
 
   for (u32 port = 0; port < numPorts; port++) {
@@ -108,9 +106,8 @@ TEST(BufferOccupancy, absVc) {
   const u32 granularity = 0;
 
   nlohmann::json routerSettings;
-  CongestionTestRouter router(
-      "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      nullptr, routerSettings);
+  CongestionTestRouter router("Router", nullptr, nullptr, 0, std::vector<u32>(),
+                              numPorts, numVcs, nullptr, routerSettings);
   router.setDebug(debug);
 
   nlohmann::json sensorSettings;
@@ -119,8 +116,7 @@ TEST(BufferOccupancy, absVc) {
   sensorSettings["mode"] = "absolute_vc";
   sensorSettings["minimum"] = 0;
   sensorSettings["offset"] = 0;
-  BufferOccupancy sensor("CongestionSensor", &router, &router,
-                         sensorSettings);
+  BufferOccupancy sensor("CongestionSensor", &router, &router, sensorSettings);
   sensor.setDebug(debug);
 
   for (u32 port = 0; port < numPorts; port++) {
@@ -185,9 +181,8 @@ TEST(BufferOccupancy, normPort) {
   const u32 granularity = 0;
 
   nlohmann::json routerSettings;
-  CongestionTestRouter router(
-      "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      nullptr, routerSettings);
+  CongestionTestRouter router("Router", nullptr, nullptr, 0, std::vector<u32>(),
+                              numPorts, numVcs, nullptr, routerSettings);
   router.setDebug(debug);
 
   nlohmann::json sensorSettings;
@@ -196,8 +191,7 @@ TEST(BufferOccupancy, normPort) {
   sensorSettings["mode"] = "normalized_port";
   sensorSettings["minimum"] = 0;
   sensorSettings["offset"] = 0;
-  BufferOccupancy sensor("CongestionSensor", &router, &router,
-                         sensorSettings);
+  BufferOccupancy sensor("CongestionSensor", &router, &router, sensorSettings);
   sensor.setDebug(debug);
 
   for (u32 port = 0; port < numPorts; port++) {
@@ -266,9 +260,8 @@ TEST(BufferOccupancy, absPort) {
   const u32 granularity = 0;
 
   nlohmann::json routerSettings;
-  CongestionTestRouter router(
-      "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-      nullptr, routerSettings);
+  CongestionTestRouter router("Router", nullptr, nullptr, 0, std::vector<u32>(),
+                              numPorts, numVcs, nullptr, routerSettings);
   router.setDebug(debug);
 
   nlohmann::json sensorSettings;
@@ -277,8 +270,7 @@ TEST(BufferOccupancy, absPort) {
   sensorSettings["mode"] = "absolute_port";
   sensorSettings["minimum"] = 0;
   sensorSettings["offset"] = 0;
-  BufferOccupancy sensor("CongestionSensor", &router, &router,
-                         sensorSettings);
+  BufferOccupancy sensor("CongestionSensor", &router, &router, sensorSettings);
   sensor.setDebug(debug);
 
   for (u32 port = 0; port < numPorts; port++) {
@@ -352,9 +344,9 @@ TEST(BufferOccupancy, phantomNormVc) {
         TestSetup test(1, 1, 1, 1, 1234);
 
         nlohmann::json routerSettings;
-        CongestionTestRouter router(
-            "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-            nullptr, routerSettings);
+        CongestionTestRouter router("Router", nullptr, nullptr, 0,
+                                    std::vector<u32>(), numPorts, numVcs,
+                                    nullptr, routerSettings);
         router.setDebug(debug);
 
         nlohmann::json channelSettings;
@@ -394,8 +386,8 @@ TEST(BufferOccupancy, phantomNormVc) {
         for (u32 ch = 0; ch < 100; ch++) {
           f64 inWindow = (f64)(u32)(channelLatency * lengthCoeff) -
                          std::min((u32)(channelLatency * lengthCoeff), ch);
-          f64 exp = ((f64)bufferDepth - inWindow * valueCoeff) /
-                    (f64)bufferDepth;
+          f64 exp =
+              ((f64)bufferDepth - inWindow * valueCoeff) / (f64)bufferDepth;
           exp = std::min(1.0, std::max(0.0, exp));
           check.setEvent(time, 0, 0, 0, 0, 0, exp);
           time++;
@@ -427,9 +419,9 @@ TEST(BufferOccupancy, phantomAbsVc) {
         TestSetup test(1, 1, 1, 1, 1234);
 
         nlohmann::json routerSettings;
-        CongestionTestRouter router(
-            "Router", nullptr, nullptr, 0, std::vector<u32>(), numPorts, numVcs,
-            nullptr, routerSettings);
+        CongestionTestRouter router("Router", nullptr, nullptr, 0,
+                                    std::vector<u32>(), numPorts, numVcs,
+                                    nullptr, routerSettings);
         router.setDebug(debug);
 
         nlohmann::json channelSettings;

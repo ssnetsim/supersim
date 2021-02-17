@@ -19,9 +19,10 @@
 #include "arbiter/Arbiter.h"
 #include "factory/ObjectFactory.h"
 
-CrSeparableAllocator::CrSeparableAllocator(
-    const std::string& _name, const Component* _parent,
-    u32 _numClients, u32 _numResources, nlohmann::json _settings)
+CrSeparableAllocator::CrSeparableAllocator(const std::string& _name,
+                                           const Component* _parent,
+                                           u32 _numClients, u32 _numResources,
+                                           nlohmann::json _settings)
     : Allocator(_name, _parent, _numClients, _numResources, _settings) {
   // pointer arrays
   requests_.resize(numClients_ * numResources_, nullptr);
@@ -36,15 +37,15 @@ CrSeparableAllocator::CrSeparableAllocator(
   // instantiate the client arbiters
   for (u32 c = 0; c < numClients_; c++) {
     std::string name = "ArbiterC" + std::to_string(c);
-    clientArbiters_[c] = Arbiter::create(
-        name, this, numResources_, _settings["client_arbiter"]);
+    clientArbiters_[c] =
+        Arbiter::create(name, this, numResources_, _settings["client_arbiter"]);
   }
 
   // instantiate the resource arbiters
   for (u32 r = 0; r < numResources_; r++) {
     std::string name = "ArbiterR" + std::to_string(r);
-    resourceArbiters_[r] = Arbiter::create(
-        name, this, numClients_, _settings["resource_arbiter"]);
+    resourceArbiters_[r] =
+        Arbiter::create(name, this, numClients_, _settings["resource_arbiter"]);
   }
 
   // map intermediate request signals to arbiters

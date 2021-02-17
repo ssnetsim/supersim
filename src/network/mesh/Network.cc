@@ -14,10 +14,9 @@
  */
 #include "network/mesh/Network.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-
-#include <algorithm>
 #include <tuple>
 
 #include "factory/ObjectFactory.h"
@@ -115,10 +114,10 @@ Network::Network(const std::string& _name, const Component* _parent,
           destinationPort = portBase + dimWeight + wInd;
 
           // create the channels
-          channelName = "RChannel_"  +
+          channelName = "RChannel_" +
                         strop::vecString<u32>(routerAddress, '-') + "-to-" +
-                        strop::vecString<u32>(destinationAddress, '-')
-                        + "-" + std::to_string(wInd);
+                        strop::vecString<u32>(destinationAddress, '-') + "-" +
+                        std::to_string(wInd);
           channel = new Channel(channelName, this, numVcs_,
                                 _settings["internal_channel"]);
           internalChannels_.push_back(channel);
@@ -128,12 +127,11 @@ Network::Network(const std::string& _name, const Component* _parent,
                     strop::vecString<u32>(sourceAddress, '-').c_str(),
                     sourcePort,
                     strop::vecString<u32>(destinationAddress, '-').c_str(),
-                    destinationPort,
-                    channelName.c_str());
+                    destinationPort, channelName.c_str());
 
           routers_.at(sourceAddress)->setOutputChannel(sourcePort, channel);
-          routers_.at(destinationAddress)->setInputChannel(destinationPort,
-                                                           channel);
+          routers_.at(destinationAddress)
+              ->setInputChannel(destinationPort, channel);
         }
       }
 
@@ -144,10 +142,9 @@ Network::Network(const std::string& _name, const Component* _parent,
           sourcePort = portBase + dimWeight + wInd;
           destinationPort = portBase + wInd;
           channelName = "LChannel_" +
-                        strop::vecString<u32>(routerAddress, '-') +
-                        "-to-" +
-                        strop::vecString<u32>(destinationAddress, '-')
-                        + "-" + std::to_string(wInd);
+                        strop::vecString<u32>(routerAddress, '-') + "-to-" +
+                        strop::vecString<u32>(destinationAddress, '-') + "-" +
+                        std::to_string(wInd);
           channel = new Channel(channelName, this, numVcs_,
                                 _settings["internal_channel"]);
           internalChannels_.push_back(channel);
@@ -157,11 +154,10 @@ Network::Network(const std::string& _name, const Component* _parent,
                     strop::vecString<u32>(sourceAddress, '-').c_str(),
                     sourcePort,
                     strop::vecString<u32>(destinationAddress, '-').c_str(),
-                    destinationPort,
-                    channelName.c_str());
+                    destinationPort, channelName.c_str());
           routers_.at(sourceAddress)->setOutputChannel(sourcePort, channel);
-          routers_.at(destinationAddress)->setInputChannel(destinationPort,
-                                                           channel);
+          routers_.at(destinationAddress)
+              ->setInputChannel(destinationPort, channel);
         }
       }
 
@@ -257,20 +253,22 @@ Network::~Network() {
 }
 
 ::InjectionAlgorithm* Network::createInjectionAlgorithm(
-     u32 _inputPc, const std::string& _name,
-     const Component* _parent, Interface* _interface) {
+    u32 _inputPc, const std::string& _name, const Component* _parent,
+    Interface* _interface) {
   // get the info
   const ::Network::PcSettings& settings = pcSettings(_inputPc);
 
   // call the routing algorithm factory
-  return InjectionAlgorithm::create(
-      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
-      settings.injection);
+  return InjectionAlgorithm::create(_name, _parent, _interface, settings.baseVc,
+                                    settings.numVcs, _inputPc,
+                                    settings.injection);
 }
 
-::RoutingAlgorithm* Network::createRoutingAlgorithm(
-     u32 _inputPort, u32 _inputVc, const std::string& _name,
-     const Component* _parent, Router* _router) {
+::RoutingAlgorithm* Network::createRoutingAlgorithm(u32 _inputPort,
+                                                    u32 _inputVc,
+                                                    const std::string& _name,
+                                                    const Component* _parent,
+                                                    Router* _router) {
   // get the info
   u32 pc = vcToPc(_inputVc);
   const ::Network::PcSettings& settings = pcSettings(pc);
@@ -298,8 +296,8 @@ Interface* Network::getInterface(u32 _id) const {
   return interfaces_.at(_id);
 }
 
-void Network::translateInterfaceIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
+void Network::translateInterfaceIdToAddress(u32 _id,
+                                            std::vector<u32>* _address) const {
   Cube::translateInterfaceIdToAddress(_id, dimensionWidths_, concentration_,
                                       interfacePorts_, _address);
 }
@@ -310,8 +308,8 @@ u32 Network::translateInterfaceAddressToId(
                                              concentration_, interfacePorts_);
 }
 
-void Network::translateRouterIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
+void Network::translateRouterIdToAddress(u32 _id,
+                                         std::vector<u32>* _address) const {
   Cube::translateRouterIdToAddress(_id, dimensionWidths_, _address);
 }
 
@@ -323,7 +321,7 @@ u32 Network::translateRouterAddressToId(
 u32 Network::computeMinimalHops(const std::vector<u32>* _source,
                                 const std::vector<u32>* _destination) const {
   return Mesh::computeMinimalHops(_source, _destination, dimensions_,
-                                   dimensionWidths_);
+                                  dimensionWidths_);
 }
 
 void Network::collectChannels(std::vector<Channel*>* _channels) {
@@ -339,5 +337,4 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
 
 }  // namespace Mesh
 
-registerWithObjectFactory("mesh", ::Network,
-                          Mesh::Network, NETWORK_ARGS);
+registerWithObjectFactory("mesh", ::Network, Mesh::Network, NETWORK_ARGS);

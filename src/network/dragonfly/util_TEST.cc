@@ -129,68 +129,54 @@ TEST(Dragonfly, computeGlobalToRouterMap) {
 
   w = 0;
   o = 1;
-  Dragonfly::computeGlobalToRouterMap(routerGlobalPortBase,
-                                      globalPortsPerRouter,
-                                      globalWidth,
-                                      globalWeight, localWidth, w, o,
-                                      &globalPort, &localRouter, &localPort);
+  Dragonfly::computeGlobalToRouterMap(
+      routerGlobalPortBase, globalPortsPerRouter, globalWidth, globalWeight,
+      localWidth, w, o, &globalPort, &localRouter, &localPort);
   ASSERT_EQ(globalPort, 0u);
   ASSERT_EQ(localRouter, 0u);
   ASSERT_EQ(localPort, 8u);
 
   w = 1;
   o = 1;
-  Dragonfly::computeGlobalToRouterMap(routerGlobalPortBase,
-                                      globalPortsPerRouter,
-                                      globalWidth,
-                                      globalWeight, localWidth, w, o,
-                                      &globalPort, &localRouter, &localPort);
+  Dragonfly::computeGlobalToRouterMap(
+      routerGlobalPortBase, globalPortsPerRouter, globalWidth, globalWeight,
+      localWidth, w, o, &globalPort, &localRouter, &localPort);
   ASSERT_EQ(globalPort, 3u);
   ASSERT_EQ(localRouter, 1u);
   ASSERT_EQ(localPort, 9u);
 
-
   w = 0;
   o = 2;
-  Dragonfly::computeGlobalToRouterMap(routerGlobalPortBase,
-                                      globalPortsPerRouter,
-                                      globalWidth,
-                                      globalWeight, localWidth, w, o,
-                                      &globalPort, &localRouter, &localPort);
+  Dragonfly::computeGlobalToRouterMap(
+      routerGlobalPortBase, globalPortsPerRouter, globalWidth, globalWeight,
+      localWidth, w, o, &globalPort, &localRouter, &localPort);
   ASSERT_EQ(globalPort, 1u);
   ASSERT_EQ(localRouter, 0u);
   ASSERT_EQ(localPort, 9u);
 
   w = 0;
   o = 3;
-  Dragonfly::computeGlobalToRouterMap(routerGlobalPortBase,
-                                      globalPortsPerRouter,
-                                      globalWidth,
-                                      globalWeight, localWidth, w, o,
-                                      &globalPort, &localRouter, &localPort);
+  Dragonfly::computeGlobalToRouterMap(
+      routerGlobalPortBase, globalPortsPerRouter, globalWidth, globalWeight,
+      localWidth, w, o, &globalPort, &localRouter, &localPort);
   ASSERT_EQ(globalPort, 2u);
   ASSERT_EQ(localRouter, 1u);
   ASSERT_EQ(localPort, 8u);
 
-
   w = 1;
   o = 2;
-  Dragonfly::computeGlobalToRouterMap(routerGlobalPortBase,
-                                      globalPortsPerRouter,
-                                      globalWidth,
-                                      globalWeight, localWidth, w, o,
-                                      &globalPort, &localRouter, &localPort);
+  Dragonfly::computeGlobalToRouterMap(
+      routerGlobalPortBase, globalPortsPerRouter, globalWidth, globalWeight,
+      localWidth, w, o, &globalPort, &localRouter, &localPort);
   ASSERT_EQ(globalPort, 4u);
   ASSERT_EQ(localRouter, 2u);
   ASSERT_EQ(localPort, 8u);
 
   w = 1;
   o = 3;
-  Dragonfly::computeGlobalToRouterMap(routerGlobalPortBase,
-                                      globalPortsPerRouter,
-                                      globalWidth,
-                                      globalWeight, localWidth, w, o,
-                                      &globalPort, &localRouter, &localPort);
+  Dragonfly::computeGlobalToRouterMap(
+      routerGlobalPortBase, globalPortsPerRouter, globalWidth, globalWeight,
+      localWidth, w, o, &globalPort, &localRouter, &localPort);
   ASSERT_EQ(globalPort, 5u);
   ASSERT_EQ(localRouter, 2u);
   ASSERT_EQ(localPort, 9u);
@@ -206,38 +192,38 @@ TEST(Dragonfly, translateInterfaceIdToAddress) {
 
   id = 0;
   exp = {0, 0, 0};
-  Dragonfly::translateInterfaceIdToAddress(
-      conc, ifacePorts, localWidth, id, &address);
+  Dragonfly::translateInterfaceIdToAddress(conc, ifacePorts, localWidth, id,
+                                           &address);
   ASSERT_EQ(address, exp);
 
   id = 1;
   exp = {1, 0, 0};
-  Dragonfly::translateInterfaceIdToAddress(
-      conc, ifacePorts, localWidth, id, &address);
+  Dragonfly::translateInterfaceIdToAddress(conc, ifacePorts, localWidth, id,
+                                           &address);
   ASSERT_EQ(address, exp);
 
   id = 5;
   exp = {1, 2, 0};
-  Dragonfly::translateInterfaceIdToAddress(
-      conc, ifacePorts, localWidth, id, &address);
+  Dragonfly::translateInterfaceIdToAddress(conc, ifacePorts, localWidth, id,
+                                           &address);
   ASSERT_EQ(address, exp);
 
   id = 16;
   exp = {0, 2, 2};
-  Dragonfly::translateInterfaceIdToAddress(
-      conc, ifacePorts, localWidth, id, &address);
+  Dragonfly::translateInterfaceIdToAddress(conc, ifacePorts, localWidth, id,
+                                           &address);
   ASSERT_EQ(address, exp);
 
   id = 47;
   exp = {1, 2, 7};
-  Dragonfly::translateInterfaceIdToAddress(
-      conc, ifacePorts, localWidth, id, &address);
+  Dragonfly::translateInterfaceIdToAddress(conc, ifacePorts, localWidth, id,
+                                           &address);
   ASSERT_EQ(address, exp);
 
   id = 33;
   exp = {1, 1, 5};
-  Dragonfly::translateInterfaceIdToAddress(
-      conc, ifacePorts, localWidth, id, &address);
+  Dragonfly::translateInterfaceIdToAddress(conc, ifacePorts, localWidth, id,
+                                           &address);
   ASSERT_EQ(address, exp);
 }
 
@@ -249,23 +235,23 @@ TEST(Dragonfly, translateInterfaceAddressToId) {
 
   address = {0, 2, 6};
   ASSERT_EQ(40u, Dragonfly::translateInterfaceAddressToId(
-      conc, ifacePorts, localWidth, &address));
+                     conc, ifacePorts, localWidth, &address));
 
   address = {1, 0, 4};
   ASSERT_EQ(25u, Dragonfly::translateInterfaceAddressToId(
-      conc, ifacePorts, localWidth, &address));
+                     conc, ifacePorts, localWidth, &address));
 
   address = {0, 2, 3};
   ASSERT_EQ(22u, Dragonfly::translateInterfaceAddressToId(
-      conc, ifacePorts, localWidth, &address));
+                     conc, ifacePorts, localWidth, &address));
 
   address = {0, 0, 0};
-  ASSERT_EQ(0u, Dragonfly::translateInterfaceAddressToId(
-      conc, ifacePorts, localWidth, &address));
+  ASSERT_EQ(0u, Dragonfly::translateInterfaceAddressToId(conc, ifacePorts,
+                                                         localWidth, &address));
 
   address = {1, 2, 7};
   ASSERT_EQ(47u, Dragonfly::translateInterfaceAddressToId(
-      conc, ifacePorts, localWidth, &address));
+                     conc, ifacePorts, localWidth, &address));
 }
 
 TEST(Dragonfly, translateRouterIdToAddress) {
@@ -310,17 +296,13 @@ TEST(Dragonfly, translateRouterAddressToId) {
   std::vector<u32> address;
 
   address = {0, 0};
-  ASSERT_EQ(0u, Dragonfly::translateRouterAddressToId(localWidth,
-                                                      &address));
+  ASSERT_EQ(0u, Dragonfly::translateRouterAddressToId(localWidth, &address));
   address = {1, 1};
-  ASSERT_EQ(4u, Dragonfly::translateRouterAddressToId(localWidth,
-                                                      &address));
+  ASSERT_EQ(4u, Dragonfly::translateRouterAddressToId(localWidth, &address));
   address = {0, 2};
-  ASSERT_EQ(6u, Dragonfly::translateRouterAddressToId(localWidth,
-                                                      &address));
+  ASSERT_EQ(6u, Dragonfly::translateRouterAddressToId(localWidth, &address));
   address = {2, 3};
-  ASSERT_EQ(11u, Dragonfly::translateRouterAddressToId(localWidth,
-                                                       &address));
+  ASSERT_EQ(11u, Dragonfly::translateRouterAddressToId(localWidth, &address));
 }
 
 TEST(Dragonfly, computeMinimalHops) {
@@ -341,17 +323,17 @@ TEST(Dragonfly, computeMinimalHops) {
   u32 interfacePorts = 2;
   u32 globalPortsPerRouter = 4;
 
-  Dragonfly::translateInterfaceIdToAddress(
-      concentration, interfacePorts, localWidth, 519, &src);
+  Dragonfly::translateInterfaceIdToAddress(concentration, interfacePorts,
+                                           localWidth, 519, &src);
   std::vector<u32> expSrc({1, 3, 32});
   ASSERT_EQ(src, expSrc);
-  Dragonfly::translateInterfaceIdToAddress(
-      concentration, interfacePorts, localWidth, 18, &dst);
+  Dragonfly::translateInterfaceIdToAddress(concentration, interfacePorts,
+                                           localWidth, 18, &dst);
   std::vector<u32> expDst({0, 1, 1});
   ASSERT_EQ(dst, expDst);
   ASSERT_EQ(4u, Dragonfly::computeMinimalHops(
-      &src, &dst, globalWidth, globalWeight, routerPortBase,
-      globalPortsPerRouter, localWidth));
+                    &src, &dst, globalWidth, globalWeight, routerPortBase,
+                    globalPortsPerRouter, localWidth));
 
   globalWidth = 4;
   globalWeight = 2;
@@ -363,51 +345,39 @@ TEST(Dragonfly, computeMinimalHops) {
   // same router
   src = {0, 2, 0};
   dst = {1, 2, 0};
-  ASSERT_EQ(1u, Dragonfly::computeMinimalHops(&src, &dst, globalWidth,
-                                              globalWeight,
-                                              routerPortBase,
-                                              globalPortsPerRouter,
-                                              localWidth));
+  ASSERT_EQ(1u, Dragonfly::computeMinimalHops(
+                    &src, &dst, globalWidth, globalWeight, routerPortBase,
+                    globalPortsPerRouter, localWidth));
   // same group
   // diff router
   src = {0, 2, 0};
   dst = {1, 0, 0};
-  ASSERT_EQ(2u, Dragonfly::computeMinimalHops(&src, &dst, globalWidth,
-                                              globalWeight,
-                                              routerPortBase,
-                                              globalPortsPerRouter,
-                                              localWidth));
+  ASSERT_EQ(2u, Dragonfly::computeMinimalHops(
+                    &src, &dst, globalWidth, globalWeight, routerPortBase,
+                    globalPortsPerRouter, localWidth));
   // diff group
   // same exiting router | same entering router
   src = {0, 2, 0};
   dst = {0, 1, 3};
-  ASSERT_EQ(2u, Dragonfly::computeMinimalHops(&src, &dst, globalWidth,
-                                              globalWeight,
-                                              routerPortBase,
-                                              globalPortsPerRouter,
-                                              localWidth));
+  ASSERT_EQ(2u, Dragonfly::computeMinimalHops(
+                    &src, &dst, globalWidth, globalWeight, routerPortBase,
+                    globalPortsPerRouter, localWidth));
   // same exiting router | diff entering router
   src = {0, 0, 2};
   dst = {0, 0, 3};
-  ASSERT_EQ(3u, Dragonfly::computeMinimalHops(&src, &dst, globalWidth,
-                                              globalWeight,
-                                              routerPortBase,
-                                              globalPortsPerRouter,
-                                              localWidth));
+  ASSERT_EQ(3u, Dragonfly::computeMinimalHops(
+                    &src, &dst, globalWidth, globalWeight, routerPortBase,
+                    globalPortsPerRouter, localWidth));
   // diff exiting router | same entering router
   src = {0, 2, 2};
   dst = {0, 1, 3};
-  ASSERT_EQ(3u, Dragonfly::computeMinimalHops(&src, &dst, globalWidth,
-                                              globalWeight,
-                                              routerPortBase,
-                                              globalPortsPerRouter,
-                                              localWidth));
+  ASSERT_EQ(3u, Dragonfly::computeMinimalHops(
+                    &src, &dst, globalWidth, globalWeight, routerPortBase,
+                    globalPortsPerRouter, localWidth));
   // diff exiting router | diff entering router
   src = {0, 1, 0};
   dst = {0, 1, 2};
-  ASSERT_EQ(4u, Dragonfly::computeMinimalHops(&src, &dst, globalWidth,
-                                              globalWeight,
-                                              routerPortBase,
-                                              globalPortsPerRouter,
-                                              localWidth));
+  ASSERT_EQ(4u, Dragonfly::computeMinimalHops(
+                    &src, &dst, globalWidth, globalWeight, routerPortBase,
+                    globalPortsPerRouter, localWidth));
 }

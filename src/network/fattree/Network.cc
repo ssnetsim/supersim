@@ -78,8 +78,8 @@ Network::Network(const std::string& _name, const Component* _parent,
 
   // create routers vector
   for (u32 level = 0; level < numLevels_; level++) {
-    routers_.push_back(std::vector<Router*>(
-        routersAtLevel_.at(level), nullptr));
+    routers_.push_back(
+        std::vector<Router*>(routersAtLevel_.at(level), nullptr));
   }
 
   // parse the protocol classes description
@@ -96,9 +96,9 @@ Network::Network(const std::string& _name, const Component* _parent,
 
       // make router
       u32 rRadix = std::get<2>(radices_.at(level));
-      routers_.at(level).at(col) = Router::create(
-          rname, this, this, routerId, routerAddress, rRadix,
-          numVcs_, _metadataHandler, _settings["router"]);
+      routers_.at(level).at(col) =
+          Router::create(rname, this, this, routerId, routerAddress, rRadix,
+                         numVcs_, _metadataHandler, _settings["router"]);
     }
   }
 
@@ -146,15 +146,15 @@ Network::Network(const std::string& _name, const Component* _parent,
         // create that router
         Router* thatRouter = routers_.at(thatLevel).at(thatCol);
         // create channels
-        std::string upChannelName =
-            "UpChannel_" + std::to_string(level) + ":" + std::to_string(col) +
-            ":" + std::to_string(p);
+        std::string upChannelName = "UpChannel_" + std::to_string(level) + ":" +
+                                    std::to_string(col) + ":" +
+                                    std::to_string(p);
         Channel* up = new Channel(upChannelName, this, numVcs_,
                                   _settings["internal_channels"][level]);
         internalChannels_.push_back(up);
-        std::string downChannelName =
-            "DownChannel_" + std::to_string(level) + ":" + std::to_string(col) +
-            ":" + std::to_string(p);
+        std::string downChannelName = "DownChannel_" + std::to_string(level) +
+                                      ":" + std::to_string(col) + ":" +
+                                      std::to_string(p);
         Channel* down = new Channel(downChannelName, this, numVcs_,
                                     _settings["internal_channels"][level]);
         internalChannels_.push_back(down);
@@ -264,28 +264,30 @@ Network::~Network() {
 }
 
 ::InjectionAlgorithm* Network::createInjectionAlgorithm(
-     u32 _inputPc, const std::string& _name,
-     const Component* _parent, Interface* _interface) {
+    u32 _inputPc, const std::string& _name, const Component* _parent,
+    Interface* _interface) {
   // get the info
   const ::Network::PcSettings& settings = pcSettings(_inputPc);
 
   // call the routing algorithm factory
-  return InjectionAlgorithm::create(
-      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
-      settings.injection);
+  return InjectionAlgorithm::create(_name, _parent, _interface, settings.baseVc,
+                                    settings.numVcs, _inputPc,
+                                    settings.injection);
 }
 
-::RoutingAlgorithm* Network::createRoutingAlgorithm(
-     u32 _inputPort, u32 _inputVc, const std::string& _name,
-     const Component* _parent, Router* _router) {
+::RoutingAlgorithm* Network::createRoutingAlgorithm(u32 _inputPort,
+                                                    u32 _inputVc,
+                                                    const std::string& _name,
+                                                    const Component* _parent,
+                                                    Router* _router) {
   // get the info
   u32 pc = vcToPc(_inputVc);
   const ::Network::PcSettings& settings = pcSettings(pc);
 
   // call the routing algorithm factory
-  return RoutingAlgorithm::create(
-      _name, _parent, _router, settings.baseVc, settings.numVcs, _inputPort,
-      _inputVc, &radices_, interfacePorts_, settings.routing);
+  return RoutingAlgorithm::create(_name, _parent, _router, settings.baseVc,
+                                  settings.numVcs, _inputPort, _inputVc,
+                                  &radices_, interfacePorts_, settings.routing);
 }
 
 u32 Network::numRouters() const {
@@ -308,28 +310,28 @@ Interface* Network::getInterface(u32 _id) const {
   return interfaces_.at(_id);
 }
 
-void Network::translateInterfaceIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
-  FatTree::translateInterfaceIdToAddress(
-      numLevels_, interfacesPerGroup_, _id, _address);
+void Network::translateInterfaceIdToAddress(u32 _id,
+                                            std::vector<u32>* _address) const {
+  FatTree::translateInterfaceIdToAddress(numLevels_, interfacesPerGroup_, _id,
+                                         _address);
 }
 
 u32 Network::translateInterfaceAddressToId(
     const std::vector<u32>* _address) const {
-  return FatTree::translateInterfaceAddressToId(
-      numLevels_, interfacesPerGroup_, _address);
+  return FatTree::translateInterfaceAddressToId(numLevels_, interfacesPerGroup_,
+                                                _address);
 }
 
-void Network::translateRouterIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
-  FatTree::translateRouterIdToAddress(
-      numLevels_, routersAtLevel_, _id, _address);
+void Network::translateRouterIdToAddress(u32 _id,
+                                         std::vector<u32>* _address) const {
+  FatTree::translateRouterIdToAddress(numLevels_, routersAtLevel_, _id,
+                                      _address);
 }
 
 u32 Network::translateRouterAddressToId(
     const std::vector<u32>* _address) const {
-  return FatTree::translateRouterAddressToId(
-      numLevels_, routersAtLevel_, _address);
+  return FatTree::translateRouterAddressToId(numLevels_, routersAtLevel_,
+                                             _address);
 }
 
 u32 Network::computeMinimalHops(const std::vector<u32>* _source,
@@ -352,5 +354,5 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
 
 }  // namespace FatTree
 
-registerWithObjectFactory("fat_tree", ::Network,
-                          FatTree::Network, NETWORK_ARGS);
+registerWithObjectFactory("fat_tree", ::Network, FatTree::Network,
+                          NETWORK_ARGS);

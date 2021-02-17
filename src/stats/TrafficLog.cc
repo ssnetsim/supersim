@@ -15,7 +15,6 @@
 #include "stats/TrafficLog.h"
 
 #include <cassert>
-
 #include <sstream>
 #include <string>
 
@@ -23,15 +22,15 @@
 #include "types/Flit.h"
 #include "types/Packet.h"
 
-TrafficLog::TrafficLog(nlohmann::json _settings)
-    : outFile_(nullptr) {
+TrafficLog::TrafficLog(nlohmann::json _settings) : outFile_(nullptr) {
   if (!_settings["file"].is_null()) {
     // create file
     outFile_ = new fio::OutFile(_settings["file"].get<std::string>());
 
     // write header
-    outFile_->write("time,device,inputPort,inputVc,outputPort,outputVc,"
-                    "flits\n");
+    outFile_->write(
+        "time,device,inputPort,inputVc,outputPort,outputVc,"
+        "flits\n");
   }
 }
 
@@ -41,9 +40,9 @@ TrafficLog::~TrafficLog() {
   }
 }
 
-void TrafficLog::logTraffic(
-    const Component* _device, u32 _inputPort, u32 _inputVc, u32 _outputPort,
-    u32 _outputVc, u32 _flits) {
+void TrafficLog::logTraffic(const Component* _device, u32 _inputPort,
+                            u32 _inputVc, u32 _outputPort, u32 _outputVc,
+                            u32 _flits) {
   if (outFile_) {
     std::stringstream ss;
     ss << gSim->time() << ',';

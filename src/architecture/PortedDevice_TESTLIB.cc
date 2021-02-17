@@ -12,9 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <cassert>
-
 #include "architecture/PortedDevice_TESTLIB.h"
+
+#include <cassert>
 
 TestPortedDevice::TestPortedDevice(u32 _numPorts, u32 _numVcs)
     : PortedDevice(0, {0}, _numPorts, _numVcs) {}

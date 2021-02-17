@@ -14,9 +14,8 @@
  */
 #include "network/torus/util.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 
 namespace Torus {
 
@@ -40,20 +39,17 @@ u32 computeInputPortDim(const std::vector<u32>& _dimensionWidths,
 }
 
 u32 computeMinimalHops(const std::vector<u32>* _source,
-                       const std::vector<u32>* _destination,
-                       u32 _dimensions,
+                       const std::vector<u32>* _destination, u32 _dimensions,
                        const std::vector<u32>& _dimensionWidths) {
   u32 minHops = 1;
   for (u32 dim = 0; dim < _dimensions; dim++) {
-    u32 src = _source->at(dim+1);
-    u32 dst = _destination->at(dim+1);
+    u32 src = _source->at(dim + 1);
+    u32 dst = _destination->at(dim + 1);
     if (src != dst) {
-      u32 rightDelta = ((dst > src) ?
-                        (dst - src) :
-                        (dst + _dimensionWidths.at(dim) - src));
-      u32 leftDelta = ((src > dst) ?
-                       (src - dst) :
-                       (src + _dimensionWidths.at(dim) - dst));
+      u32 rightDelta =
+          ((dst > src) ? (dst - src) : (dst + _dimensionWidths.at(dim) - src));
+      u32 leftDelta =
+          ((src > dst) ? (src - dst) : (src + _dimensionWidths.at(dim) - dst));
       minHops += std::min(rightDelta, leftDelta);
     }
   }

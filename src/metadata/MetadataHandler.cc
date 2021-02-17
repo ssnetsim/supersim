@@ -15,7 +15,6 @@
 #include "metadata/MetadataHandler.h"
 
 #include <cassert>
-
 #include <string>
 
 #include "factory/ObjectFactory.h"
@@ -29,8 +28,9 @@ MetadataHandler* MetadataHandler::create(nlohmann::json _settings) {
   const std::string& type = _settings["type"].get<std::string>();
 
   // attempt to create the metadata handler
-  MetadataHandler* mh = factory::ObjectFactory<
-    MetadataHandler, METADATAHANDLER_ARGS>::create(type, _settings);
+  MetadataHandler* mh =
+      factory::ObjectFactory<MetadataHandler, METADATAHANDLER_ARGS>::create(
+          type, _settings);
 
   // check that the factory had this type
   if (mh == nullptr) {
@@ -40,17 +40,17 @@ MetadataHandler* MetadataHandler::create(nlohmann::json _settings) {
   return mh;
 }
 
-void MetadataHandler::packetInjection(
-    const Application* _app, Packet* _packet) {}
+void MetadataHandler::packetInjection(const Application* _app,
+                                      Packet* _packet) {}
 
-void MetadataHandler::packetInterfaceArrival(
-    const Interface* _iface, Packet* _packet) {}
+void MetadataHandler::packetInterfaceArrival(const Interface* _iface,
+                                             Packet* _packet) {}
 
-void MetadataHandler::packetInterfaceDeparture(
-    const Interface* _iface, Packet* _packet) {}
+void MetadataHandler::packetInterfaceDeparture(const Interface* _iface,
+                                               Packet* _packet) {}
 
-void MetadataHandler::packetRouterArrival(
-    const Router* _router, u32 _port, Packet* _packet) {}
+void MetadataHandler::packetRouterArrival(const Router* _router, u32 _port,
+                                          Packet* _packet) {}
 
-void MetadataHandler::packetRouterDeparture(
-    const Router* _router, u32 _port, Packet* _packet) {}
+void MetadataHandler::packetRouterDeparture(const Router* _router, u32 _port,
+                                            Packet* _packet) {}

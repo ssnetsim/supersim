@@ -15,15 +15,15 @@
 #include "traffic/continuous/DimBisectionStressCTP.h"
 
 #include <cassert>
-
 #include <vector>
 
 #include "factory/ObjectFactory.h"
 #include "network/cube/util.h"
 
-DimBisectionStressCTP::DimBisectionStressCTP(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+DimBisectionStressCTP::DimBisectionStressCTP(const std::string& _name,
+                                             const Component* _parent,
+                                             u32 _numTerminals, u32 _self,
+                                             nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // parse the settings
@@ -41,8 +41,7 @@ DimBisectionStressCTP::DimBisectionStressCTP(
   const u32 concentration = _settings["concentration"].get<u32>();
   const u32 interfacePorts = _settings["interface_ports"].get<u32>();
 
-  assert(_settings.contains("mode") &&
-         _settings["mode"].is_string());
+  assert(_settings.contains("mode") && _settings["mode"].is_string());
   for (u32 i = 0; i < dimensions; i++) {
     assert(widths.at(i) % 2 == 0);
   }
@@ -63,7 +62,8 @@ DimBisectionStressCTP::DimBisectionStressCTP(
   } else if (_settings["mode"] == "quadrant") {
     u32 paritySum = 0;
     for (u32 i = 0; i < dimensions; i++) {
-      paritySum = addr.at(i+1) < (widths.at(i) / 2) ? paritySum : paritySum + 1;
+      paritySum =
+          addr.at(i + 1) < (widths.at(i) / 2) ? paritySum : paritySum + 1;
     }
     nodeGroup = paritySum % 2;
   } else {
@@ -80,7 +80,7 @@ DimBisectionStressCTP::DimBisectionStressCTP(
         addr.at(dim + 1) -= (widths.at(dim) + 1) / 2;
       }
     } else {
-      addr.at(dim + 1)  = widths.at(dim) - 1 - addr.at(dim + 1);
+      addr.at(dim + 1) = widths.at(dim) - 1 - addr.at(dim + 1);
     }
   }
 

@@ -14,22 +14,23 @@
  */
 #include "arbiter/DualStageClassArbiter.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cstring>
 
 #include "factory/ObjectFactory.h"
 
-DualStageClassArbiter::DualStageClassArbiter(
-    const std::string& _name, const Component* _parent, u32 _size,
-    nlohmann::json _settings)
+DualStageClassArbiter::DualStageClassArbiter(const std::string& _name,
+                                             const Component* _parent,
+                                             u32 _size,
+                                             nlohmann::json _settings)
     : Arbiter(_name, _parent, _size, _settings) {
   // parse the classes settings to get stage 1 size and class assignments
   assert(_settings.contains("classes") &&
          _settings["classes"].is_number_integer());
   numClasses_ = _settings["classes"].get<u32>();
   assert(numClasses_ > 0);
-  assert(_settings.contains("class_map") &&
-         _settings["class_map"].is_array());
+  assert(_settings.contains("class_map") && _settings["class_map"].is_array());
   numGroups_ = _settings["class_map"].size();
   assert(size_ % numGroups_ == 0);
   std::vector<u32> classes(numGroups_, U32_MAX);
@@ -50,8 +51,7 @@ DualStageClassArbiter::DualStageClassArbiter(
   } else if (metadataFunc == "max") {
     metadataFunc_ = DualStageClassArbiter::MetadataFunc::MAX;
   } else {
-    fprintf(stderr, "invalid metadata function: %s\n",
-            metadataFunc.c_str());
+    fprintf(stderr, "invalid metadata function: %s\n", metadataFunc.c_str());
     assert(false);
   }
 
@@ -71,8 +71,8 @@ DualStageClassArbiter::DualStageClassArbiter(
   stage2Requests_ = new bool[size_];
 
   // create the stage 1 arbiter
-  stage1Arbiter_ = Arbiter::create(
-      "Stage1Arbiter", this, numClasses_, _settings["stage1_arbiter"]);
+  stage1Arbiter_ = Arbiter::create("Stage1Arbiter", this, numClasses_,
+                                   _settings["stage1_arbiter"]);
 
   // link the stage 1 arbiter to the internal inputs and outputs
   for (u32 classs = 0; classs < numClasses_; classs++) {
@@ -82,8 +82,8 @@ DualStageClassArbiter::DualStageClassArbiter(
   }
 
   // create the stage 2 arbiter
-  stage2Arbiter_ = Arbiter::create(
-      "Stage2Arbiter", this, size_, _settings["stage2_arbiter"]);
+  stage2Arbiter_ = Arbiter::create("Stage2Arbiter", this, size_,
+                                   _settings["stage2_arbiter"]);
 
   // line the stage 2 arbiter inputs (outputs happen later)
   for (u32 client = 0; client < size_; client++) {
@@ -133,12 +133,12 @@ u32 DualStageClassArbiter::arbitrate() {
           case DualStageClassArbiter::MetadataFunc::NONE:
             break;
           case DualStageClassArbiter::MetadataFunc::MIN:
-            stage1Metadatas_[clientClass] = std::min(
-                *metadatas_[client], stage1Metadatas_[clientClass]);
+            stage1Metadatas_[clientClass] =
+                std::min(*metadatas_[client], stage1Metadatas_[clientClass]);
             break;
           case DualStageClassArbiter::MetadataFunc::MAX:
-            stage1Metadatas_[clientClass] = std::max(
-                *metadatas_[client], stage1Metadatas_[clientClass]);
+            stage1Metadatas_[clientClass] =
+                std::max(*metadatas_[client], stage1Metadatas_[clientClass]);
             break;
           default:
             assert(false);
@@ -182,5 +182,5 @@ u32 DualStageClassArbiter::arbitrate() {
   return winner;
 }
 
-registerWithObjectFactory("dual_stage_class", Arbiter,
-                          DualStageClassArbiter, ARBITER_ARGS);
+registerWithObjectFactory("dual_stage_class", Arbiter, DualStageClassArbiter,
+                          ARBITER_ARGS);

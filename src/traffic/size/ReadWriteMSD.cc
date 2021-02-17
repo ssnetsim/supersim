@@ -14,16 +14,14 @@
  */
 #include "traffic/size/ReadWriteMSD.h"
 
-#include <cassert>
-
 #include <algorithm>
+#include <cassert>
 
 #include "event/Simulator.h"
 #include "factory/ObjectFactory.h"
 
-ReadWriteMSD::ReadWriteMSD(
-    const std::string& _name, const Component* _parent,
-    nlohmann::json _settings)
+ReadWriteMSD::ReadWriteMSD(const std::string& _name, const Component* _parent,
+                           nlohmann::json _settings)
     : MessageSizeDistribution(_name, _parent, _settings),
       readRequestSize_(_settings["read_request_size"].get<u32>()),
       readResponseSize_(_settings["read_response_size"].get<u32>()),
@@ -47,9 +45,9 @@ ReadWriteMSD::ReadWriteMSD(
     maxMessageSize_ = std::max(readRequestSize_, readResponseSize_);
   } else {
     minMessageSize_ = std::min({readRequestSize_, readResponseSize_,
-                      writeRequestSize_, writeResponseSize_});
+                                writeRequestSize_, writeResponseSize_});
     maxMessageSize_ = std::max({readRequestSize_, readResponseSize_,
-                      writeRequestSize_, writeResponseSize_});
+                                writeRequestSize_, writeResponseSize_});
   }
 }
 
@@ -81,6 +79,5 @@ u32 ReadWriteMSD::nextMessageSize(const Message* _msg) {
   }
 }
 
-registerWithObjectFactory("read_write", MessageSizeDistribution,
-                          ReadWriteMSD,
+registerWithObjectFactory("read_write", MessageSizeDistribution, ReadWriteMSD,
                           MESSAGESIZEDISTRIBUTION_ARGS);

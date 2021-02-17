@@ -37,13 +37,13 @@ class CommonAncestorRoutingAlgorithm : public RoutingAlgorithm {
   CommonAncestorRoutingAlgorithm(
       const std::string& _name, const Component* _parent, Router* _router,
       u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
-      const std::vector<std::tuple<u32, u32, u32> >* _radices,
+      const std::vector<std::tuple<u32, u32, u32>>* _radices,
       u32 _interfacePorts, nlohmann::json _settings);
   ~CommonAncestorRoutingAlgorithm();
 
  protected:
-  void processRequest(
-      Flit* _flit, RoutingAlgorithm::Response* _response) override;
+  void processRequest(Flit* _flit,
+                      RoutingAlgorithm::Response* _response) override;
 
  private:
   enum class Selection { kAll, kFlowCache, kFlowHash };

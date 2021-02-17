@@ -34,24 +34,22 @@ class MetadataHandler {
   static MetadataHandler* create(METADATAHANDLER_ARGS);
 
   // this is called by the terminal when the packet is being injected
-  virtual void packetInjection(
-      const Application* _app, Packet* _packet);
+  virtual void packetInjection(const Application* _app, Packet* _packet);
 
   // this is called by the interface when it is received
-  virtual void packetInterfaceArrival(
-      const Interface* _iface, Packet* _packet);
+  virtual void packetInterfaceArrival(const Interface* _iface, Packet* _packet);
 
   // this is called by the interface when it is sent
-  virtual void packetInterfaceDeparture(
-      const Interface* _iface, Packet* _packet);
+  virtual void packetInterfaceDeparture(const Interface* _iface,
+                                        Packet* _packet);
 
   // this is called by the router when it is received
-  virtual void packetRouterArrival(
-      const Router* _router, u32 _port, Packet* _packet);
+  virtual void packetRouterArrival(const Router* _router, u32 _port,
+                                   Packet* _packet);
 
   // this is called by the router when it is sent
-  virtual void packetRouterDeparture(
-      const Router* _router, u32 _port, Packet* _packet);
+  virtual void packetRouterDeparture(const Router* _router, u32 _port,
+                                     Packet* _packet);
 };
 
 #endif  // METADATA_METADATAHANDLER_H_

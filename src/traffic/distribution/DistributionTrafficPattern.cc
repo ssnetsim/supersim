@@ -18,9 +18,11 @@
 
 #include "factory/ObjectFactory.h"
 
-DistributionTrafficPattern::DistributionTrafficPattern(
-    const std::string& _name, const Component* _parent,
-    u32 _numTerminals, u32 _self, nlohmann::json _settings)
+DistributionTrafficPattern::DistributionTrafficPattern(const std::string& _name,
+                                                       const Component* _parent,
+                                                       u32 _numTerminals,
+                                                       u32 _self,
+                                                       nlohmann::json _settings)
     : Component(_name, _parent), numTerminals_(_numTerminals), self_(_self) {
   assert(numTerminals_ > 0);
   assert(self_ < numTerminals_);
@@ -36,8 +38,9 @@ DistributionTrafficPattern* DistributionTrafficPattern::create(
 
   // try to construct a traffic pattern
   DistributionTrafficPattern* tp = factory::ObjectFactory<
-    DistributionTrafficPattern, DISTRIBUTIONTRAFFICPATTERN_ARGS>::create(
-        type, _name, _parent, _numTerminals, _self, _settings);
+      DistributionTrafficPattern,
+      DISTRIBUTIONTRAFFICPATTERN_ARGS>::create(type, _name, _parent,
+                                               _numTerminals, _self, _settings);
 
   // check that the factory had an entry for that type
   if (tp == nullptr) {

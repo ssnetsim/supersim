@@ -18,9 +18,11 @@
 
 #include "factory/ObjectFactory.h"
 
-LocalRandomRemoteAttackCTP::LocalRandomRemoteAttackCTP(
-    const std::string& _name, const Component* _parent, u32 _numTerminals,
-    u32 _self, nlohmann::json _settings)
+LocalRandomRemoteAttackCTP::LocalRandomRemoteAttackCTP(const std::string& _name,
+                                                       const Component* _parent,
+                                                       u32 _numTerminals,
+                                                       u32 _self,
+                                                       nlohmann::json _settings)
     : ContinuousTrafficPattern(_name, _parent, _numTerminals, _self,
                                _settings) {
   // verify settings exist
@@ -51,8 +53,8 @@ LocalRandomRemoteAttackCTP::LocalRandomRemoteAttackCTP(
     s32 offset = _settings["remote_mode"].get<s32>();
     // don't rely on loop around
     assert((u32)abs(offset) < numBlocks_);
-    s32 remoteBlock = ((s32)localBlock_ +
-                       ((s32)numBlocks_ + offset)) % (s32)numBlocks_;
+    s32 remoteBlock =
+        ((s32)localBlock_ + ((s32)numBlocks_ + offset)) % (s32)numBlocks_;
     if (remoteBlock < 0) {
       remoteBlock += numBlocks_;
     }
@@ -80,6 +82,6 @@ u32 LocalRandomRemoteAttackCTP::nextDestination() {
   return dst;
 }
 
-registerWithObjectFactory(
-    "local_random_remote_attack", ContinuousTrafficPattern,
-    LocalRandomRemoteAttackCTP, CONTINUOUSTRAFFICPATTERN_ARGS);
+registerWithObjectFactory("local_random_remote_attack",
+                          ContinuousTrafficPattern, LocalRandomRemoteAttackCTP,
+                          CONTINUOUSTRAFFICPATTERN_ARGS);

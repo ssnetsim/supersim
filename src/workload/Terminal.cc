@@ -23,8 +23,13 @@
 
 Terminal::Terminal(const std::string& _name, const Component* _parent, u32 _id,
                    const std::vector<u32>& _address, Application* _app)
-    : Component(_name, _parent), id_(_id), address_(_address), app_(_app),
-      messagesSent_(0), messagesDelivered_(0), messagesReceived_(0),
+    : Component(_name, _parent),
+      id_(_id),
+      address_(_address),
+      app_(_app),
+      messagesSent_(0),
+      messagesDelivered_(0),
+      messagesReceived_(0),
       transactionsCreated_(0) {
   // create the rate monitors
   injectionMonitor_ = new RateMonitor("InjectionMonitor", this);
@@ -67,10 +72,8 @@ void Terminal::endRateMonitors() {
 }
 
 void Terminal::logRates(RateLog* _rateLog) {
-  _rateLog->logRates(id_, name(),
-                     injectionMonitor_->rate(),
-                     deliveredMonitor_->rate(),
-                     ejectionMonitor_->rate());
+  _rateLog->logRates(id_, name(), injectionMonitor_->rate(),
+                     deliveredMonitor_->rate(), ejectionMonitor_->rate());
 }
 
 u32 Terminal::messagesSent() const {
@@ -159,8 +162,8 @@ u32 Terminal::sendMessage(Message* _message, u32 _destinationId) {
   Terminal* dest = application()->getTerminal(_destinationId);
   _message->setDestinationAddress(&dest->address_);
   Network* network = gSim->getNetwork();
-  _message->setMinimalHopCount(network->computeMinimalHops(&address_,
-                                                           &dest->address_));
+  _message->setMinimalHopCount(
+      network->computeMinimalHops(&address_, &dest->address_));
 
   // track the message as an outstanding message
   bool res = outstandingMessages_.insert(_message).second;

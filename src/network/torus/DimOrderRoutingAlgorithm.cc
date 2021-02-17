@@ -15,7 +15,6 @@
 #include "network/torus/DimOrderRoutingAlgorithm.h"
 
 #include <cassert>
-
 #include <tuple>
 #include <unordered_set>
 
@@ -31,9 +30,8 @@ DimOrderRoutingAlgorithm::DimOrderRoutingAlgorithm(
     const std::string& _name, const Component* _parent, Router* _router,
     u32 _baseVc, u32 _numVcs, u32 _inputPort, u32 _inputVc,
     const std::vector<u32>& _dimensionWidths,
-    const std::vector<u32>& _dimensionWeights,
-    u32 _concentration, u32 _interfacePorts,
-    nlohmann::json _settings)
+    const std::vector<u32>& _dimensionWeights, u32 _concentration,
+    u32 _interfacePorts, nlohmann::json _settings)
     : RoutingAlgorithm(_name, _parent, _router, _baseVc, _numVcs, _inputPort,
                        _inputVc, _dimensionWidths, _dimensionWeights,
                        _concentration, _interfacePorts, _settings),
@@ -70,7 +68,7 @@ void DimOrderRoutingAlgorithm::processRequest(
   u32 dimWeight = U32_MAX;
   for (dim = 0; dim < numDimensions; dim++) {
     dimWeight = dimensionWeights_.at(dim);
-    if (routerAddress.at(dim) != destinationAddress->at(dim+1)) {
+    if (routerAddress.at(dim) != destinationAddress->at(dim + 1)) {
       break;
     }
     portBase += 2 * dimWeight;
@@ -117,12 +115,10 @@ void DimOrderRoutingAlgorithm::processRequest(
 
     // in torus topology, we can get to a destination in two directions,
     //  this algorithm takes the shortest path, randomized tie breaker
-    u32 rightDelta = ((dst > src) ?
-                      (dst - src) :
-                      (dst + dimensionWidths_.at(dim) - src));
-    u32 leftDelta = ((src > dst) ?
-                     (src - dst) :
-                     (src + dimensionWidths_.at(dim) - dst));
+    u32 rightDelta =
+        ((dst > src) ? (dst - src) : (dst + dimensionWidths_.at(dim) - src));
+    u32 leftDelta =
+        ((src > dst) ? (src - dst) : (src + dimensionWidths_.at(dim) - dst));
 
     // determine direction
     bool right;
@@ -167,7 +163,7 @@ void DimOrderRoutingAlgorithm::processRequest(
   }
 
   // reduction phase
-  const std::unordered_set<std::tuple<u32, u32> >* outputs =
+  const std::unordered_set<std::tuple<u32, u32>>* outputs =
       reduction_->reduce(nullptr);
   for (const auto& t : *outputs) {
     u32 port = std::get<0>(t);

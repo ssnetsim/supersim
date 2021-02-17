@@ -16,7 +16,6 @@
 
 #include <cassert>
 #include <cmath>
-
 #include <tuple>
 
 #include "factory/ObjectFactory.h"
@@ -43,9 +42,9 @@ Network::Network(const std::string& _name, const Component* _parent,
   for (u32 id = 0; id < numInterfaces_; id++) {
     // create the interface
     std::string interfaceName = "Interface_" + std::to_string(id);
-    Interface* interface = Interface::create(
-        interfaceName, this, this, id, {id}, interfacePorts_, numVcs_,
-        _metadataHandler, _settings["interface"]);
+    Interface* interface =
+        Interface::create(interfaceName, this, this, id, {id}, interfacePorts_,
+                          numVcs_, _metadataHandler, _settings["interface"]);
     interfaces_.at(id) = interface;
   }
 
@@ -55,8 +54,8 @@ Network::Network(const std::string& _name, const Component* _parent,
       // create the single channels
       std::string channelName =
           "Channel_" + std::to_string(iface) + "_" + std::to_string(ch);
-      Channel* channel = new Channel(
-          channelName, this, numVcs_, _settings["external_channel"]);
+      Channel* channel = new Channel(channelName, this, numVcs_,
+                                     _settings["external_channel"]);
       externalChannels_.push_back(channel);
     }
   }
@@ -98,20 +97,22 @@ Network::~Network() {
 }
 
 ::InjectionAlgorithm* Network::createInjectionAlgorithm(
-     u32 _inputPc, const std::string& _name,
-     const Component* _parent, Interface* _interface) {
+    u32 _inputPc, const std::string& _name, const Component* _parent,
+    Interface* _interface) {
   // get the info
   const ::Network::PcSettings& settings = pcSettings(_inputPc);
 
   // call the routing algorithm factory
-  return InjectionAlgorithm::create(
-      _name, _parent, _interface, settings.baseVc, settings.numVcs, _inputPc,
-      settings.injection);
+  return InjectionAlgorithm::create(_name, _parent, _interface, settings.baseVc,
+                                    settings.numVcs, _inputPc,
+                                    settings.injection);
 }
 
-::RoutingAlgorithm* Network::createRoutingAlgorithm(
-     u32 _inputPort, u32 _inputVc, const std::string& _name,
-     const Component* _parent, Router* _router) {
+::RoutingAlgorithm* Network::createRoutingAlgorithm(u32 _inputPort,
+                                                    u32 _inputVc,
+                                                    const std::string& _name,
+                                                    const Component* _parent,
+                                                    Router* _router) {
   assert(false);  // routers aren't created thus this will never be called
   return nullptr;
 }
@@ -133,8 +134,8 @@ Interface* Network::getInterface(u32 _id) const {
   return interfaces_.at(_id);
 }
 
-void Network::translateInterfaceIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
+void Network::translateInterfaceIdToAddress(u32 _id,
+                                            std::vector<u32>* _address) const {
   _address->resize(1);
   _address->at(0) = _id;
 }
@@ -144,8 +145,8 @@ u32 Network::translateInterfaceAddressToId(
   return _address->at(0);
 }
 
-void Network::translateRouterIdToAddress(
-    u32 _id, std::vector<u32>* _address) const {
+void Network::translateRouterIdToAddress(u32 _id,
+                                         std::vector<u32>* _address) const {
   assert(false);  // there are no routers
 }
 
@@ -170,5 +171,5 @@ void Network::collectChannels(std::vector<Channel*>* _channels) {
 
 }  // namespace InterfaceOnly
 
-registerWithObjectFactory("interface_only", ::Network,
-                          InterfaceOnly::Network, NETWORK_ARGS);
+registerWithObjectFactory("interface_only", ::Network, InterfaceOnly::Network,
+                          NETWORK_ARGS);

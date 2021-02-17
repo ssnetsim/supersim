@@ -15,7 +15,6 @@
 #include "network/Channel.h"
 
 #include <cmath>
-
 #include <string>
 #include <unordered_set>
 
@@ -130,8 +129,7 @@ void Source::receiveCredit(u32 _port, Credit* _credit) {
 
 /* Sink impl */
 
-Sink::Sink(Channel* _channel)
-    : Component("Sink", nullptr), channel_(_channel) {
+Sink::Sink(Channel* _channel) : Component("Sink", nullptr), channel_(_channel) {
   debug_ = DEBUG;
   channel_->setSink(this, port_ = gSim->rnd.nextU64(0, U32_MAX));
 }
@@ -193,8 +191,8 @@ class EndMonitoring : public Component {
   EndMonitoring(Channel* _channel, u32 _cycles)
       : Component("Timer", nullptr), channel_(_channel) {
     channel_->startMonitoring();
-    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, _cycles),
-             0, nullptr, 0);
+    addEvent(gSim->futureCycle(Simulator::Clock::CHANNEL, _cycles), 0, nullptr,
+             0);
   }
 
   ~EndMonitoring() {}
@@ -206,7 +204,6 @@ class EndMonitoring : public Component {
  private:
   Channel* channel_;
 };
-
 
 /* Test driver */
 

@@ -25,9 +25,8 @@
 
 class ProbabilityMSD : public MessageSizeDistribution {
  public:
-  ProbabilityMSD(
-      const std::string& _name, const Component* _parent,
-      nlohmann::json _settings);
+  ProbabilityMSD(const std::string& _name, const Component* _parent,
+                 nlohmann::json _settings);
   virtual ~ProbabilityMSD();
 
   // size bounds

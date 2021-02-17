@@ -15,7 +15,6 @@
 #include "metadata/CreationTimestampMetadataHandler.h"
 
 #include <cassert>
-
 #include <string>
 
 #include "event/Simulator.h"
@@ -42,16 +41,16 @@ CreationTimestampMetadataHandler::CreationTimestampMetadataHandler(
 
 CreationTimestampMetadataHandler::~CreationTimestampMetadataHandler() {}
 
-void CreationTimestampMetadataHandler::packetInjection(
-    const Application* _app, Packet* _packet) {
+void CreationTimestampMetadataHandler::packetInjection(const Application* _app,
+                                                       Packet* _packet) {
   u64 metadata = U64_MAX;
   switch (alg_) {
     case Algorithm::kMessage:
       metadata = gSim->time() + delay_;
       break;
     case Algorithm::kTransaction:
-      metadata = _app->transactionCreationTime(
-          _packet->message()->getTransaction());
+      metadata =
+          _app->transactionCreationTime(_packet->message()->getTransaction());
       break;
     default:
       assert(false);
@@ -60,6 +59,6 @@ void CreationTimestampMetadataHandler::packetInjection(
   _packet->setMetadata(metadata);
 }
 
-registerWithObjectFactory(
-    "creation_timestamp", MetadataHandler,
-    CreationTimestampMetadataHandler, METADATAHANDLER_ARGS);
+registerWithObjectFactory("creation_timestamp", MetadataHandler,
+                          CreationTimestampMetadataHandler,
+                          METADATAHANDLER_ARGS);
