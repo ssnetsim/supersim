@@ -22,7 +22,7 @@ http_archive(
 
 http_file(
   name = "clang_format",
-  urls = ["https://raw.githubusercontent.com/nicmcd/pkgbuild/master/.clang-format"],
+  urls = ["https://raw.githubusercontent.com/nicmcd/pkgbuild/master/clang-format"],
 )
 
 http_file(
