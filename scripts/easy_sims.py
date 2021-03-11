@@ -75,8 +75,8 @@ def set_routing_algorithm(ra, config):
     det, red = 'false', 'least_congested_minimal'
   else:
     assert False
-  return ('network.protocol_classes[0].routing.deterministic=bool={0} '
-          'network.protocol_classes[0].routing.reduction.algorithm=string={1}'
+  return ('/network/protocol_classes/0/routing/deterministic=bool={0} '
+          '/network/protocol_classes/0/routing/reduction/algorithm=string={1}'
           .format(det, red))
 sw.add_variable('Routing Algorithm', 'RA', routing_algorithms,
                 set_routing_algorithm, compare=True)
@@ -87,9 +87,9 @@ stop = 100.0
 step = args.granularity
 def set_load(ld, config):
   ld /= 100.0
-  cmd = ('workload.applications[0].blast_terminal.request_injection_rate='
+  cmd = ('/workload/applications/0/blast_terminal/request_injection_rate='
          'float={0} '
-         'workload.applications[0].blast_terminal.enable_responses=bool=false '
+         '/workload/applications/0/blast_terminal/enable_responses=bool=false '
          .format(0.001 if ld == 0.0 else ld))
   return cmd
 sw.add_loads('Load', 'LD', start, stop, step, set_load)

@@ -23,10 +23,10 @@ These installation instructions require the following software:
 The following command installs the package dependencies:
 ``` sh
 [apt-get]
-sudo apt-get install g++ git python3 python3-dev util-linux wget
+sudo apt-get install g++ git python3 python3-dev util-linux wget clang-format
 
 [yum]
-sudo yum install gcc-c++ git python3 python3-devel util-linux wget
+sudo yum install gcc-c++ git python3 python3-devel util-linux wget clang-format
 
 pip3 install setuptools numpy matplotlib psutil --user
 ```

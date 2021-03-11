@@ -63,8 +63,8 @@ def set_routing_algorithm(ra):
     det, red = 'false', 'least_congested_minimal'
   else:
     assert False
-  return (' network.protocol_classes[0].routing.deterministic=bool={0}'
-          ' network.protocol_classes[0].routing.reduction.algorithm=string={1}'
+  return (' /network/protocol_classes/0/routing/deterministic=bool={0}'
+          ' /network/protocol_classes/0/routing/reduction/algorithm=string={1}'
           .format(det, red))
 
 # create all sim tasks
@@ -74,12 +74,12 @@ for a in routing_algorithms:
     id = a + '_' + l
     sim_name = 'sim_' + id
     sim_cmd = ('{0} {1} '
-               'workload.applications[0].blast_terminal.request_injection_rate=float={2} '
-               'workload.applications[0].blast_terminal.enable_responses=bool=false '
-               'simulator.info_log.file=string={3} '
-               'network.channel_log.file=string={4} '
-               'workload.applications[0].rate_log.file=string={5} '
-               'workload.message_log.file=string={6} '
+               '/workload/applications/0/blast_terminal/request_injection_rate=float={2} '
+               '/workload/applications/0/blast_terminal/enable_responses=bool=false '
+               '/simulator/info_log/file=string={3} '
+               '/network/channel_log/file=string={4} '
+               '/workload/applications/0/rate_log/file=string={5} '
+               '/workload/message_log/file=string={6} '
                .format(
                  args.supersim,
                  args.settings,
