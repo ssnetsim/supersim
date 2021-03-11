@@ -65,19 +65,21 @@ sw = sssweep.Sweeper(
 # SIMULATION VARIABLES
 
 # routing variable
-routing_algorithms = ['deterministic', 'oblivious', 'adaptive']
+routing_algorithms = ['flow_hash', 'flow_cache', 'oblivious', 'adaptive']
 def set_routing_algorithm(ra, config):
-  if ra == 'deterministic':
-    det, red = 'true', 'all_minimal'
+  if ra == 'flow_hash':
+    sel, red = 'flow_hash', 'all_minimal'
+  elif ra == 'flow_cache':
+    sel, red = 'flow_cache', 'all_minimal'
   elif ra == 'oblivious':
-    det, red = 'false', 'all_minimal'
+    sel, red = 'all', 'all_minimal'
   elif ra == 'adaptive':
-    det, red = 'false', 'least_congested_minimal'
+    sel, red = 'all', 'least_congested_minimal'
   else:
     assert False
-  return ('/network/protocol_classes/0/routing/deterministic=bool={0} '
+  return ('/network/protocol_classes/0/routing/selection=string={0} '
           '/network/protocol_classes/0/routing/reduction/algorithm=string={1}'
-          .format(det, red))
+          .format(sel, red))
 sw.add_variable('Routing Algorithm', 'RA', routing_algorithms,
                 set_routing_algorithm, compare=True)
 

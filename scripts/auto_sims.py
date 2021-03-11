@@ -53,19 +53,21 @@ loads = ['{0:.02f}'.format(x/100)
 ymax = 500
 
 # variable to sweep
-routing_algorithms = ['deterministic', 'oblivious', 'adaptive']
-def set_routing_algorithm(ra):
-  if ra == 'deterministic':
-    det, red = 'true', 'all_minimal'
+routing_algorithms = ['flow_hash', 'flow_cache', 'oblivious', 'adaptive']
+def set_routing_algorithm(ra, config):
+  if ra == 'flow_hash':
+    sel, red = 'flow_hash', 'all_minimal'
+  elif ra == 'flow_cache':
+    sel, red = 'flow_cache', 'all_minimal'
   elif ra == 'oblivious':
-    det, red = 'false', 'all_minimal'
+    sel, red = 'all', 'all_minimal'
   elif ra == 'adaptive':
-    det, red = 'false', 'least_congested_minimal'
+    sel, red = 'all', 'least_congested_minimal'
   else:
     assert False
-  return (' /network/protocol_classes/0/routing/deterministic=bool={0}'
-          ' /network/protocol_classes/0/routing/reduction/algorithm=string={1}'
-          .format(det, red))
+  return ('/network/protocol_classes/0/routing/selection=string={0} '
+          '/network/protocol_classes/0/routing/reduction/algorithm=string={1}'
+          .format(sel, red))
 
 # create all sim tasks
 sim_tasks = {}
