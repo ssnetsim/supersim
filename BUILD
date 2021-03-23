@@ -155,7 +155,7 @@ genrule(
     outs = ["format_checked"],
     cmd = """
     cp $(location @clang_format//file) .clang-format
-    clang-format --style=file --dry-run --Werror src/main.cc
+    clang-format --style=file --dry-run --Werror $(SRCS)
     echo // $$(date) > $@
     """,
     tools = [
