@@ -97,8 +97,8 @@ f64 GraphTerminal::percentComplete() const {
 
 void GraphTerminal::start() {
   dbgprintf("starting");
-  CHECK_OK(scheduler_->Initialize(
-      gSim->time() / static_cast<f64>(unitsPerSecond_)));
+  CHECK_OK(
+      scheduler_->Initialize(gSim->time() / static_cast<f64>(unitsPerSecond_)));
   schedule();
 }
 
