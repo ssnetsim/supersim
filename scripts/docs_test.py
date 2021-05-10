@@ -34,6 +34,16 @@ def main(args):
       error = True
       break
 
+  # make sure that the proper python packages are installed
+  if not error:
+    try:
+      import ssplot
+      import sssweep
+      import taskrun
+    except ImportError:
+      error = True
+      print('Please run "pip3 install ssplot sssweep taskrun --user"')
+
   if not error:
     # create a temporary directory for an installation
     tmpd = tempfile.mkdtemp(prefix='supersim_regression_')
@@ -56,6 +66,9 @@ def main(args):
   # mark the end time and report total time
   end_time = time.time()
   print('Total time: {:.2f}s'.format(end_time - start_time))
+
+  # return -1 if error
+  return None if not error else -1
 
 # utility functions
 def test(name, func, verbose, *args):
@@ -83,7 +96,10 @@ def run(cmd, verbose):
   else:
     proc = subprocess.run(cmd, shell=True)
   if proc.returncode != 0:
-    return proc.stdout.decode('utf-8')
+    if proc.stdout:
+      return proc.stdout.decode('utf-8')
+    else:
+      return proc.returncode
   return None
 
 def markdown_commands(filename, *skip):
@@ -124,11 +140,11 @@ def install_test(verbose, tmpd):
   with open(sourcefile, 'w') as fd:
     ssdir = os.path.join(tmpd, 'ssdev', 'supersim')
     print('mkdir -p {}'.format(ssdir), file=fd)
-    print('cp -R src config BUILD WORKSPACE {}'.format(ssdir), file=fd)
+    print('cp -R src config scripts BUILD WORKSPACE {}'.format(ssdir), file=fd)
     for cmd in cmds:
       print(cmd, file=fd)
     print('cd {}'.format(ssdir), file=fd)
-    print('bazel build -c opt :supersim :supersim_test :lint', file=fd)
+    print('bazel build -c opt ...', file=fd)
     print('{} --help'.format(os.path.join(
       tmpd, 'ssdev/supersim/bazel-bin/supersim')), file=fd)
   with open(runfile, 'w') as fd:

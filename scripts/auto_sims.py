@@ -54,7 +54,7 @@ ymax = 500
 
 # variable to sweep
 routing_algorithms = ['flow_hash', 'flow_cache', 'oblivious', 'adaptive']
-def set_routing_algorithm(ra, config):
+def set_routing_algorithm(ra):
   if ra == 'flow_hash':
     sel, red = 'flow_hash', 'all_minimal'
   elif ra == 'flow_cache':

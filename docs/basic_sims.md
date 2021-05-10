@@ -35,11 +35,11 @@ pattern to use in the simulation.
 
 ``` sh
 ~/ssdev/supersim/bazel-bin/supersim sample.json \
-  simulator.info_log.file=string=info.csv \
-  network.channel_log.file=string=channels.csv \
-  workload.message_log.file=string=messages.mpf.gz \
-  workload.applications[0].rate_log.file=string=rates.csv \
-  workload.applications[0].blast_terminal.traffic_pattern.type=string=random_exchange
+  /simulator/info_log/file=string=info.csv \
+  /network/channel_log/file=string=channels.csv \
+  /workload/message_log/file=string=messages.mpf.gz \
+  /workload/applications/0/rate_log/file=string=rates.csv \
+  /workload/applications/0/blast_terminal/traffic_pattern/type=string=random_exchange
 ```
 
 The first thing SuperSim does is prints the settings as it interprets them.
