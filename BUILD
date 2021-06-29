@@ -21,9 +21,9 @@ LIBS = [
     "@libfio//:fio",
     "@libsettings//:settings",
     "@com_google_absl//absl/strings:str_format",
-    "@com_google_paragraph//paragraph/graph",
-    "@com_google_paragraph//paragraph/scheduling:scheduler",
-    "@com_google_paragraph//paragraph/shim:statusor",
+    "@paragraph//paragraph/graph",
+    "@paragraph//paragraph/scheduling:scheduler",
+    "@paragraph//paragraph/shim:statusor",
     "@zlib//:zlib",
     "@nlohmann_json//:nlohmann_json",
 ]
