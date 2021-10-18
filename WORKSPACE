@@ -144,7 +144,7 @@ http_archive(
   strip_prefix = "nicmcd-libfio-" + hash,
 )
 
-hash = "a77d70b"
+hash = "264f2b1"
 http_archive(
   name = "libsettings",
   urls = ["https://github.com/nicmcd/libsettings/tarball/" + hash],
