@@ -106,6 +106,11 @@ Router::Router(const std::string& _name, const Component* _parent,
   // determine if the router will use store and forward
   assert(_settings.contains("store_and_forward"));
   bool storeAndForward = _settings["store_and_forward"].get<bool>();
+  assert(storeAndForward);
+  /* There is a problem if this is not enabled. The flits could still be on the
+     incoming wire when they also get transferred to the output side. The
+     channel utilization per VC is wrong in this case. In theory this could
+     cause other issues for very long packets. */
 
   // create routing algorithms, input queues, link to routing algorithm,
   //  crossbar, and schedulers

@@ -196,7 +196,6 @@ void InputQueue::processPipeline() {
       router_->sendCredit(port_, vc_);
 
       // put it in the routing pipeline stage
-      assert(rfe_.flit == nullptr);
       rfe_.flit = flit;
 
       // set state as ready to request routing algorithm
