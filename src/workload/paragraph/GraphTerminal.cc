@@ -103,7 +103,8 @@ void GraphTerminal::start() {
 }
 
 void GraphTerminal::handleDeliveredMessage(Message* _message) {
-  application()->workload()->messageLog()->startTransaction(
+  application()->workload()->messageLog()->logMessage(_message);
+  application()->workload()->messageLog()->endTransaction(
       _message->getTransaction());
 }
 
