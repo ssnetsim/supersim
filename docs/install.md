@@ -12,7 +12,7 @@ for Windows or Mac, however, this is not officially supported.
 
 These installation instructions require the following software:
 - c++ (must support c++17)
-- python3 (3.6+)
+- python3 (3.7+)
 - bazel
 
 The following command installs the necessary software:
