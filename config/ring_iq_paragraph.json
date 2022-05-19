@@ -124,7 +124,8 @@
           "max_packet_size": 256,
           "bytes_per_flit": 128,
           "units_per_second": 1000000000000,
-          "graph_file": "config/graph/graph.%d.pb"
+          "graph_file": "config/graph/graph.%d.pb",
+          "log_file": "config/graph/graph.%d.csv"
         },
         "rate_log": {
           "file": null
