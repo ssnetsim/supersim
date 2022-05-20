@@ -66,9 +66,22 @@ GraphTerminal::GraphTerminal(const std::string& _name, const Component* _parent,
   assert(graph->ValidateIndividualized().ok());
   graph_ = std::move(graph);
 
+  // Logger is not necessary, but if it's provided, we want to create scheduler
+  // with log file provided in a similar way to graph file
+  std::unique_ptr<paragraph::Logger> logger = nullptr;
+  if (!_settings["log_file"].is_null()) {
+    auto logger_format =
+        absl::ParsedFormat<'d'>::New(_settings["log_file"].get<std::string>());
+    assert(logger_format);
+    CHECK_OK_AND_ASSIGN(
+        logger,
+        paragraph::Logger::Create(absl::StrFormat(*logger_format, id_), false));
+  }
+
   // Constructs the scheduler
-  CHECK_OK_AND_ASSIGN(std::unique_ptr<paragraph::GraphScheduler> scheduler,
-                      paragraph::GraphScheduler::Create(graph_.get()));
+  CHECK_OK_AND_ASSIGN(
+      std::unique_ptr<paragraph::GraphScheduler> scheduler,
+      paragraph::GraphScheduler::Create(graph_.get(), std::move(logger)));
   scheduler_ = std::move(scheduler);
   scheduler_->SeedRandom(_seed);
 }
